@@ -3,7 +3,13 @@ package com.johnson.bid;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 
-public class MainActivity extends AppCompatActivity {
+import static com.google.common.base.Preconditions.checkNotNull;
+
+
+public class MainActivity extends AppCompatActivity implements MainContract.View{
+
+    private MainContract.Presenter mPresenter;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -11,4 +17,13 @@ public class MainActivity extends AppCompatActivity {
     }
 
 
+    @Override
+    public void openCenterUi() {
+
+    }
+
+    @Override
+    public void setPresenter(MainContract.Presenter presenter) {
+        mPresenter = checkNotNull(presenter);
+    }
 }

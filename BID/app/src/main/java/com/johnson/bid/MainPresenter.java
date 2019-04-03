@@ -23,6 +23,11 @@ public class MainPresenter implements MainContract.Presenter, CenterContract.Pre
     }
 
     @Override
+    public void updateToolbar(String title) {
+        mMainView.setToolbarTitleUi(title);
+    }
+
+    @Override
     public void start() {}
 
     void setCenterPresenter(CenterPresenter centerPresenter) {

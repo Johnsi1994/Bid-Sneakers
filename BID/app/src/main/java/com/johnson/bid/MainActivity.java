@@ -3,12 +3,16 @@ package com.johnson.bid;
 import android.os.Bundle;
 import android.support.design.widget.BottomNavigationView;
 import android.support.v7.app.AppCompatActivity;
+import android.support.v7.widget.Toolbar;
+import android.widget.TextView;
 
 import static com.google.common.base.Preconditions.checkNotNull;
 
 public class MainActivity extends AppCompatActivity implements MainContract.View {
 
     private BottomNavigationView mBottomNavigation;
+    private Toolbar mToolbar;
+    private TextView mToolbarTitle;
 
     private MainContract.Presenter mPresenter;
     private MainMvpController mMainMvpController;
@@ -27,6 +31,11 @@ public class MainActivity extends AppCompatActivity implements MainContract.View
     }
 
     @Override
+    public void setToolbarTitleUi(String title) {
+        mToolbarTitle.setText(title);
+    }
+
+    @Override
     public void setPresenter(MainContract.Presenter presenter) {
         mPresenter = checkNotNull(presenter);
     }
@@ -35,7 +44,29 @@ public class MainActivity extends AppCompatActivity implements MainContract.View
         mMainMvpController = MainMvpController.create(this);
         mPresenter.openCenter();
 
+        setToolbar();
         setBottomNavigation();
+    }
+
+    private void setToolbar() {
+        // Retrieve the AppCompact Toolbar
+        mToolbar = findViewById(R.id.toolbar);
+        setSupportActionBar(mToolbar);
+        getSupportActionBar().setTitle("");
+
+        // Set the padding to match the Status Bar height
+        mToolbar.setPadding(0, getStatusBarHeight(), 0, 0);
+
+        mToolbarTitle = mToolbar.findViewById(R.id.text_toolbar_title);
+    }
+
+    public int getStatusBarHeight() {
+        int result = 0;
+        int resourceId = getResources().getIdentifier("status_bar_height", "dimen", "android");
+        if (resourceId > 0) {
+            result = getResources().getDimensionPixelSize(resourceId);
+        }
+        return result;
     }
 
     private void setBottomNavigation() {
@@ -50,16 +81,21 @@ public class MainActivity extends AppCompatActivity implements MainContract.View
 
         switch (menuItem.getItemId()) {
             case R.id.navigation_center:
+                mPresenter.updateToolbar("拍賣中心");
                 mPresenter.openCenter();
                 return true;
             case R.id.navigation_trade:
+                mPresenter.updateToolbar("我的交易");
                 return true;
             case R.id.navigation_message:
+                mPresenter.updateToolbar("聊聊");
                 return true;
             case R.id.navigation_settings:
+                mPresenter.updateToolbar("設定");
                 return true;
             default:
         }
         return false;
     };
+
 }

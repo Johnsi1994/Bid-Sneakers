@@ -31,6 +31,21 @@ public class MainActivity extends AppCompatActivity implements MainContract.View
     }
 
     @Override
+    public void openTradeUi() {
+        mMainMvpController.findOrCreateTradeView();
+    }
+
+    @Override
+    public void openChatUi() {
+        mMainMvpController.findOrCreateChatView();
+    }
+
+    @Override
+    public void openSettingsUi() {
+        mMainMvpController.findOrCreateSettingsView();
+    }
+
+    @Override
     public void setToolbarTitleUi(String title) {
         mToolbarTitle.setText(title);
     }
@@ -86,12 +101,15 @@ public class MainActivity extends AppCompatActivity implements MainContract.View
                 return true;
             case R.id.navigation_trade:
                 mPresenter.updateToolbar("我的交易");
+                mPresenter.openTrade();
                 return true;
             case R.id.navigation_message:
                 mPresenter.updateToolbar("聊聊");
+                mPresenter.openChat();
                 return true;
             case R.id.navigation_settings:
                 mPresenter.updateToolbar("設定");
+                mPresenter.openSettings();
                 return true;
             default:
         }

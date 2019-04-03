@@ -3,21 +3,22 @@
 
     <item
         android:id="@+id/navigation_center"
-        android:icon="@drawable/auction"
+        android:icon="@drawable/ic_nav_auction_selector"
         android:title="" />
 
     <item
         android:id="@+id/navigation_trade"
-        android:icon="@drawable/shopping_bag"
+        android:icon="@drawable/ic_nav_shopping_bag_selector"
         android:title="" />
 
     <item
         android:id="@+id/navigation_message"
-        android:icon="@drawable/conversation"
+        android:icon="@drawable/ic_nav_conversation_selector"
         android:title="" />
 
     <item
         android:id="@+id/navigation_settings"
-        android:icon="@drawable/settings"
+        android:icon="@drawable/ic_nav_settings_selector"
         android:title="" />
+
 </menu>

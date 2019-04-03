@@ -46,13 +46,13 @@ public class MainActivity extends AppCompatActivity implements MainContract.View
 
         switch (menuItem.getItemId()) {
             case R.id.navigation_center:
-                break;
+                return true;
             case R.id.navigation_trade:
-                break;
+                return true;
             case R.id.navigation_message:
-                break;
+                return true;
             case R.id.navigation_settings:
-                break;
+                return true;
             default:
         }
         return false;

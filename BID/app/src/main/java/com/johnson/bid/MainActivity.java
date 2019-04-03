@@ -11,6 +11,7 @@ public class MainActivity extends AppCompatActivity implements MainContract.View
     private BottomNavigationView mBottomNavigation;
 
     private MainContract.Presenter mPresenter;
+    private MainMvpController mMainMvpController;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -22,7 +23,7 @@ public class MainActivity extends AppCompatActivity implements MainContract.View
 
     @Override
     public void openCenterUi() {
-
+        mMainMvpController.findOrCreateCenterView();
     }
 
     @Override
@@ -31,6 +32,9 @@ public class MainActivity extends AppCompatActivity implements MainContract.View
     }
 
     private void init() {
+        mMainMvpController = MainMvpController.create(this);
+        mPresenter.openCenter();
+
         setBottomNavigation();
     }
 
@@ -46,6 +50,7 @@ public class MainActivity extends AppCompatActivity implements MainContract.View
 
         switch (menuItem.getItemId()) {
             case R.id.navigation_center:
+                mPresenter.openCenter();
                 return true;
             case R.id.navigation_trade:
                 return true;

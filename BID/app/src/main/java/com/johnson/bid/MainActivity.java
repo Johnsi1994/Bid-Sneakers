@@ -6,6 +6,8 @@ import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
 import android.widget.TextView;
 
+import com.johnson.bid.centre.auction.AuctionFragment;
+
 import static com.google.common.base.Preconditions.checkNotNull;
 
 public class MainActivity extends AppCompatActivity implements MainContract.View {
@@ -43,6 +45,16 @@ public class MainActivity extends AppCompatActivity implements MainContract.View
     @Override
     public void openSettingsUi() {
         mMainMvpController.findOrCreateSettingsView();
+    }
+
+    @Override
+    public AuctionFragment findEnglishAuctionView() {
+        return mMainMvpController.findOrCreateEnglishAuctionView();
+    }
+
+    @Override
+    public AuctionFragment findSealedAuctionView() {
+        return mMainMvpController.findOrCreateSealedAuctionView();
     }
 
     @Override

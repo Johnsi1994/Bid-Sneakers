@@ -1,9 +1,9 @@
-package com.johnson.bid.trade;
+package com.johnson.bid.centre.auction;
 
 import com.johnson.bid.BasePresenter;
 import com.johnson.bid.BaseView;
 
-public interface TradeContract {
+public interface AuctionContract {
 
     interface View extends BaseView<Presenter> {
 
@@ -12,4 +12,5 @@ public interface TradeContract {
     interface Presenter extends BasePresenter {
 
     }
+
 }

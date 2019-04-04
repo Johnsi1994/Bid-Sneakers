@@ -1,9 +1,12 @@
 package com.johnson.bid;
 
-import com.johnson.bid.Chat.ChatContract;
-import com.johnson.bid.Chat.ChatPresenter;
+import com.johnson.bid.centre.auction.AuctionContract;
+import com.johnson.bid.centre.auction.AuctionPresenter;
+import com.johnson.bid.chat.ChatContract;
+import com.johnson.bid.chat.ChatPresenter;
 import com.johnson.bid.centre.CenterContract;
 import com.johnson.bid.centre.CenterPresenter;
+import com.johnson.bid.centre.auction.AuctionFragment;
 import com.johnson.bid.settings.SettingsContract;
 import com.johnson.bid.settings.SettingsPresenter;
 import com.johnson.bid.trade.TradeContract;
@@ -13,7 +16,7 @@ import static com.google.common.base.Preconditions.checkNotNull;
 
 
 public class MainPresenter implements MainContract.Presenter, CenterContract.Presenter, TradeContract.Presenter,
-        ChatContract.Presenter, SettingsContract.Presenter {
+        ChatContract.Presenter, SettingsContract.Presenter , AuctionContract.Presenter {
 
     private MainContract.View mMainView;
 
@@ -21,6 +24,9 @@ public class MainPresenter implements MainContract.Presenter, CenterContract.Pre
     private TradePresenter mTradePresenter;
     private ChatPresenter mChatPresenter;
     private SettingsPresenter mSettingsPresenter;
+
+    private AuctionPresenter mEmglishAuctionPresenter;
+    private AuctionPresenter mSealedAuctionPresenter;
 
     public MainPresenter(MainContract.View mainView) {
         mMainView = checkNotNull(mainView, "mainView cannot be null!");
@@ -71,4 +77,23 @@ public class MainPresenter implements MainContract.Presenter, CenterContract.Pre
     void setSettingsPresenter(SettingsPresenter settingsPresenter) {
         mSettingsPresenter = checkNotNull(settingsPresenter);
     }
+
+    void setEnglishAuctionPresenter(AuctionPresenter englishAuctionPresenter) {
+        mEmglishAuctionPresenter = checkNotNull(englishAuctionPresenter);
+    }
+
+    void setSealedAuctionPresenter(AuctionPresenter sealedAuctionPresenter) {
+        mSealedAuctionPresenter = checkNotNull(sealedAuctionPresenter);
+    }
+
+    @Override
+    public AuctionFragment findEnglishAuction() {
+        return mMainView.findEnglishAuctionView();
+    }
+
+    @Override
+    public AuctionFragment findSealedAuction() {
+        return mMainView.findSealedAuctionView();
+    }
+
 }

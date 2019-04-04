@@ -1,4 +1,4 @@
-package com.johnson.bid.Chat;
+package com.johnson.bid.chat;
 
 import android.support.annotation.NonNull;
 

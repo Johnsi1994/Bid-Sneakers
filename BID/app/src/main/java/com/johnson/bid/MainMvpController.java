@@ -1,12 +1,17 @@
 package com.johnson.bid;
 
+import static com.google.common.base.Preconditions.checkNotNull;
+
 import android.support.annotation.NonNull;
 import android.support.annotation.StringDef;
 import android.support.v4.app.FragmentActivity;
 import android.support.v4.app.FragmentManager;
+import android.util.Log;
 
-import com.johnson.bid.Chat.ChatFragment;
-import com.johnson.bid.Chat.ChatPresenter;
+import com.johnson.bid.centre.auction.AuctionFragment;
+import com.johnson.bid.centre.auction.AuctionPresenter;
+import com.johnson.bid.chat.ChatFragment;
+import com.johnson.bid.chat.ChatPresenter;
 import com.johnson.bid.centre.CenterFragment;
 import com.johnson.bid.centre.CenterPresenter;
 import com.johnson.bid.settings.SettingsFragment;
@@ -17,8 +22,7 @@ import com.johnson.bid.util.ActivityUtils;
 
 import java.lang.annotation.Retention;
 import java.lang.annotation.RetentionPolicy;
-
-import static com.google.common.base.Preconditions.checkNotNull;
+import java.util.Objects;
 
 public class MainMvpController {
 
@@ -29,16 +33,31 @@ public class MainMvpController {
     private ChatPresenter mChatPresenter;
     private SettingsPresenter mSettingsPresenter;
 
+    private AuctionPresenter mEnglishAuctionPresenter;
+    private AuctionPresenter mSealedAuctionPresenter;
+
     @Retention(RetentionPolicy.SOURCE)
     @StringDef({
-          CENTER, TRADE, CHAT, SETTINGS
+            CENTER, TRADE, CHAT, SETTINGS
     })
 
-    public @interface FragmentType {}
+    public @interface FragmentType {
+    }
+
     static final String CENTER = "CENTER";
     static final String TRADE = "TRADE";
     static final String CHAT = "CHAT";
     static final String SETTINGS = "SETTINGS";
+
+    @Retention(RetentionPolicy.SOURCE)
+    @StringDef({
+            ENGLISH, SEALED
+    })
+    public @interface AuctionType {
+    }
+
+    public static final String ENGLISH = "ENGLISH";
+    public static final String SEALED = "SEALED";
 
 
     private MainMvpController(@NonNull FragmentActivity activity) {
@@ -61,7 +80,8 @@ public class MainMvpController {
     void findOrCreateCenterView() {
 
         CenterFragment centerFragment = findOrCreateCenterFragment();
-        if (centerFragment == null) {
+
+        if (mCenterPresenter == null) {
             mCenterPresenter = new CenterPresenter(centerFragment);
             mMainPresenter.setCenterPresenter(mCenterPresenter);
             centerFragment.setPresenter(mMainPresenter);
@@ -71,7 +91,8 @@ public class MainMvpController {
     void findOrCreateTradeView() {
 
         TradeFragment tradeFragment = findOrCreateTradeFragment();
-        if (tradeFragment == null) {
+
+        if (mTradePresenter == null) {
             mTradePresenter = new TradePresenter(tradeFragment);
             mMainPresenter.setTradePresenter(mTradePresenter);
             tradeFragment.setPresenter(mMainPresenter);
@@ -81,7 +102,8 @@ public class MainMvpController {
     void findOrCreateChatView() {
 
         ChatFragment chatFragment = findOrCreateChatFragment();
-        if (chatFragment == null) {
+
+        if (mChatPresenter == null) {
             mChatPresenter = new ChatPresenter(chatFragment);
             mMainPresenter.setChatPresenter(mChatPresenter);
             chatFragment.setPresenter(mMainPresenter);
@@ -91,11 +113,36 @@ public class MainMvpController {
     void findOrCreateSettingsView() {
 
         SettingsFragment settingsFragment = findOrCreateSettingsFragment();
-        if (settingsFragment == null) {
+
+        if (mSettingsPresenter == null) {
             mSettingsPresenter = new SettingsPresenter(settingsFragment);
             mMainPresenter.setSettingsPresenter(mSettingsPresenter);
             settingsFragment.setPresenter(mMainPresenter);
         }
+    }
+
+    AuctionFragment findOrCreateEnglishAuctionView() {
+
+        AuctionFragment fragment = findOrCreateAuctionFragment(ENGLISH);
+
+        mEnglishAuctionPresenter = new AuctionPresenter(fragment);
+        fragment.setPresenter(mMainPresenter);
+        fragment.setAuctionType(ENGLISH);
+        mMainPresenter.setEnglishAuctionPresenter(mEnglishAuctionPresenter);
+
+        return fragment;
+    }
+
+    AuctionFragment findOrCreateSealedAuctionView() {
+
+        AuctionFragment fragment = findOrCreateAuctionFragment(SEALED);
+
+        mSealedAuctionPresenter = new AuctionPresenter(fragment);
+        fragment.setPresenter(mMainPresenter);
+        fragment.setAuctionType(SEALED);
+        mMainPresenter.setSealedAuctionPresenter(mSealedAuctionPresenter);
+
+        return fragment;
     }
 
     @NonNull
@@ -160,6 +207,20 @@ public class MainMvpController {
                 getFragmentManager(), settingsFragment, SETTINGS);
 
         return settingsFragment;
+    }
+
+    @NonNull
+    private AuctionFragment findOrCreateAuctionFragment(@AuctionType String auctionType) {
+
+        AuctionFragment fragment =
+                (AuctionFragment) ((getFragmentManager().findFragmentByTag(CENTER)))
+                        .getChildFragmentManager().findFragmentByTag(auctionType);
+        if (fragment == null) {
+            // Create the fragment
+            fragment = AuctionFragment.newInstance();
+        }
+
+        return fragment;
     }
 
     private FragmentManager getFragmentManager() {

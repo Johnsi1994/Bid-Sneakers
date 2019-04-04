@@ -1,5 +1,7 @@
 package com.johnson.bid;
 
+import com.johnson.bid.centre.auction.AuctionFragment;
+
 public interface MainContract {
 
     interface View extends BaseView<Presenter> {
@@ -10,6 +12,10 @@ public interface MainContract {
         void openChatUi();
 
         void openSettingsUi();
+
+        AuctionFragment findEnglishAuctionView();
+
+        AuctionFragment findSealedAuctionView();
 
         void setToolbarTitleUi(String title);
     }

@@ -1,3 +1,5 @@
 <resources>
     <string name="app_name">Bid</string>
+    <string name="NTS">NT$</string>
+    <string name="bit_times">出價次數 :</string>
 </resources>

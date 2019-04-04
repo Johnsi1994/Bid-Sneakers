@@ -1,0 +1,38 @@
+<?xml version="1.0" encoding="utf-8"?>
+<android.support.constraint.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content">
+
+    <ImageView
+        android:id="@+id/image_product_s_auction"
+        android:layout_width="80dp"
+        android:layout_height="80dp"
+        android:layout_marginStart="16dp"
+        android:layout_marginTop="16dp"
+        android:scaleType="centerCrop"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        app:srcCompat="@drawable/shoe_placeholder" />
+
+    <TextView
+        android:id="@+id/text_product_title_s_auction"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="16dp"
+        android:layout_marginTop="16dp"
+        android:text="Air Jordan 1 Gold Top Three"
+        app:layout_constraintStart_toEndOf="@+id/image_product_s_auction"
+        app:layout_constraintTop_toTopOf="@+id/image_product_s_auction" />
+
+    <TextView
+        android:id="@+id/text_last_time_s_auction"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="16dp"
+        android:layout_marginTop="8dp"
+        android:text="3天12時35分17秒"
+        app:layout_constraintStart_toEndOf="@+id/image_product_s_auction"
+        app:layout_constraintTop_toBottomOf="@+id/text_product_title_s_auction" />
+</android.support.constraint.ConstraintLayout>

@@ -4,8 +4,8 @@ import java.util.ArrayList;
 
 public class User {
 
-    private String mName;
     private long mId;
+    private String mName;
     private String mImage;
     private ArrayList<Product> mSelling;
     private ArrayList<Product> mBidding;
@@ -15,8 +15,9 @@ public class User {
     private ArrayList<Product> mChatRoomId;
 
     public User() {
-        mName = "";
+
         mId = -1;
+        mName = "";
         mImage = "";
         mSelling = new ArrayList<>();
         mBidding = new ArrayList<>();
@@ -24,6 +25,7 @@ public class User {
         mBought = new ArrayList<>();
         mEyesOn = new ArrayList<>();
         mChatRoomId = new ArrayList<>();
+
     }
 
     public String getName() {

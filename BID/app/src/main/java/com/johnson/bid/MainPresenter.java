@@ -7,6 +7,8 @@ import com.johnson.bid.chat.ChatPresenter;
 import com.johnson.bid.centre.CenterContract;
 import com.johnson.bid.centre.CenterPresenter;
 import com.johnson.bid.centre.auction.AuctionFragment;
+import com.johnson.bid.login.LoginContract;
+import com.johnson.bid.login.LoginPresenter;
 import com.johnson.bid.settings.SettingsContract;
 import com.johnson.bid.settings.SettingsPresenter;
 import com.johnson.bid.trade.TradeContract;
@@ -16,10 +18,11 @@ import static com.google.common.base.Preconditions.checkNotNull;
 
 
 public class MainPresenter implements MainContract.Presenter, CenterContract.Presenter, TradeContract.Presenter,
-        ChatContract.Presenter, SettingsContract.Presenter , AuctionContract.Presenter {
+        ChatContract.Presenter, SettingsContract.Presenter , AuctionContract.Presenter, LoginContract.Presenter {
 
     private MainContract.View mMainView;
 
+    private LoginPresenter mLoginPresenter;
     private CenterPresenter mCenterPresenter;
     private TradePresenter mTradePresenter;
     private ChatPresenter mChatPresenter;
@@ -31,6 +34,11 @@ public class MainPresenter implements MainContract.Presenter, CenterContract.Pre
     public MainPresenter(MainContract.View mainView) {
         mMainView = checkNotNull(mainView, "mainView cannot be null!");
         mMainView.setPresenter(this);
+    }
+
+    @Override
+    public void openLogin() {
+        mMainView.openLoginUi();
     }
 
     @Override
@@ -59,7 +67,39 @@ public class MainPresenter implements MainContract.Presenter, CenterContract.Pre
     }
 
     @Override
+    public void hideToolbarAndBottomNavigation() {
+        mMainView.hideToolbarUi();
+        mMainView.hideBottomNavigationUi();
+    }
+
+    @Override
+    public void showToolbarAndBottomNavigation() {
+        mMainView.showToolbarUi();
+        mMainView.showBottomNavigationUi();
+    }
+
+    @Override
     public void start() {
+    }
+
+    @Override
+    public AuctionFragment findEnglishAuction() {
+        return mMainView.findEnglishAuctionView();
+    }
+
+    @Override
+    public AuctionFragment findSealedAuction() {
+        return mMainView.findSealedAuctionView();
+    }
+
+    @Override
+    public void onLoginSuccess() {
+        mMainView.openCenterUi();
+        showToolbarAndBottomNavigation();
+    }
+
+    void setLoginPresenter(LoginPresenter loginPresenter) {
+        mLoginPresenter = checkNotNull(loginPresenter);
     }
 
     void setCenterPresenter(CenterPresenter centerPresenter) {
@@ -85,15 +125,4 @@ public class MainPresenter implements MainContract.Presenter, CenterContract.Pre
     void setSealedAuctionPresenter(AuctionPresenter sealedAuctionPresenter) {
         mSealedAuctionPresenter = checkNotNull(sealedAuctionPresenter);
     }
-
-    @Override
-    public AuctionFragment findEnglishAuction() {
-        return mMainView.findEnglishAuctionView();
-    }
-
-    @Override
-    public AuctionFragment findSealedAuction() {
-        return mMainView.findSealedAuctionView();
-    }
-
 }

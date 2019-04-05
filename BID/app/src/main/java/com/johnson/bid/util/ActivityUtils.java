@@ -33,4 +33,28 @@ public class ActivityUtils {
 
         transaction.commit();
     }
+
+    public static void addFragmentByTag(@NonNull FragmentManager fragmentManager,
+                                        @NonNull Fragment fragment,
+                                        @MainMvpController.FragmentType String fragmentTag) {
+        checkNotNull(fragmentManager);
+
+        FragmentTransaction transaction = fragmentManager.beginTransaction();
+
+        for (Fragment element : fragmentManager.getFragments()) {
+            if (!element.isHidden()) {
+                transaction.hide(element);
+                transaction.addToBackStack(null);
+                break;
+            }
+        }
+
+        if (fragment.isAdded()) {
+            transaction.show(fragment);
+        } else {
+            transaction.add(R.id.layout_main_container, fragment, fragmentTag);
+        }
+
+        transaction.commit();
+    }
 }

@@ -5,6 +5,9 @@ import com.johnson.bid.centre.auction.AuctionFragment;
 public interface MainContract {
 
     interface View extends BaseView<Presenter> {
+
+        void openLoginUi();
+
         void openCenterUi();
 
         void openTradeUi();
@@ -18,9 +21,20 @@ public interface MainContract {
         AuctionFragment findSealedAuctionView();
 
         void setToolbarTitleUi(String title);
+
+        void hideToolbarUi();
+
+        void showToolbarUi();
+
+        void hideBottomNavigationUi();
+
+        void showBottomNavigationUi();
     }
 
     interface Presenter extends BasePresenter {
+
+        void openLogin();
+
         void openCenter();
 
         void openTrade();
@@ -30,5 +44,9 @@ public interface MainContract {
         void openSettings();
 
         void updateToolbar(String title);
+
+        void hideToolbarAndBottomNavigation();
+
+        void showToolbarAndBottomNavigation();
     }
 }

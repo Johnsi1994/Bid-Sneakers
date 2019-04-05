@@ -1,12 +1,15 @@
 package com.johnson.bid;
 
+import android.content.Intent;
 import android.os.Bundle;
 import android.support.design.widget.BottomNavigationView;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
+import android.view.View;
 import android.widget.TextView;
 
 import com.johnson.bid.centre.auction.AuctionFragment;
+import com.johnson.bid.util.UserManager;
 
 import static com.google.common.base.Preconditions.checkNotNull;
 
@@ -25,6 +28,11 @@ public class MainActivity extends AppCompatActivity implements MainContract.View
         setContentView(R.layout.activity_main);
 
         init();
+    }
+
+    @Override
+    public void openLoginUi() {
+        mMainMvpController.createLoginView();
     }
 
     @Override
@@ -63,16 +71,45 @@ public class MainActivity extends AppCompatActivity implements MainContract.View
     }
 
     @Override
+    public void hideToolbarUi() {
+        mToolbar.setVisibility(View.GONE);
+    }
+
+    @Override
+    public void showToolbarUi() {
+        mToolbar.setVisibility(View.VISIBLE);
+    }
+
+    @Override
+    public void hideBottomNavigationUi() {
+        mBottomNavigation.setVisibility(View.GONE);
+    }
+
+    @Override
+    public void showBottomNavigationUi() {
+        mBottomNavigation.setVisibility(View.VISIBLE);
+    }
+
+    @Override
     public void setPresenter(MainContract.Presenter presenter) {
         mPresenter = checkNotNull(presenter);
     }
 
     private void init() {
         mMainMvpController = MainMvpController.create(this);
-        mPresenter.openCenter();
 
         setToolbar();
         setBottomNavigation();
+        mToolbar.setVisibility(View.VISIBLE);
+        mBottomNavigation.setVisibility(View.VISIBLE);
+        mPresenter.openCenter();
+
+//        if (UserManager.getInstance().isLoggedIn()) {
+//            mPresenter.openCenter();
+//        } else {
+//            mPresenter.openLogin();
+//        }
+
     }
 
     private void setToolbar() {
@@ -127,5 +164,12 @@ public class MainActivity extends AppCompatActivity implements MainContract.View
         }
         return false;
     };
+
+    @Override
+    protected void onActivityResult(int requestCode, int resultCode, Intent data) {
+        super.onActivityResult(requestCode, resultCode, data);
+
+        UserManager.getInstance().getFbCallbackManager().onActivityResult(requestCode, resultCode, data);
+    }
 
 }

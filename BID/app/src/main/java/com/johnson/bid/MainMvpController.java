@@ -14,6 +14,8 @@ import com.johnson.bid.chat.ChatFragment;
 import com.johnson.bid.chat.ChatPresenter;
 import com.johnson.bid.centre.CenterFragment;
 import com.johnson.bid.centre.CenterPresenter;
+import com.johnson.bid.login.LoginFragment;
+import com.johnson.bid.login.LoginPresenter;
 import com.johnson.bid.settings.SettingsFragment;
 import com.johnson.bid.settings.SettingsPresenter;
 import com.johnson.bid.trade.TradeFragment;
@@ -28,22 +30,25 @@ public class MainMvpController {
 
     private final FragmentActivity mActivity;
     private MainPresenter mMainPresenter;
+    private LoginPresenter mLoginPresenter;
     private CenterPresenter mCenterPresenter;
     private TradePresenter mTradePresenter;
     private ChatPresenter mChatPresenter;
     private SettingsPresenter mSettingsPresenter;
+
 
     private AuctionPresenter mEnglishAuctionPresenter;
     private AuctionPresenter mSealedAuctionPresenter;
 
     @Retention(RetentionPolicy.SOURCE)
     @StringDef({
-            CENTER, TRADE, CHAT, SETTINGS
+            LOGIN, CENTER, TRADE, CHAT, SETTINGS
     })
 
     public @interface FragmentType {
     }
 
+    static final String LOGIN = "LOGIN";
     static final String CENTER = "CENTER";
     static final String TRADE = "TRADE";
     static final String CHAT = "CHAT";
@@ -75,6 +80,15 @@ public class MainMvpController {
         mMainPresenter = new MainPresenter((MainActivity) mActivity);
 
         return mMainPresenter;
+    }
+
+    void createLoginView() {
+
+        LoginFragment loginFragment = createLoginFragment();
+
+        mLoginPresenter = new LoginPresenter(loginFragment);
+        mMainPresenter.setLoginPresenter(mLoginPresenter);
+        loginFragment.setPresenter(mMainPresenter);
     }
 
     void findOrCreateCenterView() {
@@ -143,6 +157,17 @@ public class MainMvpController {
         mMainPresenter.setSealedAuctionPresenter(mSealedAuctionPresenter);
 
         return fragment;
+    }
+
+    @NonNull
+    private LoginFragment createLoginFragment() {
+
+        LoginFragment loginFragment = LoginFragment.newInstance();
+
+        ActivityUtils.addFragmentByTag(
+                getFragmentManager(), loginFragment, LOGIN);
+
+        return loginFragment;
     }
 
     @NonNull

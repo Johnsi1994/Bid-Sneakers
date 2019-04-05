@@ -13,20 +13,21 @@
         android:background="@color/white"
         android:minHeight="?attr/actionBarSize"
         android:theme="?attr/actionBarTheme"
+        android:visibility="gone"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent" >
+        app:layout_constraintTop_toTopOf="parent">
 
         <TextView
             android:id="@+id/text_toolbar_title"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_gravity="center"
-            android:textSize="20sp"
-            android:textStyle="bold"
             android:letterSpacing="0.15"
+            android:text="拍賣中心"
             android:textColor="@color/colorPrimary"
-            android:text="拍賣中心"/>
+            android:textSize="20sp"
+            android:textStyle="bold" />
 
     </android.support.v7.widget.Toolbar>
 
@@ -47,11 +48,12 @@
         android:layout_width="match_parent"
         android:layout_height="60dp"
         android:background="@color/white"
-        app:labelVisibilityMode="unlabeled"
         android:elevation="4dp"
+        android:visibility="gone"
+        app:labelVisibilityMode="unlabeled"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:menu="@menu/menu_bottom_navigation"/>
+        app:menu="@menu/menu_bottom_navigation" />
 
 </android.support.constraint.ConstraintLayout>

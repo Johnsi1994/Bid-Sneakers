@@ -40,29 +40,26 @@ public class LoginFragment extends Fragment implements LoginContract.View {
         View root = inflater.inflate(R.layout.fragment_login_bid, container, false);
 
         mLoginBtn = root.findViewById(R.id.button_login);
-        mLoginBtn.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                if (!isLoading()) {
-                    setLoading(true);
-                    UserManager.getInstance().loginBidByFacebook(getActivity(), new UserManager.LoadCallback() {
-                        @Override
-                        public void onSuccess() {
-                            mPresenter.onLoginSuccess();
-                            setLoading(false);
-                        }
+        mLoginBtn.setOnClickListener(v -> {
+            if (!isLoading()) {
+                setLoading(true);
+                UserManager.getInstance().loginBidByFacebook(getActivity(), new UserManager.LoadCallback() {
+                    @Override
+                    public void onSuccess() {
+                        mPresenter.onLoginSuccess();
+                        setLoading(false);
+                    }
 
-                        @Override
-                        public void onFail(String errorMessage) {
-                            setLoading(false);
-                        }
+                    @Override
+                    public void onFail(String errorMessage) {
+                        setLoading(false);
+                    }
 
-                        @Override
-                        public void onInvalidToken(String errorMessage) {
-                            setLoading(false);
-                        }
-                    });
-                }
+                    @Override
+                    public void onInvalidToken(String errorMessage) {
+                        setLoading(false);
+                    }
+                });
             }
         });
 

@@ -3,6 +3,7 @@ package com.johnson.bid.centre;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
+import android.support.design.widget.FloatingActionButton;
 import android.support.design.widget.TabLayout;
 import android.support.v4.app.Fragment;
 import android.support.v4.view.ViewPager;
@@ -22,6 +23,12 @@ public class CenterFragment extends Fragment implements CenterContract.View {
 
     private TabLayout mTabLayout;
     private ViewPager mViewPager;
+    private FloatingActionButton mPostFloatingActionButton;
+    private FloatingActionButton mSearchFloatingActionButton;
+    private FloatingActionButton mEyesOnFloatingActionButton;
+    private FloatingActionButton mMenuFloatingActionButton;
+
+    private boolean isFABOpen = false;
 
     public CenterFragment() {}
 
@@ -35,6 +42,7 @@ public class CenterFragment extends Fragment implements CenterContract.View {
 
         mCenterAdapter = new CenterAdapter(getChildFragmentManager(), mPresenter);
 
+
     }
 
     @Nullable
@@ -44,6 +52,19 @@ public class CenterFragment extends Fragment implements CenterContract.View {
 
         mTabLayout = root.findViewById(R.id.tab_center);
         mViewPager = root.findViewById(R.id.viewpager_center);
+
+        mMenuFloatingActionButton = root.findViewById(R.id.fab_menu);
+        mPostFloatingActionButton = root.findViewById(R.id.fab_post);
+        mSearchFloatingActionButton = root.findViewById(R.id.fab_search);
+        mEyesOnFloatingActionButton = root.findViewById(R.id.fab_eyes_on);
+
+        mMenuFloatingActionButton.setOnClickListener(v -> {
+            if (isFABOpen) {
+                closeFABMenu();
+            } else {
+                showFABMenu();
+            }
+        });
 
         return root;
     }
@@ -61,5 +82,19 @@ public class CenterFragment extends Fragment implements CenterContract.View {
     @Override
     public void setPresenter(CenterContract.Presenter presenter) {
         mPresenter = checkNotNull(presenter);
+    }
+
+    private void showFABMenu(){
+        isFABOpen = true;
+        mPostFloatingActionButton.animate().translationY(-getResources().getDimension(R.dimen.standard_70));
+        mSearchFloatingActionButton.animate().translationY(-getResources().getDimension(R.dimen.standard_140));
+        mEyesOnFloatingActionButton.animate().translationY(-getResources().getDimension(R.dimen.standard_210));
+    }
+
+    private void closeFABMenu(){
+        isFABOpen = false;
+        mPostFloatingActionButton.animate().translationY(0);
+        mSearchFloatingActionButton.animate().translationY(0);
+        mEyesOnFloatingActionButton.animate().translationY(0);
     }
 }

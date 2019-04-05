@@ -3,6 +3,7 @@ package com.johnson.bid;
 import android.content.Intent;
 import android.os.Bundle;
 import android.support.design.widget.BottomNavigationView;
+import android.support.design.widget.FloatingActionButton;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
 import android.view.View;
@@ -95,6 +96,13 @@ public class MainActivity extends AppCompatActivity implements MainContract.View
         mPresenter = checkNotNull(presenter);
     }
 
+    @Override
+    protected void onActivityResult(int requestCode, int resultCode, Intent data) {
+        super.onActivityResult(requestCode, resultCode, data);
+
+        UserManager.getInstance().getFbCallbackManager().onActivityResult(requestCode, resultCode, data);
+    }
+
     private void init() {
         mMainMvpController = MainMvpController.create(this);
 
@@ -102,6 +110,7 @@ public class MainActivity extends AppCompatActivity implements MainContract.View
         setBottomNavigation();
         mToolbar.setVisibility(View.VISIBLE);
         mBottomNavigation.setVisibility(View.VISIBLE);
+
         mPresenter.openCenter();
 
 //        if (UserManager.getInstance().isLoggedIn()) {
@@ -109,6 +118,8 @@ public class MainActivity extends AppCompatActivity implements MainContract.View
 //        } else {
 //            mPresenter.openLogin();
 //        }
+
+
 
     }
 
@@ -164,12 +175,5 @@ public class MainActivity extends AppCompatActivity implements MainContract.View
         }
         return false;
     };
-
-    @Override
-    protected void onActivityResult(int requestCode, int resultCode, Intent data) {
-        super.onActivityResult(requestCode, resultCode, data);
-
-        UserManager.getInstance().getFbCallbackManager().onActivityResult(requestCode, resultCode, data);
-    }
 
 }

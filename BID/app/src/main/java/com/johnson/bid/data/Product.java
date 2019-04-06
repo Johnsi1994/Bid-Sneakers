@@ -4,29 +4,34 @@ import java.util.ArrayList;
 
 public class Product {
 
-    private long mSellerId;
+
     private long mProductId;
     private ArrayList<String> mImages;
     private String mTitle;
-    private String mInfo;
+    private String mIntroduction;
     private String mCondition;
+
+    private String mAuctionType;
     private long mStartTime;
     private long mExpired;
     private int mStartPrice;
     private int mCurrentPrice;
     private int mReservePrice;
     private int mIncrease;
+
+    private long mSellerId;
     private long mHighestUserId;
     private int mParticipantsNumber;
     private ArrayList<ChatContent> mChats;
 
     public Product() {
 
+        mAuctionType = "";
         mSellerId = -1;
         mProductId = -1;
         mImages = new ArrayList<>();
         mTitle = "";
-        mInfo = "";
+        mIntroduction = "";
         mCondition = "";
         mStartTime = -1;
         mExpired = -1;
@@ -37,6 +42,14 @@ public class Product {
         mHighestUserId = -1;
         mParticipantsNumber = -1;
         mChats = new ArrayList<>();
+    }
+
+    public String getAuctionType() {
+        return mAuctionType;
+    }
+
+    public void setAuctionType(String auctionType) {
+        mAuctionType = auctionType;
     }
 
     public long getSellerId() {
@@ -71,12 +84,12 @@ public class Product {
         mTitle = title;
     }
 
-    public String getInfo() {
-        return mInfo;
+    public String getIntroduction() {
+        return mIntroduction;
     }
 
-    public void setInfo(String info) {
-        mInfo = info;
+    public void setIntroduction(String introduction) {
+        mIntroduction = introduction;
     }
 
     public String getCondition() {

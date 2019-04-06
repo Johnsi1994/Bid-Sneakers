@@ -1,16 +1,8 @@
 package com.johnson.bid.post;
 
-import android.annotation.SuppressLint;
 import android.support.annotation.NonNull;
-import android.util.Log;
 
-import com.johnson.bid.MainActivity;
-import com.jzxiang.pickerview.TimePickerDialog;
-import com.jzxiang.pickerview.data.Type;
-import com.jzxiang.pickerview.listener.OnDateSetListener;
-
-import java.text.SimpleDateFormat;
-import java.util.Date;
+import com.johnson.bid.data.Product;
 
 import static com.google.common.base.Preconditions.checkNotNull;
 
@@ -18,8 +10,11 @@ public class PostPresenter implements PostContract.Presenter{
 
     private PostContract.View mPostView;
 
+    private Product mProduct;
+
     public PostPresenter(@NonNull PostContract.View postView) {
         mPostView = checkNotNull(postView, "postView cannot be null!");
+        mProduct = new Product();
     }
 
     @Override
@@ -27,4 +22,43 @@ public class PostPresenter implements PostContract.Presenter{
 
     }
 
+    @Override
+    public void setProductTitle(String productTitle) {
+        mProduct.setTitle(productTitle);
+    }
+
+    @Override
+    public void setProductIntro(String productIntro) {
+        mProduct.setIntroduction(productIntro);
+    }
+
+    @Override
+    public void setStartingPrice(int startingPrice) {
+        mProduct.setStartPrice(startingPrice);
+    }
+
+    @Override
+    public void setReservePrice(int reservePrice) {
+        mProduct.setReservePrice(reservePrice);
+    }
+
+    @Override
+    public void setProductCondition(String condition) {
+        mProduct.setCondition(condition);
+    }
+
+    @Override
+    public void setAuctionType(String auctionType) {
+        mProduct.setAuctionType(auctionType);
+    }
+
+    @Override
+    public void setIncrease(int increase) {
+        mProduct.setIncrease(increase);
+    }
+
+    @Override
+    public void setStartingTime(long startingTime) {
+        mProduct.setStartTime(startingTime);
+    }
 }

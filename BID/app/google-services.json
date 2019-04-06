@@ -1,0 +1,44 @@
+{
+  "project_info": {
+    "project_number": "444531358111",
+    "firebase_url": "https://bidd-ba58d.firebaseio.com",
+    "project_id": "bidd-ba58d",
+    "storage_bucket": "bidd-ba58d.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:444531358111:android:4343f7589a1b9788",
+        "android_client_info": {
+          "package_name": "com.johnson.bid"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "444531358111-tgqsf35nidesccahjbvsv8e37sjaecnv.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "com.johnson.bid",
+            "certificate_hash": "33b423121e5d159fd2785a8708643ec5063522df"
+          }
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyCAuwabIMX4i3kYCLcTkMLaUjXKMqiCktI"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "444531358111-7t5hvtf27ca70h0ln3r90un4sq8ij9op.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}

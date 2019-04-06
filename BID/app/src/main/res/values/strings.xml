@@ -18,9 +18,9 @@
     <string name="reserve_price">競標底價 (非必填)</string>
     <string name="increase">出價增額</string>
     <string name="increase_one">NT$ 1</string>
-    <string name="increase_ten">NT$ 110</string>
-    <string name="increase_hundred">NT$ 1100</string>
-    <string name="increase_thousand">NT$ 11000</string>
+    <string name="increase_ten">NT$ 10</string>
+    <string name="increase_hundred">NT$ 100</string>
+    <string name="increase_thousand">NT$ 1000</string>
     <string name="product_information">商品資訊</string>
     <string name="auction_settings">拍賣設定</string>
     <string name="starting_price">起標價格</string>

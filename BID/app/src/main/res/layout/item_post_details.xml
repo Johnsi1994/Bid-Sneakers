@@ -50,7 +50,7 @@
     </android.support.constraint.ConstraintLayout>
 
     <TextView
-        android:id="@+id/textView6"
+        android:id="@+id/text_product_info"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginTop="8dp"
@@ -63,7 +63,7 @@
         app:layout_constraintTop_toBottomOf="@+id/image_product" />
 
     <EditText
-        android:id="@+id/editText"
+        android:id="@+id/edit_product_title"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
         android:layout_marginStart="8dp"
@@ -74,23 +74,23 @@
         android:inputType="textPersonName"
         android:visibility="visible"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="@+id/textView6"
-        app:layout_constraintTop_toBottomOf="@+id/textView6" />
+        app:layout_constraintStart_toStartOf="@+id/text_product_info"
+        app:layout_constraintTop_toBottomOf="@+id/text_product_info" />
 
     <EditText
-        android:id="@+id/editText2"
+        android:id="@+id/edit_product_intro"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
         android:layout_marginTop="16dp"
         android:ems="200"
         android:hint="@string/product_intro"
         android:inputType="textMultiLine"
-        app:layout_constraintEnd_toEndOf="@+id/editText"
-        app:layout_constraintStart_toStartOf="@+id/editText"
-        app:layout_constraintTop_toBottomOf="@+id/editText" />
+        app:layout_constraintEnd_toEndOf="@+id/edit_product_title"
+        app:layout_constraintStart_toStartOf="@+id/edit_product_title"
+        app:layout_constraintTop_toBottomOf="@+id/edit_product_title" />
 
     <TextView
-        android:id="@+id/textView7"
+        android:id="@+id/text_product_condition"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginStart="4dp"
@@ -99,24 +99,24 @@
         android:textColor="@color/black"
         android:textSize="18sp"
         android:visibility="visible"
-        app:layout_constraintStart_toStartOf="@+id/editText2"
-        app:layout_constraintTop_toBottomOf="@+id/editText2" />
+        app:layout_constraintStart_toStartOf="@+id/edit_product_intro"
+        app:layout_constraintTop_toBottomOf="@+id/edit_product_intro" />
 
     <Spinner
-        android:id="@+id/spinner"
+        android:id="@+id/spinner_product_condition"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
         android:layout_marginStart="16dp"
         android:entries="@array/product_condition_list"
         android:prompt="@string/product_condition"
         android:spinnerMode="dropdown"
-        app:layout_constraintBottom_toBottomOf="@+id/textView7"
-        app:layout_constraintEnd_toEndOf="@+id/editText2"
-        app:layout_constraintStart_toEndOf="@+id/textView7"
-        app:layout_constraintTop_toTopOf="@+id/textView7" />
+        app:layout_constraintBottom_toBottomOf="@+id/text_product_condition"
+        app:layout_constraintEnd_toEndOf="@+id/edit_product_intro"
+        app:layout_constraintStart_toEndOf="@+id/text_product_condition"
+        app:layout_constraintTop_toTopOf="@+id/text_product_condition" />
 
     <TextView
-        android:id="@+id/textView12"
+        android:id="@+id/text_auction_settings"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginTop="32dp"
@@ -125,11 +125,11 @@
         android:textSize="18sp"
         android:textStyle="bold"
         android:visibility="visible"
-        app:layout_constraintStart_toStartOf="@+id/textView6"
-        app:layout_constraintTop_toBottomOf="@+id/textView7" />
+        app:layout_constraintStart_toStartOf="@+id/text_product_info"
+        app:layout_constraintTop_toBottomOf="@+id/text_product_condition" />
 
     <EditText
-        android:id="@+id/editText3"
+        android:id="@+id/edit_starting_price"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
         android:layout_marginStart="8dp"
@@ -138,24 +138,24 @@
         android:hint="@string/starting_price"
         android:inputType="number"
         android:visibility="visible"
-        app:layout_constraintEnd_toEndOf="@+id/spinner"
-        app:layout_constraintStart_toStartOf="@+id/textView12"
-        app:layout_constraintTop_toBottomOf="@+id/textView12" />
+        app:layout_constraintEnd_toEndOf="@+id/spinner_product_condition"
+        app:layout_constraintStart_toStartOf="@+id/text_auction_settings"
+        app:layout_constraintTop_toBottomOf="@+id/text_auction_settings" />
 
     <EditText
-        android:id="@+id/editText4"
+        android:id="@+id/edit_reserve_price"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
         android:layout_marginTop="16dp"
         android:ems="10"
         android:hint="@string/reserve_price"
         android:inputType="number"
-        app:layout_constraintEnd_toEndOf="@+id/editText3"
-        app:layout_constraintStart_toStartOf="@+id/editText3"
-        app:layout_constraintTop_toBottomOf="@+id/editText3" />
+        app:layout_constraintEnd_toEndOf="@+id/edit_starting_price"
+        app:layout_constraintStart_toStartOf="@+id/edit_starting_price"
+        app:layout_constraintTop_toBottomOf="@+id/edit_starting_price" />
 
     <TextView
-        android:id="@+id/textView9"
+        android:id="@+id/text_auction_type"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginStart="4dp"
@@ -163,45 +163,45 @@
         android:text="@string/auction_type"
         android:textColor="@color/black"
         android:textSize="18sp"
-        app:layout_constraintStart_toStartOf="@+id/editText4"
-        app:layout_constraintTop_toBottomOf="@+id/editText4" />
+        app:layout_constraintStart_toStartOf="@+id/edit_reserve_price"
+        app:layout_constraintTop_toBottomOf="@+id/edit_reserve_price" />
 
     <Spinner
-        android:id="@+id/spinner2"
+        android:id="@+id/spinner_auction_type"
         android:layout_width="0dp"
         android:layout_height="25dp"
         android:layout_marginStart="16dp"
         android:entries="@array/auction_type_list"
         android:prompt="@string/auction_type"
         android:spinnerMode="dropdown"
-        app:layout_constraintBottom_toBottomOf="@+id/textView9"
-        app:layout_constraintEnd_toEndOf="@+id/spinner"
-        app:layout_constraintStart_toEndOf="@+id/textView9"
-        app:layout_constraintTop_toTopOf="@+id/textView9" />
+        app:layout_constraintBottom_toBottomOf="@+id/text_auction_type"
+        app:layout_constraintEnd_toEndOf="@+id/spinner_product_condition"
+        app:layout_constraintStart_toEndOf="@+id/text_auction_type"
+        app:layout_constraintTop_toTopOf="@+id/text_auction_type" />
 
     <TextView
-        android:id="@+id/textView10"
+        android:id="@+id/text_increase"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginTop="28dp"
         android:text="@string/increase"
         android:textColor="@color/black"
         android:textSize="18sp"
-        app:layout_constraintStart_toStartOf="@+id/textView9"
-        app:layout_constraintTop_toBottomOf="@+id/textView9" />
+        app:layout_constraintStart_toStartOf="@+id/text_auction_type"
+        app:layout_constraintTop_toBottomOf="@+id/text_auction_type" />
 
     <Spinner
-        android:id="@+id/spinner3"
+        android:id="@+id/spinner_increase"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
         android:layout_marginStart="16dp"
         android:entries="@array/increase_list"
         android:prompt="@string/increase"
         android:spinnerMode="dropdown"
-        app:layout_constraintBottom_toBottomOf="@+id/textView10"
-        app:layout_constraintEnd_toEndOf="@+id/spinner2"
-        app:layout_constraintStart_toEndOf="@+id/textView10"
-        app:layout_constraintTop_toTopOf="@+id/textView10" />
+        app:layout_constraintBottom_toBottomOf="@+id/text_increase"
+        app:layout_constraintEnd_toEndOf="@+id/spinner_auction_type"
+        app:layout_constraintStart_toEndOf="@+id/text_increase"
+        app:layout_constraintTop_toTopOf="@+id/text_increase" />
 
     <android.support.constraint.ConstraintLayout
         android:id="@+id/layout_time_picker"
@@ -210,10 +210,10 @@
         android:layout_marginTop="16dp"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/textView10">
+        app:layout_constraintTop_toBottomOf="@+id/text_increase">
 
         <TextView
-            android:id="@+id/textView13"
+            android:id="@+id/text_expire_time_title"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginStart="28dp"
@@ -231,22 +231,23 @@
             android:layout_width="20dp"
             android:layout_height="20dp"
             android:layout_marginEnd="38dp"
-            app:layout_constraintBottom_toBottomOf="@+id/textView13"
+            app:layout_constraintBottom_toBottomOf="@+id/text_expire_time_title"
             app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintTop_toTopOf="@+id/textView13"
+            app:layout_constraintTop_toTopOf="@+id/text_expire_time_title"
             app:srcCompat="@drawable/ic_down_arrow" />
 
         <TextView
             android:id="@+id/text_expire_time"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_marginEnd="16dp"
+            android:layout_marginEnd="24dp"
             android:text="4月6日15時32分"
             android:textColor="@color/color_red"
             android:textSize="15sp"
-            app:layout_constraintBottom_toBottomOf="@+id/textView13"
+            android:visibility="invisible"
+            app:layout_constraintBottom_toBottomOf="@+id/text_expire_time_title"
             app:layout_constraintEnd_toStartOf="@+id/imageView"
-            app:layout_constraintTop_toTopOf="@+id/textView13" />
+            app:layout_constraintTop_toTopOf="@+id/text_expire_time_title" />
 
 
     </android.support.constraint.ConstraintLayout>

@@ -2,15 +2,25 @@ package com.johnson.bid;
 
 import android.content.Intent;
 import android.os.Bundle;
+import android.support.annotation.NonNull;
 import android.support.design.widget.BottomNavigationView;
 import android.support.design.widget.FloatingActionButton;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
+import android.util.Log;
 import android.view.View;
 import android.widget.TextView;
 
+import com.google.android.gms.tasks.OnFailureListener;
+import com.google.android.gms.tasks.OnSuccessListener;
+import com.google.firebase.firestore.DocumentReference;
+import com.google.firebase.firestore.FirebaseFirestore;
 import com.johnson.bid.centre.auction.AuctionFragment;
+import com.johnson.bid.util.Firebase;
 import com.johnson.bid.util.UserManager;
+
+import java.util.HashMap;
+import java.util.Map;
 
 import static com.google.common.base.Preconditions.checkNotNull;
 
@@ -110,6 +120,16 @@ public class MainActivity extends AppCompatActivity implements MainContract.View
 
     private void init() {
         mMainMvpController = MainMvpController.create(this);
+
+        Map<String, Object> user = new HashMap<>();
+        user.put("first", "GGGGG");
+        user.put("last", "AAAAA");
+        user.put("born", 1925);
+
+        Firebase.getFirestore().collection("usersSSS")
+                .add(user)
+                .addOnSuccessListener(documentReference -> Log.d("Johnsi", "DocumentSnapshot added with ID: " + documentReference.getId()))
+                .addOnFailureListener(e -> Log.w("Johnsi", "Error adding document", e));
 
         setToolbar();
         setBottomNavigation();

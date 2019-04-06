@@ -11,6 +11,22 @@ public interface PostContract {
 
     interface Presenter extends BasePresenter {
 
+        void setProductTitle(String productTitle);
+
+        void setProductIntro(String productIntro);
+
+        void setStartingPrice(int startingPrice);
+
+        void setReservePrice(int reservePrice);
+
+        void setProductCondition(String condition);
+
+        void setAuctionType(String auctionType);
+
+        void setIncrease(int increase);
+
+        void setStartingTime(long startingTime);
+
     }
 
 }

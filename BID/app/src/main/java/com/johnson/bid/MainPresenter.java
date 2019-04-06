@@ -150,4 +150,43 @@ public class MainPresenter implements MainContract.Presenter, CenterContract.Pre
         mSealedAuctionPresenter = checkNotNull(sealedAuctionPresenter);
     }
 
+    @Override
+    public void setProductTitle(String productTitle) {
+        mPostPresenter.setProductTitle(productTitle);
+    }
+
+    @Override
+    public void setProductIntro(String productIntro) {
+        mPostPresenter.setProductIntro(productIntro);
+    }
+
+    @Override
+    public void setStartingPrice(int startingPrice) {
+        mPostPresenter.setStartingPrice(startingPrice);
+    }
+
+    @Override
+    public void setReservePrice(int reservePrice) {
+        mPostPresenter.setReservePrice(reservePrice);
+    }
+
+    @Override
+    public void setProductCondition(String condition) {
+        mPostPresenter.setProductCondition(condition);
+    }
+
+    @Override
+    public void setAuctionType(String auctionType) {
+        mPostPresenter.setAuctionType(auctionType);
+    }
+
+    @Override
+    public void setIncrease(int increase) {
+        mPostPresenter.setIncrease(increase);
+    }
+
+    @Override
+    public void setStartingTime(long startingTime) {
+        mPostPresenter.setStartingTime(startingTime);
+    }
 }

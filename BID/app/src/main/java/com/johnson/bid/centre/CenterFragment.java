@@ -12,6 +12,8 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 
+import com.johnson.bid.Bid;
+import com.johnson.bid.MainActivity;
 import com.johnson.bid.R;
 
 import static com.google.common.base.Preconditions.checkNotNull;
@@ -65,6 +67,11 @@ public class CenterFragment extends Fragment implements CenterContract.View {
                 showFABMenu();
             }
         });
+
+        mPostFloatingActionButton.setOnClickListener( v ->
+            mPresenter.openPost()
+        );
+
 
         return root;
     }

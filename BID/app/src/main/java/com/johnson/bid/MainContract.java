@@ -16,6 +16,8 @@ public interface MainContract {
 
         void openSettingsUi();
 
+        void openPostUi();
+
         AuctionFragment findEnglishAuctionView();
 
         AuctionFragment findSealedAuctionView();
@@ -48,5 +50,9 @@ public interface MainContract {
         void hideToolbarAndBottomNavigation();
 
         void showToolbarAndBottomNavigation();
+
+        void hideBottomNavigation();
+
+        void showBottomNavigation();
     }
 }

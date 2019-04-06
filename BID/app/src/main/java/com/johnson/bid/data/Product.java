@@ -12,7 +12,8 @@ public class Product {
     private String mCondition;
     private long mStartTime;
     private long mExpired;
-    private int mPrice;
+    private int mStartPrice;
+    private int mCurrentPrice;
     private int mReservePrice;
     private int mIncrease;
     private long mHighestUserId;
@@ -29,7 +30,8 @@ public class Product {
         mCondition = "";
         mStartTime = -1;
         mExpired = -1;
-        mPrice = -1;
+        mStartPrice = -1;
+        mCurrentPrice = -1;
         mReservePrice = -1;
         mIncrease = -1;
         mHighestUserId = -1;
@@ -101,12 +103,12 @@ public class Product {
         mExpired = expired;
     }
 
-    public int getPrice() {
-        return mPrice;
+    public int getCurrentPrice() {
+        return mCurrentPrice;
     }
 
-    public void setPrice(int price) {
-        mPrice = price;
+    public void setCurrentPrice(int currentPrice) {
+        mCurrentPrice = currentPrice;
     }
 
     public int getReservePrice() {
@@ -147,5 +149,13 @@ public class Product {
 
     public void setChats(ArrayList<ChatContent> chats) {
         mChats = chats;
+    }
+
+    public int getStartPrice() {
+        return mStartPrice;
+    }
+
+    public void setStartPrice(int startPrice) {
+        mStartPrice = startPrice;
     }
 }

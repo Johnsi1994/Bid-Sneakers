@@ -1,0 +1,9 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+
+    <string-array name="auction_type_list">
+        <item>@string/auction_type_english</item>
+        <item>@string/auction_type_sealed</item>
+    </string-array>
+
+</resources>

@@ -29,4 +29,9 @@ public class CenterPresenter implements CenterContract.Presenter {
         return null;
     }
 
+    @Override
+    public void openPost() {
+
+    }
+
 }

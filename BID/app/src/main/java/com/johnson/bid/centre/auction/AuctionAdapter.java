@@ -11,8 +11,6 @@ import android.widget.TextView;
 import com.johnson.bid.MainMvpController;
 import com.johnson.bid.R;
 
-import java.util.ArrayList;
-
 import static com.johnson.bid.MainMvpController.ENGLISH;
 
 public class AuctionAdapter extends RecyclerView.Adapter {
@@ -37,7 +35,7 @@ public class AuctionAdapter extends RecyclerView.Adapter {
                         .inflate(R.layout.item_english_auction, viewGroup, false));
             } else {
                 return new SealedAuctionViewHolder(LayoutInflater.from(viewGroup.getContext())
-                        .inflate(R.layout.item_sealed_auvtion, viewGroup, false));
+                        .inflate(R.layout.item_sealed_auction, viewGroup, false));
             }
         } else {
             return new LoadingViewHolder(LayoutInflater.from(viewGroup.getContext())

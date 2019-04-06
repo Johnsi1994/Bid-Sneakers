@@ -3,7 +3,27 @@
     <string name="NTS">NT$</string>
     <string name="bit_times">出價次數 :</string>
 
+    <!--Facebook-->
     <string name="facebook_app_id">395083894645098</string>
     <string name="fb_login_protocol_scheme">fb395083894645098</string>
+
+    <string name="product_title">商品名稱</string>
+    <string name="product_intro">商品介紹</string>
+    <string name="product_condition">商品狀況</string>
+    <string name="product_condition_new">全新</string>
+    <string name="product_condition_used">二手</string>
+    <string name="auction_type">拍賣模式</string>
+    <string name="auction_type_english">一般拍賣</string>
+    <string name="auction_type_sealed">封閉拍賣</string>
+    <string name="reserve_price">競標底價 (非必填)</string>
+    <string name="increase">出價增額</string>
+    <string name="increase_one">NT$ 1</string>
+    <string name="increase_ten">NT$ 110</string>
+    <string name="increase_hundred">NT$ 1100</string>
+    <string name="increase_thousand">NT$ 11000</string>
+    <string name="product_information">商品資訊</string>
+    <string name="auction_settings">拍賣設定</string>
+    <string name="starting_price">起標價格</string>
+    <string name="finish_time">結標時間</string>
 
 </resources>

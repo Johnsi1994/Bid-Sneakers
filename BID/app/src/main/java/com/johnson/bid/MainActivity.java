@@ -57,6 +57,11 @@ public class MainActivity extends AppCompatActivity implements MainContract.View
     }
 
     @Override
+    public void openPostUi() {
+        mMainMvpController.createPostView();
+    }
+
+    @Override
     public AuctionFragment findEnglishAuctionView() {
         return mMainMvpController.findOrCreateEnglishAuctionView();
     }

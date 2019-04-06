@@ -16,6 +16,8 @@ import com.johnson.bid.centre.CenterFragment;
 import com.johnson.bid.centre.CenterPresenter;
 import com.johnson.bid.login.LoginFragment;
 import com.johnson.bid.login.LoginPresenter;
+import com.johnson.bid.post.PostFragment;
+import com.johnson.bid.post.PostPresenter;
 import com.johnson.bid.settings.SettingsFragment;
 import com.johnson.bid.settings.SettingsPresenter;
 import com.johnson.bid.trade.TradeFragment;
@@ -35,6 +37,7 @@ public class MainMvpController {
     private TradePresenter mTradePresenter;
     private ChatPresenter mChatPresenter;
     private SettingsPresenter mSettingsPresenter;
+    private PostPresenter mPostPresenter;
 
 
     private AuctionPresenter mEnglishAuctionPresenter;
@@ -42,7 +45,7 @@ public class MainMvpController {
 
     @Retention(RetentionPolicy.SOURCE)
     @StringDef({
-            LOGIN, CENTER, TRADE, CHAT, SETTINGS
+            LOGIN, CENTER, TRADE, CHAT, SETTINGS, POST
     })
 
     public @interface FragmentType {
@@ -53,6 +56,7 @@ public class MainMvpController {
     static final String TRADE = "TRADE";
     static final String CHAT = "CHAT";
     static final String SETTINGS = "SETTINGS";
+    static final String POST = "POST";
 
     @Retention(RetentionPolicy.SOURCE)
     @StringDef({
@@ -135,6 +139,15 @@ public class MainMvpController {
         }
     }
 
+    void createPostView() {
+
+        PostFragment postFragment = createPostFragment();
+
+        mPostPresenter = new PostPresenter(postFragment);
+        mMainPresenter.setPostPresenter(mPostPresenter);
+        postFragment.setPresenter(mMainPresenter);
+    }
+
     AuctionFragment findOrCreateEnglishAuctionView() {
 
         AuctionFragment fragment = findOrCreateAuctionFragment(ENGLISH);
@@ -168,6 +181,17 @@ public class MainMvpController {
                 getFragmentManager(), loginFragment, LOGIN);
 
         return loginFragment;
+    }
+
+    @NonNull
+    private PostFragment createPostFragment() {
+
+        PostFragment postFragment = PostFragment.newInstance();
+
+        ActivityUtils.addFragmentByTag(
+                getFragmentManager(), postFragment, POST);
+
+        return postFragment;
     }
 
     @NonNull

@@ -9,6 +9,8 @@ import com.johnson.bid.centre.CenterPresenter;
 import com.johnson.bid.centre.auction.AuctionFragment;
 import com.johnson.bid.login.LoginContract;
 import com.johnson.bid.login.LoginPresenter;
+import com.johnson.bid.post.PostContract;
+import com.johnson.bid.post.PostPresenter;
 import com.johnson.bid.settings.SettingsContract;
 import com.johnson.bid.settings.SettingsPresenter;
 import com.johnson.bid.trade.TradeContract;
@@ -18,7 +20,8 @@ import static com.google.common.base.Preconditions.checkNotNull;
 
 
 public class MainPresenter implements MainContract.Presenter, CenterContract.Presenter, TradeContract.Presenter,
-        ChatContract.Presenter, SettingsContract.Presenter , AuctionContract.Presenter, LoginContract.Presenter {
+        ChatContract.Presenter, SettingsContract.Presenter , AuctionContract.Presenter, LoginContract.Presenter,
+        PostContract.Presenter {
 
     private MainContract.View mMainView;
 
@@ -27,6 +30,7 @@ public class MainPresenter implements MainContract.Presenter, CenterContract.Pre
     private TradePresenter mTradePresenter;
     private ChatPresenter mChatPresenter;
     private SettingsPresenter mSettingsPresenter;
+    private PostPresenter mPostPresenter;
 
     private AuctionPresenter mEmglishAuctionPresenter;
     private AuctionPresenter mSealedAuctionPresenter;
@@ -79,6 +83,16 @@ public class MainPresenter implements MainContract.Presenter, CenterContract.Pre
     }
 
     @Override
+    public void hideBottomNavigation() {
+        mMainView.hideBottomNavigationUi();
+    }
+
+    @Override
+    public void showBottomNavigation() {
+        mMainView.showBottomNavigationUi();
+    }
+
+    @Override
     public void start() {
     }
 
@@ -93,6 +107,12 @@ public class MainPresenter implements MainContract.Presenter, CenterContract.Pre
     }
 
     @Override
+    public void openPost() {
+        mMainView.openPostUi();
+        hideBottomNavigation();
+    }
+
+    @Override
     public void onLoginSuccess() {
         mMainView.openCenterUi();
         showToolbarAndBottomNavigation();
@@ -100,6 +120,10 @@ public class MainPresenter implements MainContract.Presenter, CenterContract.Pre
 
     void setLoginPresenter(LoginPresenter loginPresenter) {
         mLoginPresenter = checkNotNull(loginPresenter);
+    }
+
+    void setPostPresenter(PostPresenter postPresenter) {
+        mPostPresenter = checkNotNull(postPresenter);
     }
 
     void setCenterPresenter(CenterPresenter centerPresenter) {

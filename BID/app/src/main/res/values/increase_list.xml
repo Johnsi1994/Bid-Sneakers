@@ -1,0 +1,11 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+
+    <string-array name="increase_list">
+        <item>@string/increase_one</item>
+        <item>@string/increase_ten</item>
+        <item>@string/increase_hundred</item>
+        <item>@string/increase_thousand</item>
+    </string-array>
+
+</resources>

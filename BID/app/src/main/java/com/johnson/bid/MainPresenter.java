@@ -149,4 +149,5 @@ public class MainPresenter implements MainContract.Presenter, CenterContract.Pre
     void setSealedAuctionPresenter(AuctionPresenter sealedAuctionPresenter) {
         mSealedAuctionPresenter = checkNotNull(sealedAuctionPresenter);
     }
+
 }

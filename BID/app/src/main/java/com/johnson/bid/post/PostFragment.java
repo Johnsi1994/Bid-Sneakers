@@ -10,6 +10,7 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 
+import com.johnson.bid.MainActivity;
 import com.johnson.bid.R;
 
 import static com.google.common.base.Preconditions.checkNotNull;
@@ -29,7 +30,7 @@ public class PostFragment extends Fragment implements PostContract.View {
     @Override
     public void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        mPostAdapter = new PostAdapter();
+        mPostAdapter = new PostAdapter(mPresenter, (MainActivity) getActivity());
     }
 
     @Nullable

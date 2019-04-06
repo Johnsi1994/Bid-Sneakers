@@ -204,6 +204,7 @@
         app:layout_constraintTop_toTopOf="@+id/textView10" />
 
     <android.support.constraint.ConstraintLayout
+        android:id="@+id/layout_time_picker"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
         android:layout_marginTop="16dp"
@@ -234,6 +235,18 @@
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintTop_toTopOf="@+id/textView13"
             app:srcCompat="@drawable/ic_down_arrow" />
+
+        <TextView
+            android:id="@+id/text_expire_time"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginEnd="16dp"
+            android:text="4月6日15時32分"
+            android:textColor="@color/color_red"
+            android:textSize="15sp"
+            app:layout_constraintBottom_toBottomOf="@+id/textView13"
+            app:layout_constraintEnd_toStartOf="@+id/imageView"
+            app:layout_constraintTop_toTopOf="@+id/textView13" />
 
 
     </android.support.constraint.ConstraintLayout>

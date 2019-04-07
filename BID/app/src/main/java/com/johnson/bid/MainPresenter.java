@@ -1,5 +1,7 @@
 package com.johnson.bid;
 
+import android.util.Log;
+
 import com.johnson.bid.centre.auction.AuctionContract;
 import com.johnson.bid.centre.auction.AuctionPresenter;
 import com.johnson.bid.chat.ChatContract;
@@ -143,6 +145,16 @@ public class MainPresenter implements MainContract.Presenter, CenterContract.Pre
         mMainView.openPostUi();
         updateToolbar(title);
         hideBottomNavigation();
+    }
+
+    @Override
+    public void openGallery() {
+        mMainView.openGallery();
+    }
+
+    @Override
+    public void openCamera() {
+        mMainView.openCamera();
     }
 
     @Override

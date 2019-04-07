@@ -16,6 +16,8 @@ public interface CenterContract {
 
         AuctionFragment findSealedAuction();
 
-        void openPost(String title);
+        void openGallery();
+
+        void openCamera();
     }
 }

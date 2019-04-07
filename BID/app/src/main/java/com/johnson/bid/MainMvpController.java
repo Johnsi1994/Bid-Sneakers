@@ -100,7 +100,7 @@ public class MainMvpController {
         CenterFragment centerFragment = findOrCreateCenterFragment();
 
         if (mCenterPresenter == null) {
-            mCenterPresenter = new CenterPresenter(centerFragment);
+            mCenterPresenter = new CenterPresenter(centerFragment, (MainActivity) mActivity);
             mMainPresenter.setCenterPresenter(mCenterPresenter);
             centerFragment.setPresenter(mMainPresenter);
         }

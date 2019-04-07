@@ -18,6 +18,10 @@ public interface MainContract {
 
         void openPostUi();
 
+        void openGallery();
+
+        void openCamera();
+
         AuctionFragment findEnglishAuctionView();
 
         AuctionFragment findSealedAuctionView();
@@ -36,6 +40,8 @@ public interface MainContract {
     interface Presenter extends BasePresenter {
 
         void openLogin();
+
+        void openPost(String toolbarTitle);
 
         void openCenter();
 

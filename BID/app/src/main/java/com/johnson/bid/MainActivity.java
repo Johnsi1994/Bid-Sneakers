@@ -1,27 +1,42 @@
 package com.johnson.bid;
 
+import android.Manifest;
+import android.content.ContentResolver;
+import android.content.ContentUris;
+import android.content.ContentValues;
 import android.content.Intent;
+import android.content.pm.PackageManager;
+import android.database.Cursor;
+import android.graphics.Bitmap;
+import android.graphics.BitmapFactory;
+import android.graphics.Matrix;
+import android.net.Uri;
 import android.os.Bundle;
+import android.provider.DocumentsContract;
+import android.provider.MediaStore;
 import android.support.annotation.NonNull;
 import android.support.design.widget.BottomNavigationView;
-import android.support.design.widget.FloatingActionButton;
+import android.support.v4.app.ActivityCompat;
+import android.support.v4.content.ContextCompat;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
+import android.util.DisplayMetrics;
 import android.util.Log;
-import android.view.MenuItem;
 import android.view.View;
+import android.widget.ImageView;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.google.android.gms.tasks.OnFailureListener;
 import com.google.android.gms.tasks.OnSuccessListener;
-import com.google.firebase.firestore.DocumentReference;
-import com.google.firebase.firestore.FirebaseFirestore;
+import com.google.firebase.storage.StorageReference;
+import com.google.firebase.storage.UploadTask;
 import com.johnson.bid.centre.auction.AuctionFragment;
 import com.johnson.bid.util.Firebase;
 import com.johnson.bid.util.UserManager;
 
-import java.util.HashMap;
-import java.util.Map;
+import java.io.File;
+import java.io.FileNotFoundException;
 
 import static com.google.common.base.Preconditions.checkNotNull;
 
@@ -30,9 +45,14 @@ public class MainActivity extends AppCompatActivity implements MainContract.View
     private BottomNavigationView mBottomNavigation;
     private Toolbar mToolbar;
     private TextView mToolbarTitle;
+    private DisplayMetrics mPhone;
+    private final static int CAMERA = 666 ;
+    public final static int CHOOSE_PHOTO = 222;
 
     private MainContract.Presenter mPresenter;
     private MainMvpController mMainMvpController;
+
+    private ImageView mTestView;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -73,6 +93,80 @@ public class MainActivity extends AppCompatActivity implements MainContract.View
     }
 
     @Override
+    public void openGallery() {
+        if (ContextCompat.checkSelfPermission(this, Manifest.permission.WRITE_EXTERNAL_STORAGE) != PackageManager.PERMISSION_GRANTED) {
+            ActivityCompat.requestPermissions(this, new String[]{Manifest.permission.WRITE_EXTERNAL_STORAGE}, 1);
+        } else {
+            openAlbum();
+        }
+    }
+
+    @Override
+    public void openCamera() {
+
+        if (ContextCompat.checkSelfPermission(this, Manifest.permission.CAMERA) != PackageManager.PERMISSION_GRANTED) {
+            ActivityCompat.requestPermissions(this, new String[]{Manifest.permission.CAMERA}, 2);
+        } else {
+            mPhone = new DisplayMetrics();
+            getWindowManager().getDefaultDisplay().getMetrics(mPhone);
+
+            ContentValues value = new ContentValues();
+            value.put(MediaStore.Images.Media.MIME_TYPE, "image/jpeg");
+            Uri uri= getContentResolver().insert(MediaStore.Images.Media.EXTERNAL_CONTENT_URI,
+                    value);
+            Intent intent = new Intent(MediaStore.ACTION_IMAGE_CAPTURE);
+            intent.putExtra(MediaStore.EXTRA_OUTPUT, uri.getPath());
+            startActivityForResult(intent, CAMERA);
+        }
+    }
+
+    @Override
+    public void onRequestPermissionsResult(int requestCode, @NonNull String[] permissions, @NonNull int[] grantResults) {
+        super.onRequestPermissionsResult(requestCode, permissions, grantResults);
+
+        switch (requestCode) {
+            case 1:
+                if (grantResults.length > 0 && grantResults[0] == PackageManager.PERMISSION_GRANTED) {
+                    openAlbum();
+                } else {
+                    Toast.makeText(this, "授權失敗，無法操作", Toast.LENGTH_SHORT).show();
+                }
+                break;
+            default:
+                break;
+        }
+    }
+
+    @Override
+    protected void onActivityResult(int requestCode, int resultCode, Intent data) {
+        super.onActivityResult(requestCode, resultCode, data);
+
+        if (resultCode == RESULT_OK && requestCode == CHOOSE_PHOTO) {
+            handleImage(data);
+            mPresenter.openPost(getString(R.string.toolbat_title_post));
+        } else if (resultCode == RESULT_OK && requestCode == CAMERA) {
+            Uri uri = data.getData();
+            ContentResolver cr = this.getContentResolver();
+
+            try
+            {
+                Bitmap bitmap = BitmapFactory.decodeStream(cr.openInputStream(uri));
+
+                if (bitmap.getWidth() > bitmap.getHeight()) {
+                    ScalePic(bitmap, mPhone.heightPixels);
+                }
+                else ScalePic(bitmap, mPhone.widthPixels);
+            }
+            catch (FileNotFoundException e)
+            {
+                Log.d("Johnsi", e.getMessage());
+            }
+        } else {
+            UserManager.getInstance().getFbCallbackManager().onActivityResult(requestCode, resultCode, data);
+        }
+    }
+
+    @Override
     public AuctionFragment findEnglishAuctionView() {
         return mMainMvpController.findOrCreateEnglishAuctionView();
     }
@@ -87,7 +181,7 @@ public class MainActivity extends AppCompatActivity implements MainContract.View
 
         if (title.equals("刊登")) {
             mToolbar.setNavigationIcon(R.drawable.ic_left_arrow);
-            mToolbar.setNavigationOnClickListener( v -> onBackPressed());
+            mToolbar.setNavigationOnClickListener(v -> onBackPressed());
         } else {
             mToolbar.setNavigationIcon(null);
         }
@@ -120,15 +214,10 @@ public class MainActivity extends AppCompatActivity implements MainContract.View
         mPresenter = checkNotNull(presenter);
     }
 
-    @Override
-    protected void onActivityResult(int requestCode, int resultCode, Intent data) {
-        super.onActivityResult(requestCode, resultCode, data);
-
-        UserManager.getInstance().getFbCallbackManager().onActivityResult(requestCode, resultCode, data);
-    }
-
     private void init() {
         mMainMvpController = MainMvpController.create(this);
+
+        mTestView = findViewById(R.id.image_test);
 
         setToolbar();
         setBottomNavigation();
@@ -140,7 +229,6 @@ public class MainActivity extends AppCompatActivity implements MainContract.View
 //        } else {
 //            mPresenter.openLogin();
 //        }
-
 
 
     }
@@ -198,4 +286,89 @@ public class MainActivity extends AppCompatActivity implements MainContract.View
         return false;
     };
 
+    public void openAlbum() {
+        Intent intent = new Intent(Intent.ACTION_PICK, MediaStore.Images.Media.INTERNAL_CONTENT_URI);
+        intent.setType("image/*");
+        startActivityForResult(intent, CHOOSE_PHOTO);
+    }
+
+    private void handleImage(Intent data) {
+        String imagePath = null;
+        Uri uri = data.getData();
+
+        if (DocumentsContract.isDocumentUri(this, uri)) {
+            String docId = DocumentsContract.getDocumentId(uri);
+            if ("com.android.providers.media.documents".equals(uri.getAuthority())) {
+                String id = docId.split(":")[1];
+                String selection = MediaStore.Images.Media._ID + "=" + id;
+                imagePath = getImagePath(MediaStore.Images.Media.EXTERNAL_CONTENT_URI, selection);
+            } else if ("com.android,providers.downloads.documents".equals(uri.getAuthority())) {
+                Uri contentUri = ContentUris.withAppendedId(Uri.parse("content://downloads/public_downloads"), Long.valueOf(docId));
+                imagePath = getImagePath(contentUri, null);
+            }
+
+        } else if ("content".equalsIgnoreCase(uri.getScheme())) {
+            imagePath = getImagePath(uri, null);
+        }
+
+//        displayImage(imagePath);
+
+        Uri file = Uri.fromFile(new File(imagePath));
+        StorageReference riversRef = Firebase.getStorage().child(file.getLastPathSegment());
+
+        riversRef.putFile(file)
+                .addOnSuccessListener(taskSnapshot -> Log.d("Johnsi", "Photo Upload Success"))
+                .addOnFailureListener(exception -> Log.d("Johnsi", exception.getMessage()));
+    }
+
+    public String getImagePath(Uri uri, String selection) {
+        String path = null;
+        Cursor cursor = getContentResolver().query(uri, null, selection, null, null);
+        if (cursor != null) {
+            if (cursor.moveToFirst()) {
+                path = cursor.getString(cursor.getColumnIndex(MediaStore.Images.Media.DATA));
+            }
+        }
+        cursor.close();
+        return path;
+    }
+
+    private void displayImage(String imagePath) {
+        if (imagePath != null) {
+            Bitmap bitImage = BitmapFactory.decodeFile(imagePath);//格式化圖片
+
+//            mImage.setImageBitmap(bitImage);//為imageView設定圖片
+            Toast.makeText(MainActivity.this, imagePath, Toast.LENGTH_SHORT).show();
+
+        } else {
+            Toast.makeText(MainActivity.this, "獲取圖片失敗", Toast.LENGTH_SHORT).show();
+        }
+    }
+
+    private void ScalePic(Bitmap bitmap,int phone)
+    {
+        //縮放比例預設為1
+        float mScale = 1 ;
+
+        //如果圖片寬度大於手機寬度則進行縮放，否則直接將圖片放入ImageView內
+        if(bitmap.getWidth() > phone ) {
+            //判斷縮放比例
+            mScale = (float)phone/(float)bitmap.getWidth();
+
+            Matrix mMat = new Matrix() ;
+            mMat.setScale(mScale, mScale);
+
+            Bitmap mScaleBitmap = Bitmap.createBitmap(bitmap,
+                    0,
+                    0,
+                    bitmap.getWidth(),
+                    bitmap.getHeight(),
+                    mMat,
+                    false);
+
+            mTestView.setImageBitmap(mScaleBitmap);
+        } else {
+            mTestView.setImageBitmap(bitmap);
+        }
+    }
 }

@@ -61,7 +61,7 @@ public class UserManager {
                     public void onInvalidToken(String errorMessage) {
 
                     }
-                }, context);
+                });
                 Log.d("Johnsi", "FB Login Success");
             }
 
@@ -83,7 +83,7 @@ public class UserManager {
         loginFacebook(context);
     }
 
-    private void getUserInfoFromFacebook(LoginResult loginResult, LoadCallback loadCallback, Context context) {
+    private void getUserInfoFromFacebook(LoginResult loginResult, LoadCallback loadCallback) {
         GraphRequest graphRequest = GraphRequest.newMeRequest(loginResult.getAccessToken(), (object, response) -> {
             try {
                 if (response.getConnection().getResponseCode() == 200) {

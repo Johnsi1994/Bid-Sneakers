@@ -3,6 +3,7 @@ package com.johnson.bid.centre;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
+import android.support.design.widget.BottomSheetDialog;
 import android.support.design.widget.FloatingActionButton;
 import android.support.design.widget.TabLayout;
 import android.support.v4.app.Fragment;
@@ -11,6 +12,7 @@ import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.Button;
 
 import com.johnson.bid.Bid;
 import com.johnson.bid.MainActivity;
@@ -69,7 +71,7 @@ public class CenterFragment extends Fragment implements CenterContract.View {
         });
 
         mPostFloatingActionButton.setOnClickListener( v ->
-            mPresenter.openPost("刊登")
+                openGalleryDialog()
         );
 
 
@@ -103,5 +105,30 @@ public class CenterFragment extends Fragment implements CenterContract.View {
         mPostFloatingActionButton.animate().translationY(0);
         mSearchFloatingActionButton.animate().translationY(0);
         mEyesOnFloatingActionButton.animate().translationY(0);
+    }
+
+    private void openGalleryDialog() {
+
+        Button mCancelBtn;
+        Button mOpenGalleryBtn;
+        Button mOpenCameraBtn;
+
+        LayoutInflater factory = LayoutInflater.from(getActivity());
+        final View view = factory.inflate(R.layout.dialog_goto_gallery, null);
+        final BottomSheetDialog dialog = new BottomSheetDialog(getActivity());
+        dialog.setContentView(view);
+        ((View) view.getParent()).setBackgroundColor(getActivity().getColor(android.R.color.transparent));
+        dialog.show();
+
+        mCancelBtn = view.findViewById(R.id.button_cancel);
+        mOpenGalleryBtn = view.findViewById(R.id.button_goto_gallery);
+        mOpenCameraBtn = view.findViewById(R.id.button_open_camera);
+
+        mCancelBtn.setOnClickListener( v -> dialog.dismiss());
+
+        mOpenGalleryBtn.setOnClickListener( v -> mPresenter.openGallery());
+
+        mOpenCameraBtn.setOnClickListener( v -> mPresenter.openCamera());
+
     }
 }

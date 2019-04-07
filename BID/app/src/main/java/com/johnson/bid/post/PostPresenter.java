@@ -6,7 +6,7 @@ import com.johnson.bid.data.Product;
 
 import static com.google.common.base.Preconditions.checkNotNull;
 
-public class PostPresenter implements PostContract.Presenter{
+public class PostPresenter implements PostContract.Presenter {
 
     private PostContract.View mPostView;
 
@@ -58,7 +58,27 @@ public class PostPresenter implements PostContract.Presenter{
     }
 
     @Override
+    public void setExpireTime(long expireTime) {
+        mProduct.setExpired(expireTime);
+    }
+
+    @Override
+    public void setProductId(long productId) {
+        mProduct.setProductId(productId);
+    }
+
+    @Override
     public void setStartingTime(long startingTime) {
         mProduct.setStartTime(startingTime);
+    }
+
+    @Override
+    public void showBottomNavigation() {
+
+    }
+
+    @Override
+    public void updateToolbar(String title) {
+
     }
 }

@@ -4,23 +4,26 @@ import android.annotation.SuppressLint;
 import android.support.annotation.NonNull;
 import android.support.constraint.ConstraintLayout;
 import android.support.v7.widget.RecyclerView;
-import android.text.Editable;
-import android.text.TextWatcher;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.AdapterView;
+import android.widget.Button;
 import android.widget.EditText;
 import android.widget.Spinner;
 import android.widget.TextView;
 
 import com.johnson.bid.MainActivity;
 import com.johnson.bid.R;
+import com.johnson.bid.util.Firebase;
 import com.jzxiang.pickerview.TimePickerDialog;
 import com.jzxiang.pickerview.listener.OnDateSetListener;
 
 import java.text.SimpleDateFormat;
 import java.util.Date;
+import java.util.HashMap;
+import java.util.Map;
 
 public class PostAdapter extends RecyclerView.Adapter {
 
@@ -61,6 +64,12 @@ public class PostAdapter extends RecyclerView.Adapter {
         private ConstraintLayout mTimePickerLayout;
         private TextView mExpireTimeText;
         private TimePickerDialog mDialogMonthDayHourMinute;
+        private Button mPostBtn;
+        private Map<String, Object> mProduct = new HashMap<>();
+
+        private String mCondition;
+        private String mType;
+        private int mIncreasePrice;
 
         @SuppressLint("SimpleDateFormat")
         private SimpleDateFormat sf = new SimpleDateFormat("MM月 dd日 HH時 mm分");
@@ -79,68 +88,76 @@ public class PostAdapter extends RecyclerView.Adapter {
             mIncrease = itemView.findViewById(R.id.spinner_increase);
             mTimePickerLayout = itemView.findViewById(R.id.layout_time_picker);
             mExpireTimeText = itemView.findViewById(R.id.text_expire_time);
+            mPostBtn = itemView.findViewById(R.id.button_post);
 
+            mProductCondition.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
+                @Override
+                public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
+                    if (position == 0) {
+                        mPresenter.setProductCondition("BrandNew");
+                        setCondition("BrandNew");
+                    } else {
+                        mPresenter.setProductCondition("Used");
+                        setCondition("Used");
+                    }
+                }
 
-//            mPresenter.setProductTitle(mProductTitle.getText().toString());
-//            mPresenter.setProductIntro(mProductIntro.getText().toString());
-//            mProductCondition.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
-//                @Override
-//                public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
-//                    if (position == 0) {
-//                        mPresenter.setProductCondition("BrandNew");
-//                    } else {
-//                        mPresenter.setProductCondition("Used");
-//                    }
-//                }
-//
-//                @Override
-//                public void onNothingSelected(AdapterView<?> parent) {
-//
-//                }
-//            });
-//            mPresenter.setStartingPrice(Integer.parseInt(mStartingPrice.getText().toString()));
-//            mPresenter.setReservePrice(Integer.parseInt(mReservePrice.getText().toString()));
-//            mAuctionType.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
-//                @Override
-//                public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
-//                    if (position == 0) {
-//                        mPresenter.setAuctionType("English");
-//                    } else {
-//                        mPresenter.setAuctionType("Sealed");
-//                    }
-//                }
-//
-//                @Override
-//                public void onNothingSelected(AdapterView<?> parent) {
-//
-//                }
-//            });
-//            mIncrease.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
-//                @Override
-//                public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
-//                    switch (position) {
-//                        case 0 :
-//                            mPresenter.setIncrease(1);
-//                            break;
-//                        case 1 :
-//                            mPresenter.setIncrease(10);
-//                            break;
-//                        case 2 :
-//                            mPresenter.setIncrease(100);
-//                            break;
-//                        case 3 :
-//                            mPresenter.setIncrease(1000);
-//                            break;
-//                    }
-//                }
-//
-//                @Override
-//                public void onNothingSelected(AdapterView<?> parent) {
-//
-//                }
-//            });
-//
-//
+                @Override
+                public void onNothingSelected(AdapterView<?> parent) {
+                    mPresenter.setProductCondition("BrandNew");
+                    setCondition("BrandNew");
+                }
+            });
+
+            mAuctionType.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
+                @Override
+                public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
+                    if (position == 0) {
+                        mPresenter.setAuctionType("English");
+                        setType("English");
+                    } else {
+                        mPresenter.setAuctionType("Sealed");
+                        setType("Sealed");
+                    }
+                }
+
+                @Override
+                public void onNothingSelected(AdapterView<?> parent) {
+                    mPresenter.setAuctionType("English");
+                    setType("English");
+                }
+            });
+
+            mIncrease.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
+                @Override
+                public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
+                    switch (position) {
+                        case 0 :
+                            mPresenter.setIncrease(1);
+                            setIncreasePrice(1);
+                            break;
+                        case 1 :
+                            mPresenter.setIncrease(10);
+                            setIncreasePrice(10);
+                            break;
+                        case 2 :
+                            mPresenter.setIncrease(100);
+                            setIncreasePrice(100);
+                            break;
+                        case 3 :
+                            mPresenter.setIncrease(1000);
+                            setIncreasePrice(1000);
+                            break;
+                    }
+                }
+
+                @Override
+                public void onNothingSelected(AdapterView<?> parent) {
+                    mPresenter.setIncrease(1);
+                    setIncreasePrice(1);
+                }
+            });
+
             mDialogMonthDayHourMinute = new TimePickerDialog.Builder()
                     .setCallBack(this)
                     .setCancelStringId("取消")
@@ -160,6 +177,38 @@ public class PostAdapter extends RecyclerView.Adapter {
 
             mTimePickerLayout.setOnClickListener( v -> mDialogMonthDayHourMinute.show(mMainActivity.getSupportFragmentManager(), "month_day_hour_minute"));
 
+            mPostBtn.setOnClickListener( v -> {
+
+                mPresenter.setProductTitle(mProductTitle.getText().toString());
+                mProduct.put("title", mProductTitle.getText().toString());
+
+                mPresenter.setProductIntro(mProductIntro.getText().toString());
+                mProduct.put("introduction", mProductIntro.getText().toString());
+
+                mProduct.put("condition", getCondition());
+
+                mPresenter.setStartingPrice(Integer.parseInt(mStartingPrice.getText().toString()));
+                mProduct.put("startingPrice", Integer.parseInt(mStartingPrice.getText().toString()));
+
+                mPresenter.setReservePrice(Integer.parseInt(mReservePrice.getText().toString()));
+                mProduct.put("reservePrice", Integer.parseInt(mReservePrice.getText().toString()));
+
+                mProduct.put("auctionType", getType());
+
+                mProduct.put("increase", getIncreasePrice());
+
+                mPresenter.setProductId(System.currentTimeMillis());
+                mProduct.put("productId", System.currentTimeMillis());
+
+                mPresenter.setStartingTime(System.currentTimeMillis());
+                mProduct.put("startingTime", System.currentTimeMillis());
+
+                Firebase.getFirestore().collection("Products")
+                        .add(mProduct)
+                        .addOnSuccessListener(documentReference -> Log.d("Johnsi", "DocumentSnapshot added with ID: " + documentReference.getId()))
+                        .addOnFailureListener(e -> Log.w("Johnsi", "Error adding document", e));
+            });
+
         }
 
         @Override
@@ -167,12 +216,37 @@ public class PostAdapter extends RecyclerView.Adapter {
             String text = getDateToString(millseconds);
             mExpireTimeText.setText(text);
             mExpireTimeText.setVisibility(View.VISIBLE);
-            mPresenter.setStartingTime(millseconds);
+            mPresenter.setExpireTime(millseconds);
+            mProduct.put("expireTime", millseconds);
         }
 
-        public String getDateToString(long time) {
+        private String getDateToString(long time) {
             Date d = new Date(time);
             return sf.format(d);
+        }
+
+        private void setCondition(String condition) {
+            mCondition = condition;
+        }
+
+        private String getCondition() {
+            return mCondition;
+        }
+
+        private void setType(String type) {
+            mType = type;
+        }
+
+        private String getType() {
+            return mType;
+        }
+
+        private void setIncreasePrice(int price) {
+            mIncreasePrice = price;
+        }
+
+        private int getIncreasePrice() {
+            return mIncreasePrice;
         }
     }
 }

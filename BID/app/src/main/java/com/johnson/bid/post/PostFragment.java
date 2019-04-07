@@ -46,6 +46,13 @@ public class PostFragment extends Fragment implements PostContract.View {
     }
 
     @Override
+    public void onDestroy() {
+        super.onDestroy();
+        mPresenter.showBottomNavigation();
+        mPresenter.updateToolbar("拍賣中心");
+    }
+
+    @Override
     public void setPresenter(PostContract.Presenter presenter) {
         mPresenter = checkNotNull(presenter);
     }

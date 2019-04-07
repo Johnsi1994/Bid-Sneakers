@@ -8,6 +8,7 @@ import android.support.design.widget.FloatingActionButton;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
 import android.util.Log;
+import android.view.MenuItem;
 import android.view.View;
 import android.widget.TextView;
 
@@ -83,6 +84,14 @@ public class MainActivity extends AppCompatActivity implements MainContract.View
 
     @Override
     public void setToolbarTitleUi(String title) {
+
+        if (title.equals("刊登")) {
+            mToolbar.setNavigationIcon(R.drawable.ic_left_arrow);
+            mToolbar.setNavigationOnClickListener( v -> onBackPressed());
+        } else {
+            mToolbar.setNavigationIcon(null);
+        }
+
         mToolbarTitle.setText(title);
     }
 
@@ -121,20 +130,8 @@ public class MainActivity extends AppCompatActivity implements MainContract.View
     private void init() {
         mMainMvpController = MainMvpController.create(this);
 
-        Map<String, Object> user = new HashMap<>();
-        user.put("first", "GGGGG");
-        user.put("last", "AAAAA");
-        user.put("born", 1925);
-
-        Firebase.getFirestore().collection("usersSSS")
-                .add(user)
-                .addOnSuccessListener(documentReference -> Log.d("Johnsi", "DocumentSnapshot added with ID: " + documentReference.getId()))
-                .addOnFailureListener(e -> Log.w("Johnsi", "Error adding document", e));
-
         setToolbar();
         setBottomNavigation();
-        mToolbar.setVisibility(View.VISIBLE);
-        mBottomNavigation.setVisibility(View.VISIBLE);
 
         mPresenter.openCenter();
 

@@ -69,7 +69,7 @@ public class CenterFragment extends Fragment implements CenterContract.View {
         });
 
         mPostFloatingActionButton.setOnClickListener( v ->
-            mPresenter.openPost()
+            mPresenter.openPost("刊登")
         );
 
 

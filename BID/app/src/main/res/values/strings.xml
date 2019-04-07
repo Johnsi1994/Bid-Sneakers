@@ -25,5 +25,6 @@
     <string name="auction_settings">拍賣設定</string>
     <string name="starting_price">起標價格</string>
     <string name="finish_time">結標時間</string>
+    <string name="post">提交</string>
 
 </resources>

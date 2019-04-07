@@ -25,7 +25,17 @@ public interface PostContract {
 
         void setIncrease(int increase);
 
+        void setExpireTime(long expireTime);
+
+        void setProductId(long productId);
+
         void setStartingTime(long startingTime);
+
+        void showBottomNavigation();
+
+        void updateToolbar(String title);
+
+
 
     }
 

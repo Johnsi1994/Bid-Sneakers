@@ -40,6 +40,38 @@ public class MainPresenter implements MainContract.Presenter, CenterContract.Pre
         mMainView.setPresenter(this);
     }
 
+    void setLoginPresenter(LoginPresenter loginPresenter) {
+        mLoginPresenter = checkNotNull(loginPresenter);
+    }
+
+    void setPostPresenter(PostPresenter postPresenter) {
+        mPostPresenter = checkNotNull(postPresenter);
+    }
+
+    void setCenterPresenter(CenterPresenter centerPresenter) {
+        mCenterPresenter = checkNotNull(centerPresenter);
+    }
+
+    void setTradePresenter(TradePresenter tradePresenter) {
+        mTradePresenter = checkNotNull(tradePresenter);
+    }
+
+    void setChatPresenter(ChatPresenter chatPresenter) {
+        mChatPresenter = checkNotNull(chatPresenter);
+    }
+
+    void setSettingsPresenter(SettingsPresenter settingsPresenter) {
+        mSettingsPresenter = checkNotNull(settingsPresenter);
+    }
+
+    void setEnglishAuctionPresenter(AuctionPresenter englishAuctionPresenter) {
+        mEmglishAuctionPresenter = checkNotNull(englishAuctionPresenter);
+    }
+
+    void setSealedAuctionPresenter(AuctionPresenter sealedAuctionPresenter) {
+        mSealedAuctionPresenter = checkNotNull(sealedAuctionPresenter);
+    }
+
     @Override
     public void openLogin() {
         mMainView.openLoginUi();
@@ -107,8 +139,9 @@ public class MainPresenter implements MainContract.Presenter, CenterContract.Pre
     }
 
     @Override
-    public void openPost() {
+    public void openPost(String title) {
         mMainView.openPostUi();
+        updateToolbar(title);
         hideBottomNavigation();
     }
 
@@ -116,38 +149,6 @@ public class MainPresenter implements MainContract.Presenter, CenterContract.Pre
     public void onLoginSuccess() {
         mMainView.openCenterUi();
         showToolbarAndBottomNavigation();
-    }
-
-    void setLoginPresenter(LoginPresenter loginPresenter) {
-        mLoginPresenter = checkNotNull(loginPresenter);
-    }
-
-    void setPostPresenter(PostPresenter postPresenter) {
-        mPostPresenter = checkNotNull(postPresenter);
-    }
-
-    void setCenterPresenter(CenterPresenter centerPresenter) {
-        mCenterPresenter = checkNotNull(centerPresenter);
-    }
-
-    void setTradePresenter(TradePresenter tradePresenter) {
-        mTradePresenter = checkNotNull(tradePresenter);
-    }
-
-    void setChatPresenter(ChatPresenter chatPresenter) {
-        mChatPresenter = checkNotNull(chatPresenter);
-    }
-
-    void setSettingsPresenter(SettingsPresenter settingsPresenter) {
-        mSettingsPresenter = checkNotNull(settingsPresenter);
-    }
-
-    void setEnglishAuctionPresenter(AuctionPresenter englishAuctionPresenter) {
-        mEmglishAuctionPresenter = checkNotNull(englishAuctionPresenter);
-    }
-
-    void setSealedAuctionPresenter(AuctionPresenter sealedAuctionPresenter) {
-        mSealedAuctionPresenter = checkNotNull(sealedAuctionPresenter);
     }
 
     @Override
@@ -183,6 +184,16 @@ public class MainPresenter implements MainContract.Presenter, CenterContract.Pre
     @Override
     public void setIncrease(int increase) {
         mPostPresenter.setIncrease(increase);
+    }
+
+    @Override
+    public void setExpireTime(long expireTime) {
+        mPostPresenter.setExpireTime(expireTime);
+    }
+
+    @Override
+    public void setProductId(long productId) {
+        mPostPresenter.setProductId(productId);
     }
 
     @Override

@@ -30,7 +30,7 @@ public class CenterPresenter implements CenterContract.Presenter {
     }
 
     @Override
-    public void openPost() {
+    public void openPost(String title) {
 
     }
 

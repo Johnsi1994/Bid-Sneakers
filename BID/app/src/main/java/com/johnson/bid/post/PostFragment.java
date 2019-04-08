@@ -52,6 +52,8 @@ public class PostFragment extends Fragment implements PostContract.View {
     @Override
     public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
+
+        Log.d("Johnsi", "onViewCreated : PostFragment");
         mPresenter.loadPostPics();
     }
 
@@ -68,7 +70,11 @@ public class PostFragment extends Fragment implements PostContract.View {
     }
 
     @Override
-    public void showPostUi(ArrayList<Bitmap> bitmaps) {
-        mPostAdapter.updateData(bitmaps);
+    public void showPostUi(ArrayList<String> imagePath) {
+        Log.d("Johnsi", "showPostUi : PostFragment");
+        if (mPostAdapter != null) {
+            mPostAdapter.updateData(imagePath);
+        }
+
     }
 }

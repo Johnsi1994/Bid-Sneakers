@@ -1,7 +1,11 @@
 package com.johnson.bid;
 
 import android.graphics.Bitmap;
+import android.support.design.widget.BottomSheetDialog;
 import android.util.Log;
+import android.view.LayoutInflater;
+import android.view.View;
+import android.widget.Button;
 
 import com.johnson.bid.centre.auction.AuctionContract;
 import com.johnson.bid.centre.auction.AuctionPresenter;
@@ -108,8 +112,8 @@ public class MainPresenter implements MainContract.Presenter, CenterContract.Pre
     }
 
     @Override
-    public void setPostPics(ArrayList<Bitmap> bitmaps) {
-        mPostPresenter.setPostPics(bitmaps);
+    public void setPostPics(ArrayList<String> imagePath) {
+        mPostPresenter.setPostPics(imagePath);
     }
 
     @Override
@@ -154,20 +158,15 @@ public class MainPresenter implements MainContract.Presenter, CenterContract.Pre
     }
 
     @Override
-    public void openPost(String title, ArrayList<Bitmap> bitmaps) {
-        mMainView.openPostUi(bitmaps);
+    public void openPost(String title, ArrayList<String> imagePath) {
+        mMainView.openPostUi(imagePath);
         updateToolbar(title);
         hideBottomNavigation();
     }
 
     @Override
-    public void openGallery() {
-        mMainView.openGallery();
-    }
-
-    @Override
-    public void openCamera() {
-        mMainView.openCamera();
+    public void openGalleryDialog(String from) {
+        mMainView.openGalleryDialog(from);
     }
 
     @Override

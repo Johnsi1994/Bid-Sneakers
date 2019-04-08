@@ -24,9 +24,6 @@ public class CenterPresenter implements CenterContract.Presenter {
     private final CenterContract.View mCenterView;
     private MainActivity mMainActivity;
 
-    private Button mCancelBtn;
-    private Button mOpenGalleryBtn;
-
     public CenterPresenter(@NonNull CenterContract.View centerView, MainActivity mainActivity) {
         mCenterView = checkNotNull(centerView, "centerView cannot be null!");
         mMainActivity = mainActivity;
@@ -48,12 +45,7 @@ public class CenterPresenter implements CenterContract.Presenter {
     }
 
     @Override
-    public void openGallery() {
-
-    }
-
-    @Override
-    public void openCamera() {
+    public void openGalleryDialog(String from) {
 
     }
 

@@ -141,14 +141,20 @@ public class MainMvpController {
         }
     }
 
-    void createPostView(ArrayList<Bitmap> bitmaps) {
+    void createPostView(ArrayList<String> imagePath) {
 
         PostFragment postFragment = createPostFragment();
 
         mPostPresenter = new PostPresenter(postFragment);
-        mPostPresenter.setPostPics(bitmaps);
         mMainPresenter.setPostPresenter(mPostPresenter);
         postFragment.setPresenter(mMainPresenter);
+        mPostPresenter.setPostPics(imagePath);
+
+        mPostPresenter.setPostPics(imagePath);
+    }
+
+    void setPostPics(ArrayList<String> imagePath) {
+        mPostPresenter.setPostPics(imagePath);
     }
 
     AuctionFragment findOrCreateEnglishAuctionView() {
@@ -192,6 +198,22 @@ public class MainMvpController {
         PostFragment postFragment = PostFragment.newInstance();
 
         ActivityUtils.addFragmentByTag(
+                getFragmentManager(), postFragment, POST);
+
+        return postFragment;
+    }
+
+    @NonNull
+    private PostFragment findOrCreatePostFragment() {
+
+        PostFragment postFragment = (PostFragment) getFragmentManager().findFragmentByTag(POST);
+
+        if (postFragment == null) {
+            // Create the fragment
+            postFragment = PostFragment.newInstance();
+        }
+
+        ActivityUtils.showOrAddFragmentByTag(
                 getFragmentManager(), postFragment, POST);
 
         return postFragment;

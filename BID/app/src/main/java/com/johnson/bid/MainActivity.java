@@ -16,13 +16,16 @@ import android.provider.DocumentsContract;
 import android.provider.MediaStore;
 import android.support.annotation.NonNull;
 import android.support.design.widget.BottomNavigationView;
+import android.support.design.widget.BottomSheetDialog;
 import android.support.v4.app.ActivityCompat;
 import android.support.v4.content.ContextCompat;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
 import android.util.DisplayMetrics;
 import android.util.Log;
+import android.view.LayoutInflater;
 import android.view.View;
+import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.Toast;
@@ -48,12 +51,14 @@ public class MainActivity extends AppCompatActivity implements MainContract.View
     private TextView mToolbarTitle;
     private DisplayMetrics mPhone;
     private final static int CAMERA = 666 ;
+    private final static int CAMERA_INNER = 667 ;
     public final static int CHOOSE_PHOTO = 222;
+    public final static int CHOOSE_PHOTO_INNER = 223;
 
     private MainContract.Presenter mPresenter;
     private MainMvpController mMainMvpController;
 
-    private ArrayList<Bitmap> mBitmaps;
+    private ArrayList<String> mImagePath;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -89,21 +94,26 @@ public class MainActivity extends AppCompatActivity implements MainContract.View
     }
 
     @Override
-    public void openPostUi(ArrayList<Bitmap> bitmaps) {
-        mMainMvpController.createPostView(bitmaps);
+    public void openPostUi(ArrayList<String> imagePath) {
+        mMainMvpController.createPostView(imagePath);
     }
 
     @Override
-    public void openGallery() {
+    public void setPostPics(ArrayList<String> imagePath) {
+        mMainMvpController.setPostPics(imagePath);
+    }
+
+    @Override
+    public void openGallery(String from) {
         if (ContextCompat.checkSelfPermission(this, Manifest.permission.WRITE_EXTERNAL_STORAGE) != PackageManager.PERMISSION_GRANTED) {
             ActivityCompat.requestPermissions(this, new String[]{Manifest.permission.WRITE_EXTERNAL_STORAGE}, 1);
         } else {
-            openAlbum();
+            openAlbum(from);
         }
     }
 
     @Override
-    public void openCamera() {
+    public void openCamera(String from) {
 
         if (ContextCompat.checkSelfPermission(this, Manifest.permission.CAMERA) != PackageManager.PERMISSION_GRANTED) {
             ActivityCompat.requestPermissions(this, new String[]{Manifest.permission.CAMERA}, 2);
@@ -117,8 +127,49 @@ public class MainActivity extends AppCompatActivity implements MainContract.View
                     value);
             Intent intent = new Intent(MediaStore.ACTION_IMAGE_CAPTURE);
             intent.putExtra(MediaStore.EXTRA_OUTPUT, uri.getPath());
-            startActivityForResult(intent, CAMERA);
+
+            if (from.equals("CENTER")) {
+                startActivityForResult(intent, CAMERA);
+            } else {
+                startActivityForResult(intent, CAMERA_INNER);
+            }
+
         }
+    }
+
+    @Override
+    public void openGalleryDialog(String from) {
+
+        if (from.equals("CENTER")) {
+            mImagePath = new ArrayList<>();
+        }
+
+        Button mCancelBtn;
+        Button mOpenGalleryBtn;
+        Button mOpenCameraBtn;
+
+        LayoutInflater factory = LayoutInflater.from(this);
+        final View view = factory.inflate(R.layout.dialog_goto_gallery, null);
+        final BottomSheetDialog dialog = new BottomSheetDialog(this);
+        dialog.setContentView(view);
+        ((View) view.getParent()).setBackgroundColor(this.getColor(android.R.color.transparent));
+        dialog.show();
+
+        mCancelBtn = view.findViewById(R.id.button_cancel);
+        mOpenGalleryBtn = view.findViewById(R.id.button_goto_gallery);
+        mOpenCameraBtn = view.findViewById(R.id.button_open_camera);
+
+        mCancelBtn.setOnClickListener( v -> dialog.dismiss());
+
+        mOpenGalleryBtn.setOnClickListener( v -> {
+            dialog.dismiss();
+            openGallery(from);
+        });
+
+        mOpenCameraBtn.setOnClickListener( v -> {
+            dialog.dismiss();
+            openCamera(from);
+        });
     }
 
     @Override
@@ -128,7 +179,7 @@ public class MainActivity extends AppCompatActivity implements MainContract.View
         switch (requestCode) {
             case 1:
                 if (grantResults.length > 0 && grantResults[0] == PackageManager.PERMISSION_GRANTED) {
-                    openAlbum();
+                    openAlbum("CENTER");
                 } else {
                     Toast.makeText(this, "授權失敗，無法操作", Toast.LENGTH_SHORT).show();
                 }
@@ -143,28 +194,30 @@ public class MainActivity extends AppCompatActivity implements MainContract.View
         super.onActivityResult(requestCode, resultCode, data);
 
         if (resultCode == RESULT_OK && requestCode == CHOOSE_PHOTO) {
-            mBitmaps = new ArrayList<>();
-            mBitmaps.add(handleImage(data));
-            mPresenter.openPost(getString(R.string.toolbat_title_post), mBitmaps);
+
+            mImagePath.add(handleImage(data));
+            mPresenter.openPost(getString(R.string.toolbat_title_post), mImagePath);
+
         } else if (resultCode == RESULT_OK && requestCode == CAMERA) {
-            Uri uri = data.getData();
-            ContentResolver cr = this.getContentResolver();
 
-            try
-            {
-                Bitmap bitmap = BitmapFactory.decodeStream(cr.openInputStream(uri));
+            mImagePath.add(handleImage(data));
+            mPresenter.openPost(getString(R.string.toolbat_title_post), mImagePath);
 
-                if (bitmap.getWidth() > bitmap.getHeight()) {
-                    ScalePic(bitmap, mPhone.heightPixels);
-                }
-                else ScalePic(bitmap, mPhone.widthPixels);
-            }
-            catch (FileNotFoundException e)
-            {
-                Log.d("Johnsi", e.getMessage());
-            }
+        } else if (resultCode == RESULT_OK && requestCode == CHOOSE_PHOTO_INNER) {
+
+
+            mImagePath.add(handleImage(data));
+            setPostPics(mImagePath);
+
+        } else if (resultCode == RESULT_OK && requestCode == CAMERA_INNER) {
+
+            mImagePath.add(handleImage(data));
+            setPostPics(mImagePath);
+
         } else {
+
             UserManager.getInstance().getFbCallbackManager().onActivityResult(requestCode, resultCode, data);
+
         }
     }
 
@@ -286,13 +339,21 @@ public class MainActivity extends AppCompatActivity implements MainContract.View
         return false;
     };
 
-    public void openAlbum() {
+    public void openAlbum(String from) {
+
         Intent intent = new Intent(Intent.ACTION_PICK, MediaStore.Images.Media.INTERNAL_CONTENT_URI);
         intent.setType("image/*");
-        startActivityForResult(intent, CHOOSE_PHOTO);
+
+        if (from.equals("CENTER")) {
+            startActivityForResult(intent, CHOOSE_PHOTO);
+        } else {
+            startActivityForResult(intent, CHOOSE_PHOTO_INNER);
+        }
+
+
     }
 
-    private Bitmap handleImage(Intent data) {
+    private String handleImage(Intent data) {
         String imagePath = null;
         Uri uri = data.getData();
 
@@ -311,15 +372,14 @@ public class MainActivity extends AppCompatActivity implements MainContract.View
             imagePath = getImagePath(uri, null);
         }
 
-        Uri file = Uri.fromFile(new File(imagePath));
-        StorageReference riversRef = Firebase.getStorage().child(file.getLastPathSegment());
+//        Uri file = Uri.fromFile(new File(imagePath));
+//        StorageReference riversRef = Firebase.getStorage().child(file.getLastPathSegment());
+//
+//        riversRef.putFile(file)
+//                .addOnSuccessListener(taskSnapshot -> Log.d("Johnsi", "Photo Upload Success"))
+//                .addOnFailureListener(exception -> Log.d("Johnsi", exception.getMessage()));
 
-        riversRef.putFile(file)
-                .addOnSuccessListener(taskSnapshot -> Log.d("Johnsi", "Photo Upload Success"))
-                .addOnFailureListener(exception -> Log.d("Johnsi", exception.getMessage()));
-
-        Bitmap bitImage = BitmapFactory.decodeFile(imagePath);
-        return bitImage;
+        return imagePath;
     }
 
     public String getImagePath(Uri uri, String selection) {

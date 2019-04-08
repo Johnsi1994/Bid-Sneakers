@@ -14,7 +14,7 @@ public class PostPresenter implements PostContract.Presenter {
     private PostContract.View mPostView;
 
     private Product mProduct;
-    private ArrayList<Bitmap> mBitmaps;
+    private ArrayList<String> mImagePath;
 
     public PostPresenter(@NonNull PostContract.View postView) {
         mPostView = checkNotNull(postView, "postView cannot be null!");
@@ -87,12 +87,20 @@ public class PostPresenter implements PostContract.Presenter {
     }
 
     @Override
-    public void setPostPics(ArrayList<Bitmap> bitmaps) {
-        mBitmaps = bitmaps;
+    public void setPostPics(ArrayList<String> imagePath) {
+        mImagePath = imagePath;
+        loadPostPics();
     }
 
     @Override
     public void loadPostPics() {
-        mPostView.showPostUi(mBitmaps);
+        if (mImagePath != null) {
+            mPostView.showPostUi(mImagePath);
+        }
+    }
+
+    @Override
+    public void openGalleryDialog(String from) {
+
     }
 }

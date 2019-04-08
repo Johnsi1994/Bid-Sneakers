@@ -71,7 +71,7 @@ public class CenterFragment extends Fragment implements CenterContract.View {
         });
 
         mPostFloatingActionButton.setOnClickListener( v ->
-                openGalleryDialog()
+                mPresenter.openGalleryDialog("CENTER")
         );
 
 
@@ -107,34 +107,4 @@ public class CenterFragment extends Fragment implements CenterContract.View {
         mEyesOnFloatingActionButton.animate().translationY(0);
     }
 
-    private void openGalleryDialog() {
-
-        Button mCancelBtn;
-        Button mOpenGalleryBtn;
-        Button mOpenCameraBtn;
-
-        LayoutInflater factory = LayoutInflater.from(getActivity());
-        final View view = factory.inflate(R.layout.dialog_goto_gallery, null);
-        final BottomSheetDialog dialog = new BottomSheetDialog(getActivity());
-        dialog.setContentView(view);
-        ((View) view.getParent()).setBackgroundColor(getActivity().getColor(android.R.color.transparent));
-        dialog.show();
-
-        mCancelBtn = view.findViewById(R.id.button_cancel);
-        mOpenGalleryBtn = view.findViewById(R.id.button_goto_gallery);
-        mOpenCameraBtn = view.findViewById(R.id.button_open_camera);
-
-        mCancelBtn.setOnClickListener( v -> dialog.dismiss());
-
-        mOpenGalleryBtn.setOnClickListener( v -> {
-            dialog.dismiss();
-            mPresenter.openGallery();
-        });
-
-        mOpenCameraBtn.setOnClickListener( v -> {
-            dialog.dismiss();
-            mPresenter.openCamera();
-        });
-
-    }
 }

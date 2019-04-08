@@ -20,11 +20,15 @@ public interface MainContract {
 
         void openSettingsUi();
 
-        void openPostUi(ArrayList<Bitmap> bitmaps);
+        void openPostUi(ArrayList<String> imagePath);
 
-        void openGallery();
+        void setPostPics(ArrayList<String> imagePath);
 
-        void openCamera();
+        void openGallery(String from);
+
+        void openCamera(String from);
+
+        void openGalleryDialog(String from);
 
         AuctionFragment findEnglishAuctionView();
 
@@ -45,7 +49,7 @@ public interface MainContract {
 
         void openLogin();
 
-        void openPost(String toolbarTitle, ArrayList<Bitmap> bitmaps);
+        void openPost(String toolbarTitle, ArrayList<String> imagePath);
 
         void openCenter();
 

@@ -1,12 +1,10 @@
 package com.johnson.bid.post;
 
 import android.annotation.SuppressLint;
-import android.graphics.Bitmap;
 import android.support.annotation.NonNull;
 import android.support.constraint.ConstraintLayout;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.LinearSnapHelper;
-import android.support.v7.widget.PagerSnapHelper;
 import android.support.v7.widget.RecyclerView;
 import android.util.Log;
 import android.view.LayoutInflater;
@@ -36,7 +34,8 @@ public class PostAdapter extends RecyclerView.Adapter {
     private PostContract.Presenter mPresenter;
     private MainActivity mMainActivity;
 
-    private ArrayList<Bitmap> mBitmaps;
+    private ArrayList<String> mImagePath;
+    private LinearSnapHelper mLinearSnapHelper;
 
     public PostAdapter(PostContract.Presenter presenter, MainActivity mainActivity) {
         mPresenter = presenter;
@@ -55,8 +54,11 @@ public class PostAdapter extends RecyclerView.Adapter {
 
         LinearLayoutManager layoutManager = new LinearLayoutManager(
                 Bid.getAppContext(), LinearLayoutManager.HORIZONTAL, false);
-        PostPicsGalleryAdapter postPicsGalleryAdapter = new PostPicsGalleryAdapter(mBitmaps);
-        new LinearSnapHelper().attachToRecyclerView(((ViewHolder) viewHolder).getPostPicGallery());
+        PostPicsGalleryAdapter postPicsGalleryAdapter = new PostPicsGalleryAdapter(mImagePath, mPresenter);
+        if (mLinearSnapHelper == null) {
+            mLinearSnapHelper = new LinearSnapHelper();
+            mLinearSnapHelper.attachToRecyclerView(((ViewHolder) viewHolder).getPostPicGallery());
+        }
 //        ((ViewHolder) viewHolder).getPostPicGallery().scrollToPosition(0);
         ((ViewHolder) viewHolder).getPostPicGallery().setAdapter(postPicsGalleryAdapter);
         ((ViewHolder) viewHolder).getPostPicGallery().setLayoutManager(layoutManager);
@@ -270,8 +272,8 @@ public class PostAdapter extends RecyclerView.Adapter {
         private RecyclerView getPostPicGallery() {return mPostPicGallery;}
     }
 
-    public void updateData(ArrayList<Bitmap> bitmaps) {
-        mBitmaps = bitmaps;
+    public void updateData(ArrayList<String> imagePath) {
+        this.mImagePath = imagePath;
         notifyDataSetChanged();
     }
 }

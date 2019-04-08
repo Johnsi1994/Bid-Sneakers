@@ -1,6 +1,7 @@
 package com.johnson.bid.post;
 
 import android.graphics.Bitmap;
+import android.graphics.BitmapFactory;
 import android.support.annotation.NonNull;
 import android.support.constraint.ConstraintLayout;
 import android.support.v7.widget.RecyclerView;
@@ -18,10 +19,13 @@ public class PostPicsGalleryAdapter extends RecyclerView.Adapter {
     private static final int TYPE_PHOTO   = 0x01;
     private static final int TYPE_ADD     = 0x02;
 
-    private ArrayList<Bitmap> mBitmaps;
+    private PostContract.Presenter mPresenter;
+    private ArrayList<String> mImagePath;
+    private Bitmap bitImage;
 
-    public PostPicsGalleryAdapter(ArrayList<Bitmap> bitmaps) {
-        mBitmaps = bitmaps;
+    public PostPicsGalleryAdapter(ArrayList<String> imagePath, PostContract.Presenter presenter) {
+        mImagePath = imagePath;
+        mPresenter = presenter;
     }
 
     @NonNull
@@ -42,20 +46,21 @@ public class PostPicsGalleryAdapter extends RecyclerView.Adapter {
     public void onBindViewHolder(@NonNull RecyclerView.ViewHolder viewHolder, int position) {
 
         if (viewHolder instanceof PhotoViewHolder) {
-            bindPhotoViewHolder((PhotoViewHolder) viewHolder, mBitmaps.get(position));
+            bitImage = BitmapFactory.decodeFile(mImagePath.get(position));
+            bindPhotoViewHolder((PhotoViewHolder) viewHolder, bitImage);
         }
-        
+
     }
 
     @Override
     public int getItemCount() {
-        return (mBitmaps.size() + 1);
+        return (mImagePath.size() + 1);
     }
 
     @Override
     public int getItemViewType(int position) {
 
-        if (position == (mBitmaps.size())) {
+        if (position == (mImagePath.size())) {
             return TYPE_ADD;
         } else {
             return TYPE_PHOTO;
@@ -90,9 +95,9 @@ public class PostPicsGalleryAdapter extends RecyclerView.Adapter {
 
             mAddLayout = itemView.findViewById(R.id.layout_add_pic);
 
-            mAddLayout.setOnClickListener(v -> {
-
-            });
+            mAddLayout.setOnClickListener(v ->
+                mPresenter.openGalleryDialog("POSTGALLERY")
+            );
 
         }
     }

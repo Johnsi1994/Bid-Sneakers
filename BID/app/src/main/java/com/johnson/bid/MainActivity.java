@@ -37,6 +37,7 @@ import com.johnson.bid.util.UserManager;
 
 import java.io.File;
 import java.io.FileNotFoundException;
+import java.util.ArrayList;
 
 import static com.google.common.base.Preconditions.checkNotNull;
 
@@ -52,7 +53,7 @@ public class MainActivity extends AppCompatActivity implements MainContract.View
     private MainContract.Presenter mPresenter;
     private MainMvpController mMainMvpController;
 
-    private ImageView mTestView;
+    private ArrayList<Bitmap> mBitmaps;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -88,8 +89,8 @@ public class MainActivity extends AppCompatActivity implements MainContract.View
     }
 
     @Override
-    public void openPostUi() {
-        mMainMvpController.createPostView();
+    public void openPostUi(ArrayList<Bitmap> bitmaps) {
+        mMainMvpController.createPostView(bitmaps);
     }
 
     @Override
@@ -142,8 +143,9 @@ public class MainActivity extends AppCompatActivity implements MainContract.View
         super.onActivityResult(requestCode, resultCode, data);
 
         if (resultCode == RESULT_OK && requestCode == CHOOSE_PHOTO) {
-            handleImage(data);
-            mPresenter.openPost(getString(R.string.toolbat_title_post));
+            mBitmaps = new ArrayList<>();
+            mBitmaps.add(handleImage(data));
+            mPresenter.openPost(getString(R.string.toolbat_title_post), mBitmaps);
         } else if (resultCode == RESULT_OK && requestCode == CAMERA) {
             Uri uri = data.getData();
             ContentResolver cr = this.getContentResolver();
@@ -216,8 +218,6 @@ public class MainActivity extends AppCompatActivity implements MainContract.View
 
     private void init() {
         mMainMvpController = MainMvpController.create(this);
-
-        mTestView = findViewById(R.id.image_test);
 
         setToolbar();
         setBottomNavigation();
@@ -292,7 +292,7 @@ public class MainActivity extends AppCompatActivity implements MainContract.View
         startActivityForResult(intent, CHOOSE_PHOTO);
     }
 
-    private void handleImage(Intent data) {
+    private Bitmap handleImage(Intent data) {
         String imagePath = null;
         Uri uri = data.getData();
 
@@ -311,14 +311,15 @@ public class MainActivity extends AppCompatActivity implements MainContract.View
             imagePath = getImagePath(uri, null);
         }
 
-//        displayImage(imagePath);
-
         Uri file = Uri.fromFile(new File(imagePath));
         StorageReference riversRef = Firebase.getStorage().child(file.getLastPathSegment());
 
         riversRef.putFile(file)
                 .addOnSuccessListener(taskSnapshot -> Log.d("Johnsi", "Photo Upload Success"))
                 .addOnFailureListener(exception -> Log.d("Johnsi", exception.getMessage()));
+
+        Bitmap bitImage = BitmapFactory.decodeFile(imagePath);
+        return bitImage;
     }
 
     public String getImagePath(Uri uri, String selection) {
@@ -345,8 +346,7 @@ public class MainActivity extends AppCompatActivity implements MainContract.View
         }
     }
 
-    private void ScalePic(Bitmap bitmap,int phone)
-    {
+    private void ScalePic(Bitmap bitmap,int phone) {
         //縮放比例預設為1
         float mScale = 1 ;
 
@@ -365,10 +365,8 @@ public class MainActivity extends AppCompatActivity implements MainContract.View
                     bitmap.getHeight(),
                     mMat,
                     false);
-
-            mTestView.setImageBitmap(mScaleBitmap);
         } else {
-            mTestView.setImageBitmap(bitmap);
+
         }
     }
 }

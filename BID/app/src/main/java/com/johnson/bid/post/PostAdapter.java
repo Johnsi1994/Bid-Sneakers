@@ -1,8 +1,12 @@
 package com.johnson.bid.post;
 
 import android.annotation.SuppressLint;
+import android.graphics.Bitmap;
 import android.support.annotation.NonNull;
 import android.support.constraint.ConstraintLayout;
+import android.support.v7.widget.LinearLayoutManager;
+import android.support.v7.widget.LinearSnapHelper;
+import android.support.v7.widget.PagerSnapHelper;
 import android.support.v7.widget.RecyclerView;
 import android.util.Log;
 import android.view.LayoutInflater;
@@ -14,6 +18,7 @@ import android.widget.EditText;
 import android.widget.Spinner;
 import android.widget.TextView;
 
+import com.johnson.bid.Bid;
 import com.johnson.bid.MainActivity;
 import com.johnson.bid.R;
 import com.johnson.bid.util.Firebase;
@@ -21,6 +26,7 @@ import com.jzxiang.pickerview.TimePickerDialog;
 import com.jzxiang.pickerview.listener.OnDateSetListener;
 
 import java.text.SimpleDateFormat;
+import java.util.ArrayList;
 import java.util.Date;
 import java.util.HashMap;
 import java.util.Map;
@@ -29,6 +35,8 @@ public class PostAdapter extends RecyclerView.Adapter {
 
     private PostContract.Presenter mPresenter;
     private MainActivity mMainActivity;
+
+    private ArrayList<Bitmap> mBitmaps;
 
     public PostAdapter(PostContract.Presenter presenter, MainActivity mainActivity) {
         mPresenter = presenter;
@@ -45,6 +53,13 @@ public class PostAdapter extends RecyclerView.Adapter {
     @Override
     public void onBindViewHolder(@NonNull RecyclerView.ViewHolder viewHolder, int i) {
 
+        LinearLayoutManager layoutManager = new LinearLayoutManager(
+                Bid.getAppContext(), LinearLayoutManager.HORIZONTAL, false);
+        PostPicsGalleryAdapter postPicsGalleryAdapter = new PostPicsGalleryAdapter(mBitmaps);
+        new LinearSnapHelper().attachToRecyclerView(((ViewHolder) viewHolder).getPostPicGallery());
+//        ((ViewHolder) viewHolder).getPostPicGallery().scrollToPosition(0);
+        ((ViewHolder) viewHolder).getPostPicGallery().setAdapter(postPicsGalleryAdapter);
+        ((ViewHolder) viewHolder).getPostPicGallery().setLayoutManager(layoutManager);
     }
 
     @Override
@@ -54,6 +69,7 @@ public class PostAdapter extends RecyclerView.Adapter {
 
     private class ViewHolder extends RecyclerView.ViewHolder implements OnDateSetListener {
 
+        private RecyclerView mPostPicGallery;
         private EditText mProductTitle;
         private EditText mProductIntro;
         private Spinner mProductCondition;
@@ -65,6 +81,7 @@ public class PostAdapter extends RecyclerView.Adapter {
         private TextView mExpireTimeText;
         private TimePickerDialog mDialogMonthDayHourMinute;
         private Button mPostBtn;
+
         private Map<String, Object> mProduct = new HashMap<>();
 
         private String mCondition;
@@ -79,6 +96,7 @@ public class PostAdapter extends RecyclerView.Adapter {
         public ViewHolder(View itemView) {
             super(itemView);
 
+            mPostPicGallery = itemView.findViewById(R.id.recycler_post_pics);
             mProductTitle = itemView.findViewById(R.id.edit_product_title);
             mProductIntro = itemView.findViewById(R.id.edit_product_intro);
             mProductCondition = itemView.findViewById(R.id.spinner_product_condition);
@@ -248,5 +266,12 @@ public class PostAdapter extends RecyclerView.Adapter {
         private int getIncreasePrice() {
             return mIncreasePrice;
         }
+
+        private RecyclerView getPostPicGallery() {return mPostPicGallery;}
+    }
+
+    public void updateData(ArrayList<Bitmap> bitmaps) {
+        mBitmaps = bitmaps;
+        notifyDataSetChanged();
     }
 }

@@ -2,6 +2,7 @@ package com.johnson.bid;
 
 import static com.google.common.base.Preconditions.checkNotNull;
 
+import android.graphics.Bitmap;
 import android.support.annotation.NonNull;
 import android.support.annotation.StringDef;
 import android.support.v4.app.FragmentActivity;
@@ -26,6 +27,7 @@ import com.johnson.bid.util.ActivityUtils;
 
 import java.lang.annotation.Retention;
 import java.lang.annotation.RetentionPolicy;
+import java.util.ArrayList;
 import java.util.Objects;
 
 public class MainMvpController {
@@ -139,11 +141,12 @@ public class MainMvpController {
         }
     }
 
-    void createPostView() {
+    void createPostView(ArrayList<Bitmap> bitmaps) {
 
         PostFragment postFragment = createPostFragment();
 
         mPostPresenter = new PostPresenter(postFragment);
+        mPostPresenter.setPostPics(bitmaps);
         mMainPresenter.setPostPresenter(mPostPresenter);
         postFragment.setPresenter(mMainPresenter);
     }

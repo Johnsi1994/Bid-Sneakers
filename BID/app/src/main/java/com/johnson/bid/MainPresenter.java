@@ -1,5 +1,6 @@
 package com.johnson.bid;
 
+import android.graphics.Bitmap;
 import android.util.Log;
 
 import com.johnson.bid.centre.auction.AuctionContract;
@@ -17,6 +18,8 @@ import com.johnson.bid.settings.SettingsContract;
 import com.johnson.bid.settings.SettingsPresenter;
 import com.johnson.bid.trade.TradeContract;
 import com.johnson.bid.trade.TradePresenter;
+
+import java.util.ArrayList;
 
 import static com.google.common.base.Preconditions.checkNotNull;
 
@@ -105,6 +108,16 @@ public class MainPresenter implements MainContract.Presenter, CenterContract.Pre
     }
 
     @Override
+    public void setPostPics(ArrayList<Bitmap> bitmaps) {
+        mPostPresenter.setPostPics(bitmaps);
+    }
+
+    @Override
+    public void loadPostPics() {
+        mPostPresenter.loadPostPics();
+    }
+
+    @Override
     public void hideToolbarAndBottomNavigation() {
         mMainView.hideToolbarUi();
         mMainView.hideBottomNavigationUi();
@@ -141,8 +154,8 @@ public class MainPresenter implements MainContract.Presenter, CenterContract.Pre
     }
 
     @Override
-    public void openPost(String title) {
-        mMainView.openPostUi();
+    public void openPost(String title, ArrayList<Bitmap> bitmaps) {
+        mMainView.openPostUi(bitmaps);
         updateToolbar(title);
         hideBottomNavigation();
     }

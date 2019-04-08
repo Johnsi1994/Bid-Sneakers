@@ -1,6 +1,10 @@
 package com.johnson.bid;
 
+import android.graphics.Bitmap;
+
 import com.johnson.bid.centre.auction.AuctionFragment;
+
+import java.util.ArrayList;
 
 public interface MainContract {
 
@@ -16,7 +20,7 @@ public interface MainContract {
 
         void openSettingsUi();
 
-        void openPostUi();
+        void openPostUi(ArrayList<Bitmap> bitmaps);
 
         void openGallery();
 
@@ -41,7 +45,7 @@ public interface MainContract {
 
         void openLogin();
 
-        void openPost(String toolbarTitle);
+        void openPost(String toolbarTitle, ArrayList<Bitmap> bitmaps);
 
         void openCenter();
 

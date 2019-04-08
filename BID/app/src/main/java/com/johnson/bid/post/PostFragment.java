@@ -1,17 +1,21 @@
 package com.johnson.bid.post;
 
+import android.graphics.Bitmap;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 
 import com.johnson.bid.MainActivity;
 import com.johnson.bid.R;
+
+import java.util.ArrayList;
 
 import static com.google.common.base.Preconditions.checkNotNull;
 
@@ -46,6 +50,12 @@ public class PostFragment extends Fragment implements PostContract.View {
     }
 
     @Override
+    public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
+        super.onViewCreated(view, savedInstanceState);
+        mPresenter.loadPostPics();
+    }
+
+    @Override
     public void onDestroy() {
         super.onDestroy();
         mPresenter.showBottomNavigation();
@@ -55,5 +65,10 @@ public class PostFragment extends Fragment implements PostContract.View {
     @Override
     public void setPresenter(PostContract.Presenter presenter) {
         mPresenter = checkNotNull(presenter);
+    }
+
+    @Override
+    public void showPostUi(ArrayList<Bitmap> bitmaps) {
+        mPostAdapter.updateData(bitmaps);
     }
 }

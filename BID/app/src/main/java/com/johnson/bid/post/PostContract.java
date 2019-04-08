@@ -1,12 +1,16 @@
 package com.johnson.bid.post;
 
+import android.graphics.Bitmap;
+
 import com.johnson.bid.BasePresenter;
 import com.johnson.bid.BaseView;
+
+import java.util.ArrayList;
 
 public interface PostContract {
 
     interface View extends BaseView<Presenter> {
-
+        void showPostUi(ArrayList<Bitmap> bitmaps);
     }
 
     interface Presenter extends BasePresenter {
@@ -35,6 +39,9 @@ public interface PostContract {
 
         void updateToolbar(String title);
 
+        void setPostPics(ArrayList<Bitmap> bitmaps);
+
+        void loadPostPics();
 
 
     }

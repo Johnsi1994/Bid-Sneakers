@@ -126,9 +126,15 @@ public class CenterFragment extends Fragment implements CenterContract.View {
 
         mCancelBtn.setOnClickListener( v -> dialog.dismiss());
 
-        mOpenGalleryBtn.setOnClickListener( v -> mPresenter.openGallery());
+        mOpenGalleryBtn.setOnClickListener( v -> {
+            dialog.dismiss();
+            mPresenter.openGallery();
+        });
 
-        mOpenCameraBtn.setOnClickListener( v -> mPresenter.openCamera());
+        mOpenCameraBtn.setOnClickListener( v -> {
+            dialog.dismiss();
+            mPresenter.openCamera();
+        });
 
     }
 }

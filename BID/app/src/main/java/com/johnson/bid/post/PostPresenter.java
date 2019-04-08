@@ -1,8 +1,11 @@
 package com.johnson.bid.post;
 
+import android.graphics.Bitmap;
 import android.support.annotation.NonNull;
 
 import com.johnson.bid.data.Product;
+
+import java.util.ArrayList;
 
 import static com.google.common.base.Preconditions.checkNotNull;
 
@@ -11,6 +14,7 @@ public class PostPresenter implements PostContract.Presenter {
     private PostContract.View mPostView;
 
     private Product mProduct;
+    private ArrayList<Bitmap> mBitmaps;
 
     public PostPresenter(@NonNull PostContract.View postView) {
         mPostView = checkNotNull(postView, "postView cannot be null!");
@@ -80,5 +84,15 @@ public class PostPresenter implements PostContract.Presenter {
     @Override
     public void updateToolbar(String title) {
 
+    }
+
+    @Override
+    public void setPostPics(ArrayList<Bitmap> bitmaps) {
+        mBitmaps = bitmaps;
+    }
+
+    @Override
+    public void loadPostPics() {
+        mPostView.showPostUi(mBitmaps);
     }
 }

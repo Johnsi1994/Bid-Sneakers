@@ -12,6 +12,9 @@ import android.widget.ImageView;
 
 import com.johnson.bid.R;
 
+import java.io.FileInputStream;
+import java.io.FileNotFoundException;
+import java.io.InputStream;
 import java.util.ArrayList;
 
 public class PostPicsGalleryAdapter extends RecyclerView.Adapter {
@@ -46,8 +49,18 @@ public class PostPicsGalleryAdapter extends RecyclerView.Adapter {
     public void onBindViewHolder(@NonNull RecyclerView.ViewHolder viewHolder, int position) {
 
         if (viewHolder instanceof PhotoViewHolder) {
-            bitImage = BitmapFactory.decodeFile(mImagePath.get(position));
-            bindPhotoViewHolder((PhotoViewHolder) viewHolder, bitImage);
+            try {
+                InputStream is = new FileInputStream(mImagePath.get(position));
+                BitmapFactory.Options opts = new BitmapFactory.Options();
+                opts.inTempStorage = new byte[100 * 1024];
+                opts.inPreferredConfig = Bitmap.Config.RGB_565;
+                opts.inSampleSize = 4;
+                Bitmap btp =BitmapFactory.decodeStream(is,null, opts);
+                bindPhotoViewHolder((PhotoViewHolder) viewHolder, btp);
+
+            } catch (FileNotFoundException e) {
+                e.printStackTrace();
+            }
         }
 
     }

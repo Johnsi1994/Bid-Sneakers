@@ -5,6 +5,7 @@ import android.content.Context;
 import android.net.Uri;
 import android.util.Log;
 
+import com.facebook.AccessToken;
 import com.facebook.CallbackManager;
 import com.facebook.FacebookActivity;
 import com.facebook.FacebookCallback;
@@ -12,6 +13,7 @@ import com.facebook.FacebookException;
 import com.facebook.GraphRequest;
 import com.facebook.GraphResponse;
 import com.facebook.Profile;
+import com.facebook.ProfileTracker;
 import com.facebook.login.LoginManager;
 import com.facebook.login.LoginResult;
 import com.johnson.bid.Bid;
@@ -27,6 +29,8 @@ public class UserManager {
 
     private User mUser;
     private CallbackManager mFbCallbackManager;
+    private ProfileTracker mProfileTracker;
+    private Profile profile;
 
     private static class UserManagerHolder {
         private static final UserManager INSTANCE = new UserManager();
@@ -90,9 +94,21 @@ public class UserManager {
                     long id = object.getLong("id");
                     String name = object.getString("name");
 
-                    Profile profile = Profile.getCurrentProfile();
-                    Uri userPhoto = profile.getProfilePictureUri(300, 300);
+                    if (Profile.getCurrentProfile() == null) {
+                        mProfileTracker = new ProfileTracker() {
+                            @Override
+                            protected void onCurrentProfileChanged(Profile oldProfile, Profile currentProfile) {
+                                mProfileTracker.stopTracking();
+                                profile = currentProfile;
 
+                            }
+                        };
+                    } else {
+                        profile = Profile.getCurrentProfile();
+                    }
+
+                    Uri userPhoto = profile.getProfilePictureUri(300, 300);
+                    
                     User user = new User();
                     user.setId(id);
                     user.setName(name);
@@ -100,11 +116,6 @@ public class UserManager {
 
                     setUser(user);
 
-                    Bid.getAppContext()
-                            .getSharedPreferences(Constants.USER_DATA, Context.MODE_PRIVATE)
-                            .edit()
-                            .putString(Constants.USER_TOKEN, loginResult.getAccessToken().getToken())
-                            .apply();
                     loadCallback.onSuccess();
                 }
             } catch (IOException e) {
@@ -123,15 +134,9 @@ public class UserManager {
                 (Activity) context, Arrays.asList("email"));
     }
 
-    public String getUserToken() {
-
-        return Bid.getAppContext()
-                .getSharedPreferences(Constants.USER_DATA, Context.MODE_PRIVATE)
-                .getString(Constants.USER_TOKEN, null);
-    }
-
     public boolean isLoggedIn() {
-        return getUserToken() != null;
+        AccessToken accessToken = AccessToken.getCurrentAccessToken();
+        return accessToken != null;
     }
 
     public User getUser() {

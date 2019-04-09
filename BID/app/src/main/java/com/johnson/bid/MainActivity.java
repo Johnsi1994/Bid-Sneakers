@@ -275,13 +275,13 @@ public class MainActivity extends AppCompatActivity implements MainContract.View
         setToolbar();
         setBottomNavigation();
 
-        mPresenter.openCenter();
-
-//        if (UserManager.getInstance().isLoggedIn()) {
-//            mPresenter.openCenter();
-//        } else {
-//            mPresenter.openLogin();
-//        }
+        if (UserManager.getInstance().isLoggedIn()) {
+            mPresenter.openCenter();
+            showToolbarUi();
+            showBottomNavigationUi();
+        } else {
+            mPresenter.openLogin();
+        }
 
 
     }

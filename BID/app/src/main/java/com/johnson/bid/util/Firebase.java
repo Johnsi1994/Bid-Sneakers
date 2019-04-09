@@ -8,7 +8,7 @@ public class Firebase {
 
     private static FirebaseFirestore db = FirebaseFirestore.getInstance();
 
-    private static StorageReference mStorageRef = FirebaseStorage.getInstance().getReference();;
+    private static StorageReference mStorageRef = FirebaseStorage.getInstance().getReference();
 
     public static FirebaseFirestore getFirestore() {
         return db;

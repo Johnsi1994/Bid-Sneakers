@@ -77,6 +77,11 @@ public class PostPresenter implements PostContract.Presenter {
     }
 
     @Override
+    public void setImages(ArrayList<String> Url) {
+        mProduct.setImages(Url);
+    }
+
+    @Override
     public void showBottomNavigation() {
 
     }

@@ -224,4 +224,9 @@ public class MainPresenter implements MainContract.Presenter, CenterContract.Pre
     public void setStartingTime(long startingTime) {
         mPostPresenter.setStartingTime(startingTime);
     }
+
+    @Override
+    public void setImages(ArrayList<String> Url) {
+        mPostPresenter.setImages(Url);
+    }
 }

@@ -35,6 +35,8 @@ public interface PostContract {
 
         void setStartingTime(long startingTime);
 
+        void setImages(ArrayList<String> Url);
+
         void showBottomNavigation();
 
         void updateToolbar(String title);

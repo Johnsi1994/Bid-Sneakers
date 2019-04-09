@@ -372,13 +372,6 @@ public class MainActivity extends AppCompatActivity implements MainContract.View
             imagePath = getImagePath(uri, null);
         }
 
-//        Uri file = Uri.fromFile(new File(imagePath));
-//        StorageReference riversRef = Firebase.getStorage().child(file.getLastPathSegment());
-//
-//        riversRef.putFile(file)
-//                .addOnSuccessListener(taskSnapshot -> Log.d("Johnsi", "Photo Upload Success"))
-//                .addOnFailureListener(exception -> Log.d("Johnsi", exception.getMessage()));
-
         return imagePath;
     }
 
@@ -429,4 +422,5 @@ public class MainActivity extends AppCompatActivity implements MainContract.View
 
         }
     }
+
 }

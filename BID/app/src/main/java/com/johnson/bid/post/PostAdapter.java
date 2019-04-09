@@ -1,6 +1,7 @@
 package com.johnson.bid.post;
 
 import android.annotation.SuppressLint;
+import android.net.Uri;
 import android.support.annotation.NonNull;
 import android.support.constraint.ConstraintLayout;
 import android.support.v7.widget.LinearLayoutManager;
@@ -16,6 +17,8 @@ import android.widget.EditText;
 import android.widget.Spinner;
 import android.widget.TextView;
 
+import com.google.android.gms.tasks.OnSuccessListener;
+import com.google.firebase.storage.StorageReference;
 import com.johnson.bid.Bid;
 import com.johnson.bid.MainActivity;
 import com.johnson.bid.R;
@@ -23,6 +26,7 @@ import com.johnson.bid.util.Firebase;
 import com.jzxiang.pickerview.TimePickerDialog;
 import com.jzxiang.pickerview.listener.OnDateSetListener;
 
+import java.io.File;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Date;
@@ -62,6 +66,8 @@ public class PostAdapter extends RecyclerView.Adapter {
 //        ((ViewHolder) viewHolder).getPostPicGallery().scrollToPosition(0);
         ((ViewHolder) viewHolder).getPostPicGallery().setAdapter(postPicsGalleryAdapter);
         ((ViewHolder) viewHolder).getPostPicGallery().setLayoutManager(layoutManager);
+
+
     }
 
     @Override
@@ -88,6 +94,7 @@ public class PostAdapter extends RecyclerView.Adapter {
 
         private String mCondition;
         private String mType;
+        private ArrayList<String> mUrls = new ArrayList<>();
         private int mIncreasePrice;
 
         @SuppressLint("SimpleDateFormat")
@@ -152,19 +159,19 @@ public class PostAdapter extends RecyclerView.Adapter {
                 @Override
                 public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
                     switch (position) {
-                        case 0 :
+                        case 0:
                             mPresenter.setIncrease(1);
                             setIncreasePrice(1);
                             break;
-                        case 1 :
+                        case 1:
                             mPresenter.setIncrease(10);
                             setIncreasePrice(10);
                             break;
-                        case 2 :
+                        case 2:
                             mPresenter.setIncrease(100);
                             setIncreasePrice(100);
                             break;
-                        case 3 :
+                        case 3:
                             mPresenter.setIncrease(1000);
                             setIncreasePrice(1000);
                             break;
@@ -195,39 +202,9 @@ public class PostAdapter extends RecyclerView.Adapter {
                     .setWheelItemTextSize(12)
                     .build();
 
-            mTimePickerLayout.setOnClickListener( v -> mDialogMonthDayHourMinute.show(mMainActivity.getSupportFragmentManager(), "month_day_hour_minute"));
+            mTimePickerLayout.setOnClickListener(v -> mDialogMonthDayHourMinute.show(mMainActivity.getSupportFragmentManager(), "month_day_hour_minute"));
 
-            mPostBtn.setOnClickListener( v -> {
-
-                mPresenter.setProductTitle(mProductTitle.getText().toString());
-                mProduct.put("title", mProductTitle.getText().toString());
-
-                mPresenter.setProductIntro(mProductIntro.getText().toString());
-                mProduct.put("introduction", mProductIntro.getText().toString());
-
-                mProduct.put("condition", getCondition());
-
-                mPresenter.setStartingPrice(Integer.parseInt(mStartingPrice.getText().toString()));
-                mProduct.put("startingPrice", Integer.parseInt(mStartingPrice.getText().toString()));
-
-                mPresenter.setReservePrice(Integer.parseInt(mReservePrice.getText().toString()));
-                mProduct.put("reservePrice", Integer.parseInt(mReservePrice.getText().toString()));
-
-                mProduct.put("auctionType", getType());
-
-                mProduct.put("increase", getIncreasePrice());
-
-                mPresenter.setProductId(System.currentTimeMillis());
-                mProduct.put("productId", System.currentTimeMillis());
-
-                mPresenter.setStartingTime(System.currentTimeMillis());
-                mProduct.put("startingTime", System.currentTimeMillis());
-
-                Firebase.getFirestore().collection("Products")
-                        .add(mProduct)
-                        .addOnSuccessListener(documentReference -> Log.d("Johnsi", "DocumentSnapshot added with ID: " + documentReference.getId()))
-                        .addOnFailureListener(e -> Log.w("Johnsi", "Error adding document", e));
-            });
+            mPostBtn.setOnClickListener(v -> uploadImages(0));
 
         }
 
@@ -243,6 +220,73 @@ public class PostAdapter extends RecyclerView.Adapter {
         private String getDateToString(long time) {
             Date d = new Date(time);
             return sf.format(d);
+        }
+
+        private void uploadImages(int i) {
+
+            Uri file = Uri.fromFile(new File(mImagePath.get(i)));
+            StorageReference riversRef = Firebase.getStorage().child(file.getLastPathSegment());
+            int j = i + 1;
+
+            riversRef.putFile(file)
+                    .addOnSuccessListener(taskSnapshot -> {
+                        Log.d("Johnsi", "Photo Upload Success and ready to get URL");
+
+                        riversRef.getDownloadUrl().addOnSuccessListener(uri -> {
+                            Log.d("Johnsi", "Success to get Uri: " + uri);
+                            setUrl(uri.toString());
+                            if (j < mImagePath.size()) {
+                                uploadImages(j);
+                            } else {
+                                Log.d("Johnsi", "UploadImages success then upload product");
+                                uploadProduct();
+                            }
+                        });
+                    })
+                    .addOnFailureListener(exception -> Log.d("Johnsi", exception.getMessage()));
+        }
+
+        private void uploadProduct() {
+
+            mPresenter.setImages(getUrls());
+            mProduct.put("Images", getUrls());
+
+            mPresenter.setProductTitle(mProductTitle.getText().toString());
+            mProduct.put("title", mProductTitle.getText().toString());
+
+            mPresenter.setProductIntro(mProductIntro.getText().toString());
+            mProduct.put("introduction", mProductIntro.getText().toString());
+
+            mProduct.put("condition", getCondition());
+
+            mPresenter.setStartingPrice(Integer.parseInt(mStartingPrice.getText().toString()));
+            mProduct.put("startingPrice", Integer.parseInt(mStartingPrice.getText().toString()));
+
+            mPresenter.setReservePrice(Integer.parseInt(mReservePrice.getText().toString()));
+            mProduct.put("reservePrice", Integer.parseInt(mReservePrice.getText().toString()));
+
+            mProduct.put("auctionType", getType());
+
+            mProduct.put("increase", getIncreasePrice());
+
+            mPresenter.setProductId(System.currentTimeMillis());
+            mProduct.put("productId", System.currentTimeMillis());
+
+            mPresenter.setStartingTime(System.currentTimeMillis());
+            mProduct.put("startingTime", System.currentTimeMillis());
+
+            Firebase.getFirestore().collection("Products")
+                    .add(mProduct)
+                    .addOnSuccessListener(documentReference -> Log.d("Johnsi", "DocumentSnapshot added with ID: " + documentReference.getId()))
+                    .addOnFailureListener(e -> Log.w("Johnsi", "Error adding document", e));
+        }
+
+        private void setUrl(String url) {
+            mUrls.add(url);
+        }
+
+        private ArrayList<String> getUrls() {
+            return mUrls;
         }
 
         private void setCondition(String condition) {
@@ -269,11 +313,20 @@ public class PostAdapter extends RecyclerView.Adapter {
             return mIncreasePrice;
         }
 
-        private RecyclerView getPostPicGallery() {return mPostPicGallery;}
+        private RecyclerView getPostPicGallery() {
+            return mPostPicGallery;
+        }
     }
 
     public void updateData(ArrayList<String> imagePath) {
         this.mImagePath = imagePath;
         notifyDataSetChanged();
+    }
+
+    public interface LoadCallback {
+
+        void onSuccess();
+
+        void onFail(String errorMessage);
     }
 }

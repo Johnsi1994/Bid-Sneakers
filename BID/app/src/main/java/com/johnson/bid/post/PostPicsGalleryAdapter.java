@@ -50,6 +50,7 @@ public class PostPicsGalleryAdapter extends RecyclerView.Adapter {
 
         if (viewHolder instanceof PhotoViewHolder) {
             try {
+
                 InputStream is = new FileInputStream(mImagePath.get(position));
                 BitmapFactory.Options opts = new BitmapFactory.Options();
                 opts.inTempStorage = new byte[100 * 1024];

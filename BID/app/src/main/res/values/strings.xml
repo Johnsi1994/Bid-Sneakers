@@ -26,6 +26,7 @@
     <string name="starting_price">起標價格</string>
     <string name="finish_time">結標時間</string>
     <string name="post">提交</string>
-    <string name="toolbat_title_post">刊登</string>
+    <string name="toolbar_title_post">刊登</string>
+    <string name="post_success">刊登成功</string>
 
 </resources>

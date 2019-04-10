@@ -204,7 +204,13 @@ public class PostAdapter extends RecyclerView.Adapter {
 
             mTimePickerLayout.setOnClickListener(v -> mDialogMonthDayHourMinute.show(mMainActivity.getSupportFragmentManager(), "month_day_hour_minute"));
 
-            mPostBtn.setOnClickListener(v -> uploadImages(0));
+            mPostBtn.setOnClickListener(v -> {
+                uploadImages(0);
+                mPresenter.showPostSuccessDialog();
+                mPresenter.updateToolbar("拍賣中心");
+                mPresenter.showBottomNavigation();
+                mPresenter.openCenter();
+            });
 
         }
 

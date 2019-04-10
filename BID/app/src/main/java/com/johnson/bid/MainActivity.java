@@ -1,7 +1,6 @@
 package com.johnson.bid;
 
 import android.Manifest;
-import android.content.ContentResolver;
 import android.content.ContentUris;
 import android.content.ContentValues;
 import android.content.Intent;
@@ -22,24 +21,17 @@ import android.support.v4.content.ContextCompat;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
 import android.util.DisplayMetrics;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.widget.Button;
-import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.Toast;
 
-import com.google.android.gms.tasks.OnFailureListener;
-import com.google.android.gms.tasks.OnSuccessListener;
-import com.google.firebase.storage.StorageReference;
-import com.google.firebase.storage.UploadTask;
 import com.johnson.bid.centre.auction.AuctionFragment;
-import com.johnson.bid.util.Firebase;
+import com.johnson.bid.dialog.MessageDialog;
+import com.johnson.bid.trade.TradeItem.TradeItemFragment;
 import com.johnson.bid.util.UserManager;
 
-import java.io.File;
-import java.io.FileNotFoundException;
 import java.util.ArrayList;
 
 import static com.google.common.base.Preconditions.checkNotNull;
@@ -50,6 +42,7 @@ public class MainActivity extends AppCompatActivity implements MainContract.View
     private Toolbar mToolbar;
     private TextView mToolbarTitle;
     private DisplayMetrics mPhone;
+    private MessageDialog mMessageDialog;
     private final static int CAMERA = 666 ;
     private final static int CAMERA_INNER = 667 ;
     public final static int CHOOSE_PHOTO = 222;
@@ -196,12 +189,12 @@ public class MainActivity extends AppCompatActivity implements MainContract.View
         if (resultCode == RESULT_OK && requestCode == CHOOSE_PHOTO) {
 
             mImagePath.add(handleImage(data));
-            mPresenter.openPost(getString(R.string.toolbat_title_post), mImagePath);
+            mPresenter.openPost(getString(R.string.toolbar_title_post), mImagePath);
 
         } else if (resultCode == RESULT_OK && requestCode == CAMERA) {
 
             mImagePath.add(handleImage(data));
-            mPresenter.openPost(getString(R.string.toolbat_title_post), mImagePath);
+            mPresenter.openPost(getString(R.string.toolbar_title_post), mImagePath);
 
         } else if (resultCode == RESULT_OK && requestCode == CHOOSE_PHOTO_INNER) {
 
@@ -229,6 +222,26 @@ public class MainActivity extends AppCompatActivity implements MainContract.View
     @Override
     public AuctionFragment findSealedAuctionView() {
         return mMainMvpController.findOrCreateSealedAuctionView();
+    }
+
+    @Override
+    public TradeItemFragment findBiddingView() {
+        return mMainMvpController.findOrCreateBiddingView();
+    }
+
+    @Override
+    public TradeItemFragment findSellingView() {
+        return mMainMvpController.findOrCreateSellingView();
+    }
+
+    @Override
+    public TradeItemFragment findBoughtView() {
+        return mMainMvpController.findOrCreateBoughtView();
+    }
+
+    @Override
+    public TradeItemFragment findSoldView() {
+        return mMainMvpController.findOrCreateSoldView();
     }
 
     @Override
@@ -262,6 +275,23 @@ public class MainActivity extends AppCompatActivity implements MainContract.View
     @Override
     public void showBottomNavigationUi() {
         mBottomNavigation.setVisibility(View.VISIBLE);
+    }
+
+    @Override
+    public void showMessageDialogUi(@MessageDialog.MessageType int type) {
+
+        if (mMessageDialog == null) {
+
+            mMessageDialog = new MessageDialog();
+            mMessageDialog.setMessage(type);
+            mMessageDialog.show(getSupportFragmentManager(), "");
+
+        } else if (!mMessageDialog.isAdded()) {
+
+            mMessageDialog.setMessage(type);
+            mMessageDialog.show(getSupportFragmentManager(), "");
+        }
+
     }
 
     @Override

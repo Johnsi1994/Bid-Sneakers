@@ -1,4 +1,4 @@
-package com.johnson.bid.centre.auction;
+package com.johnson.bid.trade.TradeItem;
 
 import android.os.Bundle;
 import android.support.annotation.NonNull;
@@ -15,43 +15,46 @@ import com.johnson.bid.R;
 
 import static com.google.common.base.Preconditions.checkNotNull;
 
-public class AuctionFragment extends Fragment implements AuctionContract.View {
+public class TradeItemFragment extends Fragment implements TradeItemContract.View {
 
-    private AuctionContract.Presenter mPresenter;
-    private AuctionAdapter mAuctionAdapter;
+    private TradeItemContract.Presenter mPresenter;
+    private TradeItemAdapter mTradeItemAdapter;
 
-    private String mAuctionType;
+    private String mTradeType;
 
-    public AuctionFragment() {}
+    public TradeItemFragment() {}
 
-    public static AuctionFragment newInstance() {
-        return new AuctionFragment();
+    public static TradeItemFragment newInstance() {
+        return new TradeItemFragment();
     }
 
     @Override
     public void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        mAuctionAdapter = new AuctionAdapter(mPresenter, mAuctionType);
+
+        mTradeItemAdapter = new TradeItemAdapter(mPresenter, mTradeType);
+
     }
 
     @Nullable
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
-        View root = inflater.inflate(R.layout.fragment_auction_recycler, container, false);
+        View root = inflater.inflate(R.layout.fragment_trade_recycler, container, false);
 
-        RecyclerView recyclerView = root.findViewById(R.id.recycler_auction);
+        RecyclerView recyclerView = root.findViewById(R.id.recycler_trade);
         recyclerView.setLayoutManager(new LinearLayoutManager(getActivity()));
-        recyclerView.setAdapter(mAuctionAdapter);
+        recyclerView.setAdapter(mTradeItemAdapter);
 
         return root;
     }
 
     @Override
-    public void setPresenter(AuctionContract.Presenter presenter) {
+    public void setPresenter(TradeItemContract.Presenter presenter) {
         mPresenter = checkNotNull(presenter);
     }
 
-    public void setAuctionType(@MainMvpController.AuctionType String auctionType) {
-        mAuctionType = auctionType;
+    public void setTradeType(@MainMvpController.TradeType String tradeType) {
+        mTradeType = tradeType;
     }
+
 }

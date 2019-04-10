@@ -3,6 +3,8 @@ package com.johnson.bid;
 import android.graphics.Bitmap;
 
 import com.johnson.bid.centre.auction.AuctionFragment;
+import com.johnson.bid.dialog.MessageDialog;
+import com.johnson.bid.trade.TradeItem.TradeItemFragment;
 
 import java.util.ArrayList;
 
@@ -34,6 +36,14 @@ public interface MainContract {
 
         AuctionFragment findSealedAuctionView();
 
+        TradeItemFragment findBiddingView();
+
+        TradeItemFragment findSellingView();
+
+        TradeItemFragment findBoughtView();
+
+        TradeItemFragment findSoldView();
+
         void setToolbarTitleUi(String title);
 
         void hideToolbarUi();
@@ -43,6 +53,8 @@ public interface MainContract {
         void hideBottomNavigationUi();
 
         void showBottomNavigationUi();
+
+        void showMessageDialogUi(@MessageDialog.MessageType int type);
     }
 
     interface Presenter extends BasePresenter {

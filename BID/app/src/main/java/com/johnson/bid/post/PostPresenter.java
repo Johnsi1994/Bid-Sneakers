@@ -108,4 +108,16 @@ public class PostPresenter implements PostContract.Presenter {
     public void openGalleryDialog(String from) {
 
     }
+
+    @Override
+    public void showPostSuccessDialog() {
+
+    }
+
+    @Override
+    public void openCenter() {
+
+    }
+
+
 }

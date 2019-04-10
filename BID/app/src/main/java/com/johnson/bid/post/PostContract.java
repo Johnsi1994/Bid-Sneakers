@@ -47,7 +47,9 @@ public interface PostContract {
 
         void openGalleryDialog(String from);
 
+        void showPostSuccessDialog();
 
+        void openCenter();
     }
 
 }

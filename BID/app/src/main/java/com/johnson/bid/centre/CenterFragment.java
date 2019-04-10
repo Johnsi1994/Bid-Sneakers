@@ -34,7 +34,8 @@ public class CenterFragment extends Fragment implements CenterContract.View {
 
     private boolean isFABOpen = false;
 
-    public CenterFragment() {}
+    public CenterFragment() {
+    }
 
     public static CenterFragment newInstance() {
         return new CenterFragment();
@@ -70,9 +71,10 @@ public class CenterFragment extends Fragment implements CenterContract.View {
             }
         });
 
-        mPostFloatingActionButton.setOnClickListener( v ->
-                mPresenter.openGalleryDialog("CENTER")
-        );
+        mPostFloatingActionButton.setOnClickListener(v -> {
+            closeFABMenu();
+            mPresenter.openGalleryDialog("CENTER");
+        });
 
 
         return root;
@@ -93,14 +95,14 @@ public class CenterFragment extends Fragment implements CenterContract.View {
         mPresenter = checkNotNull(presenter);
     }
 
-    private void showFABMenu(){
+    private void showFABMenu() {
         isFABOpen = true;
         mPostFloatingActionButton.animate().translationY(-getResources().getDimension(R.dimen.standard_70));
         mSearchFloatingActionButton.animate().translationY(-getResources().getDimension(R.dimen.standard_140));
         mEyesOnFloatingActionButton.animate().translationY(-getResources().getDimension(R.dimen.standard_210));
     }
 
-    private void closeFABMenu(){
+    private void closeFABMenu() {
         isFABOpen = false;
         mPostFloatingActionButton.animate().translationY(0);
         mSearchFloatingActionButton.animate().translationY(0);

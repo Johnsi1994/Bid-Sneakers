@@ -106,8 +106,8 @@ public class AuctionAdapter extends RecyclerView.Adapter {
         public SealedAuctionViewHolder(View itemView) {
             super(itemView);
 
-            mImageMain = itemView.findViewById(R.id.image_product_s_auction);
-            mTextTitle = itemView.findViewById(R.id.text_product_title_s_auction);
+            mImageMain = itemView.findViewById(R.id.image_selling_s);
+            mTextTitle = itemView.findViewById(R.id.text_title_selling_s);
             mTextTime = itemView.findViewById(R.id.text_last_time_s_auction);
         }
 

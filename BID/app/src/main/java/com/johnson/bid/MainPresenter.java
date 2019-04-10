@@ -14,6 +14,7 @@ import com.johnson.bid.chat.ChatPresenter;
 import com.johnson.bid.centre.CenterContract;
 import com.johnson.bid.centre.CenterPresenter;
 import com.johnson.bid.centre.auction.AuctionFragment;
+import com.johnson.bid.dialog.MessageDialog;
 import com.johnson.bid.login.LoginContract;
 import com.johnson.bid.login.LoginPresenter;
 import com.johnson.bid.post.PostContract;
@@ -21,6 +22,9 @@ import com.johnson.bid.post.PostPresenter;
 import com.johnson.bid.settings.SettingsContract;
 import com.johnson.bid.settings.SettingsPresenter;
 import com.johnson.bid.trade.TradeContract;
+import com.johnson.bid.trade.TradeItem.TradeItemContract;
+import com.johnson.bid.trade.TradeItem.TradeItemFragment;
+import com.johnson.bid.trade.TradeItem.TradeItemPresenter;
 import com.johnson.bid.trade.TradePresenter;
 
 import java.util.ArrayList;
@@ -30,7 +34,7 @@ import static com.google.common.base.Preconditions.checkNotNull;
 
 public class MainPresenter implements MainContract.Presenter, CenterContract.Presenter, TradeContract.Presenter,
         ChatContract.Presenter, SettingsContract.Presenter , AuctionContract.Presenter, LoginContract.Presenter,
-        PostContract.Presenter {
+        PostContract.Presenter, TradeItemContract.Presenter {
 
     private MainContract.View mMainView;
 
@@ -43,6 +47,11 @@ public class MainPresenter implements MainContract.Presenter, CenterContract.Pre
 
     private AuctionPresenter mEmglishAuctionPresenter;
     private AuctionPresenter mSealedAuctionPresenter;
+
+    private TradeItemPresenter mBiddingPresenter;
+    private TradeItemPresenter mSellingPresenter;
+    private TradeItemPresenter mBoughtPresenter;
+    private TradeItemPresenter mSoldPresenter;
 
     public MainPresenter(MainContract.View mainView) {
         mMainView = checkNotNull(mainView, "mainView cannot be null!");
@@ -79,6 +88,22 @@ public class MainPresenter implements MainContract.Presenter, CenterContract.Pre
 
     void setSealedAuctionPresenter(AuctionPresenter sealedAuctionPresenter) {
         mSealedAuctionPresenter = checkNotNull(sealedAuctionPresenter);
+    }
+
+    void setBiddingPresenter(TradeItemPresenter biddingPresenter) {
+        mBiddingPresenter = checkNotNull(biddingPresenter);
+    }
+
+    void setSellingPresenter(TradeItemPresenter sellingPresenter) {
+        mSellingPresenter = checkNotNull(sellingPresenter);
+    }
+
+    void setBoughtPresenter(TradeItemPresenter boughtPresenter) {
+        mBoughtPresenter = checkNotNull(boughtPresenter);
+    }
+
+    void setSoldPresenter(TradeItemPresenter soldPresenter) {
+        mSoldPresenter = checkNotNull(soldPresenter);
     }
 
     @Override
@@ -170,6 +195,12 @@ public class MainPresenter implements MainContract.Presenter, CenterContract.Pre
     }
 
     @Override
+    public void showPostSuccessDialog() {
+        mMainView.showMessageDialogUi(MessageDialog.POST_SUCCESS);
+
+    }
+
+    @Override
     public void onLoginSuccess() {
         mMainView.openCenterUi();
         showToolbarAndBottomNavigation();
@@ -228,5 +259,28 @@ public class MainPresenter implements MainContract.Presenter, CenterContract.Pre
     @Override
     public void setImages(ArrayList<String> Url) {
         mPostPresenter.setImages(Url);
+    }
+
+    @Override
+    public TradeItemFragment findBidding() {
+        return mMainView.findBiddingView();
+    }
+
+    @Override
+    public TradeItemFragment findSelling() {
+        return mMainView.findSellingView();
+
+    }
+
+    @Override
+    public TradeItemFragment findBought() {
+        return mMainView.findBoughtView();
+
+    }
+
+    @Override
+    public TradeItemFragment findSold() {
+        return mMainView.findSoldView();
+
     }
 }

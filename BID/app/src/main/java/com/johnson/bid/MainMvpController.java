@@ -22,6 +22,8 @@ import com.johnson.bid.post.PostPresenter;
 import com.johnson.bid.settings.SettingsFragment;
 import com.johnson.bid.settings.SettingsPresenter;
 import com.johnson.bid.trade.TradeFragment;
+import com.johnson.bid.trade.TradeItem.TradeItemFragment;
+import com.johnson.bid.trade.TradeItem.TradeItemPresenter;
 import com.johnson.bid.trade.TradePresenter;
 import com.johnson.bid.util.ActivityUtils;
 
@@ -41,9 +43,13 @@ public class MainMvpController {
     private SettingsPresenter mSettingsPresenter;
     private PostPresenter mPostPresenter;
 
-
     private AuctionPresenter mEnglishAuctionPresenter;
     private AuctionPresenter mSealedAuctionPresenter;
+
+    private TradeItemPresenter mBiddingPresenter;
+    private TradeItemPresenter mSellingPresenter;
+    private TradeItemPresenter mBoughtPresenter;
+    private TradeItemPresenter mSoldPresenter;
 
     @Retention(RetentionPolicy.SOURCE)
     @StringDef({
@@ -69,6 +75,18 @@ public class MainMvpController {
 
     public static final String ENGLISH = "ENGLISH";
     public static final String SEALED = "SEALED";
+
+    @Retention(RetentionPolicy.SOURCE)
+    @StringDef({
+            BIDDING, SELLING, BOUGHT, SOLD
+    })
+    public @interface TradeType {
+    }
+
+    public static final String BIDDING = "BIDDING";
+    public static final String SELLING = "SELLING";
+    public static final String BOUGHT = "BOUGHT";
+    public static final String SOLD = "SOLD";
 
 
     private MainMvpController(@NonNull FragmentActivity activity) {
@@ -181,6 +199,54 @@ public class MainMvpController {
         return fragment;
     }
 
+    TradeItemFragment findOrCreateBiddingView() {
+
+        TradeItemFragment fragment = findOrCreateTradeItemFragment(BIDDING);
+
+        mBiddingPresenter = new TradeItemPresenter(fragment);
+        fragment.setPresenter(mMainPresenter);
+        fragment.setTradeType(BIDDING);
+        mMainPresenter.setBiddingPresenter(mBiddingPresenter);
+
+        return fragment;
+    }
+
+    TradeItemFragment findOrCreateSellingView() {
+
+        TradeItemFragment fragment = findOrCreateTradeItemFragment(SELLING);
+
+        mSellingPresenter = new TradeItemPresenter(fragment);
+        fragment.setPresenter(mMainPresenter);
+        fragment.setTradeType(SELLING);
+        mMainPresenter.setSellingPresenter(mSellingPresenter);
+
+        return fragment;
+    }
+
+    TradeItemFragment findOrCreateBoughtView() {
+
+        TradeItemFragment fragment = findOrCreateTradeItemFragment(BOUGHT);
+
+        mBoughtPresenter = new TradeItemPresenter(fragment);
+        fragment.setPresenter(mMainPresenter);
+        fragment.setTradeType(BOUGHT);
+        mMainPresenter.setBoughtPresenter(mBoughtPresenter);
+
+        return fragment;
+    }
+
+    TradeItemFragment findOrCreateSoldView() {
+
+        TradeItemFragment fragment = findOrCreateTradeItemFragment(SOLD);
+
+        mSoldPresenter = new TradeItemPresenter(fragment);
+        fragment.setPresenter(mMainPresenter);
+        fragment.setTradeType(SOLD);
+        mMainPresenter.setSoldPresenter(mSoldPresenter);
+
+        return fragment;
+    }
+
     @NonNull
     private LoginFragment createLoginFragment() {
 
@@ -198,22 +264,6 @@ public class MainMvpController {
         PostFragment postFragment = PostFragment.newInstance();
 
         ActivityUtils.addFragmentByTag(
-                getFragmentManager(), postFragment, POST);
-
-        return postFragment;
-    }
-
-    @NonNull
-    private PostFragment findOrCreatePostFragment() {
-
-        PostFragment postFragment = (PostFragment) getFragmentManager().findFragmentByTag(POST);
-
-        if (postFragment == null) {
-            // Create the fragment
-            postFragment = PostFragment.newInstance();
-        }
-
-        ActivityUtils.showOrAddFragmentByTag(
                 getFragmentManager(), postFragment, POST);
 
         return postFragment;
@@ -292,6 +342,20 @@ public class MainMvpController {
         if (fragment == null) {
             // Create the fragment
             fragment = AuctionFragment.newInstance();
+        }
+
+        return fragment;
+    }
+
+    @NonNull
+    private TradeItemFragment findOrCreateTradeItemFragment(@TradeType String tradeType) {
+
+        TradeItemFragment fragment =
+                (TradeItemFragment) ((getFragmentManager().findFragmentByTag(TRADE)))
+                        .getChildFragmentManager().findFragmentByTag(tradeType);
+        if (fragment == null) {
+            // Create the fragment
+            fragment = TradeItemFragment.newInstance();
         }
 
         return fragment;

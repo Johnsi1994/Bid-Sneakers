@@ -100,7 +100,6 @@ public class UserManager {
                             protected void onCurrentProfileChanged(Profile oldProfile, Profile currentProfile) {
                                 mProfileTracker.stopTracking();
                                 profile = currentProfile;
-
                             }
                         };
                     } else {
@@ -108,7 +107,7 @@ public class UserManager {
                     }
 
                     Uri userPhoto = profile.getProfilePictureUri(300, 300);
-                    
+
                     User user = new User();
                     user.setId(id);
                     user.setName(name);

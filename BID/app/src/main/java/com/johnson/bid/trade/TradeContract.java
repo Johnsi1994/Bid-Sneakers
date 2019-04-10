@@ -2,6 +2,7 @@ package com.johnson.bid.trade;
 
 import com.johnson.bid.BasePresenter;
 import com.johnson.bid.BaseView;
+import com.johnson.bid.trade.TradeItem.TradeItemFragment;
 
 public interface TradeContract {
 
@@ -11,5 +12,12 @@ public interface TradeContract {
 
     interface Presenter extends BasePresenter {
 
+        TradeItemFragment findBidding();
+
+        TradeItemFragment findSelling();
+
+        TradeItemFragment findBought();
+
+        TradeItemFragment findSold();
     }
 }

@@ -7,6 +7,8 @@ import android.support.annotation.StringDef;
 import android.support.v4.app.FragmentActivity;
 import android.support.v4.app.FragmentManager;
 
+import com.johnson.bid.bidding.BiddingFragment;
+import com.johnson.bid.bidding.BiddingPresenter;
 import com.johnson.bid.centre.auction.AuctionFragment;
 import com.johnson.bid.centre.auction.AuctionPresenter;
 import com.johnson.bid.chat.ChatFragment;
@@ -39,18 +41,19 @@ public class MainMvpController {
     private ChatPresenter mChatPresenter;
     private SettingsPresenter mSettingsPresenter;
     private PostPresenter mPostPresenter;
+    private BiddingPresenter mBiddingPresenter;
 
     private AuctionPresenter mEnglishAuctionPresenter;
     private AuctionPresenter mSealedAuctionPresenter;
 
-    private TradeItemPresenter mBiddingPresenter;
-    private TradeItemPresenter mSellingPresenter;
-    private TradeItemPresenter mBoughtPresenter;
-    private TradeItemPresenter mSoldPresenter;
+    private TradeItemPresenter mMyBiddingPresenter;
+    private TradeItemPresenter mMySellingPresenter;
+    private TradeItemPresenter mMyBoughtPresenter;
+    private TradeItemPresenter mMySoldPresenter;
 
     @Retention(RetentionPolicy.SOURCE)
     @StringDef({
-            LOGIN, CENTER, TRADE, CHAT, SETTINGS, POST
+            LOGIN, CENTER, TRADE, CHAT, SETTINGS, POST, BIDDING
     })
 
     public @interface FragmentType {
@@ -62,6 +65,7 @@ public class MainMvpController {
     static final String CHAT = "CHAT";
     static final String SETTINGS = "SETTINGS";
     static final String POST = "POST";
+    static final String BIDDING = "BIDDING";
 
     @Retention(RetentionPolicy.SOURCE)
     @StringDef({
@@ -75,15 +79,15 @@ public class MainMvpController {
 
     @Retention(RetentionPolicy.SOURCE)
     @StringDef({
-            BIDDING, SELLING, BOUGHT, SOLD
+            MYBIDDING, MYSELLING, MYBOUGHT, MYSOLD
     })
     public @interface TradeType {
     }
 
-    public static final String BIDDING = "BIDDING";
-    public static final String SELLING = "SELLING";
-    public static final String BOUGHT = "BOUGHT";
-    public static final String SOLD = "SOLD";
+    public static final String MYBIDDING = "MYBIDDING";
+    public static final String MYSELLING = "MYSELLING";
+    public static final String MYBOUGHT = "MYBOUGHT";
+    public static final String MYSOLD = "MYSOLD";
 
 
     private MainMvpController(@NonNull FragmentActivity activity) {
@@ -196,52 +200,61 @@ public class MainMvpController {
         return fragment;
     }
 
-    TradeItemFragment findOrCreateBiddingView() {
+    TradeItemFragment findOrCreateMyBiddingView() {
 
-        TradeItemFragment fragment = findOrCreateTradeItemFragment(BIDDING);
+        TradeItemFragment fragment = findOrCreateTradeItemFragment(MYBIDDING);
 
-        mBiddingPresenter = new TradeItemPresenter(fragment);
+        mMyBiddingPresenter = new TradeItemPresenter(fragment);
         fragment.setPresenter(mMainPresenter);
-        fragment.setTradeType(BIDDING);
+        fragment.setTradeType(MYBIDDING);
+        mMainPresenter.setMyBiddingPresenter(mMyBiddingPresenter);
+
+        return fragment;
+    }
+
+    TradeItemFragment findOrCreateMySellingView() {
+
+        TradeItemFragment fragment = findOrCreateTradeItemFragment(MYSELLING);
+
+        mMySellingPresenter = new TradeItemPresenter(fragment);
+        fragment.setPresenter(mMainPresenter);
+        fragment.setTradeType(MYSELLING);
+        mMainPresenter.setMySellingPresenter(mMySellingPresenter);
+
+        return fragment;
+    }
+
+    TradeItemFragment findOrCreateMyBoughtView() {
+
+        TradeItemFragment fragment = findOrCreateTradeItemFragment(MYBOUGHT);
+
+        mMyBoughtPresenter = new TradeItemPresenter(fragment);
+        fragment.setPresenter(mMainPresenter);
+        fragment.setTradeType(MYBOUGHT);
+        mMainPresenter.setMyBoughtPresenter(mMyBoughtPresenter);
+
+        return fragment;
+    }
+
+    TradeItemFragment findOrCreateMySoldView() {
+
+        TradeItemFragment fragment = findOrCreateTradeItemFragment(MYSOLD);
+
+        mMySoldPresenter = new TradeItemPresenter(fragment);
+        fragment.setPresenter(mMainPresenter);
+        fragment.setTradeType(MYSOLD);
+        mMainPresenter.setMySoldPresenter(mMySoldPresenter);
+
+        return fragment;
+    }
+
+    void createBiddingView() {
+
+        BiddingFragment biddingFragment = createBiddingFragment();
+
+        mBiddingPresenter = new BiddingPresenter(biddingFragment);
         mMainPresenter.setBiddingPresenter(mBiddingPresenter);
-
-        return fragment;
-    }
-
-    TradeItemFragment findOrCreateSellingView() {
-
-        TradeItemFragment fragment = findOrCreateTradeItemFragment(SELLING);
-
-        mSellingPresenter = new TradeItemPresenter(fragment);
-        fragment.setPresenter(mMainPresenter);
-        fragment.setTradeType(SELLING);
-        mMainPresenter.setSellingPresenter(mSellingPresenter);
-
-        return fragment;
-    }
-
-    TradeItemFragment findOrCreateBoughtView() {
-
-        TradeItemFragment fragment = findOrCreateTradeItemFragment(BOUGHT);
-
-        mBoughtPresenter = new TradeItemPresenter(fragment);
-        fragment.setPresenter(mMainPresenter);
-        fragment.setTradeType(BOUGHT);
-        mMainPresenter.setBoughtPresenter(mBoughtPresenter);
-
-        return fragment;
-    }
-
-    TradeItemFragment findOrCreateSoldView() {
-
-        TradeItemFragment fragment = findOrCreateTradeItemFragment(SOLD);
-
-        mSoldPresenter = new TradeItemPresenter(fragment);
-        fragment.setPresenter(mMainPresenter);
-        fragment.setTradeType(SOLD);
-        mMainPresenter.setSoldPresenter(mSoldPresenter);
-
-        return fragment;
+        biddingFragment.setPresenter(mMainPresenter);
     }
 
     @NonNull
@@ -264,6 +277,17 @@ public class MainMvpController {
                 getFragmentManager(), postFragment, POST);
 
         return postFragment;
+    }
+
+    @NonNull
+    private BiddingFragment createBiddingFragment() {
+
+        BiddingFragment biddingFragment = BiddingFragment.newInstance();
+
+        ActivityUtils.addFragmentByTag(
+                getFragmentManager(), biddingFragment, BIDDING);
+
+        return biddingFragment;
     }
 
     @NonNull

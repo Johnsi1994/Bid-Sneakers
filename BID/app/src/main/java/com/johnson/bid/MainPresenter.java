@@ -1,5 +1,7 @@
 package com.johnson.bid;
 
+import com.johnson.bid.bidding.BiddingContract;
+import com.johnson.bid.bidding.BiddingPresenter;
 import com.johnson.bid.centre.auction.AuctionContract;
 import com.johnson.bid.centre.auction.AuctionPresenter;
 import com.johnson.bid.chat.ChatContract;
@@ -27,7 +29,7 @@ import static com.google.common.base.Preconditions.checkNotNull;
 
 public class MainPresenter implements MainContract.Presenter, CenterContract.Presenter, TradeContract.Presenter,
         ChatContract.Presenter, SettingsContract.Presenter , AuctionContract.Presenter, LoginContract.Presenter,
-        PostContract.Presenter, TradeItemContract.Presenter {
+        PostContract.Presenter, TradeItemContract.Presenter, BiddingContract.Presenter {
 
     private MainContract.View mMainView;
 
@@ -37,14 +39,15 @@ public class MainPresenter implements MainContract.Presenter, CenterContract.Pre
     private ChatPresenter mChatPresenter;
     private SettingsPresenter mSettingsPresenter;
     private PostPresenter mPostPresenter;
+    private BiddingPresenter mBiddingPresenter;
 
     private AuctionPresenter mEmglishAuctionPresenter;
     private AuctionPresenter mSealedAuctionPresenter;
 
-    private TradeItemPresenter mBiddingPresenter;
-    private TradeItemPresenter mSellingPresenter;
-    private TradeItemPresenter mBoughtPresenter;
-    private TradeItemPresenter mSoldPresenter;
+    private TradeItemPresenter mMyBiddingPresenter;
+    private TradeItemPresenter mMySellingPresenter;
+    private TradeItemPresenter mMyBoughtPresenter;
+    private TradeItemPresenter mMySoldPresenter;
 
     public MainPresenter(MainContract.View mainView) {
         mMainView = checkNotNull(mainView, "mainView cannot be null!");
@@ -83,20 +86,24 @@ public class MainPresenter implements MainContract.Presenter, CenterContract.Pre
         mSealedAuctionPresenter = checkNotNull(sealedAuctionPresenter);
     }
 
-    void setBiddingPresenter(TradeItemPresenter biddingPresenter) {
+    void setMyBiddingPresenter(TradeItemPresenter myBiddingPresenter) {
+        mMyBiddingPresenter = checkNotNull(myBiddingPresenter);
+    }
+
+    void setMySellingPresenter(TradeItemPresenter mySellingPresenter) {
+        mMySellingPresenter = checkNotNull(mySellingPresenter);
+    }
+
+    void setMyBoughtPresenter(TradeItemPresenter myBoughtPresenter) {
+        mMyBoughtPresenter = checkNotNull(myBoughtPresenter);
+    }
+
+    void setMySoldPresenter(TradeItemPresenter mySoldPresenter) {
+        mMySoldPresenter = checkNotNull(mySoldPresenter);
+    }
+
+    void setBiddingPresenter(BiddingPresenter biddingPresenter) {
         mBiddingPresenter = checkNotNull(biddingPresenter);
-    }
-
-    void setSellingPresenter(TradeItemPresenter sellingPresenter) {
-        mSellingPresenter = checkNotNull(sellingPresenter);
-    }
-
-    void setBoughtPresenter(TradeItemPresenter boughtPresenter) {
-        mBoughtPresenter = checkNotNull(boughtPresenter);
-    }
-
-    void setSoldPresenter(TradeItemPresenter soldPresenter) {
-        mSoldPresenter = checkNotNull(soldPresenter);
     }
 
     @Override
@@ -255,28 +262,31 @@ public class MainPresenter implements MainContract.Presenter, CenterContract.Pre
     }
 
     @Override
-    public TradeItemFragment findBidding() {
-        return mMainView.findBiddingView();
+    public TradeItemFragment findMyBidding() {
+        return mMainView.findMyBiddingView();
     }
 
     @Override
-    public TradeItemFragment findSelling() {
-        return mMainView.findSellingView();
-
-    }
-
-    @Override
-    public TradeItemFragment findBought() {
-        return mMainView.findBoughtView();
+    public TradeItemFragment findMySelling() {
+        return mMainView.findMySellingView();
 
     }
 
     @Override
-    public TradeItemFragment findSold() {
-        return mMainView.findSoldView();
+    public TradeItemFragment findMyBought() {
+        return mMainView.findMyBoughtView();
+
+    }
+
+    @Override
+    public TradeItemFragment findMySold() {
+        return mMainView.findMySoldView();
 
     }
 
 
-
+    @Override
+    public void openBidding() {
+        mMainView.findBiddingView();
+    }
 }

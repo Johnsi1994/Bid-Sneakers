@@ -2,7 +2,6 @@ package com.johnson.bid.trade.TradeItem;
 
 import android.support.annotation.NonNull;
 import android.support.v7.widget.RecyclerView;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -12,10 +11,10 @@ import android.widget.TextView;
 import com.johnson.bid.MainMvpController;
 import com.johnson.bid.R;
 
-import static com.johnson.bid.MainMvpController.BIDDING;
-import static com.johnson.bid.MainMvpController.BOUGHT;
-import static com.johnson.bid.MainMvpController.SELLING;
-import static com.johnson.bid.MainMvpController.SOLD;
+import static com.johnson.bid.MainMvpController.MYBIDDING;
+import static com.johnson.bid.MainMvpController.MYBOUGHT;
+import static com.johnson.bid.MainMvpController.MYSELLING;
+import static com.johnson.bid.MainMvpController.MYSOLD;
 
 public class TradeItemAdapter extends RecyclerView.Adapter {
 
@@ -35,22 +34,22 @@ public class TradeItemAdapter extends RecyclerView.Adapter {
     public RecyclerView.ViewHolder onCreateViewHolder(@NonNull ViewGroup viewGroup, int viewType) {
         if (viewType == TYPE_PRODUCT) {
             switch (mTradeType) {
-                case BIDDING:
+                case MYBIDDING:
                     return new BiddingEnglishViewHolder(LayoutInflater.from(viewGroup.getContext())
                             .inflate(R.layout.item_english_auction, viewGroup, false));
 
 //                return new BiddingSealedViewHolder(LayoutInflater.from(viewGroup.getContext())
 //                        .inflate(R.layout.item_sealed_auction, viewGroup, false));
-                case SELLING:
+                case MYSELLING:
                     return new SellingEnglishViewHolder(LayoutInflater.from(viewGroup.getContext())
                             .inflate(R.layout.item_selling_english, viewGroup, false));
 
 //                return new SellingSealedViewHolder(LayoutInflater.from(viewGroup.getContext())
 //                        .inflate(R.layout.item_selling_sealed, viewGroup, false));
-                case BOUGHT:
+                case MYBOUGHT:
                     return new BoughtViewHolder(LayoutInflater.from(viewGroup.getContext())
                             .inflate(R.layout.item_bought, viewGroup, false));
-                case SOLD:
+                case MYSOLD:
                 default:
                     return new SoldViewHolder(LayoutInflater.from(viewGroup.getContext())
                             .inflate(R.layout.item_sold, viewGroup, false));

@@ -1,6 +1,7 @@
 package com.johnson.bid.centre.auction;
 
 import android.support.annotation.NonNull;
+import android.support.constraint.ConstraintLayout;
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -60,6 +61,7 @@ public class AuctionAdapter extends RecyclerView.Adapter {
 
     private class EnglishAuctionViewHolder extends RecyclerView.ViewHolder {
 
+        private ConstraintLayout mLayoutEnglishAuction;
         private ImageView mImageMain;
         private TextView mTextTitle;
         private TextView mTextTime;
@@ -69,11 +71,18 @@ public class AuctionAdapter extends RecyclerView.Adapter {
         public EnglishAuctionViewHolder(View itemView) {
             super(itemView);
 
+
+            mLayoutEnglishAuction = itemView.findViewById(R.id.layout_e_auction);
             mImageMain = itemView.findViewById(R.id.image_product_e_auction);
             mTextTitle = itemView.findViewById(R.id.text_product_title_e_auction);
             mTextTime = itemView.findViewById(R.id.text_last_time_e_auction);
             mTextPrice = itemView.findViewById(R.id.text_price_e_auction);
             mTextPeople = itemView.findViewById(R.id.text_participant_num_e_auction);
+
+            mLayoutEnglishAuction.setOnClickListener(v -> {
+                mPresenter.hideToolbarAndBottomNavigation();
+                mPresenter.openBidding();
+            });
         }
 
         public ImageView getImageMain() {

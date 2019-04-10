@@ -36,13 +36,15 @@ public interface MainContract {
 
         AuctionFragment findSealedAuctionView();
 
-        TradeItemFragment findBiddingView();
+        TradeItemFragment findMyBiddingView();
 
-        TradeItemFragment findSellingView();
+        TradeItemFragment findMySellingView();
 
-        TradeItemFragment findBoughtView();
+        TradeItemFragment findMyBoughtView();
 
-        TradeItemFragment findSoldView();
+        TradeItemFragment findMySoldView();
+
+        void findBiddingView();
 
         void setToolbarTitleUi(String title);
 

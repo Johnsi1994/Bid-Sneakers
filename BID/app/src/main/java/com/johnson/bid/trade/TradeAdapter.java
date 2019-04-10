@@ -4,17 +4,16 @@ import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentPagerAdapter;
-import android.util.Log;
 
-import static com.johnson.bid.MainMvpController.BIDDING;
-import static com.johnson.bid.MainMvpController.BOUGHT;
-import static com.johnson.bid.MainMvpController.SELLING;
-import static com.johnson.bid.MainMvpController.SOLD;
+import static com.johnson.bid.MainMvpController.MYBIDDING;
+import static com.johnson.bid.MainMvpController.MYBOUGHT;
+import static com.johnson.bid.MainMvpController.MYSELLING;
+import static com.johnson.bid.MainMvpController.MYSOLD;
 
 public class TradeAdapter extends FragmentPagerAdapter {
 
     private TradeContract.Presenter mPresenter;
-    private String[] mTrading = new String[]{BIDDING, SELLING, BOUGHT, SOLD};
+    private String[] mTrading = new String[]{MYBIDDING, MYSELLING, MYBOUGHT, MYSOLD};
 
     public TradeAdapter(FragmentManager fm, TradeContract.Presenter presenter) {
         super(fm);
@@ -24,22 +23,16 @@ public class TradeAdapter extends FragmentPagerAdapter {
     @Override
     public Fragment getItem(int i) {
 
-        Log.d("Johnsi", "IN getItem : i = " + i);
-
         switch (mTrading[i]) {
-            case BIDDING:
-                Log.d("Johnsi", "getItem : BIDDING");
-                return mPresenter.findBidding();
-            case SELLING:
-                Log.d("Johnsi", "getItem : SELLING");
-                return mPresenter.findSelling();
-            case BOUGHT:
-                Log.d("Johnsi", "getItem : BOUGHT");
-                return mPresenter.findBought();
-            case SOLD:
+            case MYBIDDING:
+                return mPresenter.findMyBidding();
+            case MYSELLING:
+                return mPresenter.findMySelling();
+            case MYBOUGHT:
+                return mPresenter.findMyBought();
+            case MYSOLD:
             default:
-                Log.d("Johnsi", "getItem : SOLD");
-                return mPresenter.findSold();
+                return mPresenter.findMySold();
         }
     }
 

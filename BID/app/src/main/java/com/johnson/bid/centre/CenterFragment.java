@@ -46,8 +46,6 @@ public class CenterFragment extends Fragment implements CenterContract.View {
         super.onCreate(savedInstanceState);
 
         mCenterAdapter = new CenterAdapter(getChildFragmentManager(), mPresenter);
-
-
     }
 
     @Nullable

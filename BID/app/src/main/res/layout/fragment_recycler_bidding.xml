@@ -6,15 +6,12 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent">
 
-    <FrameLayout
-        android:id="@+id/layout_container"
+    <android.support.v7.widget.RecyclerView
+        android:id="@+id/recycler_container"
         android:layout_width="0dp"
         android:layout_height="0dp"
-        android:background="@color/color_FAB"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent">
-
-    </FrameLayout>
+        app:layout_constraintTop_toTopOf="parent" />
 </android.support.constraint.ConstraintLayout>

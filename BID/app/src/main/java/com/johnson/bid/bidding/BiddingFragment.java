@@ -1,4 +1,4 @@
-package com.johnson.bid.centre.auction;
+package com.johnson.bid.bidding;
 
 import android.os.Bundle;
 import android.support.annotation.NonNull;
@@ -10,48 +10,43 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 
-import com.johnson.bid.MainMvpController;
 import com.johnson.bid.R;
 
 import static com.google.common.base.Preconditions.checkNotNull;
 
-public class AuctionFragment extends Fragment implements AuctionContract.View {
+public class BiddingFragment extends Fragment implements BiddingContract.View {
 
-    private AuctionContract.Presenter mPresenter;
-    private AuctionAdapter mAuctionAdapter;
+    private BiddingContract.Presenter mPresenter;
+    private BiddingAdapter mBiddingAdapter;
 
-    private String mAuctionType;
+    public BiddingFragment() {
+    }
 
-    public AuctionFragment() {}
-
-    public static AuctionFragment newInstance() {
-        return new AuctionFragment();
+    public static BiddingFragment newInstance() {
+        return new BiddingFragment();
     }
 
     @Override
     public void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        mAuctionAdapter = new AuctionAdapter(mPresenter, mAuctionType);
+
+        mBiddingAdapter = new BiddingAdapter(mPresenter);
     }
 
     @Nullable
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
-        View root = inflater.inflate(R.layout.fragment_recycler_auction, container, false);
+        View root = inflater.inflate(R.layout.fragment_recycler_bidding, container, false);
 
-        RecyclerView recyclerView = root.findViewById(R.id.recycler_auction);
+        RecyclerView recyclerView = root.findViewById(R.id.recycler_container);
         recyclerView.setLayoutManager(new LinearLayoutManager(getActivity()));
-        recyclerView.setAdapter(mAuctionAdapter);
+        recyclerView.setAdapter(mBiddingAdapter);
 
         return root;
     }
 
     @Override
-    public void setPresenter(AuctionContract.Presenter presenter) {
+    public void setPresenter(BiddingContract.Presenter presenter) {
         mPresenter = checkNotNull(presenter);
-    }
-
-    public void setAuctionType(@MainMvpController.AuctionType String auctionType) {
-        mAuctionType = auctionType;
     }
 }

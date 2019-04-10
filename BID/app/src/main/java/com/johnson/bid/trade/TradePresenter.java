@@ -20,22 +20,22 @@ public class TradePresenter implements TradeContract.Presenter {
     }
 
     @Override
-    public TradeItemFragment findBidding() {
+    public TradeItemFragment findMyBidding() {
         return null;
     }
 
     @Override
-    public TradeItemFragment findSelling() {
+    public TradeItemFragment findMySelling() {
         return null;
     }
 
     @Override
-    public TradeItemFragment findBought() {
+    public TradeItemFragment findMyBought() {
         return null;
     }
 
     @Override
-    public TradeItemFragment findSold() {
+    public TradeItemFragment findMySold() {
         return null;
     }
 

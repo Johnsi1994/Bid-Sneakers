@@ -225,25 +225,29 @@ public class MainActivity extends AppCompatActivity implements MainContract.View
     }
 
     @Override
-    public TradeItemFragment findBiddingView() {
-        return mMainMvpController.findOrCreateBiddingView();
+    public TradeItemFragment findMyBiddingView() {
+        return mMainMvpController.findOrCreateMyBiddingView();
     }
 
     @Override
-    public TradeItemFragment findSellingView() {
-        return mMainMvpController.findOrCreateSellingView();
+    public TradeItemFragment findMySellingView() {
+        return mMainMvpController.findOrCreateMySellingView();
     }
 
     @Override
-    public TradeItemFragment findBoughtView() {
-        return mMainMvpController.findOrCreateBoughtView();
+    public TradeItemFragment findMyBoughtView() {
+        return mMainMvpController.findOrCreateMyBoughtView();
     }
 
     @Override
-    public TradeItemFragment findSoldView() {
-        return mMainMvpController.findOrCreateSoldView();
+    public TradeItemFragment findMySoldView() {
+        return mMainMvpController.findOrCreateMySoldView();
     }
 
+    @Override
+    public void findBiddingView() {
+        mMainMvpController.createBiddingView();
+    }
 
     @Override
     public void setToolbarTitleUi(String title) {

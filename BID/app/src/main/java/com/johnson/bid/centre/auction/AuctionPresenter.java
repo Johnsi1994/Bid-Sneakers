@@ -16,4 +16,14 @@ public class AuctionPresenter implements AuctionContract.Presenter {
     public void start() {
 
     }
+
+    @Override
+    public void openBidding() {
+
+    }
+
+    @Override
+    public void hideToolbarAndBottomNavigation() {
+
+    }
 }

@@ -12,12 +12,12 @@ public interface TradeContract {
 
     interface Presenter extends BasePresenter {
 
-        TradeItemFragment findBidding();
+        TradeItemFragment findMyBidding();
 
-        TradeItemFragment findSelling();
+        TradeItemFragment findMySelling();
 
-        TradeItemFragment findBought();
+        TradeItemFragment findMyBought();
 
-        TradeItemFragment findSold();
+        TradeItemFragment findMySold();
     }
 }

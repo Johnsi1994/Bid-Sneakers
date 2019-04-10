@@ -1,12 +1,10 @@
 package com.johnson.bid.trade;
 
-import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentPagerAdapter;
 import android.util.Log;
-import android.view.ViewGroup;
 
 import static com.johnson.bid.MainMvpController.BIDDING;
 import static com.johnson.bid.MainMvpController.BOUGHT;
@@ -16,59 +14,44 @@ import static com.johnson.bid.MainMvpController.SOLD;
 public class TradeAdapter extends FragmentPagerAdapter {
 
     private TradeContract.Presenter mPresenter;
-    private String[] mTrading = new String[]{BIDDING, SELLING};
-    private String[] mTraded = new String[]{BOUGHT, SOLD};
-    private String mTradeType;
+    private String[] mTrading = new String[]{BIDDING, SELLING, BOUGHT, SOLD};
 
-    public TradeAdapter(FragmentManager fm, TradeContract.Presenter presenter, String tradeType) {
+    public TradeAdapter(FragmentManager fm, TradeContract.Presenter presenter) {
         super(fm);
-
         mPresenter = presenter;
-        mTradeType = tradeType;
     }
 
     @Override
     public Fragment getItem(int i) {
 
-        Log.d("Johnsi", "getItem : I AM HERE~~~~~~~~~~~~~~~~~~~~~~~~~~~~~");
+        Log.d("Johnsi", "IN getItem : i = " + i);
 
-        if (mTradeType.equals("Trading")) {
-            switch (mTrading[i]) {
-                case BIDDING:
-                    Log.d("Johnsi", "getItem : BIDDINGGGGGGGGGGGGGGG");
-                    return mPresenter.findBidding();
-                case SELLING:
-                default:
-                    Log.d("Johnsi", "getItem : SELLINGGGGGGGGGGGGGGG");
-                    return mPresenter.findSelling();
-            }
-        } else {
-            switch (mTraded[i]) {
-                case BOUGHT:
-                    Log.d("Johnsi", "getItem : BOUGHTTTTTTTTTTTTTTTT");
-                    return mPresenter.findBought();
-                case SOLD:
-                default:
-                    Log.d("Johnsi", "getItem : SOLDDDDDDDDDDDDDDDDDD");
-                    return mPresenter.findSold();
-            }
+        switch (mTrading[i]) {
+            case BIDDING:
+                Log.d("Johnsi", "getItem : BIDDING");
+                return mPresenter.findBidding();
+            case SELLING:
+                Log.d("Johnsi", "getItem : SELLING");
+                return mPresenter.findSelling();
+            case BOUGHT:
+                Log.d("Johnsi", "getItem : BOUGHT");
+                return mPresenter.findBought();
+            case SOLD:
+            default:
+                Log.d("Johnsi", "getItem : SOLD");
+                return mPresenter.findSold();
         }
     }
 
     @Override
     public int getCount() {
-        return (mTradeType.equals("Trading")) ? mTrading.length : mTraded.length;
+        return mTrading.length;
     }
 
     @Nullable
     @Override
     public CharSequence getPageTitle(int position) {
-        return (mTradeType.equals("Trading")) ? mTrading[position] : mTraded[position];
+        return mTrading[position];
     }
-    
 
-    public void setTradeType(String tradeType) {
-        mTradeType = tradeType;
-        notifyDataSetChanged();
-    }
 }

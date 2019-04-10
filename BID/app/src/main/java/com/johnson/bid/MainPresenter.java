@@ -1,12 +1,5 @@
 package com.johnson.bid;
 
-import android.graphics.Bitmap;
-import android.support.design.widget.BottomSheetDialog;
-import android.util.Log;
-import android.view.LayoutInflater;
-import android.view.View;
-import android.widget.Button;
-
 import com.johnson.bid.centre.auction.AuctionContract;
 import com.johnson.bid.centre.auction.AuctionPresenter;
 import com.johnson.bid.chat.ChatContract;
@@ -283,4 +276,7 @@ public class MainPresenter implements MainContract.Presenter, CenterContract.Pre
         return mMainView.findSoldView();
 
     }
+
+
+
 }

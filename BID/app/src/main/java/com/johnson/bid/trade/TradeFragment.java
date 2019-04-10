@@ -7,7 +7,6 @@ import android.support.design.widget.FloatingActionButton;
 import android.support.design.widget.TabLayout;
 import android.support.v4.app.Fragment;
 import android.support.v4.view.ViewPager;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -23,9 +22,6 @@ public class TradeFragment extends Fragment implements TradeContract.View {
 
     private TabLayout mTabLayout;
     private ViewPager mViewPager;
-    private FloatingActionButton mSwitchTradeTypeButton;
-    private String mTradeType = "Trading";
-    private Boolean isTrading = true;
 
     public TradeFragment() {}
 
@@ -37,7 +33,7 @@ public class TradeFragment extends Fragment implements TradeContract.View {
     public void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
 
-        mTradeAdapter = new TradeAdapter(getChildFragmentManager(), mPresenter, mTradeType);
+        mTradeAdapter = new TradeAdapter(getChildFragmentManager(), mPresenter);
     }
 
     @Nullable
@@ -48,22 +44,6 @@ public class TradeFragment extends Fragment implements TradeContract.View {
         mTabLayout = root.findViewById(R.id.tab_trade);
         mViewPager = root.findViewById(R.id.viewpager_trade);
 
-        mSwitchTradeTypeButton = root.findViewById(R.id.fab_trade);
-
-        mSwitchTradeTypeButton.setOnClickListener( v -> {
-            if (isTrading) {
-                isTrading = false;
-                mSwitchTradeTypeButton.setImageResource(R.drawable.ic_trading);
-                mTradeType = "Traded";
-                mTradeAdapter.setTradeType(mTradeType);
-            } else {
-                isTrading = true;
-                mSwitchTradeTypeButton.setImageResource(R.drawable.ic_traded);
-                mTradeType = "Trading";
-                mTradeAdapter.setTradeType(mTradeType);
-            }
-        });
-
         return root;
     }
 
@@ -71,10 +51,11 @@ public class TradeFragment extends Fragment implements TradeContract.View {
     public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
 
-        mViewPager.setAdapter(mTradeAdapter);
         mViewPager.addOnPageChangeListener(
                 new TabLayout.TabLayoutOnPageChangeListener(mTabLayout));
+        mViewPager.setAdapter(mTradeAdapter);
         mTabLayout.setupWithViewPager(mViewPager);
+
     }
 
     @Override

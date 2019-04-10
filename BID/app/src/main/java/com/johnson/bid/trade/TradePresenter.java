@@ -38,4 +38,5 @@ public class TradePresenter implements TradeContract.Presenter {
     public TradeItemFragment findSold() {
         return null;
     }
+
 }

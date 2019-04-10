@@ -56,7 +56,7 @@ public class PostPicsGalleryAdapter extends RecyclerView.Adapter {
                 opts.inTempStorage = new byte[100 * 1024];
                 opts.inPreferredConfig = Bitmap.Config.RGB_565;
                 opts.inSampleSize = 4;
-                Bitmap btp =BitmapFactory.decodeStream(is,null, opts);
+                Bitmap btp = BitmapFactory.decodeStream(is,null, opts);
                 bindPhotoViewHolder((PhotoViewHolder) viewHolder, btp);
 
             } catch (FileNotFoundException e) {

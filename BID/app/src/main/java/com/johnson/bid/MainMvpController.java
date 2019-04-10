@@ -2,12 +2,10 @@ package com.johnson.bid;
 
 import static com.google.common.base.Preconditions.checkNotNull;
 
-import android.graphics.Bitmap;
 import android.support.annotation.NonNull;
 import android.support.annotation.StringDef;
 import android.support.v4.app.FragmentActivity;
 import android.support.v4.app.FragmentManager;
-import android.util.Log;
 
 import com.johnson.bid.centre.auction.AuctionFragment;
 import com.johnson.bid.centre.auction.AuctionPresenter;
@@ -30,7 +28,6 @@ import com.johnson.bid.util.ActivityUtils;
 import java.lang.annotation.Retention;
 import java.lang.annotation.RetentionPolicy;
 import java.util.ArrayList;
-import java.util.Objects;
 
 public class MainMvpController {
 

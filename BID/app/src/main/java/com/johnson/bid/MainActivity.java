@@ -244,6 +244,7 @@ public class MainActivity extends AppCompatActivity implements MainContract.View
         return mMainMvpController.findOrCreateSoldView();
     }
 
+
     @Override
     public void setToolbarTitleUi(String title) {
 

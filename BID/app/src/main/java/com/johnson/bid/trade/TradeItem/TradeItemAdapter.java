@@ -36,26 +36,22 @@ public class TradeItemAdapter extends RecyclerView.Adapter {
         if (viewType == TYPE_PRODUCT) {
             switch (mTradeType) {
                 case BIDDING:
-                    Log.d("Johnsi", "onCreateViewHolder : BIDDINGGGGGGGGGGGGGGGGGGGGGG");
                     return new BiddingEnglishViewHolder(LayoutInflater.from(viewGroup.getContext())
                             .inflate(R.layout.item_english_auction, viewGroup, false));
 
 //                return new BiddingSealedViewHolder(LayoutInflater.from(viewGroup.getContext())
 //                        .inflate(R.layout.item_sealed_auction, viewGroup, false));
                 case SELLING:
-                    Log.d("Johnsi", "onCreateViewHolder : SELLINGGGGGGGGGGGGGGGGGGGGGGGGG");
                     return new SellingEnglishViewHolder(LayoutInflater.from(viewGroup.getContext())
                             .inflate(R.layout.item_selling_english, viewGroup, false));
 
 //                return new SellingSealedViewHolder(LayoutInflater.from(viewGroup.getContext())
 //                        .inflate(R.layout.item_selling_sealed, viewGroup, false));
                 case BOUGHT:
-                    Log.d("Johnsi", "onCreateViewHolder : BOUGHTTTTTTTTTTTTTTTTTTTTTTTTTT");
                     return new BoughtViewHolder(LayoutInflater.from(viewGroup.getContext())
                             .inflate(R.layout.item_bought, viewGroup, false));
                 case SOLD:
                 default:
-                    Log.d("Johnsi", "onCreateViewHolder : SOLDDDDDDDDDDDDDDDDDDDDDDDDDD");
                     return new SoldViewHolder(LayoutInflater.from(viewGroup.getContext())
                             .inflate(R.layout.item_sold, viewGroup, false));
             }

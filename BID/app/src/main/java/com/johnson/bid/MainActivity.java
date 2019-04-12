@@ -203,7 +203,6 @@ public class MainActivity extends AppCompatActivity implements MainContract.View
 
         } else if (resultCode == RESULT_OK && requestCode == CHOOSE_PHOTO_INNER) {
 
-
             mImagePath.add(handleImage(data));
             setPostPics(mImagePath);
 
@@ -211,6 +210,8 @@ public class MainActivity extends AppCompatActivity implements MainContract.View
 
             mImagePath.add(handleImage(data));
             setPostPics(mImagePath);
+
+        } else if (resultCode == RESULT_CANCELED) {
 
         } else {
 
@@ -432,10 +433,8 @@ public class MainActivity extends AppCompatActivity implements MainContract.View
         intent.setType("image/*");
 
         if (isFromCenter) {
-            Log.d("Johnsi", "OPEN ALBUM FROM CENTRE ");
             startActivityForResult(intent, CHOOSE_PHOTO);
         } else {
-            Log.d("Johnsi", "OPEN ALBUM DOESN'T FROM CENTRE ");
             startActivityForResult(intent, CHOOSE_PHOTO_INNER);
         }
     }
@@ -453,10 +452,8 @@ public class MainActivity extends AppCompatActivity implements MainContract.View
         intent.putExtra(MediaStore.EXTRA_OUTPUT, uri.getPath());
 
         if (isFromCenter) {
-            Log.d("Johnsi", "OPEN CAMERA FROM CENTRE ");
             startActivityForResult(intent, CAMERA);
         } else {
-            Log.d("Johnsi", "OPEN CAMERA DOESN'T FROM CENTRE ");
             startActivityForResult(intent, CAMERA_INNER);
         }
     }

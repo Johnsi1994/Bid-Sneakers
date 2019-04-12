@@ -16,6 +16,7 @@ import android.widget.Button;
 import android.widget.EditText;
 import android.widget.Spinner;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.firebase.storage.StorageReference;
@@ -90,8 +91,10 @@ public class PostAdapter extends RecyclerView.Adapter {
         private TextView mExpireTimeText;
         private TimePickerDialog mDialogMonthDayHourMinute;
         private Button mPostBtn;
+        private TextView mIncreaseTitle;
 
         private ArrayList<String> mUrls = new ArrayList<>();
+        private long mTime = -1;
 
         @SuppressLint("SimpleDateFormat")
         private SimpleDateFormat sf = new SimpleDateFormat("MM月 dd日 HH時 mm分");
@@ -108,6 +111,7 @@ public class PostAdapter extends RecyclerView.Adapter {
             mStartingPrice = itemView.findViewById(R.id.edit_starting_price);
             mReservePrice = itemView.findViewById(R.id.edit_reserve_price);
             mAuctionType = itemView.findViewById(R.id.spinner_auction_type);
+            mIncreaseTitle = itemView.findViewById(R.id.text_increase);
             mIncrease = itemView.findViewById(R.id.spinner_increase);
             mTimePickerLayout = itemView.findViewById(R.id.layout_time_picker);
             mExpireTimeText = itemView.findViewById(R.id.text_expire_time);
@@ -134,8 +138,12 @@ public class PostAdapter extends RecyclerView.Adapter {
                 public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
                     if (position == 0) {
                         mPresenter.setAuctionType("English");
+                        mIncreaseTitle.setVisibility(View.VISIBLE);
+                        mIncrease.setVisibility(View.VISIBLE);
                     } else {
                         mPresenter.setAuctionType("Sealed");
+                        mIncreaseTitle.setVisibility(View.GONE);
+                        mIncrease.setVisibility(View.GONE);
                     }
                 }
 
@@ -190,17 +198,26 @@ public class PostAdapter extends RecyclerView.Adapter {
             mTimePickerLayout.setOnClickListener(v -> mDialogMonthDayHourMinute.show(mMainActivity.getSupportFragmentManager(), "month_day_hour_minute"));
 
             mPostBtn.setOnClickListener(v -> {
-                uploadImages(0);
-                mPresenter.showPostSuccessDialog();
-                mPresenter.updateToolbar("拍賣中心");
-                mPresenter.showBottomNavigation();
-                mMainActivity.onBackPressed();
+
+                if ("".equals(mProductTitle.getText().toString()) ||
+                "".equals(mProductIntro.getText().toString()) ||
+                "".equals(mStartingPrice.getText().toString()) ||
+                        mTime == -1) {
+                    Toast.makeText(mMainActivity, "請填完整資訊", Toast.LENGTH_SHORT).show();
+                } else {
+                    uploadImages(0);
+                    mPresenter.showPostSuccessDialog();
+                    mPresenter.updateToolbar("拍賣中心");
+                    mPresenter.showBottomNavigation();
+                    mMainActivity.onBackPressed();
+                }
             });
 
         }
 
         @Override
         public void onDateSet(TimePickerDialog timePickerView, long millSeconds) {
+            mTime = millSeconds;
             String text = getDateToString(millSeconds);
             mExpireTimeText.setText(text);
             mExpireTimeText.setVisibility(View.VISIBLE);
@@ -245,7 +262,11 @@ public class PostAdapter extends RecyclerView.Adapter {
             mPresenter.setStartingPrice(Integer.parseInt(mStartingPrice.getText().toString()));
             mPresenter.setCurrentPrice(Integer.parseInt(mStartingPrice.getText().toString()));
             mPresenter.setParticipantsNumber(0);
-            mPresenter.setReservePrice(Integer.parseInt(mReservePrice.getText().toString()));
+            if ("".equals(mReservePrice.getText().toString())) {
+                mPresenter.setReservePrice(0);
+            } else {
+                mPresenter.setReservePrice(Integer.parseInt(mReservePrice.getText().toString()));
+            }
             long id = System.currentTimeMillis();
             mPresenter.setProductId(id);
             mPresenter.setStartingTime(id);

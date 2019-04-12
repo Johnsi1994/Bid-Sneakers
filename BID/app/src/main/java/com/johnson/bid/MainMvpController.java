@@ -169,8 +169,6 @@ public class MainMvpController {
         mMainPresenter.setPostPresenter(mPostPresenter);
         postFragment.setPresenter(mMainPresenter);
         mPostPresenter.setPostPics(imagePath);
-
-//        mPostPresenter.setPostPics(imagePath);
     }
 
     void setPostPics(ArrayList<String> imagePath) {

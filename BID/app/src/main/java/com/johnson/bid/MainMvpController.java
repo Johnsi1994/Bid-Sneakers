@@ -170,11 +170,15 @@ public class MainMvpController {
         postFragment.setPresenter(mMainPresenter);
         mPostPresenter.setPostPics(imagePath);
 
-        mPostPresenter.setPostPics(imagePath);
+//        mPostPresenter.setPostPics(imagePath);
     }
 
     void setPostPics(ArrayList<String> imagePath) {
         mPostPresenter.setPostPics(imagePath);
+    }
+
+    void setAfterBidData(Product product) {
+        mBiddingPresenter.setProductData(product);
     }
 
     AuctionFragment findOrCreateEnglishAuctionView() {

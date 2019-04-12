@@ -190,6 +190,11 @@ public class MainPresenter implements MainContract.Presenter, CenterContract.Pre
     }
 
     @Override
+    public void openBidDialog(Product product) {
+        mMainView.openBidDialog(product);
+    }
+
+    @Override
     public void hideBottomNavigation() {
         mMainView.hideBottomNavigationUi();
     }

@@ -74,12 +74,6 @@ public class BiddingFragment extends Fragment implements BiddingContract.View {
 
     @Override
     public void showBiddingUi(Product product) {
-        if (mBiddingAdapter == null) {
-            Log.d("Johnsi", "mBiddingAdapter IS NULLLLLLL ");
-        } else {
-            Log.d("Johnsi", "mBiddingAdapter NOT NULLLLLLL ");
-
-        }
         mBiddingAdapter.updateData(product);
     }
 }

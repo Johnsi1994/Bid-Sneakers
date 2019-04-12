@@ -27,9 +27,11 @@ public interface MainContract {
 
         void setPostPics(ArrayList<String> imagePath);
 
-        void openGallery(String from);
+        void setAfterBidData(Product product);
 
-        void openCamera(String from);
+        void openGallery(Boolean isFromCenter);
+
+        void openCamera(Boolean isFromCenter);
 
         void openGalleryDialog(String from);
 
@@ -56,6 +58,8 @@ public interface MainContract {
         void hideBottomNavigationUi();
 
         void showBottomNavigationUi();
+
+        void openBidDialog(Product product);
 
         void showMessageDialogUi(@MessageDialog.MessageType int type);
     }

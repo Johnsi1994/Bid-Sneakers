@@ -25,6 +25,7 @@ import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.widget.Button;
+import android.widget.EditText;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -32,6 +33,7 @@ import com.johnson.bid.centre.auction.AuctionFragment;
 import com.johnson.bid.data.Product;
 import com.johnson.bid.dialog.MessageDialog;
 import com.johnson.bid.trade.TradeItem.TradeItemFragment;
+import com.johnson.bid.util.Firebase;
 import com.johnson.bid.util.UserManager;
 
 import java.util.ArrayList;
@@ -45,8 +47,8 @@ public class MainActivity extends AppCompatActivity implements MainContract.View
     private TextView mToolbarTitle;
     private DisplayMetrics mPhone;
     private MessageDialog mMessageDialog;
-    private final static int CAMERA = 666 ;
-    private final static int CAMERA_INNER = 667 ;
+    private final static int CAMERA = 666;
+    private final static int CAMERA_INNER = 667;
     public final static int CHOOSE_PHOTO = 222;
     public final static int CHOOSE_PHOTO_INNER = 223;
 
@@ -54,6 +56,7 @@ public class MainActivity extends AppCompatActivity implements MainContract.View
     private MainMvpController mMainMvpController;
 
     private ArrayList<String> mImagePath;
+    private Boolean mIsFromCenter = false;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -99,36 +102,26 @@ public class MainActivity extends AppCompatActivity implements MainContract.View
     }
 
     @Override
-    public void openGallery(String from) {
+    public void setAfterBidData(Product product) {
+        mMainMvpController.setAfterBidData(product);
+    }
+
+    @Override
+    public void openGallery(Boolean isFromCenter) {
         if (ContextCompat.checkSelfPermission(this, Manifest.permission.WRITE_EXTERNAL_STORAGE) != PackageManager.PERMISSION_GRANTED) {
             ActivityCompat.requestPermissions(this, new String[]{Manifest.permission.WRITE_EXTERNAL_STORAGE}, 1);
         } else {
-            openAlbum(from);
+            openAlbum(isFromCenter);
         }
     }
 
     @Override
-    public void openCamera(String from) {
+    public void openCamera(Boolean isFromCenter) {
 
         if (ContextCompat.checkSelfPermission(this, Manifest.permission.CAMERA) != PackageManager.PERMISSION_GRANTED) {
             ActivityCompat.requestPermissions(this, new String[]{Manifest.permission.CAMERA}, 2);
         } else {
-            mPhone = new DisplayMetrics();
-            getWindowManager().getDefaultDisplay().getMetrics(mPhone);
-
-            ContentValues value = new ContentValues();
-            value.put(MediaStore.Images.Media.MIME_TYPE, "image/jpeg");
-            Uri uri= getContentResolver().insert(MediaStore.Images.Media.EXTERNAL_CONTENT_URI,
-                    value);
-            Intent intent = new Intent(MediaStore.ACTION_IMAGE_CAPTURE);
-            intent.putExtra(MediaStore.EXTRA_OUTPUT, uri.getPath());
-
-            if (from.equals("CENTER")) {
-                startActivityForResult(intent, CAMERA);
-            } else {
-                startActivityForResult(intent, CAMERA_INNER);
-            }
-
+            opennCamera(isFromCenter);
         }
     }
 
@@ -137,6 +130,9 @@ public class MainActivity extends AppCompatActivity implements MainContract.View
 
         if (from.equals("CENTER")) {
             mImagePath = new ArrayList<>();
+            mIsFromCenter = true;
+        } else {
+            mIsFromCenter = false;
         }
 
         Button mCancelBtn;
@@ -154,16 +150,16 @@ public class MainActivity extends AppCompatActivity implements MainContract.View
         mOpenGalleryBtn = view.findViewById(R.id.button_goto_gallery);
         mOpenCameraBtn = view.findViewById(R.id.button_open_camera);
 
-        mCancelBtn.setOnClickListener( v -> dialog.dismiss());
+        mCancelBtn.setOnClickListener(v -> dialog.dismiss());
 
-        mOpenGalleryBtn.setOnClickListener( v -> {
+        mOpenGalleryBtn.setOnClickListener(v -> {
             dialog.dismiss();
-            openGallery(from);
+            openGallery(mIsFromCenter);
         });
 
-        mOpenCameraBtn.setOnClickListener( v -> {
+        mOpenCameraBtn.setOnClickListener(v -> {
             dialog.dismiss();
-            openCamera(from);
+            openCamera(mIsFromCenter);
         });
     }
 
@@ -174,7 +170,14 @@ public class MainActivity extends AppCompatActivity implements MainContract.View
         switch (requestCode) {
             case 1:
                 if (grantResults.length > 0 && grantResults[0] == PackageManager.PERMISSION_GRANTED) {
-                    openAlbum("CENTER");
+                    openAlbum(mIsFromCenter);
+                } else {
+                    Toast.makeText(this, "授權失敗，無法操作", Toast.LENGTH_SHORT).show();
+                }
+                break;
+            case 2:
+                if (grantResults.length > 0 && grantResults[0] == PackageManager.PERMISSION_GRANTED) {
+                    opennCamera(mIsFromCenter);
                 } else {
                     Toast.makeText(this, "授權失敗，無法操作", Toast.LENGTH_SHORT).show();
                 }
@@ -285,6 +288,52 @@ public class MainActivity extends AppCompatActivity implements MainContract.View
     }
 
     @Override
+    public void openBidDialog(Product product) {
+
+        LayoutInflater factory = LayoutInflater.from(this);
+        final View view = factory.inflate(R.layout.dialog_bid, null);
+        final BottomSheetDialog dialog = new BottomSheetDialog(this);
+        dialog.setContentView(view);
+        ((View) view.getParent()).setBackgroundColor(this.getColor(android.R.color.transparent));
+        dialog.show();
+
+        TextView mCurrentPrice;
+        EditText mYourPrice;
+        Button mCancelBtn;
+        Button mSendPriceBtn;
+        int mParticipantsNum = product.getParticipantsNumber();
+
+        mCurrentPrice = view.findViewById(R.id.text_current_price);
+        mYourPrice = view.findViewById(R.id.edit_bit_your_price);
+        mCancelBtn = view.findViewById(R.id.button_bit_cancel);
+        mSendPriceBtn = view.findViewById(R.id.button_send_price);
+
+        mCurrentPrice.setText(String.valueOf(product.getCurrentPrice()));
+
+        mCancelBtn.setOnClickListener(v -> {
+            dialog.dismiss();
+        });
+
+        mSendPriceBtn.setOnClickListener(v -> {
+            product.setCurrentPrice(Integer.parseInt(mYourPrice.getText().toString()));
+            product.setHighestUserId(UserManager.getInstance().getUser().getId());
+            product.setParticipantsNumber(mParticipantsNum + 1);
+
+            setAfterBidData(product);
+
+            Firebase.getFirestore().collection("products")
+                    .document(String.valueOf(product.getProductId()))
+                    .update("currentPrice", Integer.parseInt(mYourPrice.getText().toString()),
+                            "highestUserId", UserManager.getInstance().getUser().getId(),
+                            "participantsNumber", mParticipantsNum + 1)
+                    .addOnSuccessListener(aVoid -> Log.d("Johnsi", "BID DocumentSnapshot successfully updated!"))
+                    .addOnFailureListener(e -> Log.w("Johnsi", "BID Error updating document", e));
+
+            dialog.dismiss();
+        });
+    }
+
+    @Override
     public void showMessageDialogUi(@MessageDialog.MessageType int type) {
 
         if (mMessageDialog == null) {
@@ -377,18 +426,39 @@ public class MainActivity extends AppCompatActivity implements MainContract.View
         return false;
     };
 
-    public void openAlbum(String from) {
+    public void openAlbum(Boolean isFromCenter) {
 
         Intent intent = new Intent(Intent.ACTION_PICK, MediaStore.Images.Media.INTERNAL_CONTENT_URI);
         intent.setType("image/*");
 
-        if (from.equals("CENTER")) {
+        if (isFromCenter) {
+            Log.d("Johnsi", "OPEN ALBUM FROM CENTRE ");
             startActivityForResult(intent, CHOOSE_PHOTO);
         } else {
+            Log.d("Johnsi", "OPEN ALBUM DOESN'T FROM CENTRE ");
             startActivityForResult(intent, CHOOSE_PHOTO_INNER);
         }
+    }
 
+    public void opennCamera(Boolean isFromCenter) {
 
+        mPhone = new DisplayMetrics();
+        getWindowManager().getDefaultDisplay().getMetrics(mPhone);
+
+        ContentValues value = new ContentValues();
+        value.put(MediaStore.Images.Media.MIME_TYPE, "image/jpeg");
+        Uri uri = getContentResolver().insert(MediaStore.Images.Media.EXTERNAL_CONTENT_URI,
+                value);
+        Intent intent = new Intent(MediaStore.ACTION_IMAGE_CAPTURE);
+        intent.putExtra(MediaStore.EXTRA_OUTPUT, uri.getPath());
+
+        if (isFromCenter) {
+            Log.d("Johnsi", "OPEN CAMERA FROM CENTRE ");
+            startActivityForResult(intent, CAMERA);
+        } else {
+            Log.d("Johnsi", "OPEN CAMERA DOESN'T FROM CENTRE ");
+            startActivityForResult(intent, CAMERA_INNER);
+        }
     }
 
     private String handleImage(Intent data) {
@@ -437,16 +507,16 @@ public class MainActivity extends AppCompatActivity implements MainContract.View
         }
     }
 
-    private void ScalePic(Bitmap bitmap,int phone) {
+    private void ScalePic(Bitmap bitmap, int phone) {
         //縮放比例預設為1
-        float mScale = 1 ;
+        float mScale = 1;
 
         //如果圖片寬度大於手機寬度則進行縮放，否則直接將圖片放入ImageView內
-        if(bitmap.getWidth() > phone ) {
+        if (bitmap.getWidth() > phone) {
             //判斷縮放比例
-            mScale = (float)phone/(float)bitmap.getWidth();
+            mScale = (float) phone / (float) bitmap.getWidth();
 
-            Matrix mMat = new Matrix() ;
+            Matrix mMat = new Matrix();
             mMat.setScale(mScale, mScale);
 
             Bitmap mScaleBitmap = Bitmap.createBitmap(bitmap,

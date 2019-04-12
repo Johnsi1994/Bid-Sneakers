@@ -246,11 +246,12 @@ public class PostAdapter extends RecyclerView.Adapter {
             mPresenter.setCurrentPrice(Integer.parseInt(mStartingPrice.getText().toString()));
             mPresenter.setParticipantsNumber(0);
             mPresenter.setReservePrice(Integer.parseInt(mReservePrice.getText().toString()));
-            mPresenter.setProductId(System.currentTimeMillis());
-            mPresenter.setStartingTime(System.currentTimeMillis());
+            long id = System.currentTimeMillis();
+            mPresenter.setProductId(id);
+            mPresenter.setStartingTime(id);
 
             Firebase.getFirestore().collection("products")
-                    .document(String.valueOf(System.currentTimeMillis()))
+                    .document(String.valueOf(id))
                     .set(mPresenter.getProduct())
                     .addOnSuccessListener(documentReference -> Log.d("Johnsi", "DocumentSnapshot added"))
                     .addOnFailureListener(e -> Log.w("Johnsi", "Error adding document", e));

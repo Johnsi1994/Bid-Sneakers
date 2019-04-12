@@ -116,6 +116,10 @@ public class BiddingAdapter extends RecyclerView.Adapter {
             mBackBtn.setOnClickListener(v ->
                     mMainActivity.onBackPressed()
             );
+
+            mBidBtn.setOnClickListener(v -> {
+                mPresenter.openBidDialog(mProduct);
+            });
         }
 
         private RecyclerView getGalleryRecycler() {

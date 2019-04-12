@@ -33,11 +33,17 @@ public class BiddingPresenter implements BiddingContract.Presenter {
     @Override
     public void setProductData(Product product) {
         mProduct = product;
+//        loadProductData();
     }
 
     @Override
     public void loadProductData() {
         mBiddingView.showBiddingUi(mProduct);
+    }
+
+    @Override
+    public void openBidDialog(Product product) {
+
     }
 
 }

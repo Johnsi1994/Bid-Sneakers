@@ -68,17 +68,22 @@ public class PostPicsGalleryAdapter extends RecyclerView.Adapter {
 
     @Override
     public int getItemCount() {
-        return (mImagePath.size() + 1);
+        return ( (mImagePath.size() == 4) ? mImagePath.size() : mImagePath.size() + 1);
     }
 
     @Override
     public int getItemViewType(int position) {
 
-        if (position == (mImagePath.size())) {
-            return TYPE_ADD;
+        if (mImagePath.size() < 4) {
+            if (position == (mImagePath.size())) {
+                return TYPE_ADD;
+            } else {
+                return TYPE_PHOTO;
+            }
         } else {
             return TYPE_PHOTO;
         }
+
     }
 
     private void bindPhotoViewHolder(PhotoViewHolder holder, Bitmap bitmap) {

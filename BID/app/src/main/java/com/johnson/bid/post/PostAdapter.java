@@ -60,11 +60,11 @@ public class PostAdapter extends RecyclerView.Adapter {
         LinearLayoutManager layoutManager = new LinearLayoutManager(
                 Bid.getAppContext(), LinearLayoutManager.HORIZONTAL, false);
         PostPicsGalleryAdapter postPicsGalleryAdapter = new PostPicsGalleryAdapter(mImagePath, mPresenter);
-        if (mLinearSnapHelper == null) {
-            mLinearSnapHelper = new LinearSnapHelper();
-            mLinearSnapHelper.attachToRecyclerView(((ViewHolder) viewHolder).getPostPicGallery());
-        }
-//        ((ViewHolder) viewHolder).getPostPicGallery().scrollToPosition(0);
+//        if (mLinearSnapHelper == null) {
+//            mLinearSnapHelper = new LinearSnapHelper();
+//            mLinearSnapHelper.attachToRecyclerView(((ViewHolder) viewHolder).getPostPicGallery());
+//        }
+//        ((ViewHolder) viewHolder).getPostPicGallery().scrollToPosition(mImagePath.size());
         ((ViewHolder) viewHolder).getPostPicGallery().setAdapter(postPicsGalleryAdapter);
         ((ViewHolder) viewHolder).getPostPicGallery().setLayoutManager(layoutManager);
 

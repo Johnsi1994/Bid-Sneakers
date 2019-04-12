@@ -15,6 +15,7 @@ import com.johnson.bid.chat.ChatFragment;
 import com.johnson.bid.chat.ChatPresenter;
 import com.johnson.bid.centre.CenterFragment;
 import com.johnson.bid.centre.CenterPresenter;
+import com.johnson.bid.data.Product;
 import com.johnson.bid.login.LoginFragment;
 import com.johnson.bid.login.LoginPresenter;
 import com.johnson.bid.post.PostFragment;
@@ -248,13 +249,15 @@ public class MainMvpController {
         return fragment;
     }
 
-    void createBiddingView() {
+    void createBiddingView(String auctionType, Product product) {
 
         BiddingFragment biddingFragment = createBiddingFragment();
 
         mBiddingPresenter = new BiddingPresenter(biddingFragment);
+        mBiddingPresenter.setProductData(product);
         mMainPresenter.setBiddingPresenter(mBiddingPresenter);
         biddingFragment.setPresenter(mMainPresenter);
+        biddingFragment.setAuctionType(auctionType);
     }
 
     @NonNull

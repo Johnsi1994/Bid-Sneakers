@@ -27,6 +27,11 @@ public class PostPresenter implements PostContract.Presenter {
     }
 
     @Override
+    public Product getProduct() {
+        return mProduct;
+    }
+
+    @Override
     public void setProductTitle(String productTitle) {
         mProduct.setTitle(productTitle);
     }
@@ -79,6 +84,21 @@ public class PostPresenter implements PostContract.Presenter {
     @Override
     public void setImages(ArrayList<String> Url) {
         mProduct.setImages(Url);
+    }
+
+    @Override
+    public void setSellerId(long sellerId) {
+        mProduct.setSellerId(sellerId);
+    }
+
+    @Override
+    public void setParticipantsNumber(int participantsNumber) {
+        mProduct.setParticipantsNumber(participantsNumber);
+    }
+
+    @Override
+    public void setCurrentPrice(int currentPrice) {
+        mProduct.setCurrentPrice(currentPrice);
     }
 
     @Override

@@ -11,8 +11,13 @@ import android.widget.TextView;
 
 import com.johnson.bid.MainMvpController;
 import com.johnson.bid.R;
+import com.johnson.bid.data.Product;
+import com.johnson.bid.util.ImageManager;
+
+import java.util.ArrayList;
 
 import static com.johnson.bid.MainMvpController.ENGLISH;
+import static com.johnson.bid.MainMvpController.SEALED;
 
 public class AuctionAdapter extends RecyclerView.Adapter {
 
@@ -21,6 +26,7 @@ public class AuctionAdapter extends RecyclerView.Adapter {
 
     private AuctionContract.Presenter mPresenter;
     private String mAuctionType;
+    private ArrayList<Product> mProductList;
 
     public AuctionAdapter(AuctionContract.Presenter presenter, @MainMvpController.AuctionType String auctionType) {
         mPresenter = presenter;
@@ -46,12 +52,24 @@ public class AuctionAdapter extends RecyclerView.Adapter {
 
     @Override
     public void onBindViewHolder(@NonNull RecyclerView.ViewHolder viewHolder, int i) {
+        if (mProductList != null) {
+            if (viewHolder instanceof EnglishAuctionViewHolder) {
+                bindEnglishAuctionViewHolder((EnglishAuctionViewHolder) viewHolder, mProductList.get(i));
+            } else {
+                bindSealedAuctionViewHolder((SealedAuctionViewHolder) viewHolder, mProductList.get(i));
+            }
+        }
 
     }
 
     @Override
     public int getItemCount() {
-        return (mAuctionType.equals(ENGLISH)) ? 10: 5;
+        if (mProductList == null) {
+            return 1;
+        } else {
+            return mProductList.size();
+        }
+
     }
 
     @Override
@@ -68,7 +86,7 @@ public class AuctionAdapter extends RecyclerView.Adapter {
         private TextView mTextPrice;
         private TextView mTextPeople;
 
-        public EnglishAuctionViewHolder(View itemView) {
+        private EnglishAuctionViewHolder(View itemView) {
             super(itemView);
 
 
@@ -78,59 +96,99 @@ public class AuctionAdapter extends RecyclerView.Adapter {
             mTextTime = itemView.findViewById(R.id.text_last_time_e_auction);
             mTextPrice = itemView.findViewById(R.id.text_price_e_auction);
             mTextPeople = itemView.findViewById(R.id.text_participant_num_e_auction);
-
-            mLayoutEnglishAuction.setOnClickListener(v -> {
-                mPresenter.hideToolbarAndBottomNavigation();
-                mPresenter.openBidding();
-            });
         }
 
-        public ImageView getImageMain() {
+        private ConstraintLayout getLayoutEnglishAuction() {
+            return mLayoutEnglishAuction;
+        }
+
+        private ImageView getImageMain() {
             return mImageMain;
         }
 
-        public TextView getTextTitle() {
+        private TextView getTextTitle() {
             return mTextTitle;
         }
 
-        public TextView getTextTime() {
+        private TextView getTextTime() {
             return mTextTime;
         }
 
-        public TextView getTextPrice() {
+        private TextView getTextPrice() {
             return mTextPrice;
         }
 
-        public TextView getTextPeople() {
+        private TextView getTextPeople() {
             return mTextPeople;
         }
     }
 
+    private void bindEnglishAuctionViewHolder(EnglishAuctionViewHolder holder, Product product) {
+
+        holder.getLayoutEnglishAuction().setOnClickListener(v -> {
+            mPresenter.openBidding(ENGLISH, product);
+            mPresenter.hideToolbarAndBottomNavigation();
+        });
+
+        ImageManager.getInstance().setImageByUrl(holder.getImageMain(), product.getImages().get(0));
+
+        holder.getTextTitle().setText(product.getTitle());
+
+        holder.getTextTime().setText(String.valueOf(product.getStartTime()));
+
+        holder.getTextPrice().setText(String.valueOf(product.getCurrentPrice()));
+
+        holder.getTextPeople().setText(String.valueOf(product.getParticipantsNumber()));
+
+    }
+
     private class SealedAuctionViewHolder extends RecyclerView.ViewHolder {
 
+        private ConstraintLayout mLayoutSealedAuction;
         private ImageView mImageMain;
         private TextView mTextTitle;
         private TextView mTextTime;
 
-        public SealedAuctionViewHolder(View itemView) {
+        private SealedAuctionViewHolder(View itemView) {
             super(itemView);
 
-            mImageMain = itemView.findViewById(R.id.image_selling_s);
-            mTextTitle = itemView.findViewById(R.id.text_title_selling_s);
+            mLayoutSealedAuction = itemView.findViewById(R.id.layout_s_auction);
+            mImageMain = itemView.findViewById(R.id.image_product_s_auction);
+            mTextTitle = itemView.findViewById(R.id.text_product_title_s_auction);
             mTextTime = itemView.findViewById(R.id.text_last_time_s_auction);
+
         }
 
-        public ImageView getImageMain() {
+        private ConstraintLayout getLayoutSealedAuction() {
+            return mLayoutSealedAuction;
+        }
+
+        private ImageView getImageMain() {
             return mImageMain;
         }
 
-        public TextView getTextTitle() {
+        private TextView getTextTitle() {
             return mTextTitle;
         }
 
-        public TextView getTextTime() {
+        private TextView getTextTime() {
             return mTextTime;
         }
+    }
+
+    private void bindSealedAuctionViewHolder(SealedAuctionViewHolder holder, Product product) {
+
+        holder.getLayoutSealedAuction().setOnClickListener(v -> {
+            mPresenter.openBidding(SEALED, product);
+            mPresenter.hideToolbarAndBottomNavigation();
+        });
+
+        ImageManager.getInstance().setImageByUrl(holder.getImageMain(), product.getImages().get(0));
+
+        holder.getTextTitle().setText(product.getTitle());
+
+        holder.getTextTime().setText(String.valueOf(product.getStartTime()));
+
     }
 
     private class LoadingViewHolder extends RecyclerView.ViewHolder {
@@ -139,4 +197,9 @@ public class AuctionAdapter extends RecyclerView.Adapter {
         }
     }
 
+
+    public void updateData(ArrayList<Product> productList) {
+        mProductList = productList;
+        notifyDataSetChanged();
+    }
 }

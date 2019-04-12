@@ -12,8 +12,13 @@ import android.view.ViewGroup;
 
 import com.johnson.bid.MainMvpController;
 import com.johnson.bid.R;
+import com.johnson.bid.data.Product;
+
+import java.util.ArrayList;
 
 import static com.google.common.base.Preconditions.checkNotNull;
+import static com.johnson.bid.MainMvpController.ENGLISH;
+import static com.johnson.bid.MainMvpController.SEALED;
 
 public class AuctionFragment extends Fragment implements AuctionContract.View {
 
@@ -47,11 +52,31 @@ public class AuctionFragment extends Fragment implements AuctionContract.View {
     }
 
     @Override
+    public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
+        super.onViewCreated(view, savedInstanceState);
+
+        switch (mAuctionType) {
+            case ENGLISH:
+                mPresenter.loadEnglishData();
+                break;
+            case SEALED:
+                mPresenter.loadSealedData();
+                break;
+            default:
+        }
+    }
+
+    @Override
     public void setPresenter(AuctionContract.Presenter presenter) {
         mPresenter = checkNotNull(presenter);
     }
 
     public void setAuctionType(@MainMvpController.AuctionType String auctionType) {
         mAuctionType = auctionType;
+    }
+
+    @Override
+    public void showAuctionUi(ArrayList<Product> productList) {
+        mAuctionAdapter.updateData(productList);
     }
 }

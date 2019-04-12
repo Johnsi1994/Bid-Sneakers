@@ -54,11 +54,6 @@ public class LoginFragment extends Fragment implements LoginContract.View {
                     public void onFail(String errorMessage) {
                         setLoading(false);
                     }
-
-                    @Override
-                    public void onInvalidToken(String errorMessage) {
-                        setLoading(false);
-                    }
                 });
             }
         });

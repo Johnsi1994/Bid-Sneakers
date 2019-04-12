@@ -22,7 +22,7 @@ public class Product {
     private long mSellerId;
     private long mHighestUserId;
     private int mParticipantsNumber;
-    private ArrayList<ChatContent> mChats;
+//    private ArrayList<ChatContent> mChats;
 
     public Product() {
 
@@ -41,7 +41,7 @@ public class Product {
         mIncrease = -1;
         mHighestUserId = -1;
         mParticipantsNumber = -1;
-        mChats = new ArrayList<>();
+//        mChats = new ArrayList<>();
     }
 
     public String getAuctionType() {
@@ -156,13 +156,13 @@ public class Product {
         mParticipantsNumber = participantsNumber;
     }
 
-    public ArrayList<ChatContent> getChats() {
-        return mChats;
-    }
-
-    public void setChats(ArrayList<ChatContent> chats) {
-        mChats = chats;
-    }
+//    public ArrayList<ChatContent> getChats() {
+//        return mChats;
+//    }
+//
+//    public void setChats(ArrayList<ChatContent> chats) {
+//        mChats = chats;
+//    }
 
     public int getStartPrice() {
         return mStartPrice;

@@ -3,6 +3,7 @@ package com.johnson.bid;
 import android.graphics.Bitmap;
 
 import com.johnson.bid.centre.auction.AuctionFragment;
+import com.johnson.bid.data.Product;
 import com.johnson.bid.dialog.MessageDialog;
 import com.johnson.bid.trade.TradeItem.TradeItemFragment;
 
@@ -44,7 +45,7 @@ public interface MainContract {
 
         TradeItemFragment findMySoldView();
 
-        void findBiddingView();
+        void findBiddingView(String auctionType, Product product);
 
         void setToolbarTitleUi(String title);
 

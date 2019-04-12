@@ -6,15 +6,15 @@
     android:layout_height="wrap_content">
 
     <android.support.v7.widget.RecyclerView
-        android:id="@+id/recycler_bidding_gallery"
-        android:layout_width="0dp"
-        android:layout_height="450dp"
+        android:id="@+id/recycler_bid_gallery_s"
+        android:layout_width="match_parent"
+        android:layout_height="400dp"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent" />
 
     <TextView
-        android:id="@+id/text_bidding_title"
+        android:id="@+id/text_bid_title_s"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
         android:layout_marginStart="16dp"
@@ -22,9 +22,9 @@
         android:layout_marginEnd="8dp"
         android:text="Air Jordan 1 Gold Top Three"
         android:textSize="16sp"
-        app:layout_constraintEnd_toStartOf="@+id/button_bidding_eyes_on"
+        app:layout_constraintEnd_toStartOf="@+id/button_bid_eyes_on_s"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/recycler_bidding_gallery" />
+        app:layout_constraintTop_toBottomOf="@+id/recycler_bid_gallery_s" />
 
     <android.support.constraint.ConstraintLayout
         android:id="@+id/constraintLayout"
@@ -33,7 +33,7 @@
         android:layout_marginTop="16dp"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/text_bidding_title">
+        app:layout_constraintTop_toBottomOf="@+id/text_bid_title_s">
 
         <TextView
             android:id="@+id/textView7"
@@ -46,7 +46,7 @@
             app:layout_constraintTop_toTopOf="parent" />
 
         <TextView
-            android:id="@+id/text_bidding_intro"
+            android:id="@+id/text_bid_intro_s"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
             android:layout_marginStart="8dp"
@@ -73,7 +73,7 @@
         app:layout_constraintTop_toBottomOf="@+id/constraintLayout" />
 
     <TextView
-        android:id="@+id/text_bidding_condition"
+        android:id="@+id/text_bid_condition_s"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:text="全新"
@@ -94,7 +94,7 @@
         app:layout_constraintTop_toBottomOf="@+id/textView13" />
 
     <TextView
-        android:id="@+id/text_bidding_last_time"
+        android:id="@+id/text_bid_last_time_s"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:text="3天12時35分17秒"
@@ -102,49 +102,6 @@
         app:layout_constraintBottom_toBottomOf="@+id/textView16"
         app:layout_constraintStart_toEndOf="@+id/textView16"
         app:layout_constraintTop_toTopOf="@+id/textView16" />
-
-    <TextView
-        android:id="@+id/textView18"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginStart="16dp"
-        android:layout_marginTop="16dp"
-        android:text="目前出價 : "
-        android:textSize="16sp"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/textView16" />
-
-    <TextView
-        android:id="@+id/text_bidding_price"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:text="5000"
-        android:textSize="16sp"
-        app:layout_constraintBottom_toBottomOf="@+id/textView18"
-        app:layout_constraintStart_toEndOf="@+id/textView18"
-        app:layout_constraintTop_toTopOf="@+id/textView18" />
-
-    <TextView
-        android:id="@+id/textView20"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginStart="16dp"
-        android:layout_marginTop="16dp"
-        android:text="出價增額 : "
-        android:textSize="16sp"
-        android:visibility="visible"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/textView18" />
-
-    <TextView
-        android:id="@+id/text_bidding_increase"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:text="100"
-        android:textSize="16sp"
-        app:layout_constraintBottom_toBottomOf="@+id/textView20"
-        app:layout_constraintStart_toEndOf="@+id/textView20"
-        app:layout_constraintTop_toTopOf="@+id/textView20" />
 
     <TextView
         android:id="@+id/textView22"
@@ -155,10 +112,10 @@
         android:text="賣家 : "
         android:textSize="16sp"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/text_bidding_people" />
+        app:layout_constraintTop_toBottomOf="@+id/textView16" />
 
     <TextView
-        android:id="@+id/text_bidding_seller"
+        android:id="@+id/text_bid_seller_s"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:text="McGee"
@@ -168,85 +125,39 @@
         app:layout_constraintTop_toTopOf="@+id/textView22" />
 
     <Button
-        android:id="@+id/button_bidding_eyes_on"
+        android:id="@+id/button_bid_eyes_on_s"
         android:layout_width="30dp"
         android:layout_height="30dp"
         android:layout_marginEnd="16dp"
         android:background="@drawable/ic_unlike"
-        app:layout_constraintBottom_toBottomOf="@+id/text_bidding_title"
+        app:layout_constraintBottom_toBottomOf="@+id/text_bid_title_s"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintTop_toTopOf="@+id/text_bidding_title" />
+        app:layout_constraintTop_toTopOf="@+id/text_bid_title_s" />
 
     <Button
-        android:id="@+id/button_bidding_back"
+        android:id="@+id/button_bid_back_s"
         android:layout_width="30dp"
         android:layout_height="30dp"
         android:layout_marginStart="16dp"
-        android:layout_marginTop="16dp"
+        android:layout_marginTop="32dp"
         android:background="@drawable/ic_left_arrow"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="@+id/recycler_bidding_gallery" />
+        app:layout_constraintTop_toTopOf="@+id/recycler_bid_gallery_s" />
 
-    <com.robertlevonyan.views.customfloatingactionbutton.FloatingActionButton
-        android:id="@+id/custom_fab_bidding"
+    <Button
+        android:id="@+id/button_bid_s"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
         android:layout_marginStart="16dp"
-        android:layout_marginTop="8dp"
+        android:layout_marginTop="16dp"
         android:layout_marginEnd="16dp"
         android:layout_marginBottom="16dp"
-        app:fabColor="@color/color_FAB"
-        app:fabIcon="@drawable/ic_money"
-        app:fabSizes="mini"
-        app:fabText="我要出價"
-        app:fabTextColor="@color/black"
-        app:fabType="roundedSquare"
+        android:background="@drawable/btn_shape"
+        android:text="我要出價"
+        android:textSize="16sp"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/text_bidding_seller" />
-
-    <TextView
-        android:id="@+id/textView3"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginStart="16dp"
-        android:layout_marginTop="16dp"
-        android:text="最高出價人 : "
-        android:textSize="16sp"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/textView20" />
-
-    <TextView
-        android:id="@+id/text_bidding_buyer"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:text="James"
-        android:textSize="16sp"
-        app:layout_constraintBottom_toBottomOf="@+id/textView3"
-        app:layout_constraintStart_toEndOf="@+id/textView3"
-        app:layout_constraintTop_toTopOf="@+id/textView3" />
-
-    <TextView
-        android:id="@+id/text_bidding_people"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginStart="16dp"
-        android:layout_marginTop="16dp"
-        android:text="45"
-        android:textSize="16sp"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/textView3" />
-
-    <TextView
-        android:id="@+id/textView17"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginStart="2dp"
-        android:text="人參與競標中"
-        android:textSize="16sp"
-        app:layout_constraintBottom_toBottomOf="@+id/text_bidding_people"
-        app:layout_constraintStart_toEndOf="@+id/text_bidding_people"
-        app:layout_constraintTop_toTopOf="@+id/text_bidding_people" />
+        app:layout_constraintTop_toBottomOf="@+id/textView22" />
 
 </android.support.constraint.ConstraintLayout>

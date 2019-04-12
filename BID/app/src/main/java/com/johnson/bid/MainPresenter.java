@@ -9,6 +9,7 @@ import com.johnson.bid.chat.ChatPresenter;
 import com.johnson.bid.centre.CenterContract;
 import com.johnson.bid.centre.CenterPresenter;
 import com.johnson.bid.centre.auction.AuctionFragment;
+import com.johnson.bid.data.Product;
 import com.johnson.bid.dialog.MessageDialog;
 import com.johnson.bid.login.LoginContract;
 import com.johnson.bid.login.LoginPresenter;
@@ -153,9 +154,39 @@ public class MainPresenter implements MainContract.Presenter, CenterContract.Pre
     }
 
     @Override
+    public void loadEnglishData() {
+        mEmglishAuctionPresenter.loadEnglishData();
+    }
+
+    @Override
+    public void setEnglishData(ArrayList<Product> productList) {
+        mEmglishAuctionPresenter.setEnglishData(productList);
+    }
+
+    @Override
+    public void loadSealedData() {
+        mSealedAuctionPresenter.loadSealedData();
+    }
+
+    @Override
+    public void setSealedData(ArrayList<Product> productList) {
+        mSealedAuctionPresenter.setSealedData(productList);
+    }
+
+    @Override
     public void showToolbarAndBottomNavigation() {
         mMainView.showToolbarUi();
         mMainView.showBottomNavigationUi();
+    }
+
+    @Override
+    public void setProductData(Product product) {
+        mBiddingPresenter.setProductData(product);
+    }
+
+    @Override
+    public void loadProductData() {
+        mBiddingPresenter.loadProductData();
     }
 
     @Override
@@ -204,6 +235,11 @@ public class MainPresenter implements MainContract.Presenter, CenterContract.Pre
     public void onLoginSuccess() {
         mMainView.openCenterUi();
         showToolbarAndBottomNavigation();
+    }
+
+    @Override
+    public Product getProduct() {
+        return mPostPresenter.getProduct();
     }
 
     @Override
@@ -262,6 +298,21 @@ public class MainPresenter implements MainContract.Presenter, CenterContract.Pre
     }
 
     @Override
+    public void setSellerId(long sellerId) {
+        mPostPresenter.setSellerId(sellerId);
+    }
+
+    @Override
+    public void setParticipantsNumber(int participantsNumber) {
+        mPostPresenter.setParticipantsNumber(participantsNumber);
+    }
+
+    @Override
+    public void setCurrentPrice(int currentPrice) {
+        mPostPresenter.setCurrentPrice(currentPrice);
+    }
+
+    @Override
     public TradeItemFragment findMyBidding() {
         return mMainView.findMyBiddingView();
     }
@@ -286,7 +337,7 @@ public class MainPresenter implements MainContract.Presenter, CenterContract.Pre
 
 
     @Override
-    public void openBidding() {
-        mMainView.findBiddingView();
+    public void openBidding(String auctionType, Product product) {
+        mMainView.findBiddingView(auctionType, product);
     }
 }

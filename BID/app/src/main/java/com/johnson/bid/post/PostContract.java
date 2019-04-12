@@ -4,6 +4,7 @@ import android.graphics.Bitmap;
 
 import com.johnson.bid.BasePresenter;
 import com.johnson.bid.BaseView;
+import com.johnson.bid.data.Product;
 
 import java.util.ArrayList;
 
@@ -14,6 +15,8 @@ public interface PostContract {
     }
 
     interface Presenter extends BasePresenter {
+
+        Product getProduct();
 
         void setProductTitle(String productTitle);
 
@@ -36,6 +39,12 @@ public interface PostContract {
         void setStartingTime(long startingTime);
 
         void setImages(ArrayList<String> Url);
+
+        void setSellerId(long sellerId);
+
+        void setParticipantsNumber(int participantsNumber);
+
+        void setCurrentPrice(int currentPrice);
 
         void showBottomNavigation();
 

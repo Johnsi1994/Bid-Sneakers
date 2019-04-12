@@ -23,6 +23,7 @@ import com.johnson.bid.Bid;
 import com.johnson.bid.MainActivity;
 import com.johnson.bid.R;
 import com.johnson.bid.util.Firebase;
+import com.johnson.bid.util.UserManager;
 import com.jzxiang.pickerview.TimePickerDialog;
 import com.jzxiang.pickerview.listener.OnDateSetListener;
 
@@ -90,12 +91,7 @@ public class PostAdapter extends RecyclerView.Adapter {
         private TimePickerDialog mDialogMonthDayHourMinute;
         private Button mPostBtn;
 
-        private Map<String, Object> mProduct = new HashMap<>();
-
-        private String mCondition;
-        private String mType;
         private ArrayList<String> mUrls = new ArrayList<>();
-        private int mIncreasePrice;
 
         @SuppressLint("SimpleDateFormat")
         private SimpleDateFormat sf = new SimpleDateFormat("MM月 dd日 HH時 mm分");
@@ -122,17 +118,14 @@ public class PostAdapter extends RecyclerView.Adapter {
                 public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
                     if (position == 0) {
                         mPresenter.setProductCondition("BrandNew");
-                        setCondition("BrandNew");
                     } else {
                         mPresenter.setProductCondition("Used");
-                        setCondition("Used");
                     }
                 }
 
                 @Override
                 public void onNothingSelected(AdapterView<?> parent) {
                     mPresenter.setProductCondition("BrandNew");
-                    setCondition("BrandNew");
                 }
             });
 
@@ -141,17 +134,14 @@ public class PostAdapter extends RecyclerView.Adapter {
                 public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
                     if (position == 0) {
                         mPresenter.setAuctionType("English");
-                        setType("English");
                     } else {
                         mPresenter.setAuctionType("Sealed");
-                        setType("Sealed");
                     }
                 }
 
                 @Override
                 public void onNothingSelected(AdapterView<?> parent) {
                     mPresenter.setAuctionType("English");
-                    setType("English");
                 }
             });
 
@@ -161,19 +151,15 @@ public class PostAdapter extends RecyclerView.Adapter {
                     switch (position) {
                         case 0:
                             mPresenter.setIncrease(1);
-                            setIncreasePrice(1);
                             break;
                         case 1:
                             mPresenter.setIncrease(10);
-                            setIncreasePrice(10);
                             break;
                         case 2:
                             mPresenter.setIncrease(100);
-                            setIncreasePrice(100);
                             break;
                         case 3:
                             mPresenter.setIncrease(1000);
-                            setIncreasePrice(1000);
                             break;
                     }
                 }
@@ -181,7 +167,6 @@ public class PostAdapter extends RecyclerView.Adapter {
                 @Override
                 public void onNothingSelected(AdapterView<?> parent) {
                     mPresenter.setIncrease(1);
-                    setIncreasePrice(1);
                 }
             });
 
@@ -209,18 +194,17 @@ public class PostAdapter extends RecyclerView.Adapter {
                 mPresenter.showPostSuccessDialog();
                 mPresenter.updateToolbar("拍賣中心");
                 mPresenter.showBottomNavigation();
-                mPresenter.openCenter();
+                mMainActivity.onBackPressed();
             });
 
         }
 
         @Override
-        public void onDateSet(TimePickerDialog timePickerView, long millseconds) {
-            String text = getDateToString(millseconds);
+        public void onDateSet(TimePickerDialog timePickerView, long millSeconds) {
+            String text = getDateToString(millSeconds);
             mExpireTimeText.setText(text);
             mExpireTimeText.setVisibility(View.VISIBLE);
-            mPresenter.setExpireTime(millseconds);
-            mProduct.put("expireTime", millseconds);
+            mPresenter.setExpireTime(millSeconds);
         }
 
         private String getDateToString(long time) {
@@ -255,35 +239,20 @@ public class PostAdapter extends RecyclerView.Adapter {
         private void uploadProduct() {
 
             mPresenter.setImages(getUrls());
-            mProduct.put("Images", getUrls());
-
+            mPresenter.setSellerId(UserManager.getInstance().getUser().getId());
             mPresenter.setProductTitle(mProductTitle.getText().toString());
-            mProduct.put("title", mProductTitle.getText().toString());
-
             mPresenter.setProductIntro(mProductIntro.getText().toString());
-            mProduct.put("introduction", mProductIntro.getText().toString());
-
-            mProduct.put("condition", getCondition());
-
             mPresenter.setStartingPrice(Integer.parseInt(mStartingPrice.getText().toString()));
-            mProduct.put("startingPrice", Integer.parseInt(mStartingPrice.getText().toString()));
-
+            mPresenter.setCurrentPrice(Integer.parseInt(mStartingPrice.getText().toString()));
+            mPresenter.setParticipantsNumber(0);
             mPresenter.setReservePrice(Integer.parseInt(mReservePrice.getText().toString()));
-            mProduct.put("reservePrice", Integer.parseInt(mReservePrice.getText().toString()));
-
-            mProduct.put("auctionType", getType());
-
-            mProduct.put("increase", getIncreasePrice());
-
             mPresenter.setProductId(System.currentTimeMillis());
-            mProduct.put("productId", System.currentTimeMillis());
-
             mPresenter.setStartingTime(System.currentTimeMillis());
-            mProduct.put("startingTime", System.currentTimeMillis());
 
-            Firebase.getFirestore().collection("Products")
-                    .add(mProduct)
-                    .addOnSuccessListener(documentReference -> Log.d("Johnsi", "DocumentSnapshot added with ID: " + documentReference.getId()))
+            Firebase.getFirestore().collection("products")
+                    .document(String.valueOf(System.currentTimeMillis()))
+                    .set(mPresenter.getProduct())
+                    .addOnSuccessListener(documentReference -> Log.d("Johnsi", "DocumentSnapshot added"))
                     .addOnFailureListener(e -> Log.w("Johnsi", "Error adding document", e));
         }
 
@@ -295,30 +264,6 @@ public class PostAdapter extends RecyclerView.Adapter {
             return mUrls;
         }
 
-        private void setCondition(String condition) {
-            mCondition = condition;
-        }
-
-        private String getCondition() {
-            return mCondition;
-        }
-
-        private void setType(String type) {
-            mType = type;
-        }
-
-        private String getType() {
-            return mType;
-        }
-
-        private void setIncreasePrice(int price) {
-            mIncreasePrice = price;
-        }
-
-        private int getIncreasePrice() {
-            return mIncreasePrice;
-        }
-
         private RecyclerView getPostPicGallery() {
             return mPostPicGallery;
         }
@@ -327,12 +272,5 @@ public class PostAdapter extends RecyclerView.Adapter {
     public void updateData(ArrayList<String> imagePath) {
         this.mImagePath = imagePath;
         notifyDataSetChanged();
-    }
-
-    public interface LoadCallback {
-
-        void onSuccess();
-
-        void onFail(String errorMessage);
     }
 }

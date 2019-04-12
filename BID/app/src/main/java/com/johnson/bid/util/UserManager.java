@@ -3,6 +3,7 @@ package com.johnson.bid.util;
 import android.app.Activity;
 import android.content.Context;
 import android.net.Uri;
+import android.support.annotation.NonNull;
 import android.util.Log;
 
 import com.facebook.AccessToken;
@@ -16,6 +17,11 @@ import com.facebook.Profile;
 import com.facebook.ProfileTracker;
 import com.facebook.login.LoginManager;
 import com.facebook.login.LoginResult;
+import com.google.android.gms.tasks.OnCompleteListener;
+import com.google.android.gms.tasks.Task;
+import com.google.firebase.firestore.DocumentSnapshot;
+import com.google.firebase.firestore.QueryDocumentSnapshot;
+import com.google.firebase.firestore.QuerySnapshot;
 import com.johnson.bid.Bid;
 import com.johnson.bid.data.User;
 
@@ -24,13 +30,14 @@ import org.json.JSONObject;
 
 import java.io.IOException;
 import java.util.Arrays;
+import java.util.HashMap;
+import java.util.Map;
+import java.util.Objects;
 
 public class UserManager {
 
     private User mUser;
     private CallbackManager mFbCallbackManager;
-    private ProfileTracker mProfileTracker;
-    private Profile profile;
 
     private static class UserManagerHolder {
         private static final UserManager INSTANCE = new UserManager();
@@ -60,11 +67,6 @@ public class UserManager {
                     public void onFail(String errorMessage) {
                         loadCallback.onFail("Get User Info Failed");
                     }
-
-                    @Override
-                    public void onInvalidToken(String errorMessage) {
-
-                    }
                 });
                 Log.d("Johnsi", "FB Login Success");
             }
@@ -92,28 +94,31 @@ public class UserManager {
             try {
                 if (response.getConnection().getResponseCode() == 200) {
                     long id = object.getLong("id");
+//                    Log.d("Johnsi", "ID : " + id);
                     String name = object.getString("name");
+                    String userPhoto = "https://graph.facebook.com/" + id + "/picture?type=small";
 
-                    if (Profile.getCurrentProfile() == null) {
-                        mProfileTracker = new ProfileTracker() {
-                            @Override
-                            protected void onCurrentProfileChanged(Profile oldProfile, Profile currentProfile) {
-                                mProfileTracker.stopTracking();
-                                profile = currentProfile;
-                            }
-                        };
-                    } else {
-                        profile = Profile.getCurrentProfile();
-                    }
-
-                    Uri userPhoto = profile.getProfilePictureUri(300, 300);
+//                    大頭照處理
+//                    public static Bitmap getFacebookProfilePicture(String userID){
+//                        URL imageURL = new URL("https://graph.facebook.com/" + userID + "/picture?type=large");
+//                        Bitmap bitmap = BitmapFactory.decodeStream(imageURL.openConnection().getInputStream());
+//
+//                        return bitmap;
+//                    }
+//
+//                    Bitmap bitmap = getFacebookProfilePicture(userId);
 
                     User user = new User();
                     user.setId(id);
                     user.setName(name);
-                    user.setImage(userPhoto.toString());
-
+                    user.setImage(userPhoto);
                     setUser(user);
+
+                    Firebase.getFirestore().collection("users")
+                            .document(String.valueOf(id))
+                            .set(user)
+                            .addOnSuccessListener(documentReference -> Log.d("Johnsi", "DocumentSnapshot added"))
+                            .addOnFailureListener(e -> Log.w("Johnsi", "Error adding document", e));
 
                     loadCallback.onSuccess();
                 }
@@ -127,10 +132,29 @@ public class UserManager {
         graphRequest.executeAsync();
     }
 
+    public void getUserProfile() {
+
+        Firebase.getFirestore().collection("users")
+                .document(AccessToken.getCurrentAccessToken().getUserId())
+                .get()
+                .addOnCompleteListener(task -> {
+                    if (task.isSuccessful()) {
+
+                        DocumentSnapshot document = task.getResult();
+                        setUser(document.toObject(User.class));
+
+                    } else {
+                        Log.d("Johnsi", "Error getting documents: ", task.getException());
+                    }
+                });
+
+    }
+
     private void loginFacebook(Context context) {
 
         LoginManager.getInstance().logInWithReadPermissions(
                 (Activity) context, Arrays.asList("email"));
+
     }
 
     public boolean isLoggedIn() {
@@ -155,7 +179,5 @@ public class UserManager {
         void onSuccess();
 
         void onFail(String errorMessage);
-
-        void onInvalidToken(String errorMessage);
     }
 }

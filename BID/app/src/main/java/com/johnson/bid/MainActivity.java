@@ -21,6 +21,7 @@ import android.support.v4.content.ContextCompat;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
 import android.util.DisplayMetrics;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.widget.Button;
@@ -28,6 +29,7 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import com.johnson.bid.centre.auction.AuctionFragment;
+import com.johnson.bid.data.Product;
 import com.johnson.bid.dialog.MessageDialog;
 import com.johnson.bid.trade.TradeItem.TradeItemFragment;
 import com.johnson.bid.util.UserManager;
@@ -245,8 +247,8 @@ public class MainActivity extends AppCompatActivity implements MainContract.View
     }
 
     @Override
-    public void findBiddingView() {
-        mMainMvpController.createBiddingView();
+    public void findBiddingView(String auctionType, Product product) {
+        mMainMvpController.createBiddingView(auctionType, product);
     }
 
     @Override
@@ -311,6 +313,7 @@ public class MainActivity extends AppCompatActivity implements MainContract.View
         setBottomNavigation();
 
         if (UserManager.getInstance().isLoggedIn()) {
+            UserManager.getInstance().getUserProfile();
             mPresenter.openCenter();
             showToolbarUi();
             showBottomNavigationUi();

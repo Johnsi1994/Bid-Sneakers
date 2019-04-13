@@ -19,6 +19,7 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import com.google.android.gms.tasks.OnSuccessListener;
+import com.google.firebase.firestore.FieldValue;
 import com.google.firebase.storage.StorageReference;
 import com.johnson.bid.Bid;
 import com.johnson.bid.MainActivity;
@@ -121,15 +122,15 @@ public class PostAdapter extends RecyclerView.Adapter {
                 @Override
                 public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
                     if (position == 0) {
-                        mPresenter.setProductCondition("BrandNew");
+                        mPresenter.setProductCondition("全新");
                     } else {
-                        mPresenter.setProductCondition("Used");
+                        mPresenter.setProductCondition("二手");
                     }
                 }
 
                 @Override
                 public void onNothingSelected(AdapterView<?> parent) {
-                    mPresenter.setProductCondition("BrandNew");
+                    mPresenter.setProductCondition("全新");
                 }
             });
 
@@ -255,6 +256,7 @@ public class PostAdapter extends RecyclerView.Adapter {
 
         private void uploadProduct() {
 
+            mPresenter.setAuctionCondition("bidding");
             mPresenter.setImages(getUrls());
             mPresenter.setSellerId(UserManager.getInstance().getUser().getId());
             mPresenter.setProductTitle(mProductTitle.getText().toString());
@@ -276,6 +278,14 @@ public class PostAdapter extends RecyclerView.Adapter {
                     .set(mPresenter.getProduct())
                     .addOnSuccessListener(documentReference -> Log.d("Johnsi", "DocumentSnapshot added"))
                     .addOnFailureListener(e -> Log.w("Johnsi", "Error adding document", e));
+
+            mPresenter.setProductId2User(id);
+
+            Firebase.getFirestore().collection("users")
+                    .document(String.valueOf(UserManager.getInstance().getUser().getId()))
+                    .update("myTradeProductsId", FieldValue.arrayUnion(id))
+                    .addOnSuccessListener(aVoid -> Log.d("Johnsi", "BID DocumentSnapshot successfully updated!"))
+                    .addOnFailureListener(e -> Log.w("Johnsi", "BID Error updating document", e));
         }
 
         private void setUrl(String url) {

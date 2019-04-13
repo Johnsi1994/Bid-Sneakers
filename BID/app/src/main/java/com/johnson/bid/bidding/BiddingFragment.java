@@ -74,6 +74,10 @@ public class BiddingFragment extends Fragment implements BiddingContract.View {
 
     @Override
     public void showBiddingUi(Product product) {
+        if (mBiddingAdapter == null) {
+            mBiddingAdapter = new BiddingAdapter(mPresenter, (MainActivity) getActivity(), mAuctionType);
+        }
+
         mBiddingAdapter.updateData(product);
     }
 }

@@ -15,8 +15,12 @@ import com.johnson.bid.MainActivity;
 import com.johnson.bid.R;
 import com.johnson.bid.data.Product;
 import com.johnson.bid.util.ImageManager;
+import com.johnson.bid.util.UserManager;
+
+import java.util.ArrayList;
 
 import static com.johnson.bid.MainMvpController.ENGLISH;
+import static com.johnson.bid.MainMvpController.SEALED;
 
 public class BiddingAdapter extends RecyclerView.Adapter {
 
@@ -113,13 +117,13 @@ public class BiddingAdapter extends RecyclerView.Adapter {
             mSellerText = itemView.findViewById(R.id.text_bid_seller_e);
             mBidBtn = itemView.findViewById(R.id.button_bid_e);
 
-            mBackBtn.setOnClickListener(v ->
+            mBackBtn.setOnClickListener( v ->
                     mMainActivity.onBackPressed()
             );
 
-            mBidBtn.setOnClickListener(v -> {
-                mPresenter.openBidDialog(mProduct);
-            });
+            mBidBtn.setOnClickListener( v ->
+                mPresenter.openBidDialog(ENGLISH, mProduct)
+            );
         }
 
         private RecyclerView getGalleryRecycler() {
@@ -171,7 +175,11 @@ public class BiddingAdapter extends RecyclerView.Adapter {
         holder.getLastTimeText().setText(String.valueOf(product.getExpired()));
         holder.getPriceText().setText(String.valueOf(product.getCurrentPrice()));
         holder.getIncreaseText().setText(String.valueOf(product.getIncrease()));
-        holder.getBuyerText().setText(String.valueOf(product.getHighestUserId()));
+        if (product.getHighestUserId() == -1) {
+            holder.getBuyerText().setText(mMainActivity.getString(R.string.nobody));
+        } else {
+            holder.getBuyerText().setText(String.valueOf(product.getHighestUserId()));
+        }
         holder.getPeopleText().setText(String.valueOf(product.getParticipantsNumber()));
         holder.getSellerText().setText(String.valueOf(product.getSellerId()));
 
@@ -202,9 +210,30 @@ public class BiddingAdapter extends RecyclerView.Adapter {
             mSellerText = itemView.findViewById(R.id.text_bid_seller_s);
             mBidBtn = itemView.findViewById(R.id.button_bid_s);
 
+            ArrayList<Long> myProductsId = UserManager.getInstance().getUser().getMyTradeProductsId();
+            Boolean hasProduct = false;
+
+            for (int i = 0; i < myProductsId.size(); i++) {
+                if (myProductsId.get(i).equals(mProduct.getProductId())) {
+                    hasProduct = true;
+                }
+            }
+
             mBackBtn.setOnClickListener(v ->
                     mMainActivity.onBackPressed()
             );
+
+            mBidBtn.setOnClickListener( v ->
+                    mPresenter.openBidDialog(SEALED, mProduct)
+            );
+
+            if (hasProduct) {
+                mBidBtn.setClickable(false);
+                mBidBtn.setText("已經出過價嘍~~");
+            } else {
+                mBidBtn.setClickable(true);
+                mBidBtn.setText("我要出價");
+            }
         }
 
         private RecyclerView getGalleryRecycler() {

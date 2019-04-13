@@ -190,8 +190,8 @@ public class MainPresenter implements MainContract.Presenter, CenterContract.Pre
     }
 
     @Override
-    public void openBidDialog(Product product) {
-        mMainView.openBidDialog(product);
+    public void openBidDialog(String from, Product product) {
+        mMainView.openBidDialog(from, product);
     }
 
     @Override
@@ -253,6 +253,11 @@ public class MainPresenter implements MainContract.Presenter, CenterContract.Pre
     }
 
     @Override
+    public void setAuctionCondition(String auctionCondition) {
+        mPostPresenter.setAuctionCondition(auctionCondition);
+    }
+
+    @Override
     public void setProductIntro(String productIntro) {
         mPostPresenter.setProductIntro(productIntro);
     }
@@ -290,6 +295,11 @@ public class MainPresenter implements MainContract.Presenter, CenterContract.Pre
     @Override
     public void setProductId(long productId) {
         mPostPresenter.setProductId(productId);
+    }
+
+    @Override
+    public void setProductId2User(long productId) {
+        mPostPresenter.setProductId2User(productId);
     }
 
     @Override

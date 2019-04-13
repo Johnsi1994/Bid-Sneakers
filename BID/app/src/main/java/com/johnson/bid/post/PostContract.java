@@ -20,6 +20,8 @@ public interface PostContract {
 
         void setProductTitle(String productTitle);
 
+        void setAuctionCondition(String auctionCondition);
+
         void setProductIntro(String productIntro);
 
         void setStartingPrice(int startingPrice);
@@ -35,6 +37,8 @@ public interface PostContract {
         void setExpireTime(long expireTime);
 
         void setProductId(long productId);
+
+        void setProductId2User(long productId);
 
         void setStartingTime(long startingTime);
 

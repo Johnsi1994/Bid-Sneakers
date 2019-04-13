@@ -28,5 +28,7 @@
     <string name="post">提交</string>
     <string name="toolbar_title_post">刊登</string>
     <string name="post_success">刊登成功</string>
+    <string name="bid_success">出價成功</string>
+    <string name="nobody">無</string>
 
 </resources>

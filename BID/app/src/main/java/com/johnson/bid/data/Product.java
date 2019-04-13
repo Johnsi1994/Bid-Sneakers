@@ -12,6 +12,7 @@ public class Product {
     private String mCondition;
 
     private String mAuctionType;
+    private String mAuctionCondition;
     private long mStartTime;
     private long mExpired;
     private int mStartPrice;
@@ -27,6 +28,7 @@ public class Product {
     public Product() {
 
         mAuctionType = "";
+        mAuctionCondition = "";
         mSellerId = -1;
         mProductId = -1;
         mImages = new ArrayList<>();
@@ -42,6 +44,14 @@ public class Product {
         mHighestUserId = -1;
         mParticipantsNumber = -1;
 //        mChats = new ArrayList<>();
+    }
+
+    public String getAuctionCondition() {
+        return mAuctionCondition;
+    }
+
+    public void setAuctionCondition(String auctionCondition) {
+        mAuctionCondition = auctionCondition;
     }
 
     public String getAuctionType() {

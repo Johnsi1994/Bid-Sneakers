@@ -20,7 +20,7 @@ public interface BiddingContract {
 
         void loadProductData();
 
-        void openBidDialog(Product product);
+        void openBidDialog(String from, Product product);
 
     }
 

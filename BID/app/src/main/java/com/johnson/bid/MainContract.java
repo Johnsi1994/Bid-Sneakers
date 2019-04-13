@@ -59,7 +59,7 @@ public interface MainContract {
 
         void showBottomNavigationUi();
 
-        void openBidDialog(Product product);
+        void openBidDialog(String from, Product product);
 
         void showMessageDialogUi(@MessageDialog.MessageType int type);
     }

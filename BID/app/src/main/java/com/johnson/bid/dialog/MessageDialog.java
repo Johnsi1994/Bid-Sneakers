@@ -22,12 +22,13 @@ public class MessageDialog extends AppCompatDialogFragment {
 
     @Retention(RetentionPolicy.SOURCE)
     @IntDef({
-            LOGIN_SUCCESS, LOGIN_FAIL, POST_SUCCESS
+            LOGIN_SUCCESS, LOGIN_FAIL, POST_SUCCESS, BID_SUCCESS
     })
     public @interface MessageType {}
     public static final int LOGIN_SUCCESS   = 0x11;
     public static final int LOGIN_FAIL      = 0x12;
     public static final int POST_SUCCESS   = 0x13;
+    public static final int BID_SUCCESS   = 0x14;
 
     private int mIconRes;
     private String mMessage;
@@ -40,6 +41,10 @@ public class MessageDialog extends AppCompatDialogFragment {
             case POST_SUCCESS:
                 mIconRes = R.drawable.ic_success;
                 mMessage = Bid.getAppContext().getString(R.string.post_success);
+                break;
+            case BID_SUCCESS:
+                mIconRes = R.drawable.ic_success;
+                mMessage = Bid.getAppContext().getString(R.string.bid_success);
                 break;
             default:
         }

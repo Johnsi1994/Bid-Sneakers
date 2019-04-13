@@ -14,7 +14,9 @@ import com.johnson.bid.R;
 import com.johnson.bid.data.Product;
 import com.johnson.bid.util.ImageManager;
 
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Date;
 
 import static com.johnson.bid.MainMvpController.ENGLISH;
 import static com.johnson.bid.MainMvpController.SEALED;
@@ -65,7 +67,7 @@ public class AuctionAdapter extends RecyclerView.Adapter {
     @Override
     public int getItemCount() {
         if (mProductList == null) {
-            return 1;
+            return 0;
         } else {
             return mProductList.size();
         }
@@ -74,7 +76,7 @@ public class AuctionAdapter extends RecyclerView.Adapter {
 
     @Override
     public int getItemViewType(int position) {
-        return TYPE_PRODUCT;
+        return (position < mProductList.size()) ? TYPE_PRODUCT : TYPE_LOADING;
     }
 
     private class EnglishAuctionViewHolder extends RecyclerView.ViewHolder {
@@ -134,7 +136,7 @@ public class AuctionAdapter extends RecyclerView.Adapter {
 
         holder.getTextTitle().setText(product.getTitle());
 
-        holder.getTextTime().setText(String.valueOf(product.getStartTime()));
+        holder.getTextTime().setText(getDateToString(product.getStartTime()));
 
         holder.getTextPrice().setText(String.valueOf(product.getCurrentPrice()));
 
@@ -187,7 +189,7 @@ public class AuctionAdapter extends RecyclerView.Adapter {
 
         holder.getTextTitle().setText(product.getTitle());
 
-        holder.getTextTime().setText(String.valueOf(product.getStartTime()));
+        holder.getTextTime().setText(getDateToString(product.getStartTime()));
 
     }
 
@@ -201,5 +203,12 @@ public class AuctionAdapter extends RecyclerView.Adapter {
     public void updateData(ArrayList<Product> productList) {
         mProductList = productList;
         notifyDataSetChanged();
+    }
+
+    private String getDateToString(long millSeconds) {
+        SimpleDateFormat sf = new SimpleDateFormat("MM月 dd日 HH時 mm分");
+        Date d = new Date(millSeconds);
+        String time = sf.format(d);
+        return time;
     }
 }

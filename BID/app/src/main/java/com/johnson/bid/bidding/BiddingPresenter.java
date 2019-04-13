@@ -33,7 +33,7 @@ public class BiddingPresenter implements BiddingContract.Presenter {
     @Override
     public void setProductData(Product product) {
         mProduct = product;
-//        loadProductData();
+        loadProductData();
     }
 
     @Override
@@ -42,7 +42,7 @@ public class BiddingPresenter implements BiddingContract.Presenter {
     }
 
     @Override
-    public void openBidDialog(Product product) {
+    public void openBidDialog(String from, Product product) {
 
     }
 

@@ -11,9 +11,15 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 
+import com.google.firebase.firestore.FieldValue;
 import com.johnson.bid.MainActivity;
 import com.johnson.bid.R;
 import com.johnson.bid.data.Product;
+import com.johnson.bid.util.Firebase;
+import com.johnson.bid.util.UserManager;
+
+import java.util.ArrayList;
+import java.util.Iterator;
 
 import static com.google.common.base.Preconditions.checkNotNull;
 
@@ -22,6 +28,9 @@ public class BiddingFragment extends Fragment implements BiddingContract.View {
     private BiddingContract.Presenter mPresenter;
     private BiddingAdapter mBiddingAdapter;
     private String mAuctionType;
+    private ArrayList<Long> myEyesOn;
+    private Boolean isEyesOn = false;
+    private Product mProduct;
 
     public BiddingFragment() {
     }
@@ -54,6 +63,14 @@ public class BiddingFragment extends Fragment implements BiddingContract.View {
         super.onViewCreated(view, savedInstanceState);
 
         mPresenter.loadProductData();
+
+        myEyesOn = UserManager.getInstance().getUser().getEyesOn();
+
+        for (int i = 0; i < myEyesOn.size(); i++) {
+            if (myEyesOn.get(i).equals(mProduct.getProductId())) {
+                isEyesOn = true;
+            }
+        }
     }
 
     @Override
@@ -66,6 +83,39 @@ public class BiddingFragment extends Fragment implements BiddingContract.View {
         super.onDestroy();
 
         mPresenter.showToolbarAndBottomNavigation();
+
+        if (mBiddingAdapter.getIsEyesOn()) {
+
+            if(!isEyesOn) {
+                myEyesOn.add(mProduct.getProductId());
+            }
+            System.out.println("myEyesOn : " + myEyesOn.toString() + " " + myEyesOn.size());
+
+            Firebase.getFirestore().collection("users")
+                    .document(String.valueOf(UserManager.getInstance().getUser().getId()))
+                    .update("eyesOn", FieldValue.arrayUnion(mProduct.getProductId()))
+                    .addOnSuccessListener(aVoid -> Log.d("Johnsi", "Eye On DocumentSnapshot successfully updated!"))
+                    .addOnFailureListener(e -> Log.w("Johnsi", "BID Error updating document", e));
+        } else {
+
+            if (isEyesOn) {
+
+                Iterator<Long> iterator = myEyesOn.iterator();
+                while (iterator.hasNext()) {
+                    long id = iterator.next();
+                    if (id == (mProduct.getProductId())) {
+                        iterator.remove();
+                    }
+                }
+            }
+            System.out.println("myEyesOn : " + myEyesOn.toString() + " " + myEyesOn.size());
+
+            Firebase.getFirestore().collection("users")
+                    .document(String.valueOf(UserManager.getInstance().getUser().getId()))
+                    .update("eyesOn", FieldValue.arrayRemove(mProduct.getProductId()))
+                    .addOnSuccessListener(aVoid -> Log.d("Johnsi", "Eye On DocumentSnapshot successfully updated!"))
+                    .addOnFailureListener(e -> Log.w("Johnsi", "BID Error updating document", e));
+        }
     }
 
     public void setAuctionType(String type) {
@@ -77,7 +127,7 @@ public class BiddingFragment extends Fragment implements BiddingContract.View {
         if (mBiddingAdapter == null) {
             mBiddingAdapter = new BiddingAdapter(mPresenter, (MainActivity) getActivity(), mAuctionType);
         }
-
+        mProduct = product;
         mBiddingAdapter.updateData(product);
     }
 }

@@ -8,8 +8,8 @@ public class User {
     private String mName;
     private String mImage;
     private ArrayList<Long> mMyTradeProductsId;
+    private ArrayList<Long> mEyesOn;
 
-//    private ArrayList<Product> mEyesOn;
 //    private ArrayList<Product> mChatRoomId;
 
     public User() {
@@ -18,7 +18,7 @@ public class User {
         mName = "";
         mImage = "";
         mMyTradeProductsId = new ArrayList<>();
-//        mEyesOn = new ArrayList<>();
+        mEyesOn = new ArrayList<>();
 //        mChatRoomId = new ArrayList<>();
 
     }
@@ -56,14 +56,14 @@ public class User {
         mMyTradeProductsId = myTradeProductsId;
     }
 
-    //    public ArrayList<Product> getEyesOn() {
-//        return mEyesOn;
-//    }
-//
-//    public void setEyesOn(ArrayList<Product> eyesOn) {
-//        mEyesOn = eyesOn;
-//    }
-//
+        public ArrayList<Long> getEyesOn() {
+        return mEyesOn;
+    }
+
+    public void setEyesOn(ArrayList<Long> eyesOn) {
+        mEyesOn = eyesOn;
+    }
+
 //    public ArrayList<Product> getChatRoomId() {
 //        return mChatRoomId;
 //    }

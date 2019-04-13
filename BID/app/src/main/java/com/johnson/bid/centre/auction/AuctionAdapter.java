@@ -71,7 +71,6 @@ public class AuctionAdapter extends RecyclerView.Adapter {
         } else {
             return mProductList.size();
         }
-
     }
 
     @Override

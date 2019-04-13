@@ -276,7 +276,10 @@ public class PostAdapter extends RecyclerView.Adapter {
             Firebase.getFirestore().collection("products")
                     .document(String.valueOf(id))
                     .set(mPresenter.getProduct())
-                    .addOnSuccessListener(documentReference -> Log.d("Johnsi", "DocumentSnapshot added"))
+                    .addOnSuccessListener(documentReference -> {
+                        Log.d("Johnsi", "DocumentSnapshot added");
+                        mPresenter.updateCenterData();
+                    })
                     .addOnFailureListener(e -> Log.w("Johnsi", "Error adding document", e));
 
             mPresenter.setProductId2User(id);

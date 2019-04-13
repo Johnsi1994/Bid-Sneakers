@@ -14,7 +14,6 @@ import com.johnson.bid.Bid;
 import com.johnson.bid.MainActivity;
 import com.johnson.bid.R;
 import com.johnson.bid.data.Product;
-import com.johnson.bid.util.ImageManager;
 import com.johnson.bid.util.UserManager;
 
 import java.util.ArrayList;
@@ -29,6 +28,8 @@ public class BiddingAdapter extends RecyclerView.Adapter {
     private MainActivity mMainActivity;
     private String mAuctionType;
     private Product mProduct;
+    private ArrayList<Long> myEyesOn;
+    private Boolean isEyesOn = false;
 
     public BiddingAdapter(BiddingContract.Presenter presenter, MainActivity mainActivity, String auctionType) {
         mPresenter = presenter;
@@ -117,13 +118,32 @@ public class BiddingAdapter extends RecyclerView.Adapter {
             mSellerText = itemView.findViewById(R.id.text_bid_seller_e);
             mBidBtn = itemView.findViewById(R.id.button_bid_e);
 
-            mBackBtn.setOnClickListener( v ->
+            mBackBtn.setOnClickListener(v ->
                     mMainActivity.onBackPressed()
             );
 
-            mBidBtn.setOnClickListener( v ->
-                mPresenter.openBidDialog(ENGLISH, mProduct)
+            mBidBtn.setOnClickListener(v ->
+                    mPresenter.openBidDialog(ENGLISH, mProduct)
             );
+
+            myEyesOn = UserManager.getInstance().getUser().getEyesOn();
+
+            for (int i = 0; i < myEyesOn.size(); i++) {
+                if (myEyesOn.get(i).equals(mProduct.getProductId())) {
+                    isEyesOn = true;
+                    mEyesOnBtn.setBackgroundResource(R.drawable.ic_like);
+                }
+            }
+
+            mEyesOnBtn.setOnClickListener(v -> {
+                if (isEyesOn) {
+                    isEyesOn = false;
+                    mEyesOnBtn.setBackgroundResource(R.drawable.ic_unlike);
+                } else {
+                    isEyesOn = true;
+                    mEyesOnBtn.setBackgroundResource(R.drawable.ic_like);
+                }
+            });
         }
 
         private RecyclerView getGalleryRecycler() {
@@ -223,7 +243,7 @@ public class BiddingAdapter extends RecyclerView.Adapter {
                     mMainActivity.onBackPressed()
             );
 
-            mBidBtn.setOnClickListener( v ->
+            mBidBtn.setOnClickListener(v ->
                     mPresenter.openBidDialog(SEALED, mProduct)
             );
 
@@ -274,5 +294,9 @@ public class BiddingAdapter extends RecyclerView.Adapter {
     public void updateData(Product product) {
         mProduct = product;
         notifyDataSetChanged();
+    }
+
+    public Boolean getIsEyesOn() {
+        return isEyesOn;
     }
 }

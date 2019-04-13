@@ -153,5 +153,10 @@ public class PostPresenter implements PostContract.Presenter {
 
     }
 
+    @Override
+    public void updateCenterData() {
+
+    }
+
 
 }

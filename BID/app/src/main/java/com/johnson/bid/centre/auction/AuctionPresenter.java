@@ -45,8 +45,6 @@ public class AuctionPresenter implements AuctionContract.Presenter {
     public void loadEnglishData() {
 
         mProductList = new ArrayList<>();
-//        mImages = new ArrayList<>();
-//        mProduct = new Product();
 
         Firebase.getFirestore().collection("products")
                 .whereEqualTo("auctionType", "English")
@@ -54,26 +52,7 @@ public class AuctionPresenter implements AuctionContract.Presenter {
                 .addOnCompleteListener(task -> {
                     if (task.isSuccessful()) {
                         for (QueryDocumentSnapshot document : task.getResult()) {
-
                             mProductList.add(document.toObject(Product.class));
-
-//                            mProduct.setProductId((long) document.getData().get("id"));
-//                            mProduct.setImages((ArrayList<String>) document.getData().get("images"));
-//                            mProduct.setTitle((String) document.getData().get("title"));
-//                            mProduct.setIntroduction((String) document.getData().get("introduction"));
-//                            mProduct.setCondition((String) document.getData().get("condition"));
-//                            mProduct.setAuctionType((String) document.getData().get("auctionType"));
-//                            mProduct.setStartTime((long) document.getData().get("startTime"));
-//                            mProduct.setExpired((long) document.getData().get("expired"));
-//                            mProduct.setStartPrice((int) document.getData().get("startPrice"));
-//                            mProduct.setCurrentPrice((int) document.getData().get("currentPrice"));
-//                            mProduct.setReservePrice((int) document.getData().get("reservePrice"));
-//                            mProduct.setIncrease((int) document.getData().get("increase"));
-//                            mProduct.setSellerId((long) document.getData().get("sellerId"));
-//                            mProduct.setHighestUserId((long) document.getData().get("highestUserId"));
-//                            mProduct.setParticipantsNumber((int) document.getData().get("participantsNumber"));
-
-//                            mProductList.add((Product) document.getData());
                         }
 
                         setEnglishData(mProductList);
@@ -94,8 +73,6 @@ public class AuctionPresenter implements AuctionContract.Presenter {
     public void loadSealedData() {
 
         mProductList = new ArrayList<>();
-//        mImages = new ArrayList<>();
-//        mProduct = new Product();
 
         Firebase.getFirestore().collection("products")
                 .whereEqualTo("auctionType", "Sealed")
@@ -103,26 +80,7 @@ public class AuctionPresenter implements AuctionContract.Presenter {
                 .addOnCompleteListener(task -> {
                     if (task.isSuccessful()) {
                         for (QueryDocumentSnapshot document : task.getResult()) {
-
                             mProductList.add(document.toObject(Product.class));
-
-//                            mProduct.setProductId((long) document.getData().get("id"));
-//                            mProduct.setImages((ArrayList<String>) document.getData().get("images"));
-//                            mProduct.setTitle((String) document.getData().get("title"));
-//                            mProduct.setIntroduction((String) document.getData().get("introduction"));
-//                            mProduct.setCondition((String) document.getData().get("condition"));
-//                            mProduct.setAuctionType((String) document.getData().get("auctionType"));
-//                            mProduct.setStartTime((long) document.getData().get("startTime"));
-//                            mProduct.setExpired((long) document.getData().get("expired"));
-//                            mProduct.setStartPrice((int) document.getData().get("startPrice"));
-//                            mProduct.setCurrentPrice((int) document.getData().get("currentPrice"));
-//                            mProduct.setReservePrice((int) document.getData().get("reservePrice"));
-//                            mProduct.setIncrease((int) document.getData().get("increase"));
-//                            mProduct.setSellerId((long) document.getData().get("sellerId"));
-//                            mProduct.setHighestUserId((long) document.getData().get("highestUserId"));
-//                            mProduct.setParticipantsNumber((int) document.getData().get("participantsNumber"));
-//
-//                            mProductList.add((Product) document.getData());
                         }
 
                         setSealedData(mProductList);

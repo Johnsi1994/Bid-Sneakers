@@ -63,6 +63,8 @@ public interface PostContract {
         void showPostSuccessDialog();
 
         void openCenter();
+
+        void updateCenterData();
     }
 
 }

@@ -118,6 +118,12 @@ public class MainPresenter implements MainContract.Presenter, CenterContract.Pre
     }
 
     @Override
+    public void updateCenterData() {
+        mEmglishAuctionPresenter.loadEnglishData();
+        mSealedAuctionPresenter.loadSealedData();
+    }
+
+    @Override
     public void openTrade() {
         mMainView.openTradeUi();
     }

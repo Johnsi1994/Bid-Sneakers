@@ -3,6 +3,7 @@ package com.johnson.bid.trade.TradeItem;
 import android.os.CountDownTimer;
 import android.support.annotation.NonNull;
 import android.support.v7.widget.RecyclerView;
+import android.util.SparseArray;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -29,10 +30,12 @@ public class TradeItemAdapter extends RecyclerView.Adapter {
     private TradeItemContract.Presenter mPresenter;
     private String mTradeType;
     private ArrayList<Product> mProductsList;
+    private SparseArray<CountDownTimer> mCountDownMap;
 
     public TradeItemAdapter(TradeItemContract.Presenter presenter, @MainMvpController.TradeType String tradeType) {
         mPresenter = presenter;
         mTradeType = tradeType;
+        mCountDownMap = new SparseArray<>();
     }
 
     @NonNull
@@ -41,17 +44,11 @@ public class TradeItemAdapter extends RecyclerView.Adapter {
         if (viewType == TYPE_PRODUCT) {
             switch (mTradeType) {
                 case MYBIDDING:
-                    return new BiddingEnglishViewHolder(LayoutInflater.from(viewGroup.getContext())
+                    return new BiddingViewHolder(LayoutInflater.from(viewGroup.getContext())
                             .inflate(R.layout.item_bidding_english, viewGroup, false));
-
-//                return new BiddingSealedViewHolder(LayoutInflater.from(viewGroup.getContext())
-//                        .inflate(R.layout.item_bidding_sealed, viewGroup, false));
                 case MYSELLING:
-                    return new SellingEnglishViewHolder(LayoutInflater.from(viewGroup.getContext())
+                    return new SellingViewHolder(LayoutInflater.from(viewGroup.getContext())
                             .inflate(R.layout.item_selling_english, viewGroup, false));
-
-//                return new SellingSealedViewHolder(LayoutInflater.from(viewGroup.getContext())
-//                        .inflate(R.layout.item_selling_sealed, viewGroup, false));
                 case MYBOUGHT:
                     return new BoughtViewHolder(LayoutInflater.from(viewGroup.getContext())
                             .inflate(R.layout.item_bought, viewGroup, false));
@@ -70,21 +67,13 @@ public class TradeItemAdapter extends RecyclerView.Adapter {
     public void onBindViewHolder(@NonNull RecyclerView.ViewHolder viewHolder, int i) {
 
         if (mProductsList != null) {
-            if (viewHolder instanceof BiddingEnglishViewHolder) {
+            if (viewHolder instanceof BiddingViewHolder) {
 
-                bindBiddingEnglishViewHolder((BiddingEnglishViewHolder) viewHolder, mProductsList.get(i));
+                bindBiddingViewHolder((BiddingViewHolder) viewHolder, mProductsList.get(i));
 
-            } else if (viewHolder instanceof BiddingSealedViewHolder) {
+            } else if (viewHolder instanceof SellingViewHolder) {
 
-                bindBiddingSealedViewHolder((BiddingSealedViewHolder) viewHolder, mProductsList.get(i));
-
-            } else if (viewHolder instanceof SellingEnglishViewHolder) {
-
-                bindSellingEnglishViewHolder((SellingEnglishViewHolder) viewHolder, mProductsList.get(i));
-
-            } else if (viewHolder instanceof SellingSealedViewHolder) {
-
-                bindSellingSealedViewHolder((SellingSealedViewHolder) viewHolder, mProductsList.get(i));
+                bindSellingViewHolder((SellingViewHolder) viewHolder, mProductsList.get(i));
 
             } else if (viewHolder instanceof BoughtViewHolder) {
 
@@ -114,15 +103,19 @@ public class TradeItemAdapter extends RecyclerView.Adapter {
     }
 
 
-    private class BiddingEnglishViewHolder extends RecyclerView.ViewHolder {
+    private class BiddingViewHolder extends RecyclerView.ViewHolder {
 
         private ImageView mImageMain;
         private TextView mTextTitle;
         private TextView mTextTime;
         private TextView mTextPrice;
         private TextView mTextPeople;
+        private TextView mTextPriceTitle;
+        private TextView mTextSlash;
+        private TextView mTextPeopleTitle;
+        CountDownTimer countDownTimer;
 
-        public BiddingEnglishViewHolder(View itemView) {
+        public BiddingViewHolder(View itemView) {
             super(itemView);
 
             mImageMain = itemView.findViewById(R.id.image_product_e_auction);
@@ -130,6 +123,9 @@ public class TradeItemAdapter extends RecyclerView.Adapter {
             mTextTime = itemView.findViewById(R.id.text_last_time_e_auction);
             mTextPrice = itemView.findViewById(R.id.text_price_e_auction);
             mTextPeople = itemView.findViewById(R.id.text_participant_num_e_auction);
+            mTextPriceTitle = itemView.findViewById(R.id.text_price_title);
+            mTextSlash = itemView.findViewById(R.id.text_slash);
+            mTextPeopleTitle = itemView.findViewById(R.id.text_people_title);
         }
 
         public ImageView getImageMain() {
@@ -151,9 +147,21 @@ public class TradeItemAdapter extends RecyclerView.Adapter {
         public TextView getTextPeople() {
             return mTextPeople;
         }
+
+        public TextView getTextPeopleTitle() {
+            return mTextPeopleTitle;
+        }
+
+        public TextView getTextPriceTitle() {
+            return mTextPriceTitle;
+        }
+
+        public TextView getTextSlash() {
+            return mTextSlash;
+        }
     }
 
-    private void bindBiddingEnglishViewHolder(BiddingEnglishViewHolder holder, Product product) {
+    private void bindBiddingViewHolder(BiddingViewHolder holder, Product product) {
 
 //        holder.getLayoutEnglishAuction().setOnClickListener(v -> {
 //            mPresenter.openBidding(ENGLISH, product);
@@ -164,57 +172,46 @@ public class TradeItemAdapter extends RecyclerView.Adapter {
 
         holder.getTextTitle().setText(product.getTitle());
 
-        timer(holder, product);
+        if (product.getAuctionType().equals("English")) {
 
-        holder.getTextPrice().setText(String.valueOf(product.getCurrentPrice()));
+            holder.getTextPrice().setText(String.valueOf(product.getCurrentPrice()));
 
-        holder.getTextPeople().setText(String.valueOf(product.getParticipantsNumber()));
+            holder.getTextPeople().setText(String.valueOf(product.getParticipantsNumber()));
+
+        } else {
+
+            holder.getTextTitle().setPadding(0, 40, 0, 0);
+
+            holder.getTextPrice().setVisibility(View.GONE);
+            holder.getTextPriceTitle().setVisibility(View.GONE);
+            holder.getTextPeople().setVisibility(View.GONE);
+            holder.getTextPeopleTitle().setVisibility(View.GONE);
+            holder.getTextSlash().setVisibility(View.GONE);
+
+        }
+
+        long lastTime = product.getExpired() - System.currentTimeMillis();
+        if (holder.countDownTimer != null) {
+            holder.countDownTimer.cancel();
+        }
+        holder.countDownTimer = new CountDownTimer(lastTime, 1000) {
+
+            @Override
+            public void onTick(long millisUntilFinished) {
+                holder.getTextTime().setText(getDateToString(millisUntilFinished));
+            }
+
+            @Override
+            public void onFinish() {
+
+            }
+        }.start();
+
+        mCountDownMap.put(holder.getTextTime().hashCode(), holder.countDownTimer);
 
     }
 
-    private class BiddingSealedViewHolder extends RecyclerView.ViewHolder {
-
-        private ImageView mImageMain;
-        private TextView mTextTitle;
-        private TextView mTextTime;
-
-        public BiddingSealedViewHolder(View itemView) {
-            super(itemView);
-
-            mImageMain = itemView.findViewById(R.id.image_product_s_auction);
-            mTextTitle = itemView.findViewById(R.id.text_product_title_s_auction);
-            mTextTime = itemView.findViewById(R.id.text_last_time_s_auction);
-        }
-
-        public ImageView getImageMain() {
-            return mImageMain;
-        }
-
-        public TextView getTextTitle() {
-            return mTextTitle;
-        }
-
-        public TextView getTextTime() {
-            return mTextTime;
-        }
-    }
-
-    private void bindBiddingSealedViewHolder(BiddingSealedViewHolder holder, Product product) {
-
-//        holder.getLayoutEnglishAuction().setOnClickListener(v -> {
-//            mPresenter.openBidding(ENGLISH, product);
-//            mPresenter.hideToolbarAndBottomNavigation();
-//        });
-
-        ImageManager.getInstance().setImageByUrl(holder.getImageMain(), product.getImages().get(0));
-
-        holder.getTextTitle().setText(product.getTitle());
-
-        timer(holder, product);
-
-    }
-
-    private class SellingEnglishViewHolder extends RecyclerView.ViewHolder {
+    private class SellingViewHolder extends RecyclerView.ViewHolder {
 
         private ImageView mImageMain;
         private TextView mTextTitle;
@@ -222,8 +219,13 @@ public class TradeItemAdapter extends RecyclerView.Adapter {
         private TextView mTextPrice;
         private TextView mTextBuyer;
         private TextView mTextPeople;
+        private TextView mTextPriceTitle;
+        private TextView mTextSlash;
+        private TextView mTextPeopleTitle;
+        private TextView mTextBuyerTitle;
+        CountDownTimer countDownTimer;
 
-        public SellingEnglishViewHolder(View itemView) {
+        public SellingViewHolder(View itemView) {
             super(itemView);
 
             mImageMain = itemView.findViewById(R.id.image_selling_e);
@@ -232,6 +234,10 @@ public class TradeItemAdapter extends RecyclerView.Adapter {
             mTextPrice = itemView.findViewById(R.id.text_price_selling_e);
             mTextBuyer = itemView.findViewById(R.id.text_buyer_selling_e);
             mTextPeople = itemView.findViewById(R.id.text_people_selling_e);
+            mTextPriceTitle = itemView.findViewById(R.id.text_price_title);
+            mTextSlash = itemView.findViewById(R.id.text_slash);
+            mTextPeopleTitle = itemView.findViewById(R.id.text_people_title);
+            mTextBuyerTitle = itemView.findViewById(R.id.text_buyer_title);
         }
 
         public ImageView getImageMain() {
@@ -257,9 +263,25 @@ public class TradeItemAdapter extends RecyclerView.Adapter {
         public TextView getTextPeople() {
             return mTextPeople;
         }
+
+        public TextView getTextPeopleTitle() {
+            return mTextPeopleTitle;
+        }
+
+        public TextView getTextPriceTitle() {
+            return mTextPriceTitle;
+        }
+
+        public TextView getTextSlash() {
+            return mTextSlash;
+        }
+
+        public TextView getTextBuyerTitle() {
+            return mTextBuyerTitle;
+        }
     }
 
-    private void bindSellingEnglishViewHolder(SellingEnglishViewHolder holder, Product product) {
+    private void bindSellingViewHolder(SellingViewHolder holder, Product product) {
 
 //        holder.getLayoutEnglishAuction().setOnClickListener(v -> {
 //            mPresenter.openBidding(ENGLISH, product);
@@ -270,56 +292,49 @@ public class TradeItemAdapter extends RecyclerView.Adapter {
 
         holder.getTextTitle().setText(product.getTitle());
 
-        timer(holder, product);
+        if (product.getAuctionType().equals("English")) {
 
-        holder.getTextPrice().setText(String.valueOf(product.getCurrentPrice()));
+            holder.getTextPrice().setText(String.valueOf(product.getCurrentPrice()));
 
-        holder.getTextPeople().setText(String.valueOf(product.getParticipantsNumber()));
+            holder.getTextPeople().setText(String.valueOf(product.getParticipantsNumber()));
 
-        holder.getTextBuyer().setText(String.valueOf(product.getHighestUserId()));
+            if (product.getHighestUserId() == -1) {
+                holder.getTextBuyer().setText("無");
+            } else {
+                holder.getTextBuyer().setText(String.valueOf(product.getHighestUserId()));
+            }
 
-    }
+        } else {
 
-    private class SellingSealedViewHolder extends RecyclerView.ViewHolder {
+            holder.getTextTitle().setPadding(0, 78, 0, 0);
 
-        private ImageView mImageMain;
-        private TextView mTextTitle;
-        private TextView mTextTime;
-
-        public SellingSealedViewHolder(View itemView) {
-            super(itemView);
-
-            mImageMain = itemView.findViewById(R.id.image_selling_s);
-            mTextTitle = itemView.findViewById(R.id.text_title_selling_s);
-            mTextTime = itemView.findViewById(R.id.text_last_time_selling_s);
+            holder.getTextPriceTitle().setVisibility(View.GONE);
+            holder.getTextPrice().setVisibility(View.GONE);
+            holder.getTextSlash().setVisibility(View.GONE);
+            holder.getTextPeople().setVisibility(View.GONE);
+            holder.getTextPeopleTitle().setVisibility(View.GONE);
+            holder.getTextBuyer().setVisibility(View.GONE);
+            holder.getTextBuyerTitle().setVisibility(View.GONE);
         }
 
-        public ImageView getImageMain() {
-            return mImageMain;
+        long lastTime = product.getExpired() - System.currentTimeMillis();
+        if (holder.countDownTimer != null) {
+            holder.countDownTimer.cancel();
         }
+        holder.countDownTimer = new CountDownTimer(lastTime, 1000) {
 
-        public TextView getTextTitle() {
-            return mTextTitle;
-        }
+            @Override
+            public void onTick(long millisUntilFinished) {
+                holder.getTextTime().setText(getDateToString(millisUntilFinished));
+            }
 
-        public TextView getTextTime() {
-            return mTextTime;
-        }
-    }
+            @Override
+            public void onFinish() {
 
-    private void bindSellingSealedViewHolder(SellingSealedViewHolder holder, Product product) {
+            }
+        }.start();
 
-//        holder.getLayoutEnglishAuction().setOnClickListener(v -> {
-//            mPresenter.openBidding(ENGLISH, product);
-//            mPresenter.hideToolbarAndBottomNavigation();
-//        });
-
-        ImageManager.getInstance().setImageByUrl(holder.getImageMain(), product.getImages().get(0));
-
-        holder.getTextTitle().setText(product.getTitle());
-
-        timer(holder, product);
-
+        mCountDownMap.put(holder.getTextTime().hashCode(), holder.countDownTimer);
     }
 
     private class BoughtViewHolder extends RecyclerView.ViewHolder {
@@ -329,6 +344,7 @@ public class TradeItemAdapter extends RecyclerView.Adapter {
         private TextView mTextTime;
         private TextView mTextPrice;
         private TextView mTextSeller;
+        CountDownTimer countDownTimer;
 
         public BoughtViewHolder(View itemView) {
             super(itemView);
@@ -372,7 +388,24 @@ public class TradeItemAdapter extends RecyclerView.Adapter {
 
         holder.getTextTitle().setText(product.getTitle());
 
-        timer(holder, product);
+        long lastTime = product.getExpired() - System.currentTimeMillis();
+        if (holder.countDownTimer != null) {
+            holder.countDownTimer.cancel();
+        }
+        holder.countDownTimer = new CountDownTimer(lastTime, 1000) {
+
+            @Override
+            public void onTick(long millisUntilFinished) {
+                holder.getTextTime().setText(getDateToString(millisUntilFinished));
+            }
+
+            @Override
+            public void onFinish() {
+
+            }
+        }.start();
+
+        mCountDownMap.put(holder.getTextTime().hashCode(), holder.countDownTimer);
 
         holder.getTextPrice().setText(String.valueOf(product.getCurrentPrice()));
 
@@ -387,6 +420,7 @@ public class TradeItemAdapter extends RecyclerView.Adapter {
         private TextView mTextTime;
         private TextView mTextPrice;
         private TextView mTextBuyer;
+        CountDownTimer countDownTimer;
 
         public SoldViewHolder(View itemView) {
             super(itemView);
@@ -430,7 +464,24 @@ public class TradeItemAdapter extends RecyclerView.Adapter {
 
         holder.getTextTitle().setText(product.getTitle());
 
-        timer(holder, product);
+        long lastTime = product.getExpired() - System.currentTimeMillis();
+        if (holder.countDownTimer != null) {
+            holder.countDownTimer.cancel();
+        }
+        holder.countDownTimer = new CountDownTimer(lastTime, 1000) {
+
+            @Override
+            public void onTick(long millisUntilFinished) {
+                holder.getTextTime().setText(getDateToString(millisUntilFinished));
+            }
+
+            @Override
+            public void onFinish() {
+
+            }
+        }.start();
+
+        mCountDownMap.put(holder.getTextTime().hashCode(), holder.countDownTimer);
 
         holder.getTextPrice().setText(String.valueOf(product.getCurrentPrice()));
 
@@ -447,60 +498,29 @@ public class TradeItemAdapter extends RecyclerView.Adapter {
     private String getDateToString(long millSeconds) {
 
         long days = millSeconds / (1000 * 60 * 60 * 24);
-        long hours = (millSeconds - days * (1000 * 60 * 60 * 24)) / (1000* 60 * 60);
-        long minutes = (millSeconds - days * (1000 * 60 * 60 * 24) - hours * (1000* 60 * 60)) / (1000 * 60);
-        long seconds = (millSeconds - days * (1000 * 60 * 60 * 24) - hours * (1000* 60 * 60) - minutes * (1000 * 60)) / 1000;
+        long hours = (millSeconds - days * (1000 * 60 * 60 * 24)) / (1000 * 60 * 60);
+        long minutes = (millSeconds - days * (1000 * 60 * 60 * 24) - hours * (1000 * 60 * 60)) / (1000 * 60);
+        long seconds = (millSeconds - days * (1000 * 60 * 60 * 24) - hours * (1000 * 60 * 60) - minutes * (1000 * 60)) / 1000;
 
         String time = days + "天 " + hours + "時 " + minutes + "分 " + seconds + "秒";
         return time;
     }
 
-    private void timer(@NonNull RecyclerView.ViewHolder holder, Product product) {
-        long lastTime = product.getExpired() - System.currentTimeMillis();
-        TextView textView;
-
-        if (holder instanceof BiddingEnglishViewHolder) {
-
-            textView = ((BiddingEnglishViewHolder) holder).getTextTime();
-
-        } else if (holder instanceof BiddingSealedViewHolder) {
-
-            textView = ((BiddingSealedViewHolder) holder).getTextTime();
-
-        } else if (holder instanceof SellingEnglishViewHolder) {
-
-            textView = ((SellingEnglishViewHolder) holder).getTextTime();
-
-        } else if (holder instanceof SellingSealedViewHolder) {
-
-            textView = ((SellingSealedViewHolder) holder).getTextTime();
-
-        } else if (holder instanceof BoughtViewHolder) {
-
-            textView = ((BoughtViewHolder) holder).getTextTime();
-
-        } else {
-
-            textView = ((SoldViewHolder) holder).getTextTime();
-        }
-
-
-        new CountDownTimer(lastTime, 1000) {
-
-            @Override
-            public void onTick(long millisUntilFinished) {
-                textView.setText(getDateToString(millisUntilFinished));
-            }
-
-            @Override
-            public void onFinish() {
-
-            }
-        }.start();
-    }
-
     public void updateData(ArrayList<Product> productsList) {
         mProductsList = productsList;
         notifyDataSetChanged();
+    }
+
+    public void cancelAllTimers() {
+        if (mCountDownMap == null) {
+            return;
+        }
+
+        for (int i = 0,length = mCountDownMap.size(); i < length; i++) {
+            CountDownTimer cdt = mCountDownMap.get(mCountDownMap.keyAt(i));
+            if (cdt != null) {
+                cdt.cancel();
+            }
+        }
     }
 }

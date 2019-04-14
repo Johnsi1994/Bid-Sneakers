@@ -89,6 +89,8 @@ public class TradeItemFragment extends Fragment implements TradeItemContract.Vie
     @Override
     public void onDestroy() {
         super.onDestroy();
+
+        mTradeItemAdapter.cancelAllTimers();
     }
 
     @Override

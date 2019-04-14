@@ -257,7 +257,7 @@ public class AuctionAdapter extends RecyclerView.Adapter {
         if (countDownMap == null) {
             return;
         }
-        Log.e("TAG",  "size :  " + countDownMap.size());
+
         for (int i = 0,length = countDownMap.size(); i < length; i++) {
             CountDownTimer cdt = countDownMap.get(countDownMap.keyAt(i));
             if (cdt != null) {

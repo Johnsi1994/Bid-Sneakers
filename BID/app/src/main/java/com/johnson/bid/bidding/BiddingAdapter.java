@@ -1,9 +1,11 @@
 package com.johnson.bid.bidding;
 
+import android.os.CountDownTimer;
 import android.support.annotation.NonNull;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.LinearSnapHelper;
 import android.support.v7.widget.RecyclerView;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -16,7 +18,9 @@ import com.johnson.bid.R;
 import com.johnson.bid.data.Product;
 import com.johnson.bid.util.UserManager;
 
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Date;
 
 import static com.johnson.bid.MainMvpController.ENGLISH;
 import static com.johnson.bid.MainMvpController.SEALED;
@@ -126,24 +130,7 @@ public class BiddingAdapter extends RecyclerView.Adapter {
                     mPresenter.openBidDialog(ENGLISH, mProduct)
             );
 
-            myEyesOn = UserManager.getInstance().getUser().getEyesOn();
-
-            for (int i = 0; i < myEyesOn.size(); i++) {
-                if (myEyesOn.get(i).equals(mProduct.getProductId())) {
-                    isEyesOn = true;
-                    mEyesOnBtn.setBackgroundResource(R.drawable.ic_like);
-                }
-            }
-
-            mEyesOnBtn.setOnClickListener(v -> {
-                if (isEyesOn) {
-                    isEyesOn = false;
-                    mEyesOnBtn.setBackgroundResource(R.drawable.ic_unlike);
-                } else {
-                    isEyesOn = true;
-                    mEyesOnBtn.setBackgroundResource(R.drawable.ic_like);
-                }
-            });
+            eyeOnSwitch(mEyesOnBtn);
         }
 
         private RecyclerView getGalleryRecycler() {
@@ -192,7 +179,9 @@ public class BiddingAdapter extends RecyclerView.Adapter {
         holder.getTitleText().setText(product.getTitle());
         holder.getIntroText().setText(product.getIntroduction());
         holder.getConditionText().setText(product.getCondition());
-        holder.getLastTimeText().setText(String.valueOf(product.getExpired()));
+
+        timer(holder, product);
+
         holder.getPriceText().setText(String.valueOf(product.getCurrentPrice()));
         holder.getIncreaseText().setText(String.valueOf(product.getIncrease()));
         if (product.getHighestUserId() == -1) {
@@ -254,6 +243,8 @@ public class BiddingAdapter extends RecyclerView.Adapter {
                 mBidBtn.setClickable(true);
                 mBidBtn.setText("我要出價");
             }
+
+            eyeOnSwitch(mEyesOnBtn);
         }
 
         private RecyclerView getGalleryRecycler() {
@@ -286,7 +277,7 @@ public class BiddingAdapter extends RecyclerView.Adapter {
         holder.getTitleText().setText(product.getTitle());
         holder.getIntroText().setText(product.getIntroduction());
         holder.getConditionText().setText(product.getCondition());
-        holder.getLastTimeText().setText(String.valueOf(product.getExpired()));
+        timer(holder, product);
         holder.getSellerText().setText(String.valueOf(product.getSellerId()));
 
     }
@@ -298,5 +289,61 @@ public class BiddingAdapter extends RecyclerView.Adapter {
 
     public Boolean getIsEyesOn() {
         return isEyesOn;
+    }
+
+    private String getDateToString(long millSeconds) {
+
+        long days = millSeconds / (1000 * 60 * 60 * 24);
+        long hours = (millSeconds - days * (1000 * 60 * 60 * 24)) / (1000* 60 * 60);
+        long minutes = (millSeconds - days * (1000 * 60 * 60 * 24) - hours * (1000* 60 * 60)) / (1000 * 60);
+        long seconds = (millSeconds - days * (1000 * 60 * 60 * 24) - hours * (1000* 60 * 60) - minutes * (1000 * 60)) / 1000;
+
+        String time = days + "天 " + hours + "時 " + minutes + "分 " + seconds + "秒";
+        return time;
+    }
+
+    private void timer(@NonNull RecyclerView.ViewHolder holder, Product product) {
+        long lastTime = product.getExpired() - System.currentTimeMillis();
+        TextView textView;
+
+        if (holder instanceof EnglishViewHolder) {
+            textView = ((EnglishViewHolder) holder).getLastTimeText();
+        } else {
+            textView = ((SealedViewHolder) holder).getLastTimeText();
+        }
+
+        new CountDownTimer(lastTime, 1000) {
+
+            @Override
+            public void onTick(long millisUntilFinished) {
+                textView.setText(getDateToString(millisUntilFinished));
+            }
+
+            @Override
+            public void onFinish() {
+
+            }
+        }.start();
+    }
+
+    private void eyeOnSwitch(Button mEyesOnBtn) {
+        myEyesOn = UserManager.getInstance().getUser().getEyesOn();
+
+        for (int i = 0; i < myEyesOn.size(); i++) {
+            if (myEyesOn.get(i).equals(mProduct.getProductId())) {
+                isEyesOn = true;
+                mEyesOnBtn.setBackgroundResource(R.drawable.ic_like);
+            }
+        }
+
+        mEyesOnBtn.setOnClickListener(v -> {
+            if (isEyesOn) {
+                isEyesOn = false;
+                mEyesOnBtn.setBackgroundResource(R.drawable.ic_unlike);
+            } else {
+                isEyesOn = true;
+                mEyesOnBtn.setBackgroundResource(R.drawable.ic_like);
+            }
+        });
     }
 }

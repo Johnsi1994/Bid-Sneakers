@@ -1,5 +1,6 @@
 package com.johnson.bid.centre.auction;
 
+import android.os.CountDownTimer;
 import android.support.annotation.NonNull;
 import android.support.constraint.ConstraintLayout;
 import android.support.v7.widget.RecyclerView;
@@ -11,6 +12,7 @@ import android.widget.TextView;
 
 import com.johnson.bid.MainMvpController;
 import com.johnson.bid.R;
+import com.johnson.bid.bidding.BiddingAdapter;
 import com.johnson.bid.data.Product;
 import com.johnson.bid.util.ImageManager;
 
@@ -135,7 +137,7 @@ public class AuctionAdapter extends RecyclerView.Adapter {
 
         holder.getTextTitle().setText(product.getTitle());
 
-        holder.getTextTime().setText(getDateToString(product.getStartTime()));
+        timer(holder, product);
 
         holder.getTextPrice().setText(String.valueOf(product.getCurrentPrice()));
 
@@ -188,7 +190,7 @@ public class AuctionAdapter extends RecyclerView.Adapter {
 
         holder.getTextTitle().setText(product.getTitle());
 
-        holder.getTextTime().setText(getDateToString(product.getStartTime()));
+        timer(holder, product);
 
     }
 
@@ -205,9 +207,37 @@ public class AuctionAdapter extends RecyclerView.Adapter {
     }
 
     private String getDateToString(long millSeconds) {
-        SimpleDateFormat sf = new SimpleDateFormat("MM月 dd日 HH時 mm分");
-        Date d = new Date(millSeconds);
-        String time = sf.format(d);
+
+        long days = millSeconds / (1000 * 60 * 60 * 24);
+        long hours = (millSeconds - days * (1000 * 60 * 60 * 24)) / (1000* 60 * 60);
+        long minutes = (millSeconds - days * (1000 * 60 * 60 * 24) - hours * (1000* 60 * 60)) / (1000 * 60);
+        long seconds = (millSeconds - days * (1000 * 60 * 60 * 24) - hours * (1000* 60 * 60) - minutes * (1000 * 60)) / 1000;
+
+        String time = days + "天 " + hours + "時 " + minutes + "分 " + seconds + "秒";
         return time;
+    }
+
+    private void timer(@NonNull RecyclerView.ViewHolder holder, Product product) {
+        long lastTime = product.getExpired() - System.currentTimeMillis();
+        TextView textView;
+
+        if (holder instanceof EnglishAuctionViewHolder) {
+            textView = ((EnglishAuctionViewHolder) holder).getTextTime();
+        } else {
+            textView = ((SealedAuctionViewHolder) holder).getTextTime();
+        }
+
+        new CountDownTimer(lastTime, 1000) {
+
+            @Override
+            public void onTick(long millisUntilFinished) {
+                textView.setText(getDateToString(millisUntilFinished));
+            }
+
+            @Override
+            public void onFinish() {
+
+            }
+        }.start();
     }
 }

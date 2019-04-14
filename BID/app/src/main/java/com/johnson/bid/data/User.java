@@ -7,7 +7,10 @@ public class User {
     private long mId;
     private String mName;
     private String mImage;
-    private ArrayList<Long> mMyTradeProductsId;
+    private ArrayList<Long> mMyBiddingProductsId;
+    private ArrayList<Long> mMySellingProductsId;
+    private ArrayList<Long> mMyBoughtProductsId;
+    private ArrayList<Long> mMySoldProductsId;
     private ArrayList<Long> mEyesOn;
 
 //    private ArrayList<Product> mChatRoomId;
@@ -17,7 +20,10 @@ public class User {
         mId = -1;
         mName = "";
         mImage = "";
-        mMyTradeProductsId = new ArrayList<>();
+        mMyBiddingProductsId = new ArrayList<>();
+        mMySellingProductsId = new ArrayList<>();
+        mMyBoughtProductsId = new ArrayList<>();
+        mMySoldProductsId = new ArrayList<>();
         mEyesOn = new ArrayList<>();
 //        mChatRoomId = new ArrayList<>();
 
@@ -48,15 +54,39 @@ public class User {
         mImage = image;
     }
 
-    public ArrayList<Long> getMyTradeProductsId() {
-        return mMyTradeProductsId;
+    public ArrayList<Long> getMyBiddingProductsId() {
+        return mMyBiddingProductsId;
     }
 
-    public void setMyTradeProductsId(ArrayList<Long> myTradeProductsId) {
-        mMyTradeProductsId = myTradeProductsId;
+    public void setMyBiddingProductsId(ArrayList<Long> myBiddingProductsId) {
+        mMyBiddingProductsId = myBiddingProductsId;
     }
 
-        public ArrayList<Long> getEyesOn() {
+    public ArrayList<Long> getMySellingProductsId() {
+        return mMySellingProductsId;
+    }
+
+    public void setMySellingProductsId(ArrayList<Long> mySellingProductsId) {
+        mMySellingProductsId = mySellingProductsId;
+    }
+
+    public ArrayList<Long> getMyBoughtProductsId() {
+        return mMyBoughtProductsId;
+    }
+
+    public void setMyBoughtProductsId(ArrayList<Long> myBoughtProductsId) {
+        mMyBoughtProductsId = myBoughtProductsId;
+    }
+
+    public ArrayList<Long> getMySoldProductsId() {
+        return mMySoldProductsId;
+    }
+
+    public void setMySoldProductsId(ArrayList<Long> mySoldProductsId) {
+        mMySoldProductsId = mySoldProductsId;
+    }
+
+    public ArrayList<Long> getEyesOn() {
         return mEyesOn;
     }
 

@@ -76,18 +76,28 @@
         android:id="@+id/textView14"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginEnd="16dp"
         android:text="次出價"
         app:layout_constraintBottom_toBottomOf="@+id/text_people_selling_e"
-        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toEndOf="@+id/text_people_selling_e"
         app:layout_constraintTop_toTopOf="@+id/text_people_selling_e" />
 
     <TextView
         android:id="@+id/text_people_selling_e"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
+        android:layout_marginStart="4dp"
         android:text="45"
-        app:layout_constraintBottom_toBottomOf="@+id/text_buyer_selling_e"
-        app:layout_constraintEnd_toStartOf="@+id/textView14"
-        app:layout_constraintTop_toTopOf="@+id/text_buyer_selling_e" />
+        app:layout_constraintBottom_toBottomOf="@+id/textView82"
+        app:layout_constraintStart_toEndOf="@+id/textView82"
+        app:layout_constraintTop_toTopOf="@+id/textView82" />
+
+    <TextView
+        android:id="@+id/textView82"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="8dp"
+        android:text="/"
+        app:layout_constraintBottom_toBottomOf="@+id/text_price_selling_e"
+        app:layout_constraintStart_toEndOf="@+id/text_price_selling_e"
+        app:layout_constraintTop_toTopOf="@+id/text_price_selling_e" />
 </android.support.constraint.ConstraintLayout>

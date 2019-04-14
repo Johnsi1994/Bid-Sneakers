@@ -42,7 +42,7 @@ public class MainPresenter implements MainContract.Presenter, CenterContract.Pre
     private PostPresenter mPostPresenter;
     private BiddingPresenter mBiddingPresenter;
 
-    private AuctionPresenter mEmglishAuctionPresenter;
+    private AuctionPresenter mEnglishAuctionPresenter;
     private AuctionPresenter mSealedAuctionPresenter;
 
     private TradeItemPresenter mMyBiddingPresenter;
@@ -80,7 +80,7 @@ public class MainPresenter implements MainContract.Presenter, CenterContract.Pre
     }
 
     void setEnglishAuctionPresenter(AuctionPresenter englishAuctionPresenter) {
-        mEmglishAuctionPresenter = checkNotNull(englishAuctionPresenter);
+        mEnglishAuctionPresenter = checkNotNull(englishAuctionPresenter);
     }
 
     void setSealedAuctionPresenter(AuctionPresenter sealedAuctionPresenter) {
@@ -119,7 +119,7 @@ public class MainPresenter implements MainContract.Presenter, CenterContract.Pre
 
     @Override
     public void updateCenterData() {
-        mEmglishAuctionPresenter.loadEnglishData();
+        mEnglishAuctionPresenter.loadEnglishData();
         mSealedAuctionPresenter.loadSealedData();
     }
 
@@ -161,12 +161,12 @@ public class MainPresenter implements MainContract.Presenter, CenterContract.Pre
 
     @Override
     public void loadEnglishData() {
-        mEmglishAuctionPresenter.loadEnglishData();
+        mEnglishAuctionPresenter.loadEnglishData();
     }
 
     @Override
     public void setEnglishData(ArrayList<Product> productList) {
-        mEmglishAuctionPresenter.setEnglishData(productList);
+        mEnglishAuctionPresenter.setEnglishData(productList);
     }
 
     @Override
@@ -304,8 +304,8 @@ public class MainPresenter implements MainContract.Presenter, CenterContract.Pre
     }
 
     @Override
-    public void setProductId2User(long productId) {
-        mPostPresenter.setProductId2User(productId);
+    public void setPostProductId2User(long productId) {
+        mPostPresenter.setPostProductId2User(productId);
     }
 
     @Override
@@ -361,4 +361,46 @@ public class MainPresenter implements MainContract.Presenter, CenterContract.Pre
     public void openBidding(String auctionType, Product product) {
         mMainView.findBiddingView(auctionType, product);
     }
+
+    @Override
+    public void loadMyBiddingData() {
+        mMyBiddingPresenter.loadMyBiddingData();
+    }
+
+    @Override
+    public void setMyBiddingData(ArrayList<Product> productsList) {
+        mMyBiddingPresenter.setMyBiddingData(productsList);
+    }
+
+    @Override
+    public void loadMySellingData() {
+        mMySellingPresenter.loadMySellingData();
+    }
+
+    @Override
+    public void setMySellingData(ArrayList<Product> productsList) {
+        mMySellingPresenter.setMySellingData(productsList);
+    }
+
+    @Override
+    public void loadMyBoughtData() {
+        mMyBoughtPresenter.loadMyBoughtData();
+    }
+
+    @Override
+    public void setMyBoughtData(ArrayList<Product> productsList) {
+        mMyBoughtPresenter.setMyBoughtData(productsList);
+    }
+
+    @Override
+    public void loadMySoldData() {
+        mMySoldPresenter.loadMySoldData();
+    }
+
+    @Override
+    public void setMySoldData(ArrayList<Product> productsList) {
+        mMySoldPresenter.setMySoldData(productsList);
+    }
+
+
 }

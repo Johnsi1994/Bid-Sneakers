@@ -14,6 +14,7 @@ public class TradeAdapter extends FragmentPagerAdapter {
 
     private TradeContract.Presenter mPresenter;
     private String[] mTrading = new String[]{MYBIDDING, MYSELLING, MYBOUGHT, MYSOLD};
+    private String[] mTitle = new String[]{"競標中", "出售中", "已得標", "已售出"};
 
     public TradeAdapter(FragmentManager fm, TradeContract.Presenter presenter) {
         super(fm);
@@ -44,7 +45,7 @@ public class TradeAdapter extends FragmentPagerAdapter {
     @Nullable
     @Override
     public CharSequence getPageTitle(int position) {
-        return mTrading[position];
+        return mTitle[position];
     }
 
 }

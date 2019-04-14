@@ -46,4 +46,9 @@ public class BiddingPresenter implements BiddingContract.Presenter {
 
     }
 
+    @Override
+    public void updateCenterData() {
+
+    }
+
 }

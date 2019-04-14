@@ -38,7 +38,7 @@ public interface PostContract {
 
         void setProductId(long productId);
 
-        void setProductId2User(long productId);
+        void setPostProductId2User(long productId);
 
         void setStartingTime(long startingTime);
 

@@ -55,11 +55,11 @@
         android:id="@+id/text_participant_num_e_auction"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginEnd="16dp"
+        android:layout_marginStart="4dp"
         android:text="45"
-        app:layout_constraintBottom_toBottomOf="@+id/textView11"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintTop_toTopOf="@+id/textView11" />
+        app:layout_constraintBottom_toBottomOf="@+id/textView81"
+        app:layout_constraintStart_toEndOf="@+id/textView81"
+        app:layout_constraintTop_toTopOf="@+id/textView81" />
 
     <TextView
         android:id="@+id/text_price_e_auction"
@@ -74,8 +74,18 @@
         android:id="@+id/textView11"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="@string/bit_times"
+        android:text="次出價"
+        app:layout_constraintBottom_toBottomOf="@+id/text_participant_num_e_auction"
+        app:layout_constraintStart_toEndOf="@+id/text_participant_num_e_auction"
+        app:layout_constraintTop_toTopOf="@+id/text_participant_num_e_auction" />
+
+    <TextView
+        android:id="@+id/textView81"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="8dp"
+        android:text="/"
         app:layout_constraintBottom_toBottomOf="@+id/text_price_e_auction"
-        app:layout_constraintEnd_toStartOf="@+id/text_participant_num_e_auction"
+        app:layout_constraintStart_toEndOf="@+id/text_price_e_auction"
         app:layout_constraintTop_toTopOf="@+id/text_price_e_auction" />
 </android.support.constraint.ConstraintLayout>

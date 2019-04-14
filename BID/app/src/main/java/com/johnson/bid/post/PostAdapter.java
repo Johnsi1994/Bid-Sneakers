@@ -282,11 +282,11 @@ public class PostAdapter extends RecyclerView.Adapter {
                     })
                     .addOnFailureListener(e -> Log.w("Johnsi", "Error adding document", e));
 
-            mPresenter.setProductId2User(id);
+            mPresenter.setPostProductId2User(id);
 
             Firebase.getFirestore().collection("users")
                     .document(String.valueOf(UserManager.getInstance().getUser().getId()))
-                    .update("myTradeProductsId", FieldValue.arrayUnion(id))
+                    .update("mySellingProductsId", FieldValue.arrayUnion(id))
                     .addOnSuccessListener(aVoid -> Log.d("Johnsi", "BID DocumentSnapshot successfully updated!"))
                     .addOnFailureListener(e -> Log.w("Johnsi", "BID Error updating document", e));
         }

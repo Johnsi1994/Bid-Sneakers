@@ -308,7 +308,7 @@ public class MainActivity extends AppCompatActivity implements MainContract.View
         Button mSendPriceBtn;
         TextView mWarningMsg;
         int mParticipantsNum = product.getParticipantsNumber();
-        final ArrayList<Long> myProductsId = UserManager.getInstance().getUser().getMyTradeProductsId();
+        final ArrayList<Long> myProductsId = UserManager.getInstance().getUser().getMyBiddingProductsId();
         Boolean hasProduct = false;
 
         for (int i = 0; i < myProductsId.size(); i++) {
@@ -385,7 +385,7 @@ public class MainActivity extends AppCompatActivity implements MainContract.View
                     if (!finalHasProduct) {
                         Firebase.getFirestore().collection("users")
                                 .document(String.valueOf(UserManager.getInstance().getUser().getId()))
-                                .update("myTradeProductsId", FieldValue.arrayUnion(product.getProductId()))
+                                .update("myBiddingProductsId", FieldValue.arrayUnion(product.getProductId()))
                                 .addOnSuccessListener(aVoid -> Log.d("Johnsi", "BID DocumentSnapshot successfully updated!"))
                                 .addOnFailureListener(e -> Log.w("Johnsi", "BID Error updating document", e));
                     }
@@ -423,14 +423,15 @@ public class MainActivity extends AppCompatActivity implements MainContract.View
                                 .addOnFailureListener(e -> Log.w("Johnsi", "BID Error updating document", e));
                     }
 
-                    if (!finalHasProduct) {
-                        Firebase.getFirestore().collection("users")
-                                .document(String.valueOf(UserManager.getInstance().getUser().getId()))
-                                .update("myTradeProductsId", FieldValue.arrayUnion(product.getProductId()))
-                                .addOnSuccessListener(aVoid -> Log.d("Johnsi", "BID DocumentSnapshot successfully updated!"))
-                                .addOnFailureListener(e -> Log.w("Johnsi", "BID Error updating document", e));
-                    }
 
+                    Firebase.getFirestore().collection("users")
+                            .document(String.valueOf(UserManager.getInstance().getUser().getId()))
+                            .update("myBiddingProductsId", FieldValue.arrayUnion(product.getProductId()))
+                            .addOnSuccessListener(aVoid -> Log.d("Johnsi", "BID DocumentSnapshot successfully updated!"))
+                            .addOnFailureListener(e -> Log.w("Johnsi", "BID Error updating document", e));
+
+                    UserManager.getInstance().getUser().getMyBiddingProductsId().add(product.getProductId());
+                    setAfterBidData(product);
                     dialog.dismiss();
                     showMessageDialogUi(BID_SUCCESS);
                 }

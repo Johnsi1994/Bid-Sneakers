@@ -79,4 +79,10 @@ public class AuctionFragment extends Fragment implements AuctionContract.View {
     public void showAuctionUi(ArrayList<Product> productList) {
         mAuctionAdapter.updateData(productList);
     }
+
+    @Override
+    public void onDestroy() {
+        super.onDestroy();
+        mAuctionAdapter.cancelAllTimers();
+    }
 }

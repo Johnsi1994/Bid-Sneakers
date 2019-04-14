@@ -22,6 +22,7 @@ public interface BiddingContract {
 
         void openBidDialog(String from, Product product);
 
+        void updateCenterData();
     }
 
 }

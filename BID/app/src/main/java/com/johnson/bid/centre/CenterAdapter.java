@@ -4,7 +4,6 @@ import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentPagerAdapter;
-import android.util.Log;
 
 import static com.johnson.bid.MainMvpController.ENGLISH;
 import static com.johnson.bid.MainMvpController.SEALED;
@@ -13,6 +12,7 @@ public class CenterAdapter extends FragmentPagerAdapter {
 
     private CenterContract.Presenter mPresenter;
     private String[] mAuctionTypes = new String[]{ENGLISH, SEALED};
+    private String[] mTitle = new String[]{"一般拍賣", "封閉拍賣"};
 
     public CenterAdapter(FragmentManager fm, CenterContract.Presenter presenter) {
         super(fm);
@@ -40,6 +40,6 @@ public class CenterAdapter extends FragmentPagerAdapter {
     @Nullable
     @Override
     public CharSequence getPageTitle(int position) {
-        return mAuctionTypes[position];
+        return mTitle[position];
     }
 }

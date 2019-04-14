@@ -89,7 +89,6 @@ public class BiddingFragment extends Fragment implements BiddingContract.View {
             if(!isEyesOn) {
                 myEyesOn.add(mProduct.getProductId());
             }
-            System.out.println("myEyesOn : " + myEyesOn.toString() + " " + myEyesOn.size());
 
             Firebase.getFirestore().collection("users")
                     .document(String.valueOf(UserManager.getInstance().getUser().getId()))
@@ -108,7 +107,6 @@ public class BiddingFragment extends Fragment implements BiddingContract.View {
                     }
                 }
             }
-            System.out.println("myEyesOn : " + myEyesOn.toString() + " " + myEyesOn.size());
 
             Firebase.getFirestore().collection("users")
                     .document(String.valueOf(UserManager.getInstance().getUser().getId()))
@@ -116,6 +114,9 @@ public class BiddingFragment extends Fragment implements BiddingContract.View {
                     .addOnSuccessListener(aVoid -> Log.d("Johnsi", "Eye On DocumentSnapshot successfully updated!"))
                     .addOnFailureListener(e -> Log.w("Johnsi", "BID Error updating document", e));
         }
+
+        mPresenter.updateCenterData();
+
     }
 
     public void setAuctionType(String type) {

@@ -219,14 +219,6 @@ public class BiddingAdapter extends RecyclerView.Adapter {
             mSellerText = itemView.findViewById(R.id.text_bid_seller_s);
             mBidBtn = itemView.findViewById(R.id.button_bid_s);
 
-            ArrayList<Long> myProductsId = UserManager.getInstance().getUser().getMyTradeProductsId();
-            Boolean hasProduct = false;
-
-            for (int i = 0; i < myProductsId.size(); i++) {
-                if (myProductsId.get(i).equals(mProduct.getProductId())) {
-                    hasProduct = true;
-                }
-            }
 
             mBackBtn.setOnClickListener(v ->
                     mMainActivity.onBackPressed()
@@ -235,14 +227,6 @@ public class BiddingAdapter extends RecyclerView.Adapter {
             mBidBtn.setOnClickListener(v ->
                     mPresenter.openBidDialog(SEALED, mProduct)
             );
-
-            if (hasProduct) {
-                mBidBtn.setClickable(false);
-                mBidBtn.setText("已經出過價嘍~~");
-            } else {
-                mBidBtn.setClickable(true);
-                mBidBtn.setText("我要出價");
-            }
 
             eyeOnSwitch(mEyesOnBtn);
         }
@@ -270,6 +254,10 @@ public class BiddingAdapter extends RecyclerView.Adapter {
         private TextView getSellerText() {
             return mSellerText;
         }
+
+        private Button getBidBtn() {
+            return mBidBtn;
+        }
     }
 
     private void bindSealedViewHolder(SealedViewHolder holder, Product product) {
@@ -279,6 +267,23 @@ public class BiddingAdapter extends RecyclerView.Adapter {
         holder.getConditionText().setText(product.getCondition());
         timer(holder, product);
         holder.getSellerText().setText(String.valueOf(product.getSellerId()));
+
+        ArrayList<Long> myProductsId = UserManager.getInstance().getUser().getMyBiddingProductsId();
+        boolean hasProduct = false;
+
+        for (int i = 0; i < myProductsId.size(); i++) {
+            if (myProductsId.get(i).equals(mProduct.getProductId())) {
+                hasProduct = true;
+            }
+        }
+
+        if (hasProduct) {
+            holder.getBidBtn().setClickable(false);
+            holder.getBidBtn().setText("已經出過價嘍~~");
+        } else {
+            holder.getBidBtn().setClickable(true);
+            holder.getBidBtn().setText("我要出價");
+        }
 
     }
 

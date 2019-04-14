@@ -86,8 +86,8 @@ public class PostPresenter implements PostContract.Presenter {
     }
 
     @Override
-    public void setProductId2User(long productId) {
-        mUser.getMyTradeProductsId().add(productId);
+    public void setPostProductId2User(long productId) {
+        mUser.getMySellingProductsId().add(productId);
     }
 
     @Override

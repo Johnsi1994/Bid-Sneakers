@@ -13,8 +13,15 @@ import android.view.ViewGroup;
 
 import com.johnson.bid.MainMvpController;
 import com.johnson.bid.R;
+import com.johnson.bid.data.Product;
+
+import java.util.ArrayList;
 
 import static com.google.common.base.Preconditions.checkNotNull;
+import static com.johnson.bid.MainMvpController.MYBIDDING;
+import static com.johnson.bid.MainMvpController.MYBOUGHT;
+import static com.johnson.bid.MainMvpController.MYSELLING;
+import static com.johnson.bid.MainMvpController.MYSOLD;
 
 public class TradeItemFragment extends Fragment implements TradeItemContract.View {
 
@@ -46,9 +53,28 @@ public class TradeItemFragment extends Fragment implements TradeItemContract.Vie
         recyclerView.setLayoutManager(new LinearLayoutManager(getActivity()));
         recyclerView.setAdapter(mTradeItemAdapter);
 
-        Log.d("Johnsi", "onCreateView: " + mTradeType);
-
         return root;
+    }
+
+    @Override
+    public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
+        super.onViewCreated(view, savedInstanceState);
+
+        switch (mTradeType) {
+            case MYBIDDING:
+                mPresenter.loadMyBiddingData();
+                break;
+            case MYSELLING:
+                mPresenter.loadMySellingData();
+                break;
+            case MYBOUGHT:
+            mPresenter.loadMyBoughtData();
+            break;
+            case MYSOLD:
+                mPresenter.loadMySoldData();
+                break;
+            default:
+        }
     }
 
     @Override
@@ -63,5 +89,10 @@ public class TradeItemFragment extends Fragment implements TradeItemContract.Vie
     @Override
     public void onDestroy() {
         super.onDestroy();
+    }
+
+    @Override
+    public void showTradeUi(ArrayList<Product> productsList) {
+        mTradeItemAdapter.updateData(productsList);
     }
 }

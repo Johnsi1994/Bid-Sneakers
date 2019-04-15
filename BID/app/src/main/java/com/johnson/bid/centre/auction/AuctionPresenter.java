@@ -48,6 +48,7 @@ public class AuctionPresenter implements AuctionContract.Presenter {
 
         Firebase.getFirestore().collection("products")
                 .whereEqualTo("auctionType", "English")
+                .whereEqualTo("auctionCondition", "bidding")
                 .get()
                 .addOnCompleteListener(task -> {
                     if (task.isSuccessful()) {
@@ -76,6 +77,7 @@ public class AuctionPresenter implements AuctionContract.Presenter {
 
         Firebase.getFirestore().collection("products")
                 .whereEqualTo("auctionType", "Sealed")
+                .whereEqualTo("auctionCondition", "bidding")
                 .get()
                 .addOnCompleteListener(task -> {
                     if (task.isSuccessful()) {

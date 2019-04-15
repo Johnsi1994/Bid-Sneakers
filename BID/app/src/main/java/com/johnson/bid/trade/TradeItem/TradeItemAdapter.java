@@ -217,12 +217,10 @@ public class TradeItemAdapter extends RecyclerView.Adapter {
         private TextView mTextTitle;
         private TextView mTextTime;
         private TextView mTextPrice;
-        private TextView mTextBuyer;
         private TextView mTextPeople;
         private TextView mTextPriceTitle;
         private TextView mTextSlash;
         private TextView mTextPeopleTitle;
-        private TextView mTextBuyerTitle;
         CountDownTimer countDownTimer;
 
         public SellingViewHolder(View itemView) {
@@ -232,12 +230,10 @@ public class TradeItemAdapter extends RecyclerView.Adapter {
             mTextTitle = itemView.findViewById(R.id.text_title_selling_e);
             mTextTime = itemView.findViewById(R.id.text_last_time_selling_e);
             mTextPrice = itemView.findViewById(R.id.text_price_selling_e);
-            mTextBuyer = itemView.findViewById(R.id.text_buyer_selling_e);
             mTextPeople = itemView.findViewById(R.id.text_people_selling_e);
             mTextPriceTitle = itemView.findViewById(R.id.text_price_title);
             mTextSlash = itemView.findViewById(R.id.text_slash);
             mTextPeopleTitle = itemView.findViewById(R.id.text_people_title);
-            mTextBuyerTitle = itemView.findViewById(R.id.text_buyer_title);
         }
 
         public ImageView getImageMain() {
@@ -256,10 +252,6 @@ public class TradeItemAdapter extends RecyclerView.Adapter {
             return mTextPrice;
         }
 
-        public TextView getTextBuyer() {
-            return mTextBuyer;
-        }
-
         public TextView getTextPeople() {
             return mTextPeople;
         }
@@ -274,10 +266,6 @@ public class TradeItemAdapter extends RecyclerView.Adapter {
 
         public TextView getTextSlash() {
             return mTextSlash;
-        }
-
-        public TextView getTextBuyerTitle() {
-            return mTextBuyerTitle;
         }
     }
 
@@ -298,23 +286,15 @@ public class TradeItemAdapter extends RecyclerView.Adapter {
 
             holder.getTextPeople().setText(String.valueOf(product.getParticipantsNumber()));
 
-            if (product.getHighestUserId() == -1) {
-                holder.getTextBuyer().setText("無");
-            } else {
-                holder.getTextBuyer().setText(String.valueOf(product.getHighestUserId()));
-            }
-
         } else {
 
-            holder.getTextTitle().setPadding(0, 78, 0, 0);
+            holder.getTextTitle().setPadding(0, 40, 0, 0);
 
             holder.getTextPriceTitle().setVisibility(View.GONE);
             holder.getTextPrice().setVisibility(View.GONE);
             holder.getTextSlash().setVisibility(View.GONE);
             holder.getTextPeople().setVisibility(View.GONE);
             holder.getTextPeopleTitle().setVisibility(View.GONE);
-            holder.getTextBuyer().setVisibility(View.GONE);
-            holder.getTextBuyerTitle().setVisibility(View.GONE);
         }
 
         long lastTime = product.getExpired() - System.currentTimeMillis();

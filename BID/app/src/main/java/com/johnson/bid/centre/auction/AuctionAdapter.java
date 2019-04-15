@@ -12,10 +12,16 @@ import android.view.ViewGroup;
 import android.widget.ImageView;
 import android.widget.TextView;
 
+import com.google.android.gms.tasks.OnCompleteListener;
+import com.google.android.gms.tasks.Task;
+import com.google.firebase.firestore.DocumentSnapshot;
+import com.google.firebase.firestore.FieldValue;
 import com.johnson.bid.MainMvpController;
 import com.johnson.bid.R;
 import com.johnson.bid.data.Product;
+import com.johnson.bid.util.Firebase;
 import com.johnson.bid.util.ImageManager;
+import com.johnson.bid.util.UserManager;
 
 import java.util.ArrayList;
 
@@ -128,7 +134,7 @@ public class AuctionAdapter extends RecyclerView.Adapter {
         }
     }
 
-    private void bindEnglishAuctionViewHolder(EnglishAuctionViewHolder holder, Product product) {
+    private void bindEnglishAuctionViewHolder(EnglishAuctionViewHolder holder, final Product product) {
 
         holder.getLayoutEnglishAuction().setOnClickListener(v -> {
             mPresenter.openBidding(ENGLISH, product);
@@ -152,6 +158,52 @@ public class AuctionAdapter extends RecyclerView.Adapter {
 
             @Override
             public void onFinish() {
+
+                holder.getTextTime().setText("競標結束");
+
+                Firebase.getFirestore().collection("products")
+                        .document(String.valueOf(product.getProductId()))
+                        .get()
+                        .addOnCompleteListener(task -> {
+                            if (task.isSuccessful()) {
+
+                                DocumentSnapshot document = task.getResult();
+
+                                Firebase.getFirestore().collection("users")
+                                        .document(String.valueOf(document.toObject(Product.class).getHighestUserId()))
+                                        .update("myBiddingProductsId", FieldValue.arrayRemove(product.getProductId()))
+                                        .addOnSuccessListener(aVoid -> Log.d("Johnsi", "Bidding Products Id successfully removed!"))
+                                        .addOnFailureListener(e -> Log.w("Johnsi", "Bidding Products Id Error updating document", e));
+
+                                Firebase.getFirestore().collection("users")
+                                        .document(String.valueOf(document.toObject(Product.class).getHighestUserId()))
+                                        .update("myBoughtProductsId", FieldValue.arrayUnion(product.getProductId()))
+                                        .addOnSuccessListener(aVoid -> Log.d("Johnsi", "Bought Products Id successfully added!"))
+                                        .addOnFailureListener(e -> Log.w("Johnsi", "Bought Products Id Error updating document", e));
+
+                                Firebase.getFirestore().collection("users")
+                                        .document(String.valueOf(document.toObject(Product.class).getSellerId()))
+                                        .update("mySellingProductsId", FieldValue.arrayRemove(product.getProductId()))
+                                        .addOnSuccessListener(aVoid -> Log.d("Johnsi", "Selling Products Id successfully removed!"))
+                                        .addOnFailureListener(e -> Log.w("Johnsi", "Selling Products Id Error updating document", e));
+
+                                Firebase.getFirestore().collection("users")
+                                        .document(String.valueOf(document.toObject(Product.class).getSellerId()))
+                                        .update("mySoldProductsId", FieldValue.arrayUnion(product.getProductId()))
+                                        .addOnSuccessListener(aVoid -> Log.d("Johnsi", "Sold Products Id successfully added!"))
+                                        .addOnFailureListener(e -> Log.w("Johnsi", "Sold Products Id Error updating document", e));
+
+
+                            } else {
+                                Log.d("Johnsi", "Error getting documents: ", task.getException());
+                            }
+                        });
+
+                Firebase.getFirestore().collection("products")
+                        .document(String.valueOf(product.getProductId()))
+                        .update("auctionCondition", "finish")
+                        .addOnSuccessListener(aVoid -> Log.d("Johnsi", "Product condition (finish) successfully updated!"))
+                        .addOnFailureListener(e -> Log.w("Johnsi", "Product condition (finish) Error updating document", e));
 
             }
         }.start();
@@ -223,6 +275,52 @@ public class AuctionAdapter extends RecyclerView.Adapter {
 
             @Override
             public void onFinish() {
+
+                holder.getTextTime().setText("競標結束");
+
+                Firebase.getFirestore().collection("products")
+                        .document(String.valueOf(product.getProductId()))
+                        .get()
+                        .addOnCompleteListener(task -> {
+                            if (task.isSuccessful()) {
+
+                                DocumentSnapshot document = task.getResult();
+
+                                Firebase.getFirestore().collection("users")
+                                        .document(String.valueOf(document.toObject(Product.class).getHighestUserId()))
+                                        .update("myBiddingProductsId", FieldValue.arrayRemove(product.getProductId()))
+                                        .addOnSuccessListener(aVoid -> Log.d("Johnsi", "Bidding Products Id successfully removed!"))
+                                        .addOnFailureListener(e -> Log.w("Johnsi", "Bidding Products Id Error updating document", e));
+
+                                Firebase.getFirestore().collection("users")
+                                        .document(String.valueOf(document.toObject(Product.class).getHighestUserId()))
+                                        .update("myBoughtProductsId", FieldValue.arrayUnion(product.getProductId()))
+                                        .addOnSuccessListener(aVoid -> Log.d("Johnsi", "Bought Products Id successfully added!"))
+                                        .addOnFailureListener(e -> Log.w("Johnsi", "Bought Products Id Error updating document", e));
+
+                                Firebase.getFirestore().collection("users")
+                                        .document(String.valueOf(document.toObject(Product.class).getSellerId()))
+                                        .update("mySellingProductsId", FieldValue.arrayRemove(product.getProductId()))
+                                        .addOnSuccessListener(aVoid -> Log.d("Johnsi", "Selling Products Id successfully removed!"))
+                                        .addOnFailureListener(e -> Log.w("Johnsi", "Selling Products Id Error updating document", e));
+
+                                Firebase.getFirestore().collection("users")
+                                        .document(String.valueOf(document.toObject(Product.class).getSellerId()))
+                                        .update("mySoldProductsId", FieldValue.arrayUnion(product.getProductId()))
+                                        .addOnSuccessListener(aVoid -> Log.d("Johnsi", "Sold Products Id successfully added!"))
+                                        .addOnFailureListener(e -> Log.w("Johnsi", "Sold Products Id Error updating document", e));
+
+
+                            } else {
+                                Log.d("Johnsi", "Error getting documents: ", task.getException());
+                            }
+                        });
+
+                Firebase.getFirestore().collection("products")
+                        .document(String.valueOf(product.getProductId()))
+                        .update("auctionCondition", "finish")
+                        .addOnSuccessListener(aVoid -> Log.d("Johnsi", "Product condition (finish) successfully updated!"))
+                        .addOnFailureListener(e -> Log.w("Johnsi", "Product condition (finish) Error updating document", e));
 
             }
         }.start();

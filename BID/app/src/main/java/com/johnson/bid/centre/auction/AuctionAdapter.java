@@ -169,29 +169,41 @@ public class AuctionAdapter extends RecyclerView.Adapter {
 
                                 DocumentSnapshot document = task.getResult();
 
-                                Firebase.getFirestore().collection("users")
-                                        .document(String.valueOf(document.toObject(Product.class).getHighestUserId()))
-                                        .update("myBiddingProductsId", FieldValue.arrayRemove(product.getProductId()))
-                                        .addOnSuccessListener(aVoid -> Log.d("Johnsi", "Bidding Products Id successfully removed!"))
-                                        .addOnFailureListener(e -> Log.w("Johnsi", "Bidding Products Id Error updating document", e));
+                                if (document.toObject(Product.class).getHighestUserId() == -1 ) {
 
-                                Firebase.getFirestore().collection("users")
-                                        .document(String.valueOf(document.toObject(Product.class).getHighestUserId()))
-                                        .update("myBoughtProductsId", FieldValue.arrayUnion(product.getProductId()))
-                                        .addOnSuccessListener(aVoid -> Log.d("Johnsi", "Bought Products Id successfully added!"))
-                                        .addOnFailureListener(e -> Log.w("Johnsi", "Bought Products Id Error updating document", e));
+                                    Firebase.getFirestore().collection("users")
+                                            .document(String.valueOf(document.toObject(Product.class).getSellerId()))
+                                            .update("nobodyBitProductsId", FieldValue.arrayUnion(product.getProductId()))
+                                            .addOnSuccessListener(aVoid -> Log.d("Johnsi", "Nobody Bit Products Id successfully added!"))
+                                            .addOnFailureListener(e -> Log.w("Johnsi", "Nobody Bit Products Id Products Id Error updating document", e));
+
+                                } else {
+
+                                    Firebase.getFirestore().collection("users")
+                                            .document(String.valueOf(document.toObject(Product.class).getHighestUserId()))
+                                            .update("myBiddingProductsId", FieldValue.arrayRemove(product.getProductId()))
+                                            .addOnSuccessListener(aVoid -> Log.d("Johnsi", "Bidding Products Id successfully removed!"))
+                                            .addOnFailureListener(e -> Log.w("Johnsi", "Bidding Products Id Error updating document", e));
+
+                                    Firebase.getFirestore().collection("users")
+                                            .document(String.valueOf(document.toObject(Product.class).getHighestUserId()))
+                                            .update("myBoughtProductsId", FieldValue.arrayUnion(product.getProductId()))
+                                            .addOnSuccessListener(aVoid -> Log.d("Johnsi", "Bought Products Id successfully added!"))
+                                            .addOnFailureListener(e -> Log.w("Johnsi", "Bought Products Id Error updating document", e));
+
+                                    Firebase.getFirestore().collection("users")
+                                            .document(String.valueOf(document.toObject(Product.class).getSellerId()))
+                                            .update("mySoldProductsId", FieldValue.arrayUnion(product.getProductId()))
+                                            .addOnSuccessListener(aVoid -> Log.d("Johnsi", "Sold Products Id successfully added!"))
+                                            .addOnFailureListener(e -> Log.w("Johnsi", "Sold Products Id Error updating document", e));
+
+                                }
 
                                 Firebase.getFirestore().collection("users")
                                         .document(String.valueOf(document.toObject(Product.class).getSellerId()))
                                         .update("mySellingProductsId", FieldValue.arrayRemove(product.getProductId()))
                                         .addOnSuccessListener(aVoid -> Log.d("Johnsi", "Selling Products Id successfully removed!"))
                                         .addOnFailureListener(e -> Log.w("Johnsi", "Selling Products Id Error updating document", e));
-
-                                Firebase.getFirestore().collection("users")
-                                        .document(String.valueOf(document.toObject(Product.class).getSellerId()))
-                                        .update("mySoldProductsId", FieldValue.arrayUnion(product.getProductId()))
-                                        .addOnSuccessListener(aVoid -> Log.d("Johnsi", "Sold Products Id successfully added!"))
-                                        .addOnFailureListener(e -> Log.w("Johnsi", "Sold Products Id Error updating document", e));
 
 
                             } else {
@@ -286,30 +298,41 @@ public class AuctionAdapter extends RecyclerView.Adapter {
 
                                 DocumentSnapshot document = task.getResult();
 
-                                Firebase.getFirestore().collection("users")
-                                        .document(String.valueOf(document.toObject(Product.class).getHighestUserId()))
-                                        .update("myBiddingProductsId", FieldValue.arrayRemove(product.getProductId()))
-                                        .addOnSuccessListener(aVoid -> Log.d("Johnsi", "Bidding Products Id successfully removed!"))
-                                        .addOnFailureListener(e -> Log.w("Johnsi", "Bidding Products Id Error updating document", e));
+                                if (document.toObject(Product.class).getHighestUserId() == -1 ) {
 
-                                Firebase.getFirestore().collection("users")
-                                        .document(String.valueOf(document.toObject(Product.class).getHighestUserId()))
-                                        .update("myBoughtProductsId", FieldValue.arrayUnion(product.getProductId()))
-                                        .addOnSuccessListener(aVoid -> Log.d("Johnsi", "Bought Products Id successfully added!"))
-                                        .addOnFailureListener(e -> Log.w("Johnsi", "Bought Products Id Error updating document", e));
+                                    Firebase.getFirestore().collection("users")
+                                            .document(String.valueOf(document.toObject(Product.class).getSellerId()))
+                                            .update("nobodyBitProductsId", FieldValue.arrayUnion(product.getProductId()))
+                                            .addOnSuccessListener(aVoid -> Log.d("Johnsi", "Nobody Bit Products Id successfully added!"))
+                                            .addOnFailureListener(e -> Log.w("Johnsi", "Nobody Bit Products Id Products Id Error updating document", e));
+
+                                } else {
+
+                                    Firebase.getFirestore().collection("users")
+                                            .document(String.valueOf(document.toObject(Product.class).getHighestUserId()))
+                                            .update("myBiddingProductsId", FieldValue.arrayRemove(product.getProductId()))
+                                            .addOnSuccessListener(aVoid -> Log.d("Johnsi", "Bidding Products Id successfully removed!"))
+                                            .addOnFailureListener(e -> Log.w("Johnsi", "Bidding Products Id Error updating document", e));
+
+                                    Firebase.getFirestore().collection("users")
+                                            .document(String.valueOf(document.toObject(Product.class).getHighestUserId()))
+                                            .update("myBoughtProductsId", FieldValue.arrayUnion(product.getProductId()))
+                                            .addOnSuccessListener(aVoid -> Log.d("Johnsi", "Bought Products Id successfully added!"))
+                                            .addOnFailureListener(e -> Log.w("Johnsi", "Bought Products Id Error updating document", e));
+
+                                    Firebase.getFirestore().collection("users")
+                                            .document(String.valueOf(document.toObject(Product.class).getSellerId()))
+                                            .update("mySoldProductsId", FieldValue.arrayUnion(product.getProductId()))
+                                            .addOnSuccessListener(aVoid -> Log.d("Johnsi", "Sold Products Id successfully added!"))
+                                            .addOnFailureListener(e -> Log.w("Johnsi", "Sold Products Id Error updating document", e));
+
+                                }
 
                                 Firebase.getFirestore().collection("users")
                                         .document(String.valueOf(document.toObject(Product.class).getSellerId()))
                                         .update("mySellingProductsId", FieldValue.arrayRemove(product.getProductId()))
                                         .addOnSuccessListener(aVoid -> Log.d("Johnsi", "Selling Products Id successfully removed!"))
                                         .addOnFailureListener(e -> Log.w("Johnsi", "Selling Products Id Error updating document", e));
-
-                                Firebase.getFirestore().collection("users")
-                                        .document(String.valueOf(document.toObject(Product.class).getSellerId()))
-                                        .update("mySoldProductsId", FieldValue.arrayUnion(product.getProductId()))
-                                        .addOnSuccessListener(aVoid -> Log.d("Johnsi", "Sold Products Id successfully added!"))
-                                        .addOnFailureListener(e -> Log.w("Johnsi", "Sold Products Id Error updating document", e));
-
 
                             } else {
                                 Log.d("Johnsi", "Error getting documents: ", task.getException());

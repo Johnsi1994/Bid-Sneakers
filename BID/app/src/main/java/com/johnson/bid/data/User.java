@@ -11,6 +11,7 @@ public class User {
     private ArrayList<Long> mMySellingProductsId;
     private ArrayList<Long> mMyBoughtProductsId;
     private ArrayList<Long> mMySoldProductsId;
+    private ArrayList<Long> mNobodyBitProductsId;
     private ArrayList<Long> mEyesOn;
 
 //    private ArrayList<Product> mChatRoomId;
@@ -24,6 +25,7 @@ public class User {
         mMySellingProductsId = new ArrayList<>();
         mMyBoughtProductsId = new ArrayList<>();
         mMySoldProductsId = new ArrayList<>();
+        mNobodyBitProductsId = new ArrayList<>();
         mEyesOn = new ArrayList<>();
 //        mChatRoomId = new ArrayList<>();
 
@@ -94,7 +96,15 @@ public class User {
         mEyesOn = eyesOn;
     }
 
-//    public ArrayList<Product> getChatRoomId() {
+    public ArrayList<Long> getNobodyBitProductsId() {
+        return mNobodyBitProductsId;
+    }
+
+    public void setNobodyBitProductsId(ArrayList<Long> nobodyBitProductsId) {
+        mNobodyBitProductsId = nobodyBitProductsId;
+    }
+
+    //    public ArrayList<Product> getChatRoomId() {
 //        return mChatRoomId;
 //    }
 //

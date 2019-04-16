@@ -279,6 +279,11 @@ public class MainActivity extends AppCompatActivity implements MainContract.View
     }
 
     @Override
+    public void findSoldDetailView(Product product) {
+        mMainMvpController.createSoldDetailView(product);
+    }
+
+    @Override
     public void setToolbarTitleUi(String title) {
 
         if (title.equals("刊登")) {

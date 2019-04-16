@@ -409,43 +409,49 @@ public class TradeItemAdapter extends RecyclerView.Adapter {
 
     private class SoldViewHolder extends RecyclerView.ViewHolder {
 
+        private ConstraintLayout mSoldLayout;
         private ImageView mImageMain;
         private TextView mTextTitle;
         private TextView mTextTime;
         private TextView mTextPrice;
 
-        public SoldViewHolder(View itemView) {
+        private SoldViewHolder(View itemView) {
             super(itemView);
 
+            mSoldLayout = itemView.findViewById(R.id.layout_sold);
             mImageMain = itemView.findViewById(R.id.image_sold);
             mTextTitle = itemView.findViewById(R.id.text_title_sold);
             mTextTime = itemView.findViewById(R.id.text_time_sold);
             mTextPrice = itemView.findViewById(R.id.text_price_sold);
         }
 
-        public ImageView getImageMain() {
+        private ConstraintLayout getSoldLayout() {
+            return mSoldLayout;
+        }
+
+        private ImageView getImageMain() {
             return mImageMain;
         }
 
-        public TextView getTextTitle() {
+        private TextView getTextTitle() {
             return mTextTitle;
         }
 
-        public TextView getTextTime() {
+        private TextView getTextTime() {
             return mTextTime;
         }
 
-        public TextView getTextPrice() {
+        private TextView getTextPrice() {
             return mTextPrice;
         }
     }
 
     private void bindSoldViewHolder(SoldViewHolder holder, Product product) {
 
-//        holder.getLayoutEnglishAuction().setOnClickListener(v -> {
-//            mPresenter.openBidding(ENGLISH, product);
-//            mPresenter.hideToolbarAndBottomNavigation();
-//        });
+        holder.getSoldLayout().setOnClickListener(v -> {
+            mPresenter.openSoldDetail(product);
+            mPresenter.hideToolbarAndBottomNavigation();
+        });
 
         ImageManager.getInstance().setImageByUrl(holder.getImageMain(), product.getImages().get(0));
 

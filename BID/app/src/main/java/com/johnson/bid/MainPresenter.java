@@ -21,6 +21,8 @@ import com.johnson.bid.selling.SellingDetailContract;
 import com.johnson.bid.selling.SellingDetailPresenter;
 import com.johnson.bid.settings.SettingsContract;
 import com.johnson.bid.settings.SettingsPresenter;
+import com.johnson.bid.sold.SoldDetailContract;
+import com.johnson.bid.sold.SoldDetailPresenter;
 import com.johnson.bid.trade.TradeContract;
 import com.johnson.bid.trade.TradeItem.TradeItemContract;
 import com.johnson.bid.trade.TradeItem.TradeItemFragment;
@@ -35,7 +37,7 @@ import static com.google.common.base.Preconditions.checkNotNull;
 public class MainPresenter implements MainContract.Presenter, CenterContract.Presenter, TradeContract.Presenter,
         ChatContract.Presenter, SettingsContract.Presenter , AuctionContract.Presenter, LoginContract.Presenter,
         PostContract.Presenter, TradeItemContract.Presenter, BiddingContract.Presenter, SellingDetailContract.Presenter,
-        BoughtDetailContract.Presenter {
+        BoughtDetailContract.Presenter, SoldDetailContract.Presenter {
 
     private MainContract.View mMainView;
 
@@ -48,6 +50,7 @@ public class MainPresenter implements MainContract.Presenter, CenterContract.Pre
     private BiddingPresenter mBiddingPresenter;
     private SellingDetailPresenter mSellingDetailPresenter;
     private BoughtDetailPresenter mBoughtDetailPresenter;
+    private SoldDetailPresenter mSoldDetailPresenter;
 
     private AuctionPresenter mEnglishAuctionPresenter;
     private AuctionPresenter mSealedAuctionPresenter;
@@ -125,6 +128,10 @@ public class MainPresenter implements MainContract.Presenter, CenterContract.Pre
 
     void setBoughtDetailPresenter(BoughtDetailPresenter boughtDetailPresenter) {
         mBoughtDetailPresenter = checkNotNull(boughtDetailPresenter);
+    }
+
+    void setSoldDetailPresenter(SoldDetailPresenter soldDetailPresenter) {
+        mSoldDetailPresenter = checkNotNull(soldDetailPresenter);
     }
 
     @Override
@@ -423,6 +430,11 @@ public class MainPresenter implements MainContract.Presenter, CenterContract.Pre
     }
 
     @Override
+    public void openSoldDetail(Product product) {
+        mMainView.findSoldDetailView(product);
+    }
+
+    @Override
     public void loadMyBiddingData() {
         mMyBiddingPresenter.loadMyBiddingData();
     }
@@ -473,4 +485,13 @@ public class MainPresenter implements MainContract.Presenter, CenterContract.Pre
     }
 
 
+    @Override
+    public void setSoldDetailData(Product product) {
+        mSoldDetailPresenter.setSoldDetailData(product);
+    }
+
+    @Override
+    public void loadSoldDetailData() {
+        mSoldDetailPresenter.loadSoldDetailData();
+    }
 }

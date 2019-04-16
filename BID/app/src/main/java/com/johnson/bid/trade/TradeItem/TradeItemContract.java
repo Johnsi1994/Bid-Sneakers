@@ -42,6 +42,8 @@ public interface TradeItemContract {
 
         void openBoughtDetail(Product product);
 
+        void openSoldDetail(Product product);
+
     }
 
 }

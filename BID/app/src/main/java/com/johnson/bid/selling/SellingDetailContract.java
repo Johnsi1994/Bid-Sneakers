@@ -4,7 +4,7 @@ import com.johnson.bid.BasePresenter;
 import com.johnson.bid.BaseView;
 import com.johnson.bid.data.Product;
 
-public interface SellingContract {
+public interface SellingDetailContract {
 
     interface View extends BaseView<Presenter> {
 
@@ -20,7 +20,7 @@ public interface SellingContract {
 
         void loadSellingDetailData();
 
-
+        void openDeleteProductDialog(Product product);
 
     }
 

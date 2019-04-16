@@ -12,12 +12,12 @@ import com.johnson.bid.util.ImageManager;
 
 import java.util.ArrayList;
 
-public class SellingGalleryAdapter extends RecyclerView.Adapter {
+public class SellingDetailGalleryAdapter extends RecyclerView.Adapter {
 
-    private SellingContract.Presenter mPresenter;
+    private SellingDetailContract.Presenter mPresenter;
     private ArrayList<String> mImages;
 
-    public SellingGalleryAdapter(SellingContract.Presenter presenter, ArrayList<String> images) {
+    public SellingDetailGalleryAdapter(SellingDetailContract.Presenter presenter, ArrayList<String> images) {
         mPresenter = presenter;
         mImages = images;
     }
@@ -25,7 +25,7 @@ public class SellingGalleryAdapter extends RecyclerView.Adapter {
     @NonNull
     @Override
     public RecyclerView.ViewHolder onCreateViewHolder(@NonNull ViewGroup viewGroup, int i) {
-        return new SellingGalleryAdapter.PhotoViewHolder(LayoutInflater.from(viewGroup.getContext())
+        return new SellingDetailGalleryAdapter.PhotoViewHolder(LayoutInflater.from(viewGroup.getContext())
                 .inflate(R.layout.item_gallery_pic, viewGroup, false));
     }
 

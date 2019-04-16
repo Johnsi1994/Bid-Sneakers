@@ -6,7 +6,6 @@ import android.support.annotation.NonNull;
 import android.support.annotation.StringDef;
 import android.support.v4.app.FragmentActivity;
 import android.support.v4.app.FragmentManager;
-import android.util.Log;
 
 import com.johnson.bid.bidding.BiddingFragment;
 import com.johnson.bid.bidding.BiddingPresenter;
@@ -21,8 +20,8 @@ import com.johnson.bid.login.LoginFragment;
 import com.johnson.bid.login.LoginPresenter;
 import com.johnson.bid.post.PostFragment;
 import com.johnson.bid.post.PostPresenter;
-import com.johnson.bid.selling.SellingFragment;
-import com.johnson.bid.selling.SellingPresenter;
+import com.johnson.bid.selling.SellingDetailFragment;
+import com.johnson.bid.selling.SellingDetailPresenter;
 import com.johnson.bid.settings.SettingsFragment;
 import com.johnson.bid.settings.SettingsPresenter;
 import com.johnson.bid.trade.TradeFragment;
@@ -46,7 +45,7 @@ public class MainMvpController {
     private SettingsPresenter mSettingsPresenter;
     private PostPresenter mPostPresenter;
     private BiddingPresenter mBiddingPresenter;
-    private SellingPresenter mSellingPresenter;
+    private SellingDetailPresenter mSellingDetailPresenter;
 
     private AuctionPresenter mEnglishAuctionPresenter;
     private AuctionPresenter mSealedAuctionPresenter;
@@ -283,17 +282,17 @@ public class MainMvpController {
 
     void createSellingView(String auctionType, Product product) {
 
-        SellingFragment sellingFragment = createSellingFragment();
+        SellingDetailFragment sellingDetailFragment = createSellingFragment();
 
-        mSellingPresenter = new SellingPresenter(sellingFragment);
+        mSellingDetailPresenter = new SellingDetailPresenter(sellingDetailFragment);
 
-        mSellingPresenter.setSellingDetailData(product);
+        mSellingDetailPresenter.setSellingDetailData(product);
 
-        mMainPresenter.setSellingPresenter(mSellingPresenter);
+        mMainPresenter.setSellingDetailPresenter(mSellingDetailPresenter);
 
-        sellingFragment.setPresenter(mMainPresenter);
+        sellingDetailFragment.setPresenter(mMainPresenter);
 
-        sellingFragment.setAuctionType(auctionType);
+        sellingDetailFragment.setAuctionType(auctionType);
     }
 
     @NonNull
@@ -330,14 +329,14 @@ public class MainMvpController {
     }
 
     @NonNull
-    private SellingFragment createSellingFragment() {
+    private SellingDetailFragment createSellingFragment() {
 
-        SellingFragment sellingFragment = SellingFragment.newInstance();
+        SellingDetailFragment sellingDetailFragment = SellingDetailFragment.newInstance();
 
         ActivityUtils.addFragmentByTag(
-                getFragmentManager(), sellingFragment, SELLING);
+                getFragmentManager(), sellingDetailFragment, SELLING);
 
-        return sellingFragment;
+        return sellingDetailFragment;
     }
 
     @NonNull

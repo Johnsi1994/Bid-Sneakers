@@ -18,6 +18,8 @@ import com.facebook.ProfileTracker;
 import com.facebook.login.LoginManager;
 import com.facebook.login.LoginResult;
 import com.google.android.gms.tasks.OnCompleteListener;
+import com.google.android.gms.tasks.OnFailureListener;
+import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.android.gms.tasks.Task;
 import com.google.firebase.firestore.DocumentSnapshot;
 import com.google.firebase.firestore.QueryDocumentSnapshot;
@@ -108,17 +110,36 @@ public class UserManager {
 //
 //                    Bitmap bitmap = getFacebookProfilePicture(userId);
 
-                    User user = new User();
-                    user.setId(id);
-                    user.setName(name);
-                    user.setImage(userPhoto);
-                    setUser(user);
-
                     Firebase.getFirestore().collection("users")
-                            .document(String.valueOf(id))
-                            .set(user)
-                            .addOnSuccessListener(documentReference -> Log.d("Johnsi", "DocumentSnapshot added"))
-                            .addOnFailureListener(e -> Log.w("Johnsi", "Error adding document", e));
+                            .whereEqualTo("id", id)
+                            .get()
+                            .addOnCompleteListener(task -> {
+                                if (task.isSuccessful()) {
+
+                                    if (task.getResult().size() == 0) {
+
+                                        User user = new User();
+                                        user.setId(id);
+                                        user.setName(name);
+                                        user.setImage(userPhoto);
+                                        setUser(user);
+
+                                        Firebase.getFirestore().collection("users")
+                                                .document(String.valueOf(id))
+                                                .set(user)
+                                                .addOnSuccessListener(documentReference -> Log.d("Johnsi", "DocumentSnapshot added"))
+                                                .addOnFailureListener(e -> Log.w("Johnsi", "Error adding document", e));
+
+                                    } else {
+                                        for (QueryDocumentSnapshot document : task.getResult()) {
+                                            setUser(document.toObject(User.class));
+                                        }
+                                    }
+
+                                } else {
+                                    Log.d("Johnsi", "Error getting documents: ", task.getException());
+                                }
+                            });
 
                     loadCallback.onSuccess();
                 }

@@ -3,7 +3,7 @@ package com.johnson.bid.sold;
 import com.johnson.bid.BasePresenter;
 import com.johnson.bid.BaseView;
 
-public interface SoldContract {
+public interface SoldDetailContract {
 
     interface View extends BaseView<Presenter> {
 

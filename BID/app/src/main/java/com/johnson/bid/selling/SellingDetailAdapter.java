@@ -5,7 +5,6 @@ import android.support.annotation.NonNull;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.LinearSnapHelper;
 import android.support.v7.widget.RecyclerView;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -19,15 +18,15 @@ import com.johnson.bid.data.Product;
 
 import static com.johnson.bid.MainMvpController.ENGLISH;
 
-public class SellingAdapter extends RecyclerView.Adapter {
+public class SellingDetailAdapter extends RecyclerView.Adapter {
 
-    private SellingContract.Presenter mPresenter;
+    private SellingDetailContract.Presenter mPresenter;
     private LinearSnapHelper mLinearSnapHelper;
     private String mAuctionType;
     private Product mProduct;
     private MainActivity mMainActivity;
 
-    public SellingAdapter(SellingContract.Presenter presenter, String auctionType, MainActivity mainActivity) {
+    public SellingDetailAdapter(SellingDetailContract.Presenter presenter, String auctionType, MainActivity mainActivity) {
         mPresenter = presenter;
         mAuctionType = auctionType;
         mMainActivity = mainActivity;
@@ -51,7 +50,7 @@ public class SellingAdapter extends RecyclerView.Adapter {
 
         LinearLayoutManager layoutManager = new LinearLayoutManager(
                 Bid.getAppContext(), LinearLayoutManager.HORIZONTAL, false);
-        SellingGalleryAdapter sellingGalleryAdapter = new SellingGalleryAdapter(mPresenter, mProduct.getImages());
+        SellingDetailGalleryAdapter sellingDetailGalleryAdapter = new SellingDetailGalleryAdapter(mPresenter, mProduct.getImages());
 
 
         if (mAuctionType.equals(ENGLISH)) {
@@ -59,7 +58,7 @@ public class SellingAdapter extends RecyclerView.Adapter {
                 mLinearSnapHelper = new LinearSnapHelper();
                 mLinearSnapHelper.attachToRecyclerView(((SellingEnglishViewHolder) holder).getGalleryRecycler());
             }
-            ((SellingEnglishViewHolder) holder).getGalleryRecycler().setAdapter(sellingGalleryAdapter);
+            ((SellingEnglishViewHolder) holder).getGalleryRecycler().setAdapter(sellingDetailGalleryAdapter);
             ((SellingEnglishViewHolder) holder).getGalleryRecycler().setLayoutManager(layoutManager);
 
             bindSellingEnglishViewHolder((SellingEnglishViewHolder) holder, mProduct);
@@ -68,7 +67,7 @@ public class SellingAdapter extends RecyclerView.Adapter {
                 mLinearSnapHelper = new LinearSnapHelper();
                 mLinearSnapHelper.attachToRecyclerView(((SellingSealedViewHolder) holder).getGalleryRecycler());
             }
-            ((SellingSealedViewHolder) holder).getGalleryRecycler().setAdapter(sellingGalleryAdapter);
+            ((SellingSealedViewHolder) holder).getGalleryRecycler().setAdapter(sellingDetailGalleryAdapter);
             ((SellingSealedViewHolder) holder).getGalleryRecycler().setLayoutManager(layoutManager);
 
             bindSellingSealedViewHolder((SellingSealedViewHolder) holder, mProduct);
@@ -118,6 +117,10 @@ public class SellingAdapter extends RecyclerView.Adapter {
 
             mBackBtn.setOnClickListener(v ->
                     mMainActivity.onBackPressed()
+            );
+
+            mDeleteBtn.setOnClickListener(v ->
+                    mPresenter.openDeleteProductDialog(mProduct)
             );
 
         }
@@ -225,6 +228,10 @@ public class SellingAdapter extends RecyclerView.Adapter {
                     mMainActivity.onBackPressed()
             );
 
+            mDeleteBtn.setOnClickListener(v ->
+                    mPresenter.openDeleteProductDialog(mProduct)
+            );
+
         }
 
         private RecyclerView getGalleryRecycler() {
@@ -276,9 +283,9 @@ public class SellingAdapter extends RecyclerView.Adapter {
     private String getDateToString(long millSeconds) {
 
         long days = millSeconds / (1000 * 60 * 60 * 24);
-        long hours = (millSeconds - days * (1000 * 60 * 60 * 24)) / (1000* 60 * 60);
-        long minutes = (millSeconds - days * (1000 * 60 * 60 * 24) - hours * (1000* 60 * 60)) / (1000 * 60);
-        long seconds = (millSeconds - days * (1000 * 60 * 60 * 24) - hours * (1000* 60 * 60) - minutes * (1000 * 60)) / 1000;
+        long hours = (millSeconds - days * (1000 * 60 * 60 * 24)) / (1000 * 60 * 60);
+        long minutes = (millSeconds - days * (1000 * 60 * 60 * 24) - hours * (1000 * 60 * 60)) / (1000 * 60);
+        long seconds = (millSeconds - days * (1000 * 60 * 60 * 24) - hours * (1000 * 60 * 60) - minutes * (1000 * 60)) / 1000;
 
         String time = days + "天 " + hours + "時 " + minutes + "分 " + seconds + "秒";
         return time;

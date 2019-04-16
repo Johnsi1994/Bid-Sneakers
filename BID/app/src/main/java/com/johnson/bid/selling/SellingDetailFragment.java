@@ -6,7 +6,6 @@ import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -17,23 +16,23 @@ import com.johnson.bid.data.Product;
 
 import static com.google.common.base.Preconditions.checkNotNull;
 
-public class SellingFragment extends Fragment implements SellingContract.View {
+public class SellingDetailFragment extends Fragment implements SellingDetailContract.View {
 
-    private SellingContract.Presenter mPresenter;
+    private SellingDetailContract.Presenter mPresenter;
     private String mAuctionType;
-    private SellingAdapter mSellingAdapter;
+    private SellingDetailAdapter mSellingDetailAdapter;
 
-    public SellingFragment() {}
+    public SellingDetailFragment() {}
 
-    public static SellingFragment newInstance() {
-        return new SellingFragment();
+    public static SellingDetailFragment newInstance() {
+        return new SellingDetailFragment();
     }
 
     @Override
     public void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
 
-        mSellingAdapter = new SellingAdapter(mPresenter, mAuctionType, (MainActivity) getActivity());
+        mSellingDetailAdapter = new SellingDetailAdapter(mPresenter, mAuctionType, (MainActivity) getActivity());
     }
 
     @Nullable
@@ -43,7 +42,7 @@ public class SellingFragment extends Fragment implements SellingContract.View {
 
         RecyclerView recyclerView = root.findViewById(R.id.recycler_container);
         recyclerView.setLayoutManager(new LinearLayoutManager(getActivity()));
-        recyclerView.setAdapter(mSellingAdapter);
+        recyclerView.setAdapter(mSellingDetailAdapter);
 
         return root;
     }
@@ -56,7 +55,7 @@ public class SellingFragment extends Fragment implements SellingContract.View {
     }
 
     @Override
-    public void setPresenter(SellingContract.Presenter presenter) {
+    public void setPresenter(SellingDetailContract.Presenter presenter) {
         mPresenter = checkNotNull(presenter);
     }
 
@@ -74,6 +73,6 @@ public class SellingFragment extends Fragment implements SellingContract.View {
     @Override
     public void showSellingDetailUi(Product product) {
 
-        mSellingAdapter.updateData(product);
+        mSellingDetailAdapter.updateData(product);
     }
 }

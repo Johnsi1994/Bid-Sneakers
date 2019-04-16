@@ -1,10 +1,11 @@
-package com.johnson.bid.sold;
+package com.johnson.bid.bought;
 
 import android.support.annotation.NonNull;
 import android.support.v7.widget.RecyclerView;
+import android.view.View;
 import android.view.ViewGroup;
 
-public class SoldAdapter extends RecyclerView.Adapter {
+public class BoughtDetailAdapter extends RecyclerView.Adapter {
 
     @NonNull
     @Override

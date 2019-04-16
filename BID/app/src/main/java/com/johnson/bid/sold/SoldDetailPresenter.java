@@ -4,11 +4,11 @@ import android.support.annotation.NonNull;
 
 import static com.google.common.base.Preconditions.checkNotNull;
 
-public class SoldPresenter implements SoldContract.Presenter {
+public class SoldDetailPresenter implements SoldDetailContract.Presenter {
 
-    private SoldContract.View mSoldView;
+    private SoldDetailContract.View mSoldView;
 
-    public SoldPresenter(@NonNull SoldContract.View soldView) {
+    public SoldDetailPresenter(@NonNull SoldDetailContract.View soldView) {
         mSoldView = checkNotNull(soldView, "soldView cannot be null!");
     }
 

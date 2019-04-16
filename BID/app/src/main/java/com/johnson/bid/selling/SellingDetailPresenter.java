@@ -1,19 +1,17 @@
 package com.johnson.bid.selling;
 
 import android.support.annotation.NonNull;
-import android.util.Log;
 
-import com.johnson.bid.centre.CenterContract;
 import com.johnson.bid.data.Product;
 
 import static com.google.common.base.Preconditions.checkNotNull;
 
-public class SellingPresenter implements SellingContract.Presenter {
+public class SellingDetailPresenter implements SellingDetailContract.Presenter {
 
-    private SellingContract.View mSellingView;
+    private SellingDetailContract.View mSellingView;
     private Product mProduct;
 
-    public SellingPresenter(@NonNull SellingContract.View sellingView) {
+    public SellingDetailPresenter(@NonNull SellingDetailContract.View sellingView) {
         mSellingView = checkNotNull(sellingView, "sellingView cannot be null!");
     }
 
@@ -35,5 +33,10 @@ public class SellingPresenter implements SellingContract.Presenter {
     @Override
     public void loadSellingDetailData() {
         mSellingView.showSellingDetailUi(mProduct);
+    }
+
+    @Override
+    public void openDeleteProductDialog(Product product) {
+
     }
 }

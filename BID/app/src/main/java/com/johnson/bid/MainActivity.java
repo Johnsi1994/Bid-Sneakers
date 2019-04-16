@@ -29,7 +29,11 @@ import android.widget.EditText;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.google.android.gms.tasks.OnCompleteListener;
+import com.google.android.gms.tasks.Task;
 import com.google.firebase.firestore.FieldValue;
+import com.google.firebase.firestore.QueryDocumentSnapshot;
+import com.google.firebase.firestore.QuerySnapshot;
 import com.johnson.bid.centre.auction.AuctionFragment;
 import com.johnson.bid.data.Product;
 import com.johnson.bid.dialog.MessageDialog;
@@ -149,7 +153,7 @@ public class MainActivity extends AppCompatActivity implements MainContract.View
         ((View) view.getParent()).setBackgroundColor(this.getColor(android.R.color.transparent));
         dialog.show();
 
-        mCancelBtn = view.findViewById(R.id.button_cancel);
+        mCancelBtn = view.findViewById(R.id.button_cancel_delete_product);
         mOpenGalleryBtn = view.findViewById(R.id.button_goto_gallery);
         mOpenCameraBtn = view.findViewById(R.id.button_open_camera);
 
@@ -447,6 +451,43 @@ public class MainActivity extends AppCompatActivity implements MainContract.View
                 }
 
             }
+        });
+    }
+
+    @Override
+    public void openDeleteProductDialog(Product product) {
+
+        LayoutInflater factory = LayoutInflater.from(this);
+        final View view = factory.inflate(R.layout.dialog_delete_product, null);
+        final BottomSheetDialog dialog = new BottomSheetDialog(this);
+        dialog.setContentView(view);
+        ((View) view.getParent()).setBackgroundColor(this.getColor(android.R.color.transparent));
+        dialog.show();
+
+        Button mCancelBtn;
+        Button mDeleteBtn;
+
+        mCancelBtn = view.findViewById(R.id.button_cancel_delete_product);
+        mDeleteBtn = view.findViewById(R.id.button_delete_product);
+
+        mCancelBtn.setOnClickListener(v -> dialog.dismiss());
+
+        mDeleteBtn.setOnClickListener(v -> {
+
+//            Firebase.getFirestore().collection("users")
+//                    .whereEqualTo("myBiddingProductsId", product.getProductId())
+//                    .get()
+//                    .addOnCompleteListener(task -> {
+//                        if (task.isSuccessful()) {
+//                            for (QueryDocumentSnapshot document : task.getResult()) {
+//                                Log.d("Johnsi", document.getId() + " => " + document.getData());
+//                            }
+//                        } else {
+//                            Log.d("Johnsi", "Error getting documents: ", task.getException());
+//                        }
+//                    });
+
+
         });
     }
 

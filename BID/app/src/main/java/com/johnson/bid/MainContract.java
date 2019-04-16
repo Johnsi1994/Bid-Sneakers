@@ -65,6 +65,8 @@ public interface MainContract {
 
         void openBidDialog(String from, Product product);
 
+        void openDeleteProductDialog(Product product);
+
         void showMessageDialogUi(@MessageDialog.MessageType int type);
     }
 

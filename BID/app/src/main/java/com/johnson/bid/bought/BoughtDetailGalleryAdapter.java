@@ -1,4 +1,4 @@
-package com.johnson.bid.bidding;
+package com.johnson.bid.bought;
 
 import android.support.annotation.NonNull;
 import android.support.v7.widget.RecyclerView;
@@ -8,17 +8,16 @@ import android.view.ViewGroup;
 import android.widget.ImageView;
 
 import com.johnson.bid.R;
-import com.johnson.bid.data.Product;
 import com.johnson.bid.util.ImageManager;
 
 import java.util.ArrayList;
 
-public class BiddingGalleryAdapter extends RecyclerView.Adapter {
+public class BoughtDetailGalleryAdapter extends RecyclerView.Adapter {
 
-    private BiddingContract.Presenter mPresenter;
+    private BoughtDetailContract.Presenter mPresenter;
     private ArrayList<String> mImages;
 
-    public BiddingGalleryAdapter(BiddingContract.Presenter presenter, ArrayList<String> images) {
+    public BoughtDetailGalleryAdapter(BoughtDetailContract.Presenter presenter, ArrayList<String> images) {
         mPresenter = presenter;
         mImages = images;
     }
@@ -27,15 +26,13 @@ public class BiddingGalleryAdapter extends RecyclerView.Adapter {
     @NonNull
     @Override
     public RecyclerView.ViewHolder onCreateViewHolder(@NonNull ViewGroup viewGroup, int i) {
-        return new BiddingGalleryAdapter.PhotoViewHolder(LayoutInflater.from(viewGroup.getContext())
-                .inflate(R.layout.item_bidding_gallery, viewGroup, false));
+        return new BoughtDetailGalleryAdapter.PhotoViewHolder(LayoutInflater.from(viewGroup.getContext())
+                .inflate(R.layout.item_gallery_pic, viewGroup, false));
     }
 
     @Override
-    public void onBindViewHolder(@NonNull RecyclerView.ViewHolder viewHolder, int i) {
-
-        ImageManager.getInstance().setImageByUrl(((PhotoViewHolder) viewHolder).getPhoto(), mImages.get(i));
-
+    public void onBindViewHolder(@NonNull RecyclerView.ViewHolder holder, int i) {
+        ImageManager.getInstance().setImageByUrl(((PhotoViewHolder) holder).getPhoto(), mImages.get(i));
     }
 
     @Override
@@ -47,15 +44,14 @@ public class BiddingGalleryAdapter extends RecyclerView.Adapter {
 
         private ImageView mPhoto;
 
-        public PhotoViewHolder(View itemView) {
+        private PhotoViewHolder(View itemView) {
             super(itemView);
 
-            mPhoto = itemView.findViewById(R.id.image_bidding_gallery);
+            mPhoto = itemView.findViewById(R.id.image_gallery_pic);
         }
 
-        public ImageView getPhoto() {
+        private ImageView getPhoto() {
             return mPhoto;
         }
     }
-
 }

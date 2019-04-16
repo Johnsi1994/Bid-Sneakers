@@ -2,6 +2,8 @@ package com.johnson.bid;
 
 import com.johnson.bid.bidding.BiddingContract;
 import com.johnson.bid.bidding.BiddingPresenter;
+import com.johnson.bid.bought.BoughtDetailContract;
+import com.johnson.bid.bought.BoughtDetailPresenter;
 import com.johnson.bid.centre.auction.AuctionContract;
 import com.johnson.bid.centre.auction.AuctionPresenter;
 import com.johnson.bid.chat.ChatContract;
@@ -32,7 +34,8 @@ import static com.google.common.base.Preconditions.checkNotNull;
 
 public class MainPresenter implements MainContract.Presenter, CenterContract.Presenter, TradeContract.Presenter,
         ChatContract.Presenter, SettingsContract.Presenter , AuctionContract.Presenter, LoginContract.Presenter,
-        PostContract.Presenter, TradeItemContract.Presenter, BiddingContract.Presenter, SellingDetailContract.Presenter {
+        PostContract.Presenter, TradeItemContract.Presenter, BiddingContract.Presenter, SellingDetailContract.Presenter,
+        BoughtDetailContract.Presenter {
 
     private MainContract.View mMainView;
 
@@ -44,6 +47,7 @@ public class MainPresenter implements MainContract.Presenter, CenterContract.Pre
     private PostPresenter mPostPresenter;
     private BiddingPresenter mBiddingPresenter;
     private SellingDetailPresenter mSellingDetailPresenter;
+    private BoughtDetailPresenter mBoughtDetailPresenter;
 
     private AuctionPresenter mEnglishAuctionPresenter;
     private AuctionPresenter mSealedAuctionPresenter;
@@ -117,6 +121,10 @@ public class MainPresenter implements MainContract.Presenter, CenterContract.Pre
 
     void setSellingDetailPresenter(SellingDetailPresenter sellingDetailPresenter) {
         mSellingDetailPresenter = checkNotNull(sellingDetailPresenter);
+    }
+
+    void setBoughtDetailPresenter(BoughtDetailPresenter boughtDetailPresenter) {
+        mBoughtDetailPresenter = checkNotNull(boughtDetailPresenter);
     }
 
     @Override
@@ -195,6 +203,16 @@ public class MainPresenter implements MainContract.Presenter, CenterContract.Pre
     public void showToolbarAndBottomNavigation() {
         mMainView.showToolbarUi();
         mMainView.showBottomNavigationUi();
+    }
+
+    @Override
+    public void loadBoughtDetailData() {
+        mBoughtDetailPresenter.loadBoughtDetailData();
+    }
+
+    @Override
+    public void setBoughtDetailData(Product product) {
+        mBoughtDetailPresenter.setBoughtDetailData(product);
     }
 
     @Override
@@ -397,6 +415,11 @@ public class MainPresenter implements MainContract.Presenter, CenterContract.Pre
     @Override
     public void openSelling(String auctionType, Product product) {
         mMainView.findSellingView(auctionType, product);
+    }
+
+    @Override
+    public void openBoughtDetail(Product product) {
+        mMainView.findBoughtDetailView(product);
     }
 
     @Override

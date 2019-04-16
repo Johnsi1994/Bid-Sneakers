@@ -40,6 +40,8 @@ public interface TradeItemContract {
 
         void openSelling(String auctionType, Product product);
 
+        void openBoughtDetail(Product product);
+
     }
 
 }

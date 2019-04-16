@@ -3,7 +3,7 @@ package com.johnson.bid.nobodybit;
 import com.johnson.bid.BasePresenter;
 import com.johnson.bid.BaseView;
 
-public interface NobodyBitContract {
+public interface NobodyBitDetailContract {
 
     interface View extends BaseView<Presenter> {
 

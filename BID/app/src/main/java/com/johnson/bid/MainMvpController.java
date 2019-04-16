@@ -9,6 +9,8 @@ import android.support.v4.app.FragmentManager;
 
 import com.johnson.bid.bidding.BiddingFragment;
 import com.johnson.bid.bidding.BiddingPresenter;
+import com.johnson.bid.bought.BoughtDetailFragment;
+import com.johnson.bid.bought.BoughtDetailPresenter;
 import com.johnson.bid.centre.auction.AuctionFragment;
 import com.johnson.bid.centre.auction.AuctionPresenter;
 import com.johnson.bid.chat.ChatFragment;
@@ -46,6 +48,7 @@ public class MainMvpController {
     private PostPresenter mPostPresenter;
     private BiddingPresenter mBiddingPresenter;
     private SellingDetailPresenter mSellingDetailPresenter;
+    private BoughtDetailPresenter mBoughtDetailPresenter;
 
     private AuctionPresenter mEnglishAuctionPresenter;
     private AuctionPresenter mSealedAuctionPresenter;
@@ -58,7 +61,7 @@ public class MainMvpController {
 
     @Retention(RetentionPolicy.SOURCE)
     @StringDef({
-            LOGIN, CENTER, TRADE, CHAT, SETTINGS, POST, BIDDING, SELLING
+            LOGIN, CENTER, TRADE, CHAT, SETTINGS, POST, BIDDING, SELLING, BOUGHTDETAIL
     })
 
     public @interface FragmentType {
@@ -72,6 +75,7 @@ public class MainMvpController {
     static final String POST = "POST";
     static final String BIDDING = "BIDDING";
     static final String SELLING = "SELLING";
+    static final String BOUGHTDETAIL = "BOUGHTDETAIL";
 
     @Retention(RetentionPolicy.SOURCE)
     @StringDef({
@@ -285,14 +289,20 @@ public class MainMvpController {
         SellingDetailFragment sellingDetailFragment = createSellingFragment();
 
         mSellingDetailPresenter = new SellingDetailPresenter(sellingDetailFragment);
-
         mSellingDetailPresenter.setSellingDetailData(product);
-
         mMainPresenter.setSellingDetailPresenter(mSellingDetailPresenter);
-
         sellingDetailFragment.setPresenter(mMainPresenter);
-
         sellingDetailFragment.setAuctionType(auctionType);
+    }
+
+    void createBoughtDetailView(Product product) {
+
+        BoughtDetailFragment boughtDetailFragment = createBoughtDetailFragment();
+
+        mBoughtDetailPresenter = new BoughtDetailPresenter(boughtDetailFragment);
+        mBoughtDetailPresenter.setBoughtDetailData(product);
+        mMainPresenter.setBoughtDetailPresenter(mBoughtDetailPresenter);
+        boughtDetailFragment.setPresenter(mMainPresenter);
     }
 
     @NonNull
@@ -337,6 +347,17 @@ public class MainMvpController {
                 getFragmentManager(), sellingDetailFragment, SELLING);
 
         return sellingDetailFragment;
+    }
+
+    @NonNull
+    private BoughtDetailFragment createBoughtDetailFragment() {
+
+        BoughtDetailFragment boughtDetailFragment = BoughtDetailFragment.newInstance();
+
+        ActivityUtils.addFragmentByTag(
+                getFragmentManager(), boughtDetailFragment, BOUGHTDETAIL);
+
+        return boughtDetailFragment;
     }
 
     @NonNull

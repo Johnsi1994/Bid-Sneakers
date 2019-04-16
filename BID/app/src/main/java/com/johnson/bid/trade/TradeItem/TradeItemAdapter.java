@@ -353,6 +353,7 @@ public class TradeItemAdapter extends RecyclerView.Adapter {
 
     private class BoughtViewHolder extends RecyclerView.ViewHolder {
 
+        private ConstraintLayout mBoughtLayout;
         private ImageView mImageMain;
         private TextView mTextTitle;
         private TextView mTextTime;
@@ -361,10 +362,15 @@ public class TradeItemAdapter extends RecyclerView.Adapter {
         public BoughtViewHolder(View itemView) {
             super(itemView);
 
+            mBoughtLayout = itemView.findViewById(R.id.layout_bought);
             mImageMain = itemView.findViewById(R.id.image_bought);
             mTextTitle = itemView.findViewById(R.id.text_title_bought);
             mTextTime = itemView.findViewById(R.id.text_time_bought);
             mTextPrice = itemView.findViewById(R.id.text_price_bought);
+        }
+
+        public ConstraintLayout getBoughtLayout() {
+            return mBoughtLayout;
         }
 
         public ImageView getImageMain() {
@@ -386,10 +392,10 @@ public class TradeItemAdapter extends RecyclerView.Adapter {
 
     private void bindBoughtViewHolder(BoughtViewHolder holder, Product product) {
 
-//        holder.getLayoutEnglishAuction().setOnClickListener(v -> {
-//            mPresenter.openBidding(ENGLISH, product);
-//            mPresenter.hideToolbarAndBottomNavigation();
-//        });
+        holder.getBoughtLayout().setOnClickListener(v -> {
+            mPresenter.openBoughtDetail(product);
+            mPresenter.hideToolbarAndBottomNavigation();
+        });
 
         ImageManager.getInstance().setImageByUrl(holder.getImageMain(), product.getImages().get(0));
 

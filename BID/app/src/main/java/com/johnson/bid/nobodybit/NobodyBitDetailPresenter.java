@@ -4,11 +4,11 @@ import android.support.annotation.NonNull;
 
 import static com.google.common.base.Preconditions.checkNotNull;
 
-public class NobodyBitPresenter implements NobodyBitContract.Presenter {
+public class NobodyBitDetailPresenter implements NobodyBitDetailContract.Presenter {
 
-    private NobodyBitContract.View mNobodyBitView;
+    private NobodyBitDetailContract.View mNobodyBitView;
 
-    public NobodyBitPresenter(@NonNull NobodyBitContract.View nobodyBitView) {
+    public NobodyBitDetailPresenter(@NonNull NobodyBitDetailContract.View nobodyBitView) {
         mNobodyBitView = checkNotNull(nobodyBitView, "nobodyBitView cannot be null!");
     }
 

@@ -30,7 +30,6 @@ public class TradeItemPresenter implements TradeItemContract.Presenter {
     @Override
     public void loadMyBiddingData() {
         mProductIdList = UserManager.getInstance().getUser().getMyBiddingProductsId();
-        Log.d("Johnsi", "loadMyBiddingData size : " + mProductIdList.size());
         mProductsList = new ArrayList<>();
 
         if (mProductIdList.size() > 0) {
@@ -46,7 +45,6 @@ public class TradeItemPresenter implements TradeItemContract.Presenter {
     @Override
     public void loadMySellingData() {
         mProductIdList = UserManager.getInstance().getUser().getMySellingProductsId();
-        Log.d("Johnsi", "loadMySellingData size : " + mProductIdList.size());
         mProductsList = new ArrayList<>();
 
         if (mProductIdList.size() > 0) {
@@ -78,6 +76,7 @@ public class TradeItemPresenter implements TradeItemContract.Presenter {
     @Override
     public void loadMySoldData() {
         mProductIdList = UserManager.getInstance().getUser().getMySoldProductsId();
+        Log.d("Johnsi", "loadMySoldData size : " + mProductIdList.size());
         mProductsList = new ArrayList<>();
 
         if (mProductIdList.size() > 0) {
@@ -87,6 +86,22 @@ public class TradeItemPresenter implements TradeItemContract.Presenter {
 
     @Override
     public void setMySoldData(ArrayList<Product> productsList) {
+        mTradeItemView.showTradeUi(productsList);
+    }
+
+    @Override
+    public void loadNobodyBidData() {
+        mProductIdList = UserManager.getInstance().getUser().getNobodyBitProductsId();
+        Log.d("Johnsi", "loadNobodyBidData size : " + mProductIdList.size());
+        mProductsList = new ArrayList<>();
+
+        if (mProductIdList.size() > 0) {
+            loadDataFromFireBase(0, "NOBODYBIT");
+        }
+    }
+
+    @Override
+    public void setNobodyBidData(ArrayList<Product> productsList) {
         mTradeItemView.showTradeUi(productsList);
     }
 
@@ -109,13 +124,16 @@ public class TradeItemPresenter implements TradeItemContract.Presenter {
                                     setMyBiddingData(mProductsList);
                                     break;
                                 case "SELLING":
-                                    setMyBiddingData(mProductsList);
+                                    setMySellingData(mProductsList);
                                     break;
                                 case "BOUGHT":
-                                    setMyBiddingData(mProductsList);
+                                    setMyBoughtData(mProductsList);
                                     break;
                                 case "SOLD":
-                                    setMyBiddingData(mProductsList);
+                                    setMySoldData(mProductsList);
+                                    break;
+                                case "NOBODYBIT":
+                                    setNobodyBidData(mProductsList);
                                     break;
                                 default:
                             }

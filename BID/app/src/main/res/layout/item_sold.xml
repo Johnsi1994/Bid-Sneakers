@@ -1,6 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <android.support.constraint.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="wrap_content">
 
@@ -20,17 +21,17 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginStart="16dp"
-        android:layout_marginTop="16dp"
+        android:layout_marginTop="4dp"
         android:text="Air Jordan 1 Gold Top Three"
         app:layout_constraintStart_toEndOf="@+id/image_sold"
-        app:layout_constraintTop_toTopOf="parent" />
+        app:layout_constraintTop_toTopOf="@+id/image_sold" />
 
     <TextView
         android:id="@+id/text_1111"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginTop="8dp"
-        android:text="得標時間 :"
+        android:text="售出時間 :"
         app:layout_constraintStart_toStartOf="@+id/text_title_sold"
         app:layout_constraintTop_toBottomOf="@+id/text_title_sold" />
 
@@ -53,29 +54,10 @@
         app:layout_constraintTop_toTopOf="@+id/text_price_title" />
 
     <TextView
-        android:id="@+id/text_buyer_title"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginTop="8dp"
-        android:text="買家 :"
-        app:layout_constraintStart_toStartOf="@+id/text_price_title"
-        app:layout_constraintTop_toBottomOf="@+id/text_price_title" />
-
-    <TextView
-        android:id="@+id/text_buyer_sold"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginStart="2dp"
-        android:text="Rondo"
-        app:layout_constraintBottom_toBottomOf="@+id/text_buyer_title"
-        app:layout_constraintStart_toEndOf="@+id/text_buyer_title"
-        app:layout_constraintTop_toTopOf="@+id/text_buyer_title" />
-
-    <TextView
         android:id="@+id/text_time_sold"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginStart="2dp"
+        android:layout_marginStart="4dp"
         android:text="2019/04/10"
         app:layout_constraintBottom_toBottomOf="@+id/text_1111"
         app:layout_constraintStart_toEndOf="@+id/text_1111"

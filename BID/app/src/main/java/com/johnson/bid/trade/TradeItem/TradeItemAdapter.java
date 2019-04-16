@@ -3,6 +3,7 @@ package com.johnson.bid.trade.TradeItem;
 import android.os.CountDownTimer;
 import android.support.annotation.NonNull;
 import android.support.v7.widget.RecyclerView;
+import android.util.Log;
 import android.util.SparseArray;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -15,12 +16,15 @@ import com.johnson.bid.R;
 import com.johnson.bid.data.Product;
 import com.johnson.bid.util.ImageManager;
 
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Date;
 
 import static com.johnson.bid.MainMvpController.MYBIDDING;
 import static com.johnson.bid.MainMvpController.MYBOUGHT;
 import static com.johnson.bid.MainMvpController.MYSELLING;
 import static com.johnson.bid.MainMvpController.MYSOLD;
+import static com.johnson.bid.MainMvpController.NOBODYBID;
 
 public class TradeItemAdapter extends RecyclerView.Adapter {
 
@@ -53,9 +57,12 @@ public class TradeItemAdapter extends RecyclerView.Adapter {
                     return new BoughtViewHolder(LayoutInflater.from(viewGroup.getContext())
                             .inflate(R.layout.item_bought, viewGroup, false));
                 case MYSOLD:
-                default:
                     return new SoldViewHolder(LayoutInflater.from(viewGroup.getContext())
                             .inflate(R.layout.item_sold, viewGroup, false));
+                case NOBODYBID:
+                default:
+                    return new NobodyBidViewHolder(LayoutInflater.from(viewGroup.getContext())
+                        .inflate(R.layout.item_nobody_bid, viewGroup, false));
             }
         } else {
             return new LoadingViewHolder(LayoutInflater.from(viewGroup.getContext())
@@ -79,13 +86,18 @@ public class TradeItemAdapter extends RecyclerView.Adapter {
 
                 bindBoughtViewHolder((BoughtViewHolder) viewHolder, mProductsList.get(i));
 
+            } else if (viewHolder instanceof SoldViewHolder) {
+
+                Log.d("Johnsi", "SoldViewHolder ProductsList : "  + mProductsList.get(0).getProductId() + " / " + mProductsList.get(1).getProductId());
+                bindSoldViewHolder((SoldViewHolder) viewHolder, mProductsList.get(i));
+
             } else {
 
-                bindSoldViewHolder((SoldViewHolder) viewHolder, mProductsList.get(i));
+                Log.d("Johnsi", "NobodyBidViewHolder ProductsList Size : "  + mProductsList.size());
+                bindNobodyBidViewHolder((NobodyBidViewHolder) viewHolder, mProductsList.get(i));
 
             }
         }
-
     }
 
     @Override
@@ -198,7 +210,7 @@ public class TradeItemAdapter extends RecyclerView.Adapter {
 
             @Override
             public void onTick(long millisUntilFinished) {
-                holder.getTextTime().setText(getDateToString(millisUntilFinished));
+                holder.getTextTime().setText(getLastTimeToString(millisUntilFinished));
             }
 
             @Override
@@ -305,7 +317,7 @@ public class TradeItemAdapter extends RecyclerView.Adapter {
 
             @Override
             public void onTick(long millisUntilFinished) {
-                holder.getTextTime().setText(getDateToString(millisUntilFinished));
+                holder.getTextTime().setText(getLastTimeToString(millisUntilFinished));
             }
 
             @Override
@@ -323,8 +335,6 @@ public class TradeItemAdapter extends RecyclerView.Adapter {
         private TextView mTextTitle;
         private TextView mTextTime;
         private TextView mTextPrice;
-        private TextView mTextSeller;
-        CountDownTimer countDownTimer;
 
         public BoughtViewHolder(View itemView) {
             super(itemView);
@@ -333,7 +343,6 @@ public class TradeItemAdapter extends RecyclerView.Adapter {
             mTextTitle = itemView.findViewById(R.id.text_title_bought);
             mTextTime = itemView.findViewById(R.id.text_time_bought);
             mTextPrice = itemView.findViewById(R.id.text_price_bought);
-            mTextSeller = itemView.findViewById(R.id.text_seller_bought);
         }
 
         public ImageView getImageMain() {
@@ -350,10 +359,6 @@ public class TradeItemAdapter extends RecyclerView.Adapter {
 
         public TextView getTextPrice() {
             return mTextPrice;
-        }
-
-        public TextView getTextPeople() {
-            return mTextSeller;
         }
     }
 
@@ -368,28 +373,9 @@ public class TradeItemAdapter extends RecyclerView.Adapter {
 
         holder.getTextTitle().setText(product.getTitle());
 
-        long lastTime = product.getExpired() - System.currentTimeMillis();
-        if (holder.countDownTimer != null) {
-            holder.countDownTimer.cancel();
-        }
-        holder.countDownTimer = new CountDownTimer(lastTime, 1000) {
-
-            @Override
-            public void onTick(long millisUntilFinished) {
-                holder.getTextTime().setText(getDateToString(millisUntilFinished));
-            }
-
-            @Override
-            public void onFinish() {
-
-            }
-        }.start();
-
-        mCountDownMap.put(holder.getTextTime().hashCode(), holder.countDownTimer);
-
         holder.getTextPrice().setText(String.valueOf(product.getCurrentPrice()));
 
-        holder.getTextPeople().setText(String.valueOf(product.getParticipantsNumber()));
+        holder.getTextTime().setText(getDateToString(product.getExpired()));
 
     }
 
@@ -399,8 +385,6 @@ public class TradeItemAdapter extends RecyclerView.Adapter {
         private TextView mTextTitle;
         private TextView mTextTime;
         private TextView mTextPrice;
-        private TextView mTextBuyer;
-        CountDownTimer countDownTimer;
 
         public SoldViewHolder(View itemView) {
             super(itemView);
@@ -409,7 +393,6 @@ public class TradeItemAdapter extends RecyclerView.Adapter {
             mTextTitle = itemView.findViewById(R.id.text_title_sold);
             mTextTime = itemView.findViewById(R.id.text_time_sold);
             mTextPrice = itemView.findViewById(R.id.text_price_sold);
-            mTextBuyer = itemView.findViewById(R.id.text_buyer_sold);
         }
 
         public ImageView getImageMain() {
@@ -427,10 +410,6 @@ public class TradeItemAdapter extends RecyclerView.Adapter {
         public TextView getTextPrice() {
             return mTextPrice;
         }
-
-        public TextView getTextBuyer() {
-            return mTextBuyer;
-        }
     }
 
     private void bindSoldViewHolder(SoldViewHolder holder, Product product) {
@@ -444,28 +423,51 @@ public class TradeItemAdapter extends RecyclerView.Adapter {
 
         holder.getTextTitle().setText(product.getTitle());
 
-        long lastTime = product.getExpired() - System.currentTimeMillis();
-        if (holder.countDownTimer != null) {
-            holder.countDownTimer.cancel();
-        }
-        holder.countDownTimer = new CountDownTimer(lastTime, 1000) {
-
-            @Override
-            public void onTick(long millisUntilFinished) {
-                holder.getTextTime().setText(getDateToString(millisUntilFinished));
-            }
-
-            @Override
-            public void onFinish() {
-
-            }
-        }.start();
-
-        mCountDownMap.put(holder.getTextTime().hashCode(), holder.countDownTimer);
-
         holder.getTextPrice().setText(String.valueOf(product.getCurrentPrice()));
 
-        holder.getTextBuyer().setText(String.valueOf(product.getHighestUserId()));
+        holder.getTextTime().setText(getDateToString(product.getExpired()));
+
+    }
+
+    private class NobodyBidViewHolder extends RecyclerView.ViewHolder {
+
+        private ImageView mImageMain;
+        private TextView mTextTitle;
+        private TextView mTextTime;
+
+        public NobodyBidViewHolder(View itemView) {
+            super(itemView);
+
+            mImageMain = itemView.findViewById(R.id.image_nobody_bit);
+            mTextTitle = itemView.findViewById(R.id.text_product_title_nobody_bid);
+            mTextTime = itemView.findViewById(R.id.text_time_nobody_bid);
+        }
+
+        public ImageView getImageMain() {
+            return mImageMain;
+        }
+
+        public TextView getTextTitle() {
+            return mTextTitle;
+        }
+
+        public TextView getTextTime() {
+            return mTextTime;
+        }
+    }
+
+    private void bindNobodyBidViewHolder(NobodyBidViewHolder holder, Product product) {
+
+//        holder.getLayoutEnglishAuction().setOnClickListener(v -> {
+//            mPresenter.openBidding(ENGLISH, product);
+//            mPresenter.hideToolbarAndBottomNavigation();
+//        });
+
+        ImageManager.getInstance().setImageByUrl(holder.getImageMain(), product.getImages().get(0));
+
+        holder.getTextTitle().setText(product.getTitle());
+
+        holder.getTextTime().setText(getDateToString(product.getExpired()));
 
     }
 
@@ -475,15 +477,21 @@ public class TradeItemAdapter extends RecyclerView.Adapter {
         }
     }
 
-    private String getDateToString(long millSeconds) {
+    private String getLastTimeToString(long millSeconds) {
 
         long days = millSeconds / (1000 * 60 * 60 * 24);
         long hours = (millSeconds - days * (1000 * 60 * 60 * 24)) / (1000 * 60 * 60);
         long minutes = (millSeconds - days * (1000 * 60 * 60 * 24) - hours * (1000 * 60 * 60)) / (1000 * 60);
         long seconds = (millSeconds - days * (1000 * 60 * 60 * 24) - hours * (1000 * 60 * 60) - minutes * (1000 * 60)) / 1000;
 
-        String time = days + "天 " + hours + "時 " + minutes + "分 " + seconds + "秒";
+        String time = days + " 天 " + hours + " 時 " + minutes + " 分 " + seconds + " 秒";
         return time;
+    }
+
+    private String getDateToString(long millSeconds) {
+        SimpleDateFormat sf = new SimpleDateFormat("MM 月 dd 日 HH 時 mm 分");
+        Date d = new Date(millSeconds);
+        return sf.format(d);
     }
 
     public void updateData(ArrayList<Product> productsList) {

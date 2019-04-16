@@ -39,4 +39,9 @@ public class TradePresenter implements TradeContract.Presenter {
         return null;
     }
 
+    @Override
+    public TradeItemFragment findNobodyBid() {
+        return null;
+    }
+
 }

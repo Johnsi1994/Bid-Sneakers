@@ -19,5 +19,7 @@ public interface TradeContract {
         TradeItemFragment findMyBought();
 
         TradeItemFragment findMySold();
+
+        TradeItemFragment findNobodyBid();
     }
 }

@@ -252,6 +252,11 @@ public class MainActivity extends AppCompatActivity implements MainContract.View
     }
 
     @Override
+    public TradeItemFragment findNobodyBidView() {
+        return mMainMvpController.findOrCreateNobodyBidView();
+    }
+
+    @Override
     public void findBiddingView(String auctionType, Product product) {
         mMainMvpController.createBiddingView(auctionType, product);
     }

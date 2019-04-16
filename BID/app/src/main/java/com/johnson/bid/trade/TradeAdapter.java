@@ -9,12 +9,13 @@ import static com.johnson.bid.MainMvpController.MYBIDDING;
 import static com.johnson.bid.MainMvpController.MYBOUGHT;
 import static com.johnson.bid.MainMvpController.MYSELLING;
 import static com.johnson.bid.MainMvpController.MYSOLD;
+import static com.johnson.bid.MainMvpController.NOBODYBID;
 
 public class TradeAdapter extends FragmentPagerAdapter {
 
     private TradeContract.Presenter mPresenter;
-    private String[] mTrading = new String[]{MYBIDDING, MYSELLING, MYBOUGHT, MYSOLD};
-    private String[] mTitle = new String[]{"競標中", "出售中", "已得標", "已售出"};
+    private String[] mTrading = new String[]{MYBIDDING, MYSELLING, MYBOUGHT, MYSOLD, NOBODYBID};
+    private String[] mTitle = new String[]{"競標中", "出售中", "已得標", "已售出", "流標"};
 
     public TradeAdapter(FragmentManager fm, TradeContract.Presenter presenter) {
         super(fm);
@@ -32,14 +33,17 @@ public class TradeAdapter extends FragmentPagerAdapter {
             case MYBOUGHT:
                 return mPresenter.findMyBought();
             case MYSOLD:
-            default:
                 return mPresenter.findMySold();
+            case NOBODYBID:
+            default:
+                return mPresenter.findNobodyBid();
         }
+
     }
 
     @Override
     public int getCount() {
-        return mTrading.length;
+        return mTitle.length;
     }
 
     @Nullable

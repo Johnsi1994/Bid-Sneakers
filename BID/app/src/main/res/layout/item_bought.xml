@@ -21,10 +21,10 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginStart="16dp"
-        android:layout_marginTop="16dp"
+        android:layout_marginTop="4dp"
         android:text="Air Jordan 1 Gold Top Three"
         app:layout_constraintStart_toEndOf="@+id/image_bought"
-        app:layout_constraintTop_toTopOf="parent" />
+        app:layout_constraintTop_toTopOf="@+id/image_bought" />
 
     <TextView
         android:id="@+id/text_0000"
@@ -54,29 +54,10 @@
         app:layout_constraintTop_toTopOf="@+id/text_price_title" />
 
     <TextView
-        android:id="@+id/text_buyer_title"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginTop="8dp"
-        android:text="賣家 :"
-        app:layout_constraintStart_toStartOf="@+id/text_price_title"
-        app:layout_constraintTop_toBottomOf="@+id/text_price_title" />
-
-    <TextView
-        android:id="@+id/text_seller_bought"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginStart="2dp"
-        android:text="McGee"
-        app:layout_constraintBottom_toBottomOf="@+id/text_buyer_title"
-        app:layout_constraintStart_toEndOf="@+id/text_buyer_title"
-        app:layout_constraintTop_toTopOf="@+id/text_buyer_title" />
-
-    <TextView
         android:id="@+id/text_time_bought"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginStart="2dp"
+        android:layout_marginStart="4dp"
         android:text="2019/04/10"
         app:layout_constraintBottom_toBottomOf="@+id/text_0000"
         app:layout_constraintStart_toEndOf="@+id/text_0000"

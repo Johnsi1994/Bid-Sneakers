@@ -49,6 +49,7 @@ public class MainPresenter implements MainContract.Presenter, CenterContract.Pre
     private TradeItemPresenter mMySellingPresenter;
     private TradeItemPresenter mMyBoughtPresenter;
     private TradeItemPresenter mMySoldPresenter;
+    private TradeItemPresenter mNobodyBidPresenter;
 
     public MainPresenter(MainContract.View mainView) {
         mMainView = checkNotNull(mainView, "mainView cannot be null!");
@@ -101,6 +102,10 @@ public class MainPresenter implements MainContract.Presenter, CenterContract.Pre
 
     void setMySoldPresenter(TradeItemPresenter mySoldPresenter) {
         mMySoldPresenter = checkNotNull(mySoldPresenter);
+    }
+
+    void setNobodyBitPresenter(TradeItemPresenter nobodyBitPresenter) {
+        mNobodyBidPresenter = checkNotNull(nobodyBitPresenter);
     }
 
     void setBiddingPresenter(BiddingPresenter biddingPresenter) {
@@ -356,6 +361,11 @@ public class MainPresenter implements MainContract.Presenter, CenterContract.Pre
 
     }
 
+    @Override
+    public TradeItemFragment findNobodyBid() {
+        return mMainView.findNobodyBidView();
+    }
+
 
     @Override
     public void openBidding(String auctionType, Product product) {
@@ -400,6 +410,16 @@ public class MainPresenter implements MainContract.Presenter, CenterContract.Pre
     @Override
     public void setMySoldData(ArrayList<Product> productsList) {
         mMySoldPresenter.setMySoldData(productsList);
+    }
+
+    @Override
+    public void loadNobodyBidData() {
+        mNobodyBidPresenter.loadNobodyBidData();
+    }
+
+    @Override
+    public void setNobodyBidData(ArrayList<Product> productsList) {
+        mNobodyBidPresenter.setNobodyBidData(productsList);
     }
 
 

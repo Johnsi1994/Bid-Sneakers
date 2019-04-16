@@ -47,6 +47,8 @@ public interface MainContract {
 
         TradeItemFragment findMySoldView();
 
+        TradeItemFragment findNobodyBidView();
+
         void findBiddingView(String auctionType, Product product);
 
         void setToolbarTitleUi(String title);

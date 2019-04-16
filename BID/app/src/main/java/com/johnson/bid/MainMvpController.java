@@ -51,6 +51,7 @@ public class MainMvpController {
     private TradeItemPresenter mMySellingPresenter;
     private TradeItemPresenter mMyBoughtPresenter;
     private TradeItemPresenter mMySoldPresenter;
+    private TradeItemPresenter mNobodyBidPresenter;
 
     @Retention(RetentionPolicy.SOURCE)
     @StringDef({
@@ -80,7 +81,7 @@ public class MainMvpController {
 
     @Retention(RetentionPolicy.SOURCE)
     @StringDef({
-            MYBIDDING, MYSELLING, MYBOUGHT, MYSOLD
+            MYBIDDING, MYSELLING, MYBOUGHT, MYSOLD, NOBODYBID
     })
     public @interface TradeType {
     }
@@ -89,6 +90,7 @@ public class MainMvpController {
     public static final String MYSELLING = "MYSELLING";
     public static final String MYBOUGHT = "MYBOUGHT";
     public static final String MYSOLD = "MYSOLD";
+    public static final String NOBODYBID = "NOBODYBID";
 
 
     private MainMvpController(@NonNull FragmentActivity activity) {
@@ -247,6 +249,18 @@ public class MainMvpController {
         fragment.setPresenter(mMainPresenter);
         fragment.setTradeType(MYSOLD);
         mMainPresenter.setMySoldPresenter(mMySoldPresenter);
+
+        return fragment;
+    }
+
+    TradeItemFragment findOrCreateNobodyBidView() {
+
+        TradeItemFragment fragment = findOrCreateTradeItemFragment(NOBODYBID);
+
+        mNobodyBidPresenter = new TradeItemPresenter(fragment);
+        fragment.setPresenter(mMainPresenter);
+        fragment.setTradeType(NOBODYBID);
+        mMainPresenter.setNobodyBitPresenter(mNobodyBidPresenter);
 
         return fragment;
     }

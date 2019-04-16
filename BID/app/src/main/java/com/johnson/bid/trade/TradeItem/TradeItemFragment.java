@@ -22,6 +22,7 @@ import static com.johnson.bid.MainMvpController.MYBIDDING;
 import static com.johnson.bid.MainMvpController.MYBOUGHT;
 import static com.johnson.bid.MainMvpController.MYSELLING;
 import static com.johnson.bid.MainMvpController.MYSOLD;
+import static com.johnson.bid.MainMvpController.NOBODYBID;
 
 public class TradeItemFragment extends Fragment implements TradeItemContract.View {
 
@@ -72,6 +73,9 @@ public class TradeItemFragment extends Fragment implements TradeItemContract.Vie
             break;
             case MYSOLD:
                 mPresenter.loadMySoldData();
+                break;
+            case NOBODYBID:
+                mPresenter.loadNobodyBidData();
                 break;
             default:
         }

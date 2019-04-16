@@ -98,7 +98,7 @@ public class PostAdapter extends RecyclerView.Adapter {
         private long mTime = -1;
 
         @SuppressLint("SimpleDateFormat")
-        private SimpleDateFormat sf = new SimpleDateFormat("MM月 dd日 HH時 mm分");
+        private SimpleDateFormat sf = new SimpleDateFormat("MM 月 dd 日 HH 時 mm 分");
         long oneHour = 1000 * 60 * 60 * 1L;
         long oneWeek = 7 * 1000 * 60 * 60 * 24L;
 

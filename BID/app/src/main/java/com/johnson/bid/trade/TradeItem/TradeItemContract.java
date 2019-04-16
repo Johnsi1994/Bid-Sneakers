@@ -15,16 +15,24 @@ public interface TradeItemContract {
     interface Presenter extends BasePresenter {
 
         void loadMyBiddingData();
+
         void setMyBiddingData(ArrayList<Product> productsList);
 
         void loadMySellingData();
+
         void setMySellingData(ArrayList<Product> productsList);
 
         void loadMyBoughtData();
+
         void setMyBoughtData(ArrayList<Product> productsList);
 
         void loadMySoldData();
+
         void setMySoldData(ArrayList<Product> productsList);
+
+        void loadNobodyBidData();
+
+        void setNobodyBidData(ArrayList<Product> productsList);
 
     }
 

@@ -30,6 +30,8 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import com.google.android.gms.tasks.OnCompleteListener;
+import com.google.android.gms.tasks.OnFailureListener;
+import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.android.gms.tasks.Task;
 import com.google.firebase.firestore.FieldValue;
 import com.google.firebase.firestore.QueryDocumentSnapshot;
@@ -46,6 +48,7 @@ import java.util.ArrayList;
 import static com.google.common.base.Preconditions.checkNotNull;
 import static com.johnson.bid.MainMvpController.ENGLISH;
 import static com.johnson.bid.dialog.MessageDialog.BID_SUCCESS;
+import static com.johnson.bid.dialog.MessageDialog.DELETE_SUCCESS;
 
 public class MainActivity extends AppCompatActivity implements MainContract.View {
 
@@ -474,20 +477,40 @@ public class MainActivity extends AppCompatActivity implements MainContract.View
 
         mDeleteBtn.setOnClickListener(v -> {
 
-//            Firebase.getFirestore().collection("users")
-//                    .whereEqualTo("myBiddingProductsId", product.getProductId())
-//                    .get()
-//                    .addOnCompleteListener(task -> {
-//                        if (task.isSuccessful()) {
-//                            for (QueryDocumentSnapshot document : task.getResult()) {
-//                                Log.d("Johnsi", document.getId() + " => " + document.getData());
-//                            }
-//                        } else {
-//                            Log.d("Johnsi", "Error getting documents: ", task.getException());
-//                        }
-//                    });
+            Firebase.getFirestore().collection("products")
+                    .document(String.valueOf(product.getProductId()))
+                    .delete()
+                    .addOnSuccessListener(aVoid -> Log.d("Johnsi", product.getProductId() + " successfully deleted!"))
+                    .addOnFailureListener(e -> Log.w("Johnsi", "Error deleting document", e));
 
+            Firebase.getFirestore().collection("users")
+                    .document(String.valueOf(UserManager.getInstance().getUser().getId()))
+                    .update("mySellingProductsId", FieldValue.arrayRemove(product.getProductId()))
+                    .addOnSuccessListener(aVoid -> Log.d("Johnsi", "Selling Products Id successfully removed!"))
+                    .addOnFailureListener(e -> Log.w("Johnsi", "Selling Products Id Error updating document", e));
 
+            Firebase.getFirestore().collection("users")
+                    .whereArrayContains("myBiddingProductsId", product.getProductId())
+                    .get()
+                    .addOnCompleteListener(task -> {
+                        if (task.isSuccessful()) {
+                            for (QueryDocumentSnapshot document : task.getResult()) {
+                                Log.d("Johnsi", document.getId() + " => " + document.getData());
+
+                                Firebase.getFirestore().collection("users")
+                                        .document(document.getId())
+                                        .update("myBiddingProductsId", FieldValue.arrayRemove(product.getProductId()))
+                                        .addOnSuccessListener(aVoid -> Log.d("Johnsi", "Bidding Products Id successfully removed!"))
+                                        .addOnFailureListener(e -> Log.w("Johnsi", "Bidding Products Id Error updating document", e));
+
+                            }
+                        } else {
+                            Log.d("Johnsi", "Error getting documents: ", task.getException());
+                        }
+                    });
+
+            dialog.dismiss();
+            showMessageDialogUi(DELETE_SUCCESS);
         });
     }
 

@@ -30,5 +30,6 @@
     <string name="post_success">刊登成功</string>
     <string name="bid_success">出價成功</string>
     <string name="nobody">無</string>
+    <string name="delete_success">刪除成功</string>
 
 </resources>

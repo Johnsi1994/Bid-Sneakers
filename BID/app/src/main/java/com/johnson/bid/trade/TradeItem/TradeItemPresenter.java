@@ -76,7 +76,6 @@ public class TradeItemPresenter implements TradeItemContract.Presenter {
     @Override
     public void loadMySoldData() {
         mProductIdList = UserManager.getInstance().getUser().getMySoldProductsId();
-        Log.d("Johnsi", "loadMySoldData size : " + mProductIdList.size());
         mProductsList = new ArrayList<>();
 
         if (mProductIdList.size() > 0) {
@@ -92,7 +91,6 @@ public class TradeItemPresenter implements TradeItemContract.Presenter {
     @Override
     public void loadNobodyBidData() {
         mProductIdList = UserManager.getInstance().getUser().getNobodyBitProductsId();
-        Log.d("Johnsi", "loadNobodyBidData size : " + mProductIdList.size());
         mProductsList = new ArrayList<>();
 
         if (mProductIdList.size() > 0) {
@@ -103,6 +101,21 @@ public class TradeItemPresenter implements TradeItemContract.Presenter {
     @Override
     public void setNobodyBidData(ArrayList<Product> productsList) {
         mTradeItemView.showTradeUi(productsList);
+    }
+
+    @Override
+    public void hideToolbarAndBottomNavigation() {
+
+    }
+
+    @Override
+    public void openBidding(String type, Product product) {
+
+    }
+
+    @Override
+    public void openSelling(String auctionType, Product product) {
+
     }
 
     private void loadDataFromFireBase(int i, String type) {

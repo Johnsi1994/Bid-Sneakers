@@ -2,6 +2,7 @@ package com.johnson.bid.trade.TradeItem;
 
 import android.os.CountDownTimer;
 import android.support.annotation.NonNull;
+import android.support.constraint.ConstraintLayout;
 import android.support.v7.widget.RecyclerView;
 import android.util.Log;
 import android.util.SparseArray;
@@ -20,11 +21,13 @@ import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Date;
 
+import static com.johnson.bid.MainMvpController.ENGLISH;
 import static com.johnson.bid.MainMvpController.MYBIDDING;
 import static com.johnson.bid.MainMvpController.MYBOUGHT;
 import static com.johnson.bid.MainMvpController.MYSELLING;
 import static com.johnson.bid.MainMvpController.MYSOLD;
 import static com.johnson.bid.MainMvpController.NOBODYBID;
+import static com.johnson.bid.MainMvpController.SEALED;
 
 public class TradeItemAdapter extends RecyclerView.Adapter {
 
@@ -88,12 +91,10 @@ public class TradeItemAdapter extends RecyclerView.Adapter {
 
             } else if (viewHolder instanceof SoldViewHolder) {
 
-                Log.d("Johnsi", "SoldViewHolder ProductsList : "  + mProductsList.get(0).getProductId() + " / " + mProductsList.get(1).getProductId());
                 bindSoldViewHolder((SoldViewHolder) viewHolder, mProductsList.get(i));
 
             } else {
 
-                Log.d("Johnsi", "NobodyBidViewHolder ProductsList Size : "  + mProductsList.size());
                 bindNobodyBidViewHolder((NobodyBidViewHolder) viewHolder, mProductsList.get(i));
 
             }
@@ -117,6 +118,7 @@ public class TradeItemAdapter extends RecyclerView.Adapter {
 
     private class BiddingViewHolder extends RecyclerView.ViewHolder {
 
+        private ConstraintLayout mBiddingLayout;
         private ImageView mImageMain;
         private TextView mTextTitle;
         private TextView mTextTime;
@@ -127,9 +129,10 @@ public class TradeItemAdapter extends RecyclerView.Adapter {
         private TextView mTextPeopleTitle;
         CountDownTimer countDownTimer;
 
-        public BiddingViewHolder(View itemView) {
+        private BiddingViewHolder(View itemView) {
             super(itemView);
 
+            mBiddingLayout = itemView.findViewById(R.id.layout_e_auction);
             mImageMain = itemView.findViewById(R.id.image_product_e_auction);
             mTextTitle = itemView.findViewById(R.id.text_product_title_e_auction);
             mTextTime = itemView.findViewById(R.id.text_last_time_e_auction);
@@ -140,45 +143,54 @@ public class TradeItemAdapter extends RecyclerView.Adapter {
             mTextPeopleTitle = itemView.findViewById(R.id.text_people_title);
         }
 
-        public ImageView getImageMain() {
+        private  ConstraintLayout getBiddingLayout() {return mBiddingLayout;}
+
+        private ImageView getImageMain() {
             return mImageMain;
         }
 
-        public TextView getTextTitle() {
+        private TextView getTextTitle() {
             return mTextTitle;
         }
 
-        public TextView getTextTime() {
+        private TextView getTextTime() {
             return mTextTime;
         }
 
-        public TextView getTextPrice() {
+        private TextView getTextPrice() {
             return mTextPrice;
         }
 
-        public TextView getTextPeople() {
+        private TextView getTextPeople() {
             return mTextPeople;
         }
 
-        public TextView getTextPeopleTitle() {
+        private TextView getTextPeopleTitle() {
             return mTextPeopleTitle;
         }
 
-        public TextView getTextPriceTitle() {
+        private TextView getTextPriceTitle() {
             return mTextPriceTitle;
         }
 
-        public TextView getTextSlash() {
+        private TextView getTextSlash() {
             return mTextSlash;
         }
     }
 
     private void bindBiddingViewHolder(BiddingViewHolder holder, Product product) {
 
-//        holder.getLayoutEnglishAuction().setOnClickListener(v -> {
-//            mPresenter.openBidding(ENGLISH, product);
-//            mPresenter.hideToolbarAndBottomNavigation();
-//        });
+
+        holder.getBiddingLayout().setOnClickListener(v -> {
+
+            if (product.getAuctionType().equals("English")) {
+                mPresenter.openBidding(ENGLISH, product);
+            } else {
+                mPresenter.openBidding(SEALED, product);
+            }
+
+            mPresenter.hideToolbarAndBottomNavigation();
+        });
 
         ImageManager.getInstance().setImageByUrl(holder.getImageMain(), product.getImages().get(0));
 
@@ -225,6 +237,7 @@ public class TradeItemAdapter extends RecyclerView.Adapter {
 
     private class SellingViewHolder extends RecyclerView.ViewHolder {
 
+        private ConstraintLayout mSellingLayout;
         private ImageView mImageMain;
         private TextView mTextTitle;
         private TextView mTextTime;
@@ -235,9 +248,10 @@ public class TradeItemAdapter extends RecyclerView.Adapter {
         private TextView mTextPeopleTitle;
         CountDownTimer countDownTimer;
 
-        public SellingViewHolder(View itemView) {
+        private SellingViewHolder(View itemView) {
             super(itemView);
 
+            mSellingLayout = itemView.findViewById(R.id.layout_selling);
             mImageMain = itemView.findViewById(R.id.image_selling_e);
             mTextTitle = itemView.findViewById(R.id.text_title_selling_e);
             mTextTime = itemView.findViewById(R.id.text_last_time_selling_e);
@@ -248,45 +262,53 @@ public class TradeItemAdapter extends RecyclerView.Adapter {
             mTextPeopleTitle = itemView.findViewById(R.id.text_people_title);
         }
 
-        public ImageView getImageMain() {
+        private ConstraintLayout getSellingLayout() {return mSellingLayout;}
+
+        private ImageView getImageMain() {
             return mImageMain;
         }
 
-        public TextView getTextTitle() {
+        private TextView getTextTitle() {
             return mTextTitle;
         }
 
-        public TextView getTextTime() {
+        private TextView getTextTime() {
             return mTextTime;
         }
 
-        public TextView getTextPrice() {
+        private TextView getTextPrice() {
             return mTextPrice;
         }
 
-        public TextView getTextPeople() {
+        private TextView getTextPeople() {
             return mTextPeople;
         }
 
-        public TextView getTextPeopleTitle() {
+        private TextView getTextPeopleTitle() {
             return mTextPeopleTitle;
         }
 
-        public TextView getTextPriceTitle() {
+        private TextView getTextPriceTitle() {
             return mTextPriceTitle;
         }
 
-        public TextView getTextSlash() {
+        private TextView getTextSlash() {
             return mTextSlash;
         }
     }
 
     private void bindSellingViewHolder(SellingViewHolder holder, Product product) {
 
-//        holder.getLayoutEnglishAuction().setOnClickListener(v -> {
-//            mPresenter.openBidding(ENGLISH, product);
-//            mPresenter.hideToolbarAndBottomNavigation();
-//        });
+        holder.getSellingLayout().setOnClickListener(v -> {
+
+            if (product.getAuctionType().equals("English")) {
+                mPresenter.openSelling(ENGLISH, product);
+            } else {
+                mPresenter.openSelling(SEALED, product);
+            }
+
+            mPresenter.hideToolbarAndBottomNavigation();
+        });
 
         ImageManager.getInstance().setImageByUrl(holder.getImageMain(), product.getImages().get(0));
 

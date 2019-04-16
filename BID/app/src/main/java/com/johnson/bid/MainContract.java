@@ -51,6 +51,8 @@ public interface MainContract {
 
         void findBiddingView(String auctionType, Product product);
 
+        void findSellingView(String auctionType, Product product);
+
         void setToolbarTitleUi(String title);
 
         void hideToolbarUi();

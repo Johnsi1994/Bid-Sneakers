@@ -82,6 +82,7 @@ public class BiddingAdapter extends RecyclerView.Adapter {
 
             bindSealedViewHolder((SealedViewHolder) viewHolder, mProduct);
         }
+
     }
 
     @Override

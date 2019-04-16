@@ -1,4 +1,4 @@
-package com.johnson.bid.bidding;
+package com.johnson.bid.selling;
 
 import android.support.annotation.NonNull;
 import android.support.v7.widget.RecyclerView;
@@ -8,40 +8,37 @@ import android.view.ViewGroup;
 import android.widget.ImageView;
 
 import com.johnson.bid.R;
-import com.johnson.bid.data.Product;
 import com.johnson.bid.util.ImageManager;
 
 import java.util.ArrayList;
 
-public class BiddingGalleryAdapter extends RecyclerView.Adapter {
+public class SellingGalleryAdapter extends RecyclerView.Adapter {
 
-    private BiddingContract.Presenter mPresenter;
+    private SellingContract.Presenter mPresenter;
     private ArrayList<String> mImages;
 
-    public BiddingGalleryAdapter(BiddingContract.Presenter presenter, ArrayList<String> images) {
+    public SellingGalleryAdapter(SellingContract.Presenter presenter, ArrayList<String> images) {
         mPresenter = presenter;
         mImages = images;
     }
 
-
     @NonNull
     @Override
     public RecyclerView.ViewHolder onCreateViewHolder(@NonNull ViewGroup viewGroup, int i) {
-        return new BiddingGalleryAdapter.PhotoViewHolder(LayoutInflater.from(viewGroup.getContext())
-                .inflate(R.layout.item_bidding_gallery, viewGroup, false));
+        return new SellingGalleryAdapter.PhotoViewHolder(LayoutInflater.from(viewGroup.getContext())
+                .inflate(R.layout.item_gallery_pic, viewGroup, false));
     }
 
     @Override
-    public void onBindViewHolder(@NonNull RecyclerView.ViewHolder viewHolder, int i) {
+    public void onBindViewHolder(@NonNull RecyclerView.ViewHolder holder, int i) {
 
-        ImageManager.getInstance().setImageByUrl(((PhotoViewHolder) viewHolder).getPhoto(), mImages.get(i));
+        ImageManager.getInstance().setImageByUrl(((PhotoViewHolder) holder).getPhoto(), mImages.get(i));
 
     }
 
     @Override
     public int getItemCount() {
         return mImages.size();
-//        return 3;
     }
 
     private class PhotoViewHolder extends RecyclerView.ViewHolder {
@@ -51,12 +48,11 @@ public class BiddingGalleryAdapter extends RecyclerView.Adapter {
         public PhotoViewHolder(View itemView) {
             super(itemView);
 
-            mPhoto = itemView.findViewById(R.id.image_bidding_gallery);
+            mPhoto = itemView.findViewById(R.id.image_gallery_pic);
         }
 
         public ImageView getPhoto() {
             return mPhoto;
         }
     }
-
 }

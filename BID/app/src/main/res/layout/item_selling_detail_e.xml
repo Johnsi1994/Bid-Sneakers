@@ -6,7 +6,7 @@
     android:layout_height="wrap_content">
 
     <android.support.v7.widget.RecyclerView
-        android:id="@+id/recyclerView"
+        android:id="@+id/recycler_selling_e_gallery"
         android:layout_width="0dp"
         android:layout_height="400dp"
         app:layout_constraintEnd_toEndOf="parent"
@@ -14,7 +14,7 @@
         app:layout_constraintTop_toTopOf="parent" />
 
     <TextView
-        android:id="@+id/textView15"
+        android:id="@+id/text_selling_e_title"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginStart="16dp"
@@ -22,10 +22,10 @@
         android:text="Air Jordan 1 Gold Top Three"
         android:textSize="16sp"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/recyclerView" />
+        app:layout_constraintTop_toBottomOf="@+id/recycler_selling_e_gallery" />
 
     <Button
-        android:id="@+id/button2"
+        android:id="@+id/button_selling_e_back"
         android:layout_width="30dp"
         android:layout_height="30dp"
         android:layout_marginStart="16dp"
@@ -41,7 +41,7 @@
         android:layout_marginTop="8dp"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/textView15">
+        app:layout_constraintTop_toBottomOf="@+id/text_selling_e_title">
 
         <TextView
             android:id="@+id/textView19"
@@ -55,7 +55,7 @@
             app:layout_constraintTop_toTopOf="@+id/constraintLayout3" />
 
         <TextView
-            android:id="@+id/textView21"
+            android:id="@+id/text_selling_e_intro"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginStart="24dp"
@@ -79,7 +79,7 @@
         app:layout_constraintTop_toBottomOf="@+id/textView43" />
 
     <TextView
-        android:id="@+id/textView24"
+        android:id="@+id/text_selling_e_auction_type"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginStart="4dp"
@@ -101,7 +101,7 @@
         app:layout_constraintTop_toBottomOf="@+id/textView23" />
 
     <TextView
-        android:id="@+id/textView26"
+        android:id="@+id/text_selling_e_expire"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginStart="4dp"
@@ -123,7 +123,7 @@
         app:layout_constraintTop_toBottomOf="@+id/textView25" />
 
     <TextView
-        android:id="@+id/textView28"
+        android:id="@+id/text_selling_e_last_time"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginStart="4dp"
@@ -145,7 +145,7 @@
         app:layout_constraintTop_toBottomOf="@+id/textView34" />
 
     <TextView
-        android:id="@+id/textView30"
+        android:id="@+id/text_selling_e_current_price"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginStart="4dp"
@@ -162,12 +162,12 @@
         android:layout_marginStart="16dp"
         android:text="/"
         android:textSize="16sp"
-        app:layout_constraintBottom_toBottomOf="@+id/textView30"
-        app:layout_constraintStart_toEndOf="@+id/textView30"
-        app:layout_constraintTop_toTopOf="@+id/textView30" />
+        app:layout_constraintBottom_toBottomOf="@+id/text_selling_e_current_price"
+        app:layout_constraintStart_toEndOf="@+id/text_selling_e_current_price"
+        app:layout_constraintTop_toTopOf="@+id/text_selling_e_current_price" />
 
     <TextView
-        android:id="@+id/textView32"
+        android:id="@+id/text_selling_e_bit_times"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginStart="4dp"
@@ -183,9 +183,9 @@
         android:layout_height="wrap_content"
         android:text="次出價"
         android:textSize="16sp"
-        app:layout_constraintBottom_toBottomOf="@+id/textView32"
-        app:layout_constraintStart_toEndOf="@+id/textView32"
-        app:layout_constraintTop_toTopOf="@+id/textView32" />
+        app:layout_constraintBottom_toBottomOf="@+id/text_selling_e_bit_times"
+        app:layout_constraintStart_toEndOf="@+id/text_selling_e_bit_times"
+        app:layout_constraintTop_toTopOf="@+id/text_selling_e_bit_times" />
 
     <TextView
         android:id="@+id/textView34"
@@ -199,7 +199,7 @@
         app:layout_constraintTop_toBottomOf="@+id/textView27" />
 
     <TextView
-        android:id="@+id/textView35"
+        android:id="@+id/text_selling_e_buyer"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginStart="4dp"
@@ -221,7 +221,7 @@
         app:layout_constraintTop_toBottomOf="@+id/textView29" />
 
     <TextView
-        android:id="@+id/textView37"
+        android:id="@+id/text_selling_e_increase"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginStart="4dp"
@@ -243,7 +243,7 @@
         app:layout_constraintTop_toBottomOf="@+id/textView36" />
 
     <TextView
-        android:id="@+id/textView39"
+        android:id="@+id/text_selling_e_reserve_price"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginStart="4dp"
@@ -254,7 +254,7 @@
         app:layout_constraintTop_toTopOf="@+id/textView38" />
 
     <Button
-        android:id="@+id/button3"
+        android:id="@+id/button_selling_e_delete"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
         android:layout_marginStart="16dp"
@@ -281,7 +281,7 @@
         app:layout_constraintTop_toBottomOf="@+id/constraintLayout3" />
 
     <TextView
-        android:id="@+id/textView44"
+        android:id="@+id/text_selling_e_condition"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginStart="4dp"

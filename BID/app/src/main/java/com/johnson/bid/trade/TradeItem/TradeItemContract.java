@@ -34,6 +34,12 @@ public interface TradeItemContract {
 
         void setNobodyBidData(ArrayList<Product> productsList);
 
+        void hideToolbarAndBottomNavigation();
+
+        void openBidding(String auctionType, Product product);
+
+        void openSelling(String auctionType, Product product);
+
     }
 
 }

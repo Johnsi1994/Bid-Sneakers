@@ -3,7 +3,6 @@ package com.johnson.bid.trade;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
-import android.support.design.widget.FloatingActionButton;
 import android.support.design.widget.TabLayout;
 import android.support.v4.app.Fragment;
 import android.support.v4.view.ViewPager;
@@ -12,6 +11,7 @@ import android.view.View;
 import android.view.ViewGroup;
 
 import com.johnson.bid.R;
+import com.rahimlis.badgedtablayout.BadgedTabLayout;
 
 import static com.google.common.base.Preconditions.checkNotNull;
 
@@ -20,7 +20,7 @@ public class TradeFragment extends Fragment implements TradeContract.View {
     private TradeContract.Presenter mPresenter;
     private TradeAdapter mTradeAdapter;
 
-    private TabLayout mTabLayout;
+    private BadgedTabLayout mTabLayout;
     private ViewPager mViewPager;
 
     public TradeFragment() {}
@@ -55,6 +55,10 @@ public class TradeFragment extends Fragment implements TradeContract.View {
                 new TabLayout.TabLayoutOnPageChangeListener(mTabLayout));
         mViewPager.setAdapter(mTradeAdapter);
         mTabLayout.setupWithViewPager(mViewPager);
+
+        mTabLayout.setBadgeText(2,"1");
+        mTabLayout.setBadgeText(3,"5");
+        mTabLayout.setBadgeText(4,"9");
 
     }
 

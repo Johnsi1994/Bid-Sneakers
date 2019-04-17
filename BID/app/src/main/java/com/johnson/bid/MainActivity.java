@@ -14,6 +14,8 @@ import android.os.Bundle;
 import android.provider.DocumentsContract;
 import android.provider.MediaStore;
 import android.support.annotation.NonNull;
+import android.support.design.internal.BottomNavigationItemView;
+import android.support.design.internal.BottomNavigationMenuView;
 import android.support.design.widget.BottomNavigationView;
 import android.support.design.widget.BottomSheetDialog;
 import android.support.v4.app.ActivityCompat;
@@ -29,13 +31,8 @@ import android.widget.EditText;
 import android.widget.TextView;
 import android.widget.Toast;
 
-import com.google.android.gms.tasks.OnCompleteListener;
-import com.google.android.gms.tasks.OnFailureListener;
-import com.google.android.gms.tasks.OnSuccessListener;
-import com.google.android.gms.tasks.Task;
 import com.google.firebase.firestore.FieldValue;
 import com.google.firebase.firestore.QueryDocumentSnapshot;
-import com.google.firebase.firestore.QuerySnapshot;
 import com.johnson.bid.centre.auction.AuctionFragment;
 import com.johnson.bid.data.Product;
 import com.johnson.bid.dialog.MessageDialog;
@@ -57,6 +54,8 @@ public class MainActivity extends AppCompatActivity implements MainContract.View
     private TextView mToolbarTitle;
     private DisplayMetrics mPhone;
     private MessageDialog mMessageDialog;
+    private View mBadge;
+
     private final static int CAMERA = 666;
     private final static int CAMERA_INNER = 667;
     public final static int CHOOSE_PHOTO = 222;
@@ -592,6 +591,14 @@ public class MainActivity extends AppCompatActivity implements MainContract.View
         mBottomNavigation = findViewById(R.id.bottom_navigation_main);
         mBottomNavigation.setOnNavigationItemSelectedListener(mOnNavigationItemSelectedListener);
         mBottomNavigation.setItemIconTintList(null); //去除BottomNavigation上面icon的顏色
+
+        BottomNavigationMenuView menuView =
+                (BottomNavigationMenuView) mBottomNavigation.getChildAt(0);
+        BottomNavigationItemView itemView = (BottomNavigationItemView) menuView.getChildAt(1);
+        mBadge = LayoutInflater.from(this)
+                .inflate(R.layout.badge_main_bottom, itemView, true);
+
+        ((TextView) mBadge.findViewById(R.id.text_badge_main)).setText("!");
 
     }
 

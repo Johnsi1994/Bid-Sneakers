@@ -271,6 +271,7 @@ public class PostAdapter extends RecyclerView.Adapter {
             long id = System.currentTimeMillis();
             mPresenter.setProductId(id);
             mPresenter.setStartingTime(id);
+            mPresenter.setRead(false);
 
             Firebase.getFirestore().collection("products")
                     .document(String.valueOf(id))

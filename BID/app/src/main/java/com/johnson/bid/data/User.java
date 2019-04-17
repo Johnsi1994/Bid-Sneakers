@@ -13,6 +13,9 @@ public class User {
     private ArrayList<Long> mMySoldProductsId;
     private ArrayList<Long> mNobodyBitProductsId;
     private ArrayList<Long> mEyesOn;
+    private int unreadBought;
+    private int unreadSold;
+    private int unreadNobodyBid;
 
 //    private ArrayList<Product> mChatRoomId;
 
@@ -27,6 +30,9 @@ public class User {
         mMySoldProductsId = new ArrayList<>();
         mNobodyBitProductsId = new ArrayList<>();
         mEyesOn = new ArrayList<>();
+        unreadBought = 0;
+        unreadSold = 0;
+        unreadNobodyBid = 0;
 //        mChatRoomId = new ArrayList<>();
 
     }
@@ -103,6 +109,31 @@ public class User {
     public void setNobodyBitProductsId(ArrayList<Long> nobodyBitProductsId) {
         mNobodyBitProductsId = nobodyBitProductsId;
     }
+
+    public int getUnreadBought() {
+        return unreadBought;
+    }
+
+    public void setUnreadBought(int unreadBought) {
+        this.unreadBought = unreadBought;
+    }
+
+    public int getUnreadSold() {
+        return unreadSold;
+    }
+
+    public void setUnreadSold(int unreadSold) {
+        this.unreadSold = unreadSold;
+    }
+
+    public int getUnreadNobodyBid() {
+        return unreadNobodyBid;
+    }
+
+    public void setUnreadNobodyBid(int unreadNobodyBid) {
+        this.unreadNobodyBid = unreadNobodyBid;
+    }
+
 
     //    public ArrayList<Product> getChatRoomId() {
 //        return mChatRoomId;

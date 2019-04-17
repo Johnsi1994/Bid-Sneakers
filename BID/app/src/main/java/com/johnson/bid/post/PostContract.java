@@ -65,6 +65,8 @@ public interface PostContract {
         void openCenter();
 
         void updateCenterData();
+
+        void setRead(boolean isRead);
     }
 
 }

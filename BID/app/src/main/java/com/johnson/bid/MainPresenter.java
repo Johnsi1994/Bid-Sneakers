@@ -158,6 +158,11 @@ public class MainPresenter implements MainContract.Presenter, CenterContract.Pre
     }
 
     @Override
+    public void setRead(boolean isRead) {
+        mPostPresenter.setRead(isRead);
+    }
+
+    @Override
     public void openTrade() {
         mMainView.openTradeUi();
     }

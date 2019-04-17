@@ -158,5 +158,9 @@ public class PostPresenter implements PostContract.Presenter {
 
     }
 
+    @Override
+    public void setRead(boolean isRead) {
+        mProduct.setRead(isRead);
+    }
 
 }

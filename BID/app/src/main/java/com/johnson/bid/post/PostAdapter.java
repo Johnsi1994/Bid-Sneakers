@@ -62,11 +62,10 @@ public class PostAdapter extends RecyclerView.Adapter {
         LinearLayoutManager layoutManager = new LinearLayoutManager(
                 Bid.getAppContext(), LinearLayoutManager.HORIZONTAL, false);
         PostPicsGalleryAdapter postPicsGalleryAdapter = new PostPicsGalleryAdapter(mImagePath, mPresenter);
-//        if (mLinearSnapHelper == null) {
-//            mLinearSnapHelper = new LinearSnapHelper();
-//            mLinearSnapHelper.attachToRecyclerView(((ViewHolder) viewHolder).getPostPicGallery());
-//        }
-//        ((ViewHolder) viewHolder).getPostPicGallery().scrollToPosition(mImagePath.size());
+        if (mLinearSnapHelper == null) {
+            mLinearSnapHelper = new LinearSnapHelper();
+            mLinearSnapHelper.attachToRecyclerView(((ViewHolder) viewHolder).getPostPicGallery());
+        }
         ((ViewHolder) viewHolder).getPostPicGallery().setAdapter(postPicsGalleryAdapter);
         ((ViewHolder) viewHolder).getPostPicGallery().setLayoutManager(layoutManager);
 
@@ -138,11 +137,11 @@ public class PostAdapter extends RecyclerView.Adapter {
                 @Override
                 public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
                     if (position == 0) {
-                        mPresenter.setAuctionType("English");
+                        mPresenter.setAuctionType("一般拍賣");
                         mIncreaseTitle.setVisibility(View.VISIBLE);
                         mIncrease.setVisibility(View.VISIBLE);
                     } else {
-                        mPresenter.setAuctionType("Sealed");
+                        mPresenter.setAuctionType("封閉拍賣");
                         mIncreaseTitle.setVisibility(View.GONE);
                         mIncrease.setVisibility(View.GONE);
                     }
@@ -150,7 +149,7 @@ public class PostAdapter extends RecyclerView.Adapter {
 
                 @Override
                 public void onNothingSelected(AdapterView<?> parent) {
-                    mPresenter.setAuctionType("English");
+                    mPresenter.setAuctionType("一般拍賣");
                 }
             });
 

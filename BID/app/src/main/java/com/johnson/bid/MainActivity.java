@@ -284,6 +284,11 @@ public class MainActivity extends AppCompatActivity implements MainContract.View
     }
 
     @Override
+    public void findNobodyBidDetailView(Product product) {
+        mMainMvpController.createNobodyBidDetailView(product);
+    }
+
+    @Override
     public void setToolbarTitleUi(String title) {
 
         if (title.equals("刊登")) {

@@ -1,4 +1,4 @@
-package com.johnson.bid.sold;
+package com.johnson.bid.nobodybit;
 
 import android.support.annotation.NonNull;
 import android.support.v7.widget.RecyclerView;
@@ -12,12 +12,12 @@ import com.johnson.bid.util.ImageManager;
 
 import java.util.ArrayList;
 
-public class SoldDetailGalleryAdapter extends RecyclerView.Adapter {
+public class NobodyBidDetailGalleryAdapter extends RecyclerView.Adapter {
 
-    private SoldDetailContract.Presenter mPresenter;
+    private NobodyBidDetailContract.Presenter mPresenter;
     private ArrayList<String> mImages;
 
-    public SoldDetailGalleryAdapter(SoldDetailContract.Presenter presenter, ArrayList<String> images) {
+    public NobodyBidDetailGalleryAdapter(NobodyBidDetailContract.Presenter presenter, ArrayList<String> images) {
         mPresenter = presenter;
         mImages = images;
     }
@@ -25,7 +25,7 @@ public class SoldDetailGalleryAdapter extends RecyclerView.Adapter {
     @NonNull
     @Override
     public RecyclerView.ViewHolder onCreateViewHolder(@NonNull ViewGroup viewGroup, int i) {
-        return new SoldDetailGalleryAdapter.PhotoViewHolder(LayoutInflater.from(viewGroup.getContext())
+        return new NobodyBidDetailGalleryAdapter.PhotoViewHolder(LayoutInflater.from(viewGroup.getContext())
                 .inflate(R.layout.item_gallery_pic, viewGroup, false));
     }
 

@@ -1,4 +1,4 @@
-package com.johnson.bid.sold;
+package com.johnson.bid.nobodybit;
 
 import android.os.Bundle;
 import android.support.annotation.NonNull;
@@ -16,23 +16,23 @@ import com.johnson.bid.data.Product;
 
 import static com.google.common.base.Preconditions.checkNotNull;
 
-public class SoldDetailFragment extends Fragment implements SoldDetailContract.View {
+public class NobodyBidDetailFragment extends Fragment implements NobodyBidDetailContract.View {
 
-    private SoldDetailContract.Presenter mPresenter;
-    private SoldDetailAdapter mSoldDetailAdapter;
+    private NobodyBidDetailContract.Presenter mPresenter;
+    private NobodyBidDetailAdapter mNobodyBidDetailAdapter;
     private Product mProduct;
 
-    public SoldDetailFragment() {}
+    public NobodyBidDetailFragment() {}
 
-    public static SoldDetailFragment newInstance() {
-        return new SoldDetailFragment();
+    public static NobodyBidDetailFragment newInstance() {
+        return new NobodyBidDetailFragment();
     }
 
     @Override
     public void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
 
-        mSoldDetailAdapter = new SoldDetailAdapter(mPresenter, (MainActivity) getActivity());
+        mNobodyBidDetailAdapter = new NobodyBidDetailAdapter(mPresenter, (MainActivity) getActivity());
     }
 
     @Nullable
@@ -42,7 +42,7 @@ public class SoldDetailFragment extends Fragment implements SoldDetailContract.V
 
         RecyclerView recyclerView = root.findViewById(R.id.recycler_container);
         recyclerView.setLayoutManager(new LinearLayoutManager(getActivity()));
-        recyclerView.setAdapter(mSoldDetailAdapter);
+        recyclerView.setAdapter(mNobodyBidDetailAdapter);
 
         return root;
     }
@@ -51,7 +51,7 @@ public class SoldDetailFragment extends Fragment implements SoldDetailContract.V
     public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
 
-        mPresenter.loadSoldDetailData();
+        mPresenter.loadNobodyBidDetailData();
 
     }
 
@@ -63,12 +63,12 @@ public class SoldDetailFragment extends Fragment implements SoldDetailContract.V
     }
 
     @Override
-    public void setPresenter(SoldDetailContract.Presenter presenter) {
+    public void setPresenter(NobodyBidDetailContract.Presenter presenter) {
         mPresenter = checkNotNull(presenter);
     }
 
     @Override
-    public void showSoldDetailUi(Product product) {
-        mSoldDetailAdapter.updateData(product);
+    public void showNobodyBidDetailUi(Product product) {
+        mNobodyBidDetailAdapter.updateData(product);
     }
 }

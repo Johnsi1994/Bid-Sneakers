@@ -20,6 +20,8 @@ import com.johnson.bid.centre.CenterPresenter;
 import com.johnson.bid.data.Product;
 import com.johnson.bid.login.LoginFragment;
 import com.johnson.bid.login.LoginPresenter;
+import com.johnson.bid.nobodybit.NobodyBidDetailFragment;
+import com.johnson.bid.nobodybit.NobodyBidDetailPresenter;
 import com.johnson.bid.post.PostFragment;
 import com.johnson.bid.post.PostPresenter;
 import com.johnson.bid.selling.SellingDetailFragment;
@@ -52,6 +54,7 @@ public class MainMvpController {
     private SellingDetailPresenter mSellingDetailPresenter;
     private BoughtDetailPresenter mBoughtDetailPresenter;
     private SoldDetailPresenter mSoldDetailPresenter;
+    private NobodyBidDetailPresenter mNobodyBidDetailPresenter;
 
     private AuctionPresenter mEnglishAuctionPresenter;
     private AuctionPresenter mSealedAuctionPresenter;
@@ -64,7 +67,7 @@ public class MainMvpController {
 
     @Retention(RetentionPolicy.SOURCE)
     @StringDef({
-            LOGIN, CENTER, TRADE, CHAT, SETTINGS, POST, BIDDING, SELLING, BOUGHTDETAIL, SOLDDETAIL
+            LOGIN, CENTER, TRADE, CHAT, SETTINGS, POST, BIDDING, SELLING, BOUGHTDETAIL, SOLDDETAIL, NOBODYBIDDETAIL
     })
 
     public @interface FragmentType {
@@ -80,6 +83,7 @@ public class MainMvpController {
     static final String SELLING = "SELLING";
     static final String BOUGHTDETAIL = "BOUGHTDETAIL";
     static final String SOLDDETAIL = "SOLDDETAIL";
+    static final String NOBODYBIDDETAIL = "NOBODYBIDDETAIL";
 
     @Retention(RetentionPolicy.SOURCE)
     @StringDef({
@@ -319,6 +323,16 @@ public class MainMvpController {
         soldDetailFragment.setPresenter(mMainPresenter);
     }
 
+    void createNobodyBidDetailView(Product product) {
+
+        NobodyBidDetailFragment nobodyBidDetailFragment = createNobodyBidDetailFragment();
+
+        mNobodyBidDetailPresenter = new NobodyBidDetailPresenter(nobodyBidDetailFragment);
+        mNobodyBidDetailPresenter.setNobodyBitDetailData(product);
+        mMainPresenter.setNobodyBidDetailPresenter(mNobodyBidDetailPresenter);
+        nobodyBidDetailFragment.setPresenter(mMainPresenter);
+    }
+
     @NonNull
     private LoginFragment createLoginFragment() {
 
@@ -383,6 +397,17 @@ public class MainMvpController {
                 getFragmentManager(), soldDetailFragment, SOLDDETAIL);
 
         return soldDetailFragment;
+    }
+
+    @NonNull
+    private NobodyBidDetailFragment createNobodyBidDetailFragment() {
+
+        NobodyBidDetailFragment nobodyBidDetailFragment = NobodyBidDetailFragment.newInstance();
+
+        ActivityUtils.addFragmentByTag(
+                getFragmentManager(), nobodyBidDetailFragment, NOBODYBIDDETAIL);
+
+        return nobodyBidDetailFragment;
     }
 
     @NonNull

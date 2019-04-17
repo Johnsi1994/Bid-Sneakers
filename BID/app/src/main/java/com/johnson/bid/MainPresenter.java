@@ -15,6 +15,8 @@ import com.johnson.bid.data.Product;
 import com.johnson.bid.dialog.MessageDialog;
 import com.johnson.bid.login.LoginContract;
 import com.johnson.bid.login.LoginPresenter;
+import com.johnson.bid.nobodybit.NobodyBidDetailContract;
+import com.johnson.bid.nobodybit.NobodyBidDetailPresenter;
 import com.johnson.bid.post.PostContract;
 import com.johnson.bid.post.PostPresenter;
 import com.johnson.bid.selling.SellingDetailContract;
@@ -37,7 +39,7 @@ import static com.google.common.base.Preconditions.checkNotNull;
 public class MainPresenter implements MainContract.Presenter, CenterContract.Presenter, TradeContract.Presenter,
         ChatContract.Presenter, SettingsContract.Presenter , AuctionContract.Presenter, LoginContract.Presenter,
         PostContract.Presenter, TradeItemContract.Presenter, BiddingContract.Presenter, SellingDetailContract.Presenter,
-        BoughtDetailContract.Presenter, SoldDetailContract.Presenter {
+        BoughtDetailContract.Presenter, SoldDetailContract.Presenter, NobodyBidDetailContract.Presenter {
 
     private MainContract.View mMainView;
 
@@ -51,6 +53,7 @@ public class MainPresenter implements MainContract.Presenter, CenterContract.Pre
     private SellingDetailPresenter mSellingDetailPresenter;
     private BoughtDetailPresenter mBoughtDetailPresenter;
     private SoldDetailPresenter mSoldDetailPresenter;
+    private NobodyBidDetailPresenter mNobodyBidDetailPresenter;
 
     private AuctionPresenter mEnglishAuctionPresenter;
     private AuctionPresenter mSealedAuctionPresenter;
@@ -134,6 +137,10 @@ public class MainPresenter implements MainContract.Presenter, CenterContract.Pre
         mSoldDetailPresenter = checkNotNull(soldDetailPresenter);
     }
 
+    void setNobodyBidDetailPresenter(NobodyBidDetailPresenter nobodyBidDetailPresenter) {
+        mNobodyBidDetailPresenter = checkNotNull(nobodyBidDetailPresenter);
+    }
+
     @Override
     public void openLogin() {
         mMainView.openLoginUi();
@@ -210,6 +217,16 @@ public class MainPresenter implements MainContract.Presenter, CenterContract.Pre
     public void showToolbarAndBottomNavigation() {
         mMainView.showToolbarUi();
         mMainView.showBottomNavigationUi();
+    }
+
+    @Override
+    public void setNobodyBitDetailData(Product product) {
+        mNobodyBidDetailPresenter.setNobodyBitDetailData(product);
+    }
+
+    @Override
+    public void loadNobodyBidDetailData() {
+        mNobodyBidDetailPresenter.loadNobodyBidDetailData();
     }
 
     @Override
@@ -432,6 +449,11 @@ public class MainPresenter implements MainContract.Presenter, CenterContract.Pre
     @Override
     public void openSoldDetail(Product product) {
         mMainView.findSoldDetailView(product);
+    }
+
+    @Override
+    public void openNobodyBidDetail(Product product) {
+        mMainView.findNobodyBidDetailView(product);
     }
 
     @Override

@@ -57,6 +57,8 @@ public interface MainContract {
 
         void findSoldDetailView(Product product);
 
+        void findNobodyBidDetailView(Product product);
+
         void setToolbarTitleUi(String title);
 
         void hideToolbarUi();

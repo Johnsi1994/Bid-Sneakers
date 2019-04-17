@@ -128,6 +128,11 @@ public class TradeItemPresenter implements TradeItemContract.Presenter {
 
     }
 
+    @Override
+    public void openNobodyBidDetail(Product product) {
+
+    }
+
     private void loadDataFromFireBase(int i, String type) {
 
         int j = i + 1;

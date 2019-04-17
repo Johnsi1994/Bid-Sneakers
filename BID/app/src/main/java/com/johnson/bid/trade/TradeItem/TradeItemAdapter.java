@@ -465,6 +465,7 @@ public class TradeItemAdapter extends RecyclerView.Adapter {
 
     private class NobodyBidViewHolder extends RecyclerView.ViewHolder {
 
+        private ConstraintLayout mNobodyBidLayout;
         private ImageView mImageMain;
         private TextView mTextTitle;
         private TextView mTextTime;
@@ -472,10 +473,13 @@ public class TradeItemAdapter extends RecyclerView.Adapter {
         public NobodyBidViewHolder(View itemView) {
             super(itemView);
 
+            mNobodyBidLayout = itemView.findViewById(R.id.layout_nobody_bid);
             mImageMain = itemView.findViewById(R.id.image_nobody_bit);
             mTextTitle = itemView.findViewById(R.id.text_product_title_nobody_bid);
             mTextTime = itemView.findViewById(R.id.text_time_nobody_bid);
         }
+
+        private ConstraintLayout getNobodyBidLayout() {return mNobodyBidLayout;}
 
         public ImageView getImageMain() {
             return mImageMain;
@@ -492,10 +496,10 @@ public class TradeItemAdapter extends RecyclerView.Adapter {
 
     private void bindNobodyBidViewHolder(NobodyBidViewHolder holder, Product product) {
 
-//        holder.getLayoutEnglishAuction().setOnClickListener(v -> {
-//            mPresenter.openBidding(ENGLISH, product);
-//            mPresenter.hideToolbarAndBottomNavigation();
-//        });
+        holder.getNobodyBidLayout().setOnClickListener(v -> {
+            mPresenter.openNobodyBidDetail(product);
+            mPresenter.hideToolbarAndBottomNavigation();
+        });
 
         ImageManager.getInstance().setImageByUrl(holder.getImageMain(), product.getImages().get(0));
 

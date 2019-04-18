@@ -5,7 +5,6 @@ import android.support.annotation.NonNull;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.LinearSnapHelper;
 import android.support.v7.widget.RecyclerView;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -18,16 +17,14 @@ import com.johnson.bid.R;
 import com.johnson.bid.data.Product;
 import com.johnson.bid.util.UserManager;
 
-import java.text.SimpleDateFormat;
 import java.util.ArrayList;
-import java.util.Date;
 
 import static com.johnson.bid.MainMvpController.ENGLISH;
 import static com.johnson.bid.MainMvpController.SEALED;
 
-public class BiddingAdapter extends RecyclerView.Adapter {
+public class BiddingDetailAdapter extends RecyclerView.Adapter {
 
-    private BiddingContract.Presenter mPresenter;
+    private BiddingDetailContract.Presenter mPresenter;
     private LinearSnapHelper mLinearSnapHelper;
     private MainActivity mMainActivity;
     private String mAuctionType;
@@ -35,7 +32,7 @@ public class BiddingAdapter extends RecyclerView.Adapter {
     private ArrayList<Long> myEyesOn;
     private Boolean isEyesOn = false;
 
-    public BiddingAdapter(BiddingContract.Presenter presenter, MainActivity mainActivity, String auctionType) {
+    public BiddingDetailAdapter(BiddingDetailContract.Presenter presenter, MainActivity mainActivity, String auctionType) {
         mPresenter = presenter;
         mMainActivity = mainActivity;
         mAuctionType = auctionType;
@@ -60,7 +57,7 @@ public class BiddingAdapter extends RecyclerView.Adapter {
 
         LinearLayoutManager layoutManager = new LinearLayoutManager(
                 Bid.getAppContext(), LinearLayoutManager.HORIZONTAL, false);
-        BiddingGalleryAdapter biddingGalleryAdapter = new BiddingGalleryAdapter(mPresenter, mProduct.getImages());
+        BiddingDetailGalleryAdapter biddingDetailGalleryAdapter = new BiddingDetailGalleryAdapter(mPresenter, mProduct.getImages());
 
 
         if (mAuctionType.equals(ENGLISH)) {
@@ -68,7 +65,7 @@ public class BiddingAdapter extends RecyclerView.Adapter {
                 mLinearSnapHelper = new LinearSnapHelper();
                 mLinearSnapHelper.attachToRecyclerView(((EnglishViewHolder) viewHolder).getGalleryRecycler());
             }
-            ((EnglishViewHolder) viewHolder).getGalleryRecycler().setAdapter(biddingGalleryAdapter);
+            ((EnglishViewHolder) viewHolder).getGalleryRecycler().setAdapter(biddingDetailGalleryAdapter);
             ((EnglishViewHolder) viewHolder).getGalleryRecycler().setLayoutManager(layoutManager);
 
             bindEnglishViewHolder((EnglishViewHolder) viewHolder, mProduct);
@@ -77,7 +74,7 @@ public class BiddingAdapter extends RecyclerView.Adapter {
                 mLinearSnapHelper = new LinearSnapHelper();
                 mLinearSnapHelper.attachToRecyclerView(((SealedViewHolder) viewHolder).getGalleryRecycler());
             }
-            ((SealedViewHolder) viewHolder).getGalleryRecycler().setAdapter(biddingGalleryAdapter);
+            ((SealedViewHolder) viewHolder).getGalleryRecycler().setAdapter(biddingDetailGalleryAdapter);
             ((SealedViewHolder) viewHolder).getGalleryRecycler().setLayoutManager(layoutManager);
 
             bindSealedViewHolder((SealedViewHolder) viewHolder, mProduct);

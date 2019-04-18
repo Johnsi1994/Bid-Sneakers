@@ -1,4 +1,4 @@
-package com.johnson.bid.centre;
+package com.johnson.bid.auction;
 
 import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
@@ -8,13 +8,13 @@ import android.support.v4.app.FragmentPagerAdapter;
 import static com.johnson.bid.MainMvpController.ENGLISH;
 import static com.johnson.bid.MainMvpController.SEALED;
 
-public class CenterAdapter extends FragmentPagerAdapter {
+public class AuctionAdapter extends FragmentPagerAdapter {
 
-    private CenterContract.Presenter mPresenter;
+    private AuctionContract.Presenter mPresenter;
     private String[] mAuctionTypes = new String[]{ENGLISH, SEALED};
     private String[] mTitle = new String[]{"一般拍賣", "封閉拍賣"};
 
-    public CenterAdapter(FragmentManager fm, CenterContract.Presenter presenter) {
+    public AuctionAdapter(FragmentManager fm, AuctionContract.Presenter presenter) {
         super(fm);
 
         mPresenter = presenter;

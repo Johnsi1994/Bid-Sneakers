@@ -23,27 +23,27 @@ import java.util.Iterator;
 
 import static com.google.common.base.Preconditions.checkNotNull;
 
-public class BiddingFragment extends Fragment implements BiddingContract.View {
+public class BiddingDetailFragment extends Fragment implements BiddingDetailContract.View {
 
-    private BiddingContract.Presenter mPresenter;
-    private BiddingAdapter mBiddingAdapter;
+    private BiddingDetailContract.Presenter mPresenter;
+    private BiddingDetailAdapter mBiddingDetailAdapter;
     private String mAuctionType;
     private ArrayList<Long> myEyesOn;
     private Boolean isEyesOn = false;
     private Product mProduct;
 
-    public BiddingFragment() {
+    public BiddingDetailFragment() {
     }
 
-    public static BiddingFragment newInstance() {
-        return new BiddingFragment();
+    public static BiddingDetailFragment newInstance() {
+        return new BiddingDetailFragment();
     }
 
     @Override
     public void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
 
-        mBiddingAdapter = new BiddingAdapter(mPresenter, (MainActivity) getActivity(), mAuctionType);
+        mBiddingDetailAdapter = new BiddingDetailAdapter(mPresenter, (MainActivity) getActivity(), mAuctionType);
     }
 
     @Nullable
@@ -53,7 +53,7 @@ public class BiddingFragment extends Fragment implements BiddingContract.View {
 
         RecyclerView recyclerView = root.findViewById(R.id.recycler_container);
         recyclerView.setLayoutManager(new LinearLayoutManager(getActivity()));
-        recyclerView.setAdapter(mBiddingAdapter);
+        recyclerView.setAdapter(mBiddingDetailAdapter);
 
         return root;
     }
@@ -74,7 +74,7 @@ public class BiddingFragment extends Fragment implements BiddingContract.View {
     }
 
     @Override
-    public void setPresenter(BiddingContract.Presenter presenter) {
+    public void setPresenter(BiddingDetailContract.Presenter presenter) {
         mPresenter = checkNotNull(presenter);
     }
 
@@ -84,7 +84,7 @@ public class BiddingFragment extends Fragment implements BiddingContract.View {
 
         mPresenter.showToolbarAndBottomNavigation();
 
-        if (mBiddingAdapter.getIsEyesOn()) {
+        if (mBiddingDetailAdapter.getIsEyesOn()) {
 
             if(!isEyesOn) {
                 myEyesOn.add(mProduct.getProductId());
@@ -125,10 +125,10 @@ public class BiddingFragment extends Fragment implements BiddingContract.View {
 
     @Override
     public void showBiddingUi(Product product) {
-        if (mBiddingAdapter == null) {
-            mBiddingAdapter = new BiddingAdapter(mPresenter, (MainActivity) getActivity(), mAuctionType);
+        if (mBiddingDetailAdapter == null) {
+            mBiddingDetailAdapter = new BiddingDetailAdapter(mPresenter, (MainActivity) getActivity(), mAuctionType);
         }
         mProduct = product;
-        mBiddingAdapter.updateData(product);
+        mBiddingDetailAdapter.updateData(product);
     }
 }

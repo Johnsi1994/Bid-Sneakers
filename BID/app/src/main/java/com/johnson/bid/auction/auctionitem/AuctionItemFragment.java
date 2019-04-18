@@ -1,4 +1,4 @@
-package com.johnson.bid.centre.auction;
+package com.johnson.bid.auction.auctionitem;
 
 import android.os.Bundle;
 import android.support.annotation.NonNull;
@@ -20,23 +20,23 @@ import static com.google.common.base.Preconditions.checkNotNull;
 import static com.johnson.bid.MainMvpController.ENGLISH;
 import static com.johnson.bid.MainMvpController.SEALED;
 
-public class AuctionFragment extends Fragment implements AuctionContract.View {
+public class AuctionItemFragment extends Fragment implements AuctionItemContract.View {
 
-    private AuctionContract.Presenter mPresenter;
-    private AuctionAdapter mAuctionAdapter;
+    private AuctionItemContract.Presenter mPresenter;
+    private AuctionItemAdapter mAuctionItemAdapter;
 
     private String mAuctionType;
 
-    public AuctionFragment() {}
+    public AuctionItemFragment() {}
 
-    public static AuctionFragment newInstance() {
-        return new AuctionFragment();
+    public static AuctionItemFragment newInstance() {
+        return new AuctionItemFragment();
     }
 
     @Override
     public void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        mAuctionAdapter = new AuctionAdapter(mPresenter, mAuctionType);
+        mAuctionItemAdapter = new AuctionItemAdapter(mPresenter, mAuctionType);
     }
 
     @Nullable
@@ -46,7 +46,7 @@ public class AuctionFragment extends Fragment implements AuctionContract.View {
 
         RecyclerView recyclerView = root.findViewById(R.id.recycler_auction);
         recyclerView.setLayoutManager(new LinearLayoutManager(getActivity()));
-        recyclerView.setAdapter(mAuctionAdapter);
+        recyclerView.setAdapter(mAuctionItemAdapter);
 
         return root;
     }
@@ -67,7 +67,7 @@ public class AuctionFragment extends Fragment implements AuctionContract.View {
     }
 
     @Override
-    public void setPresenter(AuctionContract.Presenter presenter) {
+    public void setPresenter(AuctionItemContract.Presenter presenter) {
         mPresenter = checkNotNull(presenter);
     }
 
@@ -77,12 +77,12 @@ public class AuctionFragment extends Fragment implements AuctionContract.View {
 
     @Override
     public void showAuctionUi(ArrayList<Product> productList) {
-        mAuctionAdapter.updateData(productList);
+        mAuctionItemAdapter.updateData(productList);
     }
 
     @Override
     public void onDestroy() {
         super.onDestroy();
-        mAuctionAdapter.cancelAllTimers();
+        mAuctionItemAdapter.cancelAllTimers();
     }
 }

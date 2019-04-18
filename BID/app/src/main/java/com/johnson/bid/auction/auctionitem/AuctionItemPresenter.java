@@ -1,13 +1,9 @@
-package com.johnson.bid.centre.auction;
+package com.johnson.bid.auction.auctionitem;
 
 import android.support.annotation.NonNull;
 import android.util.Log;
 
-import com.google.android.gms.tasks.OnCompleteListener;
-import com.google.android.gms.tasks.Task;
-import com.google.firebase.firestore.DocumentSnapshot;
 import com.google.firebase.firestore.QueryDocumentSnapshot;
-import com.google.firebase.firestore.QuerySnapshot;
 import com.johnson.bid.data.Product;
 import com.johnson.bid.util.Firebase;
 
@@ -15,14 +11,14 @@ import java.util.ArrayList;
 
 import static com.google.common.base.Preconditions.checkNotNull;
 
-public class AuctionPresenter implements AuctionContract.Presenter {
+public class AuctionItemPresenter implements AuctionItemContract.Presenter {
 
-    private AuctionContract.View mAuctionView;
+    private AuctionItemContract.View mAuctionView;
     private ArrayList<Product> mProductList;
     private ArrayList<String> mImages;
     private Product mProduct;
 
-    public AuctionPresenter(@NonNull AuctionContract.View auctionView) {
+    public AuctionItemPresenter(@NonNull AuctionItemContract.View auctionView) {
         mAuctionView = checkNotNull(auctionView, "centerView cannot be null!");
     }
 
@@ -47,7 +43,7 @@ public class AuctionPresenter implements AuctionContract.Presenter {
         mProductList = new ArrayList<>();
 
         Firebase.getFirestore().collection("products")
-                .whereEqualTo("auctionType", "English")
+                .whereEqualTo("auctionType", "一般拍賣")
                 .whereEqualTo("auctionCondition", "bidding")
                 .get()
                 .addOnCompleteListener(task -> {
@@ -76,7 +72,7 @@ public class AuctionPresenter implements AuctionContract.Presenter {
         mProductList = new ArrayList<>();
 
         Firebase.getFirestore().collection("products")
-                .whereEqualTo("auctionType", "Sealed")
+                .whereEqualTo("auctionType", "封閉拍賣")
                 .whereEqualTo("auctionCondition", "bidding")
                 .get()
                 .addOnCompleteListener(task -> {
@@ -96,6 +92,31 @@ public class AuctionPresenter implements AuctionContract.Presenter {
     @Override
     public void setSealedData(ArrayList<Product> productList) {
         mAuctionView.showAuctionUi(productList);
+    }
+
+    @Override
+    public void loadMySoldData() {
+
+    }
+
+    @Override
+    public void loadNobodyBidData() {
+
+    }
+
+    @Override
+    public void loadMySellingData() {
+
+    }
+
+    @Override
+    public void loadMyBiddingData() {
+
+    }
+
+    @Override
+    public void loadMyBoughtData() {
+
     }
 
 }

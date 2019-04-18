@@ -6,12 +6,12 @@ import com.johnson.bid.data.Product;
 
 import static com.google.common.base.Preconditions.checkNotNull;
 
-public class BiddingPresenter implements BiddingContract.Presenter {
+public class BiddingDetailPresenter implements BiddingDetailContract.Presenter {
 
-    private final BiddingContract.View mBiddingView;
+    private final BiddingDetailContract.View mBiddingView;
     private Product mProduct;
 
-    public BiddingPresenter(@NonNull BiddingContract.View biddingView) {
+    public BiddingDetailPresenter(@NonNull BiddingDetailContract.View biddingView) {
         mBiddingView = checkNotNull(biddingView, "biddingView cannot be null!");
     }
 

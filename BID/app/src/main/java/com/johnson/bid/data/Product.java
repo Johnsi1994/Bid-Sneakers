@@ -24,7 +24,7 @@ public class Product {
     private long mHighestUserId;
     private int mParticipantsNumber;
 
-    private boolean isRead;
+    private boolean hasRead;
 //    private ArrayList<ChatContent> mChats;
 
     public Product() {
@@ -45,7 +45,7 @@ public class Product {
         mIncrease = -1;
         mHighestUserId = -1;
         mParticipantsNumber = -1;
-        isRead = false;
+        hasRead = false;
 //        mChats = new ArrayList<>();
     }
 
@@ -185,11 +185,11 @@ public class Product {
         mStartPrice = startPrice;
     }
 
-    public boolean isRead() {
-        return isRead;
+    public boolean isHasRead() {
+        return hasRead;
     }
 
-    public void setRead(boolean read) {
-        isRead = read;
+    public void setHasRead(boolean hasRead) {
+        this.hasRead = hasRead;
     }
 }

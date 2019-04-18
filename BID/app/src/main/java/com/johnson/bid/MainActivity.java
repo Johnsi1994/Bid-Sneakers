@@ -33,7 +33,7 @@ import android.widget.Toast;
 
 import com.google.firebase.firestore.FieldValue;
 import com.google.firebase.firestore.QueryDocumentSnapshot;
-import com.johnson.bid.centre.auction.AuctionFragment;
+import com.johnson.bid.auction.auctionitem.AuctionItemFragment;
 import com.johnson.bid.data.Product;
 import com.johnson.bid.dialog.MessageDialog;
 import com.johnson.bid.trade.TradeItem.TradeItemFragment;
@@ -228,12 +228,12 @@ public class MainActivity extends AppCompatActivity implements MainContract.View
     }
 
     @Override
-    public AuctionFragment findEnglishAuctionView() {
+    public AuctionItemFragment findEnglishAuctionView() {
         return mMainMvpController.findOrCreateEnglishAuctionView();
     }
 
     @Override
-    public AuctionFragment findSealedAuctionView() {
+    public AuctionItemFragment findSealedAuctionView() {
         return mMainMvpController.findOrCreateSealedAuctionView();
     }
 
@@ -556,7 +556,17 @@ public class MainActivity extends AppCompatActivity implements MainContract.View
         setBottomNavigation();
 
         if (UserManager.getInstance().isLoggedIn()) {
-            UserManager.getInstance().getUserProfile();
+            UserManager.getInstance().getUserProfile(new UserManager.LoadCallback() {
+                @Override
+                public void onSuccess() {
+                    Log.d("Johnsi", "Load User Profile Success !");
+                }
+
+                @Override
+                public void onFail(String errorMessage) {
+                    Log.d("Johnsi", "Load User Profile Fail !");
+                }
+            });
             mPresenter.openCenter();
             showToolbarUi();
             showBottomNavigationUi();

@@ -1,10 +1,10 @@
-package com.johnson.bid.centre;
+package com.johnson.bid.auction;
 
 import com.johnson.bid.BasePresenter;
 import com.johnson.bid.BaseView;
-import com.johnson.bid.centre.auction.AuctionFragment;
+import com.johnson.bid.auction.auctionitem.AuctionItemFragment;
 
-public interface CenterContract {
+public interface AuctionContract {
 
     interface View extends BaseView<Presenter> {
 
@@ -12,9 +12,9 @@ public interface CenterContract {
 
     interface Presenter extends BasePresenter {
 
-        AuctionFragment findEnglishAuction();
+        AuctionItemFragment findEnglishAuction();
 
-        AuctionFragment findSealedAuction();
+        AuctionItemFragment findSealedAuction();
 
         void openGalleryDialog(String from);
     }

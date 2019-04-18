@@ -56,9 +56,9 @@ public class TradeFragment extends Fragment implements TradeContract.View {
         mViewPager.setAdapter(mTradeAdapter);
         mTabLayout.setupWithViewPager(mViewPager);
 
-        mTabLayout.setBadgeText(2,"1");
-        mTabLayout.setBadgeText(3,"5");
-        mTabLayout.setBadgeText(4,"9");
+        mTabLayout.setBadgeText(2, String.valueOf(1));
+        mTabLayout.setBadgeText(3,String.valueOf(3));
+        mTabLayout.setBadgeText(4,String.valueOf(5));
 
     }
 
@@ -66,4 +66,7 @@ public class TradeFragment extends Fragment implements TradeContract.View {
     public void setPresenter(TradeContract.Presenter presenter) {
         mPresenter = checkNotNull(presenter);
     }
+
+
+
 }

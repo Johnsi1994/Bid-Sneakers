@@ -1,6 +1,5 @@
 package com.johnson.bid.post;
 
-import android.graphics.Bitmap;
 import android.support.annotation.NonNull;
 
 import com.johnson.bid.data.Product;
@@ -160,7 +159,7 @@ public class PostPresenter implements PostContract.Presenter {
 
     @Override
     public void setRead(boolean isRead) {
-        mProduct.setRead(isRead);
+        mProduct.setHasRead(isRead);
     }
 
 }

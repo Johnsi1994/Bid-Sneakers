@@ -1,4 +1,4 @@
-package com.johnson.bid.centre.auction;
+package com.johnson.bid.auction.auctionitem;
 
 import com.johnson.bid.BasePresenter;
 import com.johnson.bid.BaseView;
@@ -6,7 +6,7 @@ import com.johnson.bid.data.Product;
 
 import java.util.ArrayList;
 
-public interface AuctionContract {
+public interface AuctionItemContract {
 
     interface View extends BaseView<Presenter> {
         void showAuctionUi(ArrayList<Product> productList);
@@ -25,6 +25,17 @@ public interface AuctionContract {
         void loadSealedData();
 
         void setSealedData(ArrayList<Product> productList);
+
+        void loadMySoldData();
+
+        void loadNobodyBidData();
+
+        void loadMySellingData();
+
+        void loadMyBiddingData();
+
+        void loadMyBoughtData();
+
     }
 
 }

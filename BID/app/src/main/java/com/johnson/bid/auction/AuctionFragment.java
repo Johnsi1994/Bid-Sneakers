@@ -1,29 +1,24 @@
-package com.johnson.bid.centre;
+package com.johnson.bid.auction;
 
 import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
-import android.support.design.widget.BottomSheetDialog;
 import android.support.design.widget.FloatingActionButton;
 import android.support.design.widget.TabLayout;
 import android.support.v4.app.Fragment;
 import android.support.v4.view.ViewPager;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.Button;
 
-import com.johnson.bid.Bid;
-import com.johnson.bid.MainActivity;
 import com.johnson.bid.R;
 
 import static com.google.common.base.Preconditions.checkNotNull;
 
-public class CenterFragment extends Fragment implements CenterContract.View {
+public class AuctionFragment extends Fragment implements AuctionContract.View {
 
-    private CenterContract.Presenter mPresenter;
-    private CenterAdapter mCenterAdapter;
+    private AuctionContract.Presenter mPresenter;
+    private AuctionAdapter mAuctionAdapter;
 
     private TabLayout mTabLayout;
     private ViewPager mViewPager;
@@ -34,18 +29,18 @@ public class CenterFragment extends Fragment implements CenterContract.View {
 
     private boolean isFABOpen = false;
 
-    public CenterFragment() {
+    public AuctionFragment() {
     }
 
-    public static CenterFragment newInstance() {
-        return new CenterFragment();
+    public static AuctionFragment newInstance() {
+        return new AuctionFragment();
     }
 
     @Override
     public void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
 
-        mCenterAdapter = new CenterAdapter(getChildFragmentManager(), mPresenter);
+        mAuctionAdapter = new AuctionAdapter(getChildFragmentManager(), mPresenter);
     }
 
     @Nullable
@@ -82,14 +77,14 @@ public class CenterFragment extends Fragment implements CenterContract.View {
     public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
 
-        mViewPager.setAdapter(mCenterAdapter);
+        mViewPager.setAdapter(mAuctionAdapter);
         mViewPager.addOnPageChangeListener(
                 new TabLayout.TabLayoutOnPageChangeListener(mTabLayout));
         mTabLayout.setupWithViewPager(mViewPager);
     }
 
     @Override
-    public void setPresenter(CenterContract.Presenter presenter) {
+    public void setPresenter(AuctionContract.Presenter presenter) {
         mPresenter = checkNotNull(presenter);
     }
 

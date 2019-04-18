@@ -1,16 +1,18 @@
 package com.johnson.bid;
 
-import com.johnson.bid.bidding.BiddingContract;
-import com.johnson.bid.bidding.BiddingPresenter;
+import android.util.Log;
+
+import com.johnson.bid.bidding.BiddingDetailContract;
+import com.johnson.bid.bidding.BiddingDetailPresenter;
 import com.johnson.bid.bought.BoughtDetailContract;
 import com.johnson.bid.bought.BoughtDetailPresenter;
-import com.johnson.bid.centre.auction.AuctionContract;
-import com.johnson.bid.centre.auction.AuctionPresenter;
+import com.johnson.bid.auction.auctionitem.AuctionItemContract;
+import com.johnson.bid.auction.auctionitem.AuctionItemPresenter;
 import com.johnson.bid.chat.ChatContract;
 import com.johnson.bid.chat.ChatPresenter;
-import com.johnson.bid.centre.CenterContract;
-import com.johnson.bid.centre.CenterPresenter;
-import com.johnson.bid.centre.auction.AuctionFragment;
+import com.johnson.bid.auction.AuctionContract;
+import com.johnson.bid.auction.AuctionPresenter;
+import com.johnson.bid.auction.auctionitem.AuctionItemFragment;
 import com.johnson.bid.data.Product;
 import com.johnson.bid.dialog.MessageDialog;
 import com.johnson.bid.login.LoginContract;
@@ -36,27 +38,27 @@ import java.util.ArrayList;
 import static com.google.common.base.Preconditions.checkNotNull;
 
 
-public class MainPresenter implements MainContract.Presenter, CenterContract.Presenter, TradeContract.Presenter,
-        ChatContract.Presenter, SettingsContract.Presenter , AuctionContract.Presenter, LoginContract.Presenter,
-        PostContract.Presenter, TradeItemContract.Presenter, BiddingContract.Presenter, SellingDetailContract.Presenter,
+public class MainPresenter implements MainContract.Presenter, AuctionContract.Presenter, TradeContract.Presenter,
+        ChatContract.Presenter, SettingsContract.Presenter, AuctionItemContract.Presenter, LoginContract.Presenter,
+        PostContract.Presenter, TradeItemContract.Presenter, BiddingDetailContract.Presenter, SellingDetailContract.Presenter,
         BoughtDetailContract.Presenter, SoldDetailContract.Presenter, NobodyBidDetailContract.Presenter {
 
     private MainContract.View mMainView;
 
     private LoginPresenter mLoginPresenter;
-    private CenterPresenter mCenterPresenter;
+    private AuctionPresenter mAuctionPresenter;
     private TradePresenter mTradePresenter;
     private ChatPresenter mChatPresenter;
     private SettingsPresenter mSettingsPresenter;
     private PostPresenter mPostPresenter;
-    private BiddingPresenter mBiddingPresenter;
+    private BiddingDetailPresenter mBiddingDetailPresenter;
     private SellingDetailPresenter mSellingDetailPresenter;
     private BoughtDetailPresenter mBoughtDetailPresenter;
     private SoldDetailPresenter mSoldDetailPresenter;
     private NobodyBidDetailPresenter mNobodyBidDetailPresenter;
 
-    private AuctionPresenter mEnglishAuctionPresenter;
-    private AuctionPresenter mSealedAuctionPresenter;
+    private AuctionItemPresenter mEnglishAuctionItemPresenter;
+    private AuctionItemPresenter mSealedAuctionItemPresenter;
 
     private TradeItemPresenter mMyBiddingPresenter;
     private TradeItemPresenter mMySellingPresenter;
@@ -77,8 +79,8 @@ public class MainPresenter implements MainContract.Presenter, CenterContract.Pre
         mPostPresenter = checkNotNull(postPresenter);
     }
 
-    void setCenterPresenter(CenterPresenter centerPresenter) {
-        mCenterPresenter = checkNotNull(centerPresenter);
+    void setAuctionPresenter(AuctionPresenter auctionPresenter) {
+        mAuctionPresenter = checkNotNull(auctionPresenter);
     }
 
     void setTradePresenter(TradePresenter tradePresenter) {
@@ -93,12 +95,12 @@ public class MainPresenter implements MainContract.Presenter, CenterContract.Pre
         mSettingsPresenter = checkNotNull(settingsPresenter);
     }
 
-    void setEnglishAuctionPresenter(AuctionPresenter englishAuctionPresenter) {
-        mEnglishAuctionPresenter = checkNotNull(englishAuctionPresenter);
+    void setEnglishAuctionItemPresenter(AuctionItemPresenter englishAuctionItemPresenter) {
+        mEnglishAuctionItemPresenter = checkNotNull(englishAuctionItemPresenter);
     }
 
-    void setSealedAuctionPresenter(AuctionPresenter sealedAuctionPresenter) {
-        mSealedAuctionPresenter = checkNotNull(sealedAuctionPresenter);
+    void setSealedAuctionItemPresenter(AuctionItemPresenter sealedAuctionItemPresenter) {
+        mSealedAuctionItemPresenter = checkNotNull(sealedAuctionItemPresenter);
     }
 
     void setMyBiddingPresenter(TradeItemPresenter myBiddingPresenter) {
@@ -121,8 +123,8 @@ public class MainPresenter implements MainContract.Presenter, CenterContract.Pre
         mNobodyBidPresenter = checkNotNull(nobodyBitPresenter);
     }
 
-    void setBiddingPresenter(BiddingPresenter biddingPresenter) {
-        mBiddingPresenter = checkNotNull(biddingPresenter);
+    void setBiddingDetailPresenter(BiddingDetailPresenter biddingDetailPresenter) {
+        mBiddingDetailPresenter = checkNotNull(biddingDetailPresenter);
     }
 
     void setSellingDetailPresenter(SellingDetailPresenter sellingDetailPresenter) {
@@ -153,8 +155,8 @@ public class MainPresenter implements MainContract.Presenter, CenterContract.Pre
 
     @Override
     public void updateCenterData() {
-        mEnglishAuctionPresenter.loadEnglishData();
-        mSealedAuctionPresenter.loadSealedData();
+        mEnglishAuctionItemPresenter.loadEnglishData();
+        mSealedAuctionItemPresenter.loadSealedData();
     }
 
     @Override
@@ -200,22 +202,22 @@ public class MainPresenter implements MainContract.Presenter, CenterContract.Pre
 
     @Override
     public void loadEnglishData() {
-        mEnglishAuctionPresenter.loadEnglishData();
+        mEnglishAuctionItemPresenter.loadEnglishData();
     }
 
     @Override
     public void setEnglishData(ArrayList<Product> productList) {
-        mEnglishAuctionPresenter.setEnglishData(productList);
+        mEnglishAuctionItemPresenter.setEnglishData(productList);
     }
 
     @Override
     public void loadSealedData() {
-        mSealedAuctionPresenter.loadSealedData();
+        mSealedAuctionItemPresenter.loadSealedData();
     }
 
     @Override
     public void setSealedData(ArrayList<Product> productList) {
-        mSealedAuctionPresenter.setSealedData(productList);
+        mSealedAuctionItemPresenter.setSealedData(productList);
     }
 
     @Override
@@ -261,12 +263,12 @@ public class MainPresenter implements MainContract.Presenter, CenterContract.Pre
 
     @Override
     public void setProductData(Product product) {
-        mBiddingPresenter.setProductData(product);
+        mBiddingDetailPresenter.setProductData(product);
     }
 
     @Override
     public void loadProductData() {
-        mBiddingPresenter.loadProductData();
+        mBiddingDetailPresenter.loadProductData();
     }
 
     @Override
@@ -289,12 +291,12 @@ public class MainPresenter implements MainContract.Presenter, CenterContract.Pre
     }
 
     @Override
-    public AuctionFragment findEnglishAuction() {
+    public AuctionItemFragment findEnglishAuction() {
         return mMainView.findEnglishAuctionView();
     }
 
     @Override
-    public AuctionFragment findSealedAuction() {
+    public AuctionItemFragment findSealedAuction() {
         return mMainView.findSealedAuctionView();
     }
 
@@ -463,7 +465,12 @@ public class MainPresenter implements MainContract.Presenter, CenterContract.Pre
 
     @Override
     public void loadMyBiddingData() {
-        mMyBiddingPresenter.loadMyBiddingData();
+
+        if (mMyBiddingPresenter != null) {
+            Log.d("Johnsi", "Start load my bidding data");
+            mMyBiddingPresenter.loadMyBiddingData();
+        }
+
     }
 
     @Override
@@ -473,7 +480,10 @@ public class MainPresenter implements MainContract.Presenter, CenterContract.Pre
 
     @Override
     public void loadMySellingData() {
-        mMySellingPresenter.loadMySellingData();
+
+        if (mMySellingPresenter != null) {
+            mMySellingPresenter.loadMySellingData();
+        }
     }
 
     @Override
@@ -483,7 +493,11 @@ public class MainPresenter implements MainContract.Presenter, CenterContract.Pre
 
     @Override
     public void loadMyBoughtData() {
-        mMyBoughtPresenter.loadMyBoughtData();
+
+        if (mMyBoughtPresenter != null) {
+            mMyBoughtPresenter.loadMyBoughtData();
+        }
+
     }
 
     @Override
@@ -493,7 +507,11 @@ public class MainPresenter implements MainContract.Presenter, CenterContract.Pre
 
     @Override
     public void loadMySoldData() {
-        mMySoldPresenter.loadMySoldData();
+
+        if (mMySoldPresenter != null) {
+            mMySoldPresenter.loadMySoldData();
+        }
+
     }
 
     @Override

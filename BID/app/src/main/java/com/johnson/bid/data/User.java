@@ -13,9 +13,9 @@ public class User {
     private ArrayList<Long> mMySoldProductsId;
     private ArrayList<Long> mNobodyBitProductsId;
     private ArrayList<Long> mEyesOn;
-    private int unreadBought;
-    private int unreadSold;
-    private int unreadNobodyBid;
+    private int mUnreadBought;
+    private int mUnreadSold;
+    private int mUnreadNobodyBid;
 
 //    private ArrayList<Product> mChatRoomId;
 
@@ -30,9 +30,9 @@ public class User {
         mMySoldProductsId = new ArrayList<>();
         mNobodyBitProductsId = new ArrayList<>();
         mEyesOn = new ArrayList<>();
-        unreadBought = 0;
-        unreadSold = 0;
-        unreadNobodyBid = 0;
+        mUnreadBought = 0;
+        mUnreadSold = 0;
+        mUnreadNobodyBid = 0;
 //        mChatRoomId = new ArrayList<>();
 
     }
@@ -111,27 +111,27 @@ public class User {
     }
 
     public int getUnreadBought() {
-        return unreadBought;
+        return mUnreadBought;
     }
 
     public void setUnreadBought(int unreadBought) {
-        this.unreadBought = unreadBought;
+        this.mUnreadBought = unreadBought;
     }
 
     public int getUnreadSold() {
-        return unreadSold;
+        return mUnreadSold;
     }
 
     public void setUnreadSold(int unreadSold) {
-        this.unreadSold = unreadSold;
+        this.mUnreadSold = unreadSold;
     }
 
     public int getUnreadNobodyBid() {
-        return unreadNobodyBid;
+        return mUnreadNobodyBid;
     }
 
     public void setUnreadNobodyBid(int unreadNobodyBid) {
-        this.unreadNobodyBid = unreadNobodyBid;
+        this.mUnreadNobodyBid = unreadNobodyBid;
     }
 
 

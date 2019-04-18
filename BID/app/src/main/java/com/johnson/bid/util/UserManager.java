@@ -153,7 +153,7 @@ public class UserManager {
         graphRequest.executeAsync();
     }
 
-    public void getUserProfile() {
+    public void getUserProfile(LoadCallback loadCallback) {
 
         Firebase.getFirestore().collection("users")
                 .document(AccessToken.getCurrentAccessToken().getUserId())
@@ -163,6 +163,8 @@ public class UserManager {
 
                         DocumentSnapshot document = task.getResult();
                         setUser(document.toObject(User.class));
+
+                        loadCallback.onSuccess();
 
                     } else {
                         Log.d("Johnsi", "Error getting documents: ", task.getException());

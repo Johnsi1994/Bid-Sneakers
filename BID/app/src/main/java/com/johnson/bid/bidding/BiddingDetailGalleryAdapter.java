@@ -8,17 +8,16 @@ import android.view.ViewGroup;
 import android.widget.ImageView;
 
 import com.johnson.bid.R;
-import com.johnson.bid.data.Product;
 import com.johnson.bid.util.ImageManager;
 
 import java.util.ArrayList;
 
-public class BiddingGalleryAdapter extends RecyclerView.Adapter {
+public class BiddingDetailGalleryAdapter extends RecyclerView.Adapter {
 
-    private BiddingContract.Presenter mPresenter;
+    private BiddingDetailContract.Presenter mPresenter;
     private ArrayList<String> mImages;
 
-    public BiddingGalleryAdapter(BiddingContract.Presenter presenter, ArrayList<String> images) {
+    public BiddingDetailGalleryAdapter(BiddingDetailContract.Presenter presenter, ArrayList<String> images) {
         mPresenter = presenter;
         mImages = images;
     }
@@ -27,7 +26,7 @@ public class BiddingGalleryAdapter extends RecyclerView.Adapter {
     @NonNull
     @Override
     public RecyclerView.ViewHolder onCreateViewHolder(@NonNull ViewGroup viewGroup, int i) {
-        return new BiddingGalleryAdapter.PhotoViewHolder(LayoutInflater.from(viewGroup.getContext())
+        return new BiddingDetailGalleryAdapter.PhotoViewHolder(LayoutInflater.from(viewGroup.getContext())
                 .inflate(R.layout.item_bidding_gallery, viewGroup, false));
     }
 

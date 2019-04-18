@@ -44,4 +44,5 @@ public class TradePresenter implements TradeContract.Presenter {
         return null;
     }
 
+
 }

@@ -1,8 +1,6 @@
 package com.johnson.bid;
 
-import android.graphics.Bitmap;
-
-import com.johnson.bid.centre.auction.AuctionFragment;
+import com.johnson.bid.auction.auctionitem.AuctionItemFragment;
 import com.johnson.bid.data.Product;
 import com.johnson.bid.dialog.MessageDialog;
 import com.johnson.bid.trade.TradeItem.TradeItemFragment;
@@ -35,9 +33,9 @@ public interface MainContract {
 
         void openGalleryDialog(String from);
 
-        AuctionFragment findEnglishAuctionView();
+        AuctionItemFragment findEnglishAuctionView();
 
-        AuctionFragment findSealedAuctionView();
+        AuctionItemFragment findSealedAuctionView();
 
         TradeItemFragment findMyBiddingView();
 

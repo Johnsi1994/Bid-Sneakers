@@ -1,22 +1,20 @@
 package com.johnson.bid;
 
-import static com.google.common.base.Preconditions.checkNotNull;
-
 import android.support.annotation.NonNull;
 import android.support.annotation.StringDef;
 import android.support.v4.app.FragmentActivity;
 import android.support.v4.app.FragmentManager;
 
-import com.johnson.bid.bidding.BiddingFragment;
-import com.johnson.bid.bidding.BiddingPresenter;
+import com.johnson.bid.auction.AuctionFragment;
+import com.johnson.bid.auction.AuctionPresenter;
+import com.johnson.bid.auction.auctionitem.AuctionItemFragment;
+import com.johnson.bid.auction.auctionitem.AuctionItemPresenter;
+import com.johnson.bid.bidding.BiddingDetailFragment;
+import com.johnson.bid.bidding.BiddingDetailPresenter;
 import com.johnson.bid.bought.BoughtDetailFragment;
 import com.johnson.bid.bought.BoughtDetailPresenter;
-import com.johnson.bid.centre.auction.AuctionFragment;
-import com.johnson.bid.centre.auction.AuctionPresenter;
 import com.johnson.bid.chat.ChatFragment;
 import com.johnson.bid.chat.ChatPresenter;
-import com.johnson.bid.centre.CenterFragment;
-import com.johnson.bid.centre.CenterPresenter;
 import com.johnson.bid.data.Product;
 import com.johnson.bid.login.LoginFragment;
 import com.johnson.bid.login.LoginPresenter;
@@ -40,24 +38,26 @@ import java.lang.annotation.Retention;
 import java.lang.annotation.RetentionPolicy;
 import java.util.ArrayList;
 
+import static com.google.common.base.Preconditions.checkNotNull;
+
 public class MainMvpController {
 
     private final FragmentActivity mActivity;
     private MainPresenter mMainPresenter;
     private LoginPresenter mLoginPresenter;
-    private CenterPresenter mCenterPresenter;
+    private AuctionPresenter mAuctionPresenter;
     private TradePresenter mTradePresenter;
     private ChatPresenter mChatPresenter;
     private SettingsPresenter mSettingsPresenter;
     private PostPresenter mPostPresenter;
-    private BiddingPresenter mBiddingPresenter;
+    private BiddingDetailPresenter mBiddingDetailPresenter;
     private SellingDetailPresenter mSellingDetailPresenter;
     private BoughtDetailPresenter mBoughtDetailPresenter;
     private SoldDetailPresenter mSoldDetailPresenter;
     private NobodyBidDetailPresenter mNobodyBidDetailPresenter;
 
-    private AuctionPresenter mEnglishAuctionPresenter;
-    private AuctionPresenter mSealedAuctionPresenter;
+    private AuctionItemPresenter mEnglishAuctionItemPresenter;
+    private AuctionItemPresenter mSealedAuctionItemPresenter;
 
     private TradeItemPresenter mMyBiddingPresenter;
     private TradeItemPresenter mMySellingPresenter;
@@ -137,12 +137,12 @@ public class MainMvpController {
 
     void findOrCreateCenterView() {
 
-        CenterFragment centerFragment = findOrCreateCenterFragment();
+        AuctionFragment auctionFragment = findOrCreateCenterFragment();
 
-        if (mCenterPresenter == null) {
-            mCenterPresenter = new CenterPresenter(centerFragment, (MainActivity) mActivity);
-            mMainPresenter.setCenterPresenter(mCenterPresenter);
-            centerFragment.setPresenter(mMainPresenter);
+        if (mAuctionPresenter == null) {
+            mAuctionPresenter = new AuctionPresenter(auctionFragment, (MainActivity) mActivity);
+            mMainPresenter.setAuctionPresenter(mAuctionPresenter);
+            auctionFragment.setPresenter(mMainPresenter);
         }
     }
 
@@ -194,29 +194,29 @@ public class MainMvpController {
     }
 
     void setAfterBidData(Product product) {
-        mBiddingPresenter.setProductData(product);
+        mBiddingDetailPresenter.setProductData(product);
     }
 
-    AuctionFragment findOrCreateEnglishAuctionView() {
+    AuctionItemFragment findOrCreateEnglishAuctionView() {
 
-        AuctionFragment fragment = findOrCreateAuctionFragment(ENGLISH);
+        AuctionItemFragment fragment = findOrCreateAuctionFragment(ENGLISH);
 
-        mEnglishAuctionPresenter = new AuctionPresenter(fragment);
+        mEnglishAuctionItemPresenter = new AuctionItemPresenter(fragment);
         fragment.setPresenter(mMainPresenter);
         fragment.setAuctionType(ENGLISH);
-        mMainPresenter.setEnglishAuctionPresenter(mEnglishAuctionPresenter);
+        mMainPresenter.setEnglishAuctionItemPresenter(mEnglishAuctionItemPresenter);
 
         return fragment;
     }
 
-    AuctionFragment findOrCreateSealedAuctionView() {
+    AuctionItemFragment findOrCreateSealedAuctionView() {
 
-        AuctionFragment fragment = findOrCreateAuctionFragment(SEALED);
+        AuctionItemFragment fragment = findOrCreateAuctionFragment(SEALED);
 
-        mSealedAuctionPresenter = new AuctionPresenter(fragment);
+        mSealedAuctionItemPresenter = new AuctionItemPresenter(fragment);
         fragment.setPresenter(mMainPresenter);
         fragment.setAuctionType(SEALED);
-        mMainPresenter.setSealedAuctionPresenter(mSealedAuctionPresenter);
+        mMainPresenter.setSealedAuctionItemPresenter(mSealedAuctionItemPresenter);
 
         return fragment;
     }
@@ -283,13 +283,13 @@ public class MainMvpController {
 
     void createBiddingView(String auctionType, Product product) {
 
-        BiddingFragment biddingFragment = createBiddingFragment();
+        BiddingDetailFragment biddingDetailFragment = createBiddingFragment();
 
-        mBiddingPresenter = new BiddingPresenter(biddingFragment);
-        mBiddingPresenter.setProductData(product);
-        mMainPresenter.setBiddingPresenter(mBiddingPresenter);
-        biddingFragment.setPresenter(mMainPresenter);
-        biddingFragment.setAuctionType(auctionType);
+        mBiddingDetailPresenter = new BiddingDetailPresenter(biddingDetailFragment);
+        mBiddingDetailPresenter.setProductData(product);
+        mMainPresenter.setBiddingDetailPresenter(mBiddingDetailPresenter);
+        biddingDetailFragment.setPresenter(mMainPresenter);
+        biddingDetailFragment.setAuctionType(auctionType);
     }
 
     void createSellingView(String auctionType, Product product) {
@@ -356,14 +356,14 @@ public class MainMvpController {
     }
 
     @NonNull
-    private BiddingFragment createBiddingFragment() {
+    private BiddingDetailFragment createBiddingFragment() {
 
-        BiddingFragment biddingFragment = BiddingFragment.newInstance();
+        BiddingDetailFragment biddingDetailFragment = BiddingDetailFragment.newInstance();
 
         ActivityUtils.addFragmentByTag(
-                getFragmentManager(), biddingFragment, BIDDING);
+                getFragmentManager(), biddingDetailFragment, BIDDING);
 
-        return biddingFragment;
+        return biddingDetailFragment;
     }
 
     @NonNull
@@ -411,19 +411,19 @@ public class MainMvpController {
     }
 
     @NonNull
-    private CenterFragment findOrCreateCenterFragment() {
+    private AuctionFragment findOrCreateCenterFragment() {
 
-        CenterFragment centerFragment =
-                (CenterFragment) getFragmentManager().findFragmentByTag(CENTER);
-        if (centerFragment == null) {
+        AuctionFragment auctionFragment =
+                (AuctionFragment) getFragmentManager().findFragmentByTag(CENTER);
+        if (auctionFragment == null) {
             // Create the fragment
-            centerFragment = CenterFragment.newInstance();
+            auctionFragment = AuctionFragment.newInstance();
         }
 
         ActivityUtils.showOrAddFragmentByTag(
-                getFragmentManager(), centerFragment, CENTER);
+                getFragmentManager(), auctionFragment, CENTER);
 
-        return centerFragment;
+        return auctionFragment;
     }
 
     @NonNull
@@ -475,14 +475,14 @@ public class MainMvpController {
     }
 
     @NonNull
-    private AuctionFragment findOrCreateAuctionFragment(@AuctionType String auctionType) {
+    private AuctionItemFragment findOrCreateAuctionFragment(@AuctionType String auctionType) {
 
-        AuctionFragment fragment =
-                (AuctionFragment) ((getFragmentManager().findFragmentByTag(CENTER)))
+        AuctionItemFragment fragment =
+                (AuctionItemFragment) ((getFragmentManager().findFragmentByTag(CENTER)))
                         .getChildFragmentManager().findFragmentByTag(auctionType);
         if (fragment == null) {
             // Create the fragment
-            fragment = AuctionFragment.newInstance();
+            fragment = AuctionItemFragment.newInstance();
         }
 
         return fragment;

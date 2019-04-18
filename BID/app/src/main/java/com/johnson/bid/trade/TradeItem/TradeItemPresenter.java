@@ -34,6 +34,8 @@ public class TradeItemPresenter implements TradeItemContract.Presenter {
 
         if (mProductIdList.size() > 0) {
             loadDataFromFireBase(0, "BIDDING");
+        } else {
+            setMyBiddingData(mProductsList);
         }
     }
 
@@ -47,8 +49,11 @@ public class TradeItemPresenter implements TradeItemContract.Presenter {
         mProductIdList = UserManager.getInstance().getUser().getMySellingProductsId();
         mProductsList = new ArrayList<>();
 
+
         if (mProductIdList.size() > 0) {
             loadDataFromFireBase(0, "SELLING");
+        } else {
+            setMySellingData(mProductsList);
         }
     }
 
@@ -149,6 +154,7 @@ public class TradeItemPresenter implements TradeItemContract.Presenter {
                         } else {
                             switch (type) {
                                 case "BIDDING":
+                                    Log.d("Johnsi", "Start set bidding data");
                                     setMyBiddingData(mProductsList);
                                     break;
                                 case "SELLING":

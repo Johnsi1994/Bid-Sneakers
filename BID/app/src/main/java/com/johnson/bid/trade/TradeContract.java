@@ -8,6 +8,8 @@ public interface TradeContract {
 
     interface View extends BaseView<Presenter> {
 
+        
+
     }
 
     interface Presenter extends BasePresenter {
@@ -21,5 +23,6 @@ public interface TradeContract {
         TradeItemFragment findMySold();
 
         TradeItemFragment findNobodyBid();
+
     }
 }

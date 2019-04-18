@@ -4,7 +4,7 @@ import com.johnson.bid.BasePresenter;
 import com.johnson.bid.BaseView;
 import com.johnson.bid.data.Product;
 
-public interface BiddingContract {
+public interface BiddingDetailContract {
 
     interface View extends BaseView<Presenter> {
         void showBiddingUi(Product product);

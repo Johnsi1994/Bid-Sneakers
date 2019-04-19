@@ -545,6 +545,18 @@ public class MainActivity extends AppCompatActivity implements MainContract.View
     }
 
     @Override
+    public void updateTradeBadgeUi(int unreadCount) {
+
+        if (unreadCount > 0) {
+            mBadge.findViewById(R.id.text_badge_main).setVisibility(View.VISIBLE);
+            ((TextView) mBadge.findViewById(R.id.text_badge_main)).setText("!");
+        } else {
+            mBadge.findViewById(R.id.text_badge_main).setVisibility(View.GONE);
+        }
+
+    }
+
+    @Override
     public void setPresenter(MainContract.Presenter presenter) {
         mPresenter = checkNotNull(presenter);
     }
@@ -567,6 +579,7 @@ public class MainActivity extends AppCompatActivity implements MainContract.View
                     Log.d("Johnsi", "Load User Profile Fail !");
                 }
             });
+
             mPresenter.openCenter();
             showToolbarUi();
             showBottomNavigationUi();
@@ -607,8 +620,9 @@ public class MainActivity extends AppCompatActivity implements MainContract.View
         BottomNavigationItemView itemView = (BottomNavigationItemView) menuView.getChildAt(1);
         mBadge = LayoutInflater.from(this)
                 .inflate(R.layout.badge_main_bottom, itemView, true);
+        mBadge.findViewById(R.id.text_badge_main).setVisibility(View.GONE);
 
-        ((TextView) mBadge.findViewById(R.id.text_badge_main)).setText("!");
+        mPresenter.updateTradeBadge();
 
     }
 

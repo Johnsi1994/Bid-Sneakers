@@ -134,4 +134,9 @@ public class AuctionItemPresenter implements AuctionItemContract.Presenter {
 
     }
 
+    @Override
+    public void updateTradeBadge() {
+
+    }
+
 }

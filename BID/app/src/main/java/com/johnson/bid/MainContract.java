@@ -72,6 +72,8 @@ public interface MainContract {
         void openDeleteProductDialog(Product product);
 
         void showMessageDialogUi(@MessageDialog.MessageType int type);
+
+        void updateTradeBadgeUi(int unreadCount);
     }
 
     interface Presenter extends BasePresenter {
@@ -97,5 +99,7 @@ public interface MainContract {
         void hideBottomNavigation();
 
         void showBottomNavigation();
+
+        void updateTradeBadge();
     }
 }

@@ -64,6 +64,7 @@ public class TradeItemPresenter implements TradeItemContract.Presenter {
 
     @Override
     public void loadMyBoughtData() {
+
         mProductIdList = UserManager.getInstance().getUser().getMyBoughtProductsId();
         mProductsList = new ArrayList<>();
 
@@ -138,6 +139,110 @@ public class TradeItemPresenter implements TradeItemContract.Presenter {
 
     }
 
+    @Override
+    public void setBuyerHasRead(boolean hasRead, Product product) {
+
+        Firebase.getFirestore().collection("products")
+                .document(String.valueOf(product.getProductId()))
+                .update("buyerHasRead", hasRead)
+                .addOnSuccessListener(aVoid -> {
+                    Log.d("Johnsi", "Product hasRead successfully added!");
+                    loadMyBoughtData();
+                })
+                .addOnFailureListener(e -> Log.w("Johnsi", "Product hasRead Error updating document", e));
+
+    }
+
+    @Override
+    public void setSellerHasRead(boolean hasRead, Product product, int from) {
+
+        Firebase.getFirestore().collection("products")
+                .document(String.valueOf(product.getProductId()))
+                .update("sellerHasRead", hasRead)
+                .addOnSuccessListener(aVoid -> {
+                    Log.d("Johnsi", "Product hasRead successfully added!");
+
+                    if (from == 1) {
+                        loadMySoldData();
+                    } else {
+                        Log.d("JOHNSITESTING", "Load Nobody Bid Data !!!");
+                        loadNobodyBidData();
+                    }
+
+                })
+                .addOnFailureListener(e -> Log.w("Johnsi", "Product hasRead Error updating document", e));
+    }
+
+    @Override
+    public void minusNobodyBidBadgeCount(LoadCallback loadCallback) {
+
+        Firebase.getFirestore().collection("users")
+                .document(String.valueOf(UserManager.getInstance().getUser().getId()))
+                .update("unreadNobodyBid", UserManager.getInstance().getUser().getUnreadNobodyBid() - 1)
+                .addOnSuccessListener(aVoid -> {
+                    Log.d("Johnsi", "Nobody Bid Badge Count successfully update!");
+                    loadCallback.onSuccess();
+                })
+                .addOnFailureListener(e -> {
+                    Log.w("Johnsi", "Nobody Bid Badge Count Error updating document", e);
+                    loadCallback.onFail(e.getMessage());
+                });
+
+    }
+
+    @Override
+    public void minusSoldBadgeCount(LoadCallback loadCallback) {
+
+        Firebase.getFirestore().collection("users")
+                .document(String.valueOf(UserManager.getInstance().getUser().getId()))
+                .update("unreadSold", UserManager.getInstance().getUser().getUnreadSold() - 1)
+                .addOnSuccessListener(aVoid -> {
+                    Log.d("Johnsi", "Sold Badge Count successfully update!");
+                    loadCallback.onSuccess();
+                })
+                .addOnFailureListener(e -> {
+                    Log.w("Johnsi", "Sold Badge Count Error updating document", e);
+                    loadCallback.onFail(e.getMessage());
+                });
+    }
+
+    @Override
+    public void minusBoughtBadgeCount(LoadCallback loadCallback) {
+
+        Firebase.getFirestore().collection("users")
+                .document(String.valueOf(UserManager.getInstance().getUser().getId()))
+                .update("unreadBought", UserManager.getInstance().getUser().getUnreadBought() - 1)
+                .addOnSuccessListener(aVoid -> {
+                    Log.d("Johnsi", "Bought Badge Count successfully update!");
+                    loadCallback.onSuccess();
+                })
+                .addOnFailureListener(e -> {
+                    Log.w("Johnsi", "Bought Badge Count Error updating document", e);
+                    loadCallback.onFail(e.getMessage());
+                });
+    }
+
+    @Override
+    public void loadNobodyBidBadgeData() {
+
+    }
+
+    @Override
+    public void updateTradeBadge() {
+
+    }
+
+    @Override
+    public void loadSoldBadgeData() {
+
+    }
+
+    @Override
+    public void loadBoughtBadgeData() {
+
+    }
+
+
     private void loadDataFromFireBase(int i, String type) {
 
         int j = i + 1;
@@ -176,5 +281,12 @@ public class TradeItemPresenter implements TradeItemContract.Presenter {
                         Log.d("Johnsi", "Error getting documents: ", task.getException());
                     }
                 });
+    }
+
+    public interface LoadCallback {
+
+        void onSuccess();
+
+        void onFail(String errorMessage);
     }
 }

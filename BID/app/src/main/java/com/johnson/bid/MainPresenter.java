@@ -32,6 +32,7 @@ import com.johnson.bid.trade.TradeItem.TradeItemContract;
 import com.johnson.bid.trade.TradeItem.TradeItemFragment;
 import com.johnson.bid.trade.TradeItem.TradeItemPresenter;
 import com.johnson.bid.trade.TradePresenter;
+import com.johnson.bid.util.UserManager;
 
 import java.util.ArrayList;
 
@@ -160,8 +161,13 @@ public class MainPresenter implements MainContract.Presenter, AuctionContract.Pr
     }
 
     @Override
-    public void setRead(boolean isRead) {
-        mPostPresenter.setRead(isRead);
+    public void setSellerHasRead(boolean isRead) {
+        mPostPresenter.setSellerHasRead(isRead);
+    }
+
+    @Override
+    public void setBuyerHasRead(boolean isRead) {
+        mPostPresenter.setBuyerHasRead(isRead);
     }
 
     @Override
@@ -284,6 +290,26 @@ public class MainPresenter implements MainContract.Presenter, AuctionContract.Pr
     @Override
     public void showBottomNavigation() {
         mMainView.showBottomNavigationUi();
+    }
+
+    @Override
+    public void updateTradeBadge() {
+
+        UserManager.getInstance().getUserProfile(new UserManager.LoadCallback() {
+            @Override
+            public void onSuccess() {
+                int unreadCount = UserManager.getInstance().getUser().getUnreadBought() +
+                        UserManager.getInstance().getUser().getUnreadSold() +
+                        UserManager.getInstance().getUser().getUnreadNobodyBid();
+
+                mMainView.updateTradeBadgeUi(unreadCount);
+            }
+
+            @Override
+            public void onFail(String errorMessage) {
+
+            }
+        });
     }
 
     @Override
@@ -441,6 +467,8 @@ public class MainPresenter implements MainContract.Presenter, AuctionContract.Pr
     public void loadBoughtBadgeData() {
 
         if (mTradePresenter != null) {
+
+            Log.d("JOHNSITESTING", "Load Bought Badge Data In MainPresenter");
             mTradePresenter.loadBoughtBadgeData();
         }
 
@@ -503,6 +531,39 @@ public class MainPresenter implements MainContract.Presenter, AuctionContract.Pr
     @Override
     public void openNobodyBidDetail(Product product) {
         mMainView.findNobodyBidDetailView(product);
+    }
+
+    @Override
+    public void setBuyerHasRead(boolean hasRead, Product product) {
+
+            mMyBoughtPresenter.setBuyerHasRead(hasRead, product);
+
+    }
+
+    @Override
+    public void setSellerHasRead(boolean hasRead, Product product, int from) {
+
+        if (from == 1) {
+            mMySoldPresenter.setSellerHasRead(hasRead, product, from);
+        } else {
+            mNobodyBidPresenter.setSellerHasRead(hasRead, product, from);
+        }
+
+    }
+
+    @Override
+    public void minusNobodyBidBadgeCount(TradeItemPresenter.LoadCallback loadCallback) {
+        mNobodyBidPresenter.minusNobodyBidBadgeCount(loadCallback);
+    }
+
+    @Override
+    public void minusSoldBadgeCount(TradeItemPresenter.LoadCallback loadCallback) {
+        mMySoldPresenter.minusSoldBadgeCount(loadCallback);
+    }
+
+    @Override
+    public void minusBoughtBadgeCount(TradeItemPresenter.LoadCallback loadCallback) {
+        mMyBoughtPresenter.minusBoughtBadgeCount(loadCallback);
     }
 
     @Override

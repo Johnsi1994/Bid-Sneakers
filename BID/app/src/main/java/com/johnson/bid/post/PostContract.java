@@ -66,7 +66,9 @@ public interface PostContract {
 
         void updateCenterData();
 
-        void setRead(boolean isRead);
+        void setSellerHasRead(boolean isRead);
+
+        void setBuyerHasRead(boolean isRead);
     }
 
 }

@@ -1,6 +1,7 @@
 package com.johnson.bid.trade;
 
 import android.support.annotation.NonNull;
+import android.util.Log;
 
 import com.johnson.bid.trade.TradeItem.TradeItemFragment;
 import com.johnson.bid.util.UserManager;
@@ -48,6 +49,9 @@ public class TradePresenter implements TradeContract.Presenter {
     @Override
     public void loadBoughtBadgeData() {
         int unreadBought = UserManager.getInstance().getUser().getUnreadBought();
+
+        Log.d("JOHNSITESTING", "Bought Badge Count : " + unreadBought);
+
         setBoughtBadgeData(unreadBought);
     }
 

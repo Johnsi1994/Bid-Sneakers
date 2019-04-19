@@ -42,6 +42,8 @@ public interface AuctionItemContract {
 
         void loadBoughtBadgeData();
 
+        void updateTradeBadge();
+
 
     }
 

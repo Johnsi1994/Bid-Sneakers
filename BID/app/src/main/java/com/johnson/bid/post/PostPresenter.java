@@ -158,8 +158,14 @@ public class PostPresenter implements PostContract.Presenter {
     }
 
     @Override
-    public void setRead(boolean isRead) {
-        mProduct.setHasRead(isRead);
+    public void setSellerHasRead(boolean isRead) {
+        mProduct.setSellerHasRead(isRead);
     }
+
+    @Override
+    public void setBuyerHasRead(boolean isRead) {
+        mProduct.setBuyerHasRead(isRead);
+    }
+
 
 }

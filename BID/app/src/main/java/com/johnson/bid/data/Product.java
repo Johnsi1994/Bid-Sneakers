@@ -24,7 +24,8 @@ public class Product {
     private long mHighestUserId;
     private int mParticipantsNumber;
 
-    private boolean hasRead;
+    private boolean sellerHasRead;
+    private boolean buyerHasRead;
 //    private ArrayList<ChatContent> mChats;
 
     public Product() {
@@ -45,7 +46,8 @@ public class Product {
         mIncrease = -1;
         mHighestUserId = -1;
         mParticipantsNumber = -1;
-        hasRead = false;
+        sellerHasRead = false;
+        buyerHasRead = false;
 //        mChats = new ArrayList<>();
     }
 
@@ -185,11 +187,19 @@ public class Product {
         mStartPrice = startPrice;
     }
 
-    public boolean isHasRead() {
-        return hasRead;
+    public boolean isSellerHasRead() {
+        return sellerHasRead;
     }
 
-    public void setHasRead(boolean hasRead) {
-        this.hasRead = hasRead;
+    public void setSellerHasRead(boolean sellerHasRead) {
+        this.sellerHasRead = sellerHasRead;
+    }
+
+    public boolean isBuyerHasRead() {
+        return buyerHasRead;
+    }
+
+    public void setBuyerHasRead(boolean buyerHasRead) {
+        this.buyerHasRead = buyerHasRead;
     }
 }

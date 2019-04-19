@@ -1,5 +1,6 @@
 package com.johnson.bid.trade.TradeItem;
 
+import android.graphics.Color;
 import android.os.CountDownTimer;
 import android.support.annotation.NonNull;
 import android.support.constraint.ConstraintLayout;
@@ -15,7 +16,9 @@ import android.widget.TextView;
 import com.johnson.bid.MainMvpController;
 import com.johnson.bid.R;
 import com.johnson.bid.data.Product;
+import com.johnson.bid.util.Firebase;
 import com.johnson.bid.util.ImageManager;
+import com.johnson.bid.util.UserManager;
 
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
@@ -65,7 +68,7 @@ public class TradeItemAdapter extends RecyclerView.Adapter {
                 case NOBODYBID:
                 default:
                     return new NobodyBidViewHolder(LayoutInflater.from(viewGroup.getContext())
-                        .inflate(R.layout.item_nobody_bid, viewGroup, false));
+                            .inflate(R.layout.item_nobody_bid, viewGroup, false));
             }
         } else {
             return new LoadingViewHolder(LayoutInflater.from(viewGroup.getContext())
@@ -143,7 +146,9 @@ public class TradeItemAdapter extends RecyclerView.Adapter {
             mTextPeopleTitle = itemView.findViewById(R.id.text_people_title);
         }
 
-        private  ConstraintLayout getBiddingLayout() {return mBiddingLayout;}
+        private ConstraintLayout getBiddingLayout() {
+            return mBiddingLayout;
+        }
 
         private ImageView getImageMain() {
             return mImageMain;
@@ -262,7 +267,9 @@ public class TradeItemAdapter extends RecyclerView.Adapter {
             mTextPeopleTitle = itemView.findViewById(R.id.text_people_title);
         }
 
-        private ConstraintLayout getSellingLayout() {return mSellingLayout;}
+        private ConstraintLayout getSellingLayout() {
+            return mSellingLayout;
+        }
 
         private ImageView getImageMain() {
             return mImageMain;
@@ -393,11 +400,38 @@ public class TradeItemAdapter extends RecyclerView.Adapter {
     private void bindBoughtViewHolder(BoughtViewHolder holder, Product product) {
 
         holder.getBoughtLayout().setOnClickListener(v -> {
+
+            if (!product.isBuyerHasRead()) {
+
+                //3rd parameter : 1 = Bought / 2 = Sold / 3 = Nobody Bid
+                mPresenter.setBuyerHasRead(true, product);
+
+                mPresenter.minusBoughtBadgeCount(new TradeItemPresenter.LoadCallback() {
+                    @Override
+                    public void onSuccess() {
+                        mPresenter.loadBoughtBadgeData();
+                    }
+
+                    @Override
+                    public void onFail(String errorMessage) {
+
+                    }
+                });
+
+                mPresenter.updateTradeBadge();
+            }
+
             mPresenter.openBoughtDetail(product);
             mPresenter.hideToolbarAndBottomNavigation();
         });
 
         ImageManager.getInstance().setImageByUrl(holder.getImageMain(), product.getImages().get(0));
+
+        if (!product.isBuyerHasRead()) {
+            holder.getTextTitle().setTextColor(Color.RED);
+        } else {
+            holder.getTextTitle().setTextColor(Color.BLACK);
+        }
 
         holder.getTextTitle().setText(product.getTitle());
 
@@ -449,11 +483,36 @@ public class TradeItemAdapter extends RecyclerView.Adapter {
     private void bindSoldViewHolder(SoldViewHolder holder, Product product) {
 
         holder.getSoldLayout().setOnClickListener(v -> {
+
+            if (!product.isSellerHasRead()) {
+                //3rd parameter : 1 = Sold / 2 = Nobody Bid
+                mPresenter.setSellerHasRead(true, product, 1);
+
+                mPresenter.minusSoldBadgeCount(new TradeItemPresenter.LoadCallback() {
+                    @Override
+                    public void onSuccess() {
+                        mPresenter.loadSoldBadgeData();
+                    }
+
+                    @Override
+                    public void onFail(String errorMessage) {
+
+                    }
+                });
+                mPresenter.updateTradeBadge();
+            }
+
             mPresenter.openSoldDetail(product);
             mPresenter.hideToolbarAndBottomNavigation();
         });
 
         ImageManager.getInstance().setImageByUrl(holder.getImageMain(), product.getImages().get(0));
+
+        if (!product.isSellerHasRead()) {
+            holder.getTextTitle().setTextColor(Color.RED);
+        } else {
+            holder.getTextTitle().setTextColor(Color.BLACK);
+        }
 
         holder.getTextTitle().setText(product.getTitle());
 
@@ -479,7 +538,9 @@ public class TradeItemAdapter extends RecyclerView.Adapter {
             mTextTime = itemView.findViewById(R.id.text_time_nobody_bid);
         }
 
-        private ConstraintLayout getNobodyBidLayout() {return mNobodyBidLayout;}
+        private ConstraintLayout getNobodyBidLayout() {
+            return mNobodyBidLayout;
+        }
 
         public ImageView getImageMain() {
             return mImageMain;
@@ -497,11 +558,38 @@ public class TradeItemAdapter extends RecyclerView.Adapter {
     private void bindNobodyBidViewHolder(NobodyBidViewHolder holder, Product product) {
 
         holder.getNobodyBidLayout().setOnClickListener(v -> {
+
+            if (!product.isSellerHasRead()) {
+                Log.d("JOHNSITESTING", "Nobody Bid : " + product.isSellerHasRead());
+
+                //3rd parameter : 1 = Sold / 2 = Nobody Bid
+                mPresenter.setSellerHasRead(true, product, 2);
+
+                mPresenter.minusNobodyBidBadgeCount(new TradeItemPresenter.LoadCallback() {
+                    @Override
+                    public void onSuccess() {
+                        mPresenter.loadNobodyBidBadgeData();
+                    }
+
+                    @Override
+                    public void onFail(String errorMessage) {
+
+                    }
+                });
+                mPresenter.updateTradeBadge();
+            }
+
             mPresenter.openNobodyBidDetail(product);
             mPresenter.hideToolbarAndBottomNavigation();
         });
 
         ImageManager.getInstance().setImageByUrl(holder.getImageMain(), product.getImages().get(0));
+
+        if (!product.isSellerHasRead()) {
+            holder.getTextTitle().setTextColor(Color.RED);
+        } else {
+            holder.getTextTitle().setTextColor(Color.BLACK);
+        }
 
         holder.getTextTitle().setText(product.getTitle());
 
@@ -542,7 +630,7 @@ public class TradeItemAdapter extends RecyclerView.Adapter {
             return;
         }
 
-        for (int i = 0,length = mCountDownMap.size(); i < length; i++) {
+        for (int i = 0, length = mCountDownMap.size(); i < length; i++) {
             CountDownTimer cdt = mCountDownMap.get(mCountDownMap.keyAt(i));
             if (cdt != null) {
                 cdt.cancel();

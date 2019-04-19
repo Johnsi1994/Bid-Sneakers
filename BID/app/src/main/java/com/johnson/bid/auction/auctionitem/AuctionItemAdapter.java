@@ -160,15 +160,11 @@ public class AuctionItemAdapter extends RecyclerView.Adapter {
 
                 holder.getTextTime().setText("競標結束");
 
-                Log.d("deeeebug", "一般競標結束 !!!");
-
                 Firebase.getFirestore().collection("products")
                         .document(String.valueOf(product.getProductId()))
                         .get()
                         .addOnCompleteListener(task -> {
                             if (task.isSuccessful()) {
-
-                                Log.d("deeeebug", "下載 product 最新資訊 !!!");
 
                                 DocumentSnapshot document = task.getResult();
                                 Product latestProduct = document.toObject(Product.class);
@@ -184,13 +180,11 @@ public class AuctionItemAdapter extends RecyclerView.Adapter {
                                             if (latestProduct.getHighestUserId() == -1
                                                     && latestProduct.getSellerId() == UserManager.getInstance().getUser().getId()) {
 
-                                                Log.d("deeeebug", "一般競標無人出價 !!!");
                                                 //3rd parameter : 0 Nobody Bid / 1 somebody won the auction
                                                 removeSellingProductsIdOnFirebase(latestProduct, 0);
 
                                             } else {
 
-                                                Log.d("deeeebug", "一般競標有人出價 !!!");
                                                 if (UserManager.getInstance().getUser().getId() == latestProduct.getSellerId()) {
 
                                                     removeSellingProductsIdOnFirebase(latestProduct, 1);
@@ -286,15 +280,11 @@ public class AuctionItemAdapter extends RecyclerView.Adapter {
 
                 holder.getTextTime().setText("競標結束");
 
-                Log.d("deeeebug", "封閉競標結束 !!!");
-
                 Firebase.getFirestore().collection("products")
                         .document(String.valueOf(product.getProductId()))
                         .get()
                         .addOnCompleteListener(task -> {
                             if (task.isSuccessful()) {
-
-                                Log.d("deeeebug", "下載 product 最新資訊 !!!");
 
                                 DocumentSnapshot document = task.getResult();
                                 Product latestProduct = document.toObject(Product.class);
@@ -310,13 +300,11 @@ public class AuctionItemAdapter extends RecyclerView.Adapter {
                                             if (latestProduct.getHighestUserId() == -1
                                                     && latestProduct.getSellerId() == UserManager.getInstance().getUser().getId()) {
 
-                                                Log.d("deeeebug", "一般競標無人出價 !!!");
                                                 //3rd parameter : 0 Nobody Bid / 1 somebody won the auction
                                                 removeSellingProductsIdOnFirebase(latestProduct, 0);
 
                                             } else {
 
-                                                Log.d("deeeebug", "一般競標有人出價 !!!");
                                                 if (UserManager.getInstance().getUser().getId() == latestProduct.getSellerId()) {
 
                                                     removeSellingProductsIdOnFirebase(latestProduct, 1);
@@ -384,8 +372,6 @@ public class AuctionItemAdapter extends RecyclerView.Adapter {
 
     private void removeSellingProductsIdOnFirebase(Product product, int i) {
 
-        Log.d("deeeebug", "將商品從賣家的陣列移除 !!!");
-
         Firebase.getFirestore().collection("users")
                 .document(String.valueOf(UserManager.getInstance().getUser().getId()))
                 .update("mySellingProductsId", FieldValue.arrayRemove(product.getProductId()))
@@ -394,11 +380,9 @@ public class AuctionItemAdapter extends RecyclerView.Adapter {
 
                     if (i == 0) {
 
-                        Log.d("deeeebug", "商品無人競標  進入 Add NobodyBit !!!");
                         addNobodyBitProductsIdOnFirebase(product);
                     } else {
 
-                        Log.d("deeeebug", "商品有人競標  進入 Remove Bidding !!!");
                         addSoldProductsIdOnFirebase(product);
                     }
 
@@ -410,8 +394,6 @@ public class AuctionItemAdapter extends RecyclerView.Adapter {
     }
 
     private void addNobodyBitProductsIdOnFirebase(Product product) {
-
-        Log.d("deeeebug", "將商品加入賣家的無人競標陣列 !!!");
 
         Firebase.getFirestore().collection("users")
                 .document(String.valueOf(UserManager.getInstance().getUser().getId()))
@@ -426,8 +408,6 @@ public class AuctionItemAdapter extends RecyclerView.Adapter {
 
     private void updateUnreadNobodyBidOnFirebase() {
 
-        Log.d("deeeebug", "更新賣家未讀流標數 !!!");
-
         Firebase.getFirestore().collection("users")
                 .document(String.valueOf(UserManager.getInstance().getUser().getId()))
                 .update("unreadNobodyBid", UserManager.getInstance().getUser().getUnreadNobodyBid() + 1)
@@ -441,6 +421,7 @@ public class AuctionItemAdapter extends RecyclerView.Adapter {
                             mPresenter.loadMySellingData();
                             mPresenter.loadNobodyBidData();
                             mPresenter.loadNobodyBidBadgeData();
+                            mPresenter.updateTradeBadge();
 
                         }
 
@@ -457,8 +438,6 @@ public class AuctionItemAdapter extends RecyclerView.Adapter {
 
     private void addSoldProductsIdOnFirebase(Product product) {
 
-        Log.d("deeeebug", "將商品加入賣家的已出售陣列  !!!");
-
         Firebase.getFirestore().collection("users")
                 .document(String.valueOf(UserManager.getInstance().getUser().getId()))
                 .update("mySoldProductsId", FieldValue.arrayUnion(product.getProductId()))
@@ -473,8 +452,6 @@ public class AuctionItemAdapter extends RecyclerView.Adapter {
 
     private void updateUnreadSoldOnFirebase() {
 
-        Log.d("deeeebug", "更新賣家未讀已出售數 !!!");
-
         Firebase.getFirestore().collection("users")
                 .document(String.valueOf(UserManager.getInstance().getUser().getId()))
                 .update("unreadSold", UserManager.getInstance().getUser().getUnreadSold() + 1)
@@ -488,6 +465,7 @@ public class AuctionItemAdapter extends RecyclerView.Adapter {
                             mPresenter.loadMySellingData();
                             mPresenter.loadMySoldData();
                             mPresenter.loadSoldBadgeData();
+                            mPresenter.updateTradeBadge();
 
                         }
 
@@ -504,8 +482,6 @@ public class AuctionItemAdapter extends RecyclerView.Adapter {
 
     private void removeBiddingProductsIdOnFirebase(Product product) {
 
-        Log.d("deeeebug", "將商品從買家的競標中陣列移除  !!!");
-
         Firebase.getFirestore().collection("users")
                 .document(String.valueOf(UserManager.getInstance().getUser().getId()))
                 .update("myBiddingProductsId", FieldValue.arrayRemove(product.getProductId()))
@@ -518,8 +494,6 @@ public class AuctionItemAdapter extends RecyclerView.Adapter {
     }
 
     private void addBoughtProductsIdOnFirebase(Product product) {
-
-        Log.d("deeeebug", "將商品加入買家的已得標陣列  !!!");
 
         Firebase.getFirestore().collection("users")
                 .document(String.valueOf(UserManager.getInstance().getUser().getId()))
@@ -535,8 +509,6 @@ public class AuctionItemAdapter extends RecyclerView.Adapter {
 
     private void updateUnreadBoughtOnFirebase() {
 
-        Log.d("deeeebug", "更新買家未讀已得標數 !!!");
-
         Firebase.getFirestore().collection("users")
                 .document(String.valueOf(UserManager.getInstance().getUser().getId()))
                 .update("unreadBought", UserManager.getInstance().getUser().getUnreadBought() + 1)
@@ -550,6 +522,7 @@ public class AuctionItemAdapter extends RecyclerView.Adapter {
                             mPresenter.loadMyBiddingData();
                             mPresenter.loadMyBoughtData();
                             mPresenter.loadBoughtBadgeData();
+                            mPresenter.updateTradeBadge();
 
                         }
 

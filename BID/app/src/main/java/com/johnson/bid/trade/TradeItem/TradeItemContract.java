@@ -3,6 +3,7 @@ package com.johnson.bid.trade.TradeItem;
 import com.johnson.bid.BasePresenter;
 import com.johnson.bid.BaseView;
 import com.johnson.bid.data.Product;
+import com.johnson.bid.login.LoginContract;
 
 import java.util.ArrayList;
 
@@ -45,6 +46,24 @@ public interface TradeItemContract {
         void openSoldDetail(Product product);
 
         void openNobodyBidDetail(Product product);
+
+        void setBuyerHasRead(boolean hasRead, Product product);
+
+        void setSellerHasRead(boolean hasRead, Product product, int from);
+
+        void minusNobodyBidBadgeCount(TradeItemPresenter.LoadCallback loadCallback);
+
+        void minusSoldBadgeCount(TradeItemPresenter.LoadCallback loadCallback);
+
+        void minusBoughtBadgeCount(TradeItemPresenter.LoadCallback loadCallback);
+
+        void loadNobodyBidBadgeData();
+
+        void loadSoldBadgeData();
+
+        void loadBoughtBadgeData();
+
+        void updateTradeBadge();
 
     }
 

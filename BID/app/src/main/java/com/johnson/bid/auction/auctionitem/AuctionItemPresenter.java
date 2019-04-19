@@ -139,4 +139,9 @@ public class AuctionItemPresenter implements AuctionItemContract.Presenter {
 
     }
 
+    @Override
+    public void openSelling(String from, Product product) {
+
+    }
+
 }

@@ -44,6 +44,8 @@ public interface AuctionItemContract {
 
         void updateTradeBadge();
 
+        void openSelling(String from, Product product);
+
 
     }
 

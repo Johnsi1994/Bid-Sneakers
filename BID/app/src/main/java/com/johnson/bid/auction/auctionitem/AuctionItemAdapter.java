@@ -136,7 +136,15 @@ public class AuctionItemAdapter extends RecyclerView.Adapter {
     private void bindEnglishAuctionViewHolder(EnglishAuctionViewHolder holder, final Product product) {
 
         holder.getLayoutEnglishAuction().setOnClickListener(v -> {
-            mPresenter.openBidding(ENGLISH, product);
+
+            if (UserManager.getInstance().getUser().getId() == product.getSellerId()) {
+
+                mPresenter.openSelling(ENGLISH, product);
+            } else {
+
+                mPresenter.openBidding(ENGLISH, product);
+            }
+
             mPresenter.hideToolbarAndBottomNavigation();
         });
 
@@ -256,7 +264,15 @@ public class AuctionItemAdapter extends RecyclerView.Adapter {
     private void bindSealedAuctionViewHolder(SealedAuctionViewHolder holder, Product product) {
 
         holder.getLayoutSealedAuction().setOnClickListener(v -> {
-            mPresenter.openBidding(SEALED, product);
+
+            if (UserManager.getInstance().getUser().getId() == product.getSellerId()) {
+
+                mPresenter.openSelling(SEALED, product);
+            } else {
+
+                mPresenter.openBidding(SEALED, product);
+            }
+
             mPresenter.hideToolbarAndBottomNavigation();
         });
 

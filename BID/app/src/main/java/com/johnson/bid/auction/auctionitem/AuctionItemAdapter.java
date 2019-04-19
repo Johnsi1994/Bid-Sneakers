@@ -17,11 +17,13 @@ import com.google.firebase.firestore.FieldValue;
 import com.johnson.bid.MainMvpController;
 import com.johnson.bid.R;
 import com.johnson.bid.data.Product;
+import com.johnson.bid.data.User;
 import com.johnson.bid.util.Firebase;
 import com.johnson.bid.util.ImageManager;
 import com.johnson.bid.util.UserManager;
 
 import java.util.ArrayList;
+import java.util.concurrent.atomic.AtomicReference;
 
 import static com.johnson.bid.MainMvpController.ENGLISH;
 import static com.johnson.bid.MainMvpController.SEALED;
@@ -158,42 +160,55 @@ public class AuctionItemAdapter extends RecyclerView.Adapter {
 
                 holder.getTextTime().setText("競標結束");
 
+                Log.d("deeeebug", "一般競標結束 !!!");
+
                 Firebase.getFirestore().collection("products")
                         .document(String.valueOf(product.getProductId()))
                         .get()
                         .addOnCompleteListener(task -> {
                             if (task.isSuccessful()) {
 
+                                Log.d("deeeebug", "下載 product 最新資訊 !!!");
+
                                 DocumentSnapshot document = task.getResult();
+                                Product latestProduct = document.toObject(Product.class);
 
-                                Firebase.getFirestore().collection("products")
-                                        .document(String.valueOf(product.getProductId()))
-                                        .update("auctionCondition", "finish")
-                                        .addOnSuccessListener(aVoid -> Log.d("Johnsi", "Product condition (finish) successfully updated!"))
-                                        .addOnFailureListener(e -> Log.w("Johnsi", "Product condition (finish) Error updating document", e));
+                                if (UserManager.getInstance().getUser().getId() == latestProduct.getHighestUserId() ||
+                                        UserManager.getInstance().getUser().getId() == latestProduct.getSellerId()) {
+                                    updateProductAuctionCondition(latestProduct);
 
-                                UserManager.getInstance().getUserProfile(new UserManager.LoadCallback() {
-                                    @Override
-                                    public void onSuccess() {
+                                    UserManager.getInstance().getUserProfile(new UserManager.LoadCallback() {
+                                        @Override
+                                        public void onSuccess() {
 
-                                        if (document.toObject(Product.class).getHighestUserId() == -1) {
+                                            if (latestProduct.getHighestUserId() == -1
+                                                    && latestProduct.getSellerId() == UserManager.getInstance().getUser().getId()) {
 
-                                            //3rd parameter : 0 Nobody Bid / 1 somebody won the auction
-                                            removeSellingProductsIdOnFirebase(document, product, 0);
+                                                Log.d("deeeebug", "一般競標無人出價 !!!");
+                                                //3rd parameter : 0 Nobody Bid / 1 somebody won the auction
+                                                removeSellingProductsIdOnFirebase(latestProduct, 0);
 
-                                        } else {
+                                            } else {
 
-                                            removeSellingProductsIdOnFirebase(document, product, 1);
+                                                Log.d("deeeebug", "一般競標有人出價 !!!");
+                                                if (UserManager.getInstance().getUser().getId() == latestProduct.getSellerId()) {
 
+                                                    removeSellingProductsIdOnFirebase(latestProduct, 1);
+
+                                                } else if (UserManager.getInstance().getUser().getId() == latestProduct.getHighestUserId()) {
+
+                                                    removeBiddingProductsIdOnFirebase(latestProduct);
+
+                                                }
+                                            }
                                         }
 
-                                    }
+                                        @Override
+                                        public void onFail(String errorMessage) {
 
-                                    @Override
-                                    public void onFail(String errorMessage) {
-
-                                    }
-                                });
+                                        }
+                                    });
+                                }
                             } else {
                                 Log.d("Johnsi", "Error getting documents: ", task.getException());
                             }
@@ -271,47 +286,59 @@ public class AuctionItemAdapter extends RecyclerView.Adapter {
 
                 holder.getTextTime().setText("競標結束");
 
+                Log.d("deeeebug", "封閉競標結束 !!!");
+
                 Firebase.getFirestore().collection("products")
                         .document(String.valueOf(product.getProductId()))
                         .get()
                         .addOnCompleteListener(task -> {
                             if (task.isSuccessful()) {
 
+                                Log.d("deeeebug", "下載 product 最新資訊 !!!");
+
                                 DocumentSnapshot document = task.getResult();
+                                Product latestProduct = document.toObject(Product.class);
 
-                                Firebase.getFirestore().collection("products")
-                                        .document(String.valueOf(product.getProductId()))
-                                        .update("auctionCondition", "finish")
-                                        .addOnSuccessListener(aVoid -> Log.d("Johnsi", "Product condition (finish) successfully updated!"))
-                                        .addOnFailureListener(e -> Log.w("Johnsi", "Product condition (finish) Error updating document", e));
+                                if (UserManager.getInstance().getUser().getId() == latestProduct.getHighestUserId() ||
+                                        UserManager.getInstance().getUser().getId() == latestProduct.getSellerId()) {
+                                    updateProductAuctionCondition(latestProduct);
 
-                                UserManager.getInstance().getUserProfile(new UserManager.LoadCallback() {
-                                    @Override
-                                    public void onSuccess() {
+                                    UserManager.getInstance().getUserProfile(new UserManager.LoadCallback() {
+                                        @Override
+                                        public void onSuccess() {
 
-                                        if (document.toObject(Product.class).getHighestUserId() == -1) {
+                                            if (latestProduct.getHighestUserId() == -1
+                                                    && latestProduct.getSellerId() == UserManager.getInstance().getUser().getId()) {
 
-                                            removeSellingProductsIdOnFirebase(document, product, 0);
+                                                Log.d("deeeebug", "一般競標無人出價 !!!");
+                                                //3rd parameter : 0 Nobody Bid / 1 somebody won the auction
+                                                removeSellingProductsIdOnFirebase(latestProduct, 0);
 
-                                        } else {
+                                            } else {
 
-                                            removeSellingProductsIdOnFirebase(document, product, 1);
+                                                Log.d("deeeebug", "一般競標有人出價 !!!");
+                                                if (UserManager.getInstance().getUser().getId() == latestProduct.getSellerId()) {
 
+                                                    removeSellingProductsIdOnFirebase(latestProduct, 1);
+
+                                                } else if (UserManager.getInstance().getUser().getId() == latestProduct.getHighestUserId()) {
+
+                                                    removeBiddingProductsIdOnFirebase(latestProduct);
+
+                                                }
+                                            }
                                         }
 
-                                    }
+                                        @Override
+                                        public void onFail(String errorMessage) {
 
-                                    @Override
-                                    public void onFail(String errorMessage) {
-
-                                    }
-                                });
-
+                                        }
+                                    });
+                                }
                             } else {
                                 Log.d("Johnsi", "Error getting documents: ", task.getException());
                             }
                         });
-
             }
         }.start();
 
@@ -355,18 +382,24 @@ public class AuctionItemAdapter extends RecyclerView.Adapter {
     }
 
 
-    private void removeSellingProductsIdOnFirebase(DocumentSnapshot document, Product product, int i) {
+    private void removeSellingProductsIdOnFirebase(Product product, int i) {
+
+        Log.d("deeeebug", "將商品從賣家的陣列移除 !!!");
 
         Firebase.getFirestore().collection("users")
-                .document(String.valueOf(document.toObject(Product.class).getSellerId()))
+                .document(String.valueOf(UserManager.getInstance().getUser().getId()))
                 .update("mySellingProductsId", FieldValue.arrayRemove(product.getProductId()))
                 .addOnSuccessListener(aVoid -> {
                     Log.d("Johnsi", "Selling Products Id successfully removed!");
 
                     if (i == 0) {
-                        addNobodyBitProductsIdOnFirebase(document, product);
+
+                        Log.d("deeeebug", "商品無人競標  進入 Add NobodyBit !!!");
+                        addNobodyBitProductsIdOnFirebase(product);
                     } else {
-                        removeBiddingProductsIdOnFirebase(document, product);
+
+                        Log.d("deeeebug", "商品有人競標  進入 Remove Bidding !!!");
+                        addSoldProductsIdOnFirebase(product);
                     }
 
                 })
@@ -376,34 +409,39 @@ public class AuctionItemAdapter extends RecyclerView.Adapter {
 
     }
 
-    private void addNobodyBitProductsIdOnFirebase(DocumentSnapshot document, Product product) {
+    private void addNobodyBitProductsIdOnFirebase(Product product) {
+
+        Log.d("deeeebug", "將商品加入賣家的無人競標陣列 !!!");
 
         Firebase.getFirestore().collection("users")
-                .document(String.valueOf(document.toObject(Product.class).getSellerId()))
+                .document(String.valueOf(UserManager.getInstance().getUser().getId()))
                 .update("nobodyBitProductsId", FieldValue.arrayUnion(product.getProductId()))
                 .addOnSuccessListener(aVoid -> {
                     Log.d("Johnsi", "Nobody Bit Products Id successfully added!");
-                    updateUnreadNobodyBidOnFirebase(document);
+                    updateUnreadNobodyBidOnFirebase();
                 })
                 .addOnFailureListener(e -> Log.w("Johnsi", "Nobody Bit Products Id Products Id Error updating document", e));
 
     }
 
-    private void updateUnreadNobodyBidOnFirebase(DocumentSnapshot document) {
+    private void updateUnreadNobodyBidOnFirebase() {
+
+        Log.d("deeeebug", "更新賣家未讀流標數 !!!");
 
         Firebase.getFirestore().collection("users")
-                .document(String.valueOf(document.toObject(Product.class).getSellerId()))
-                .update("unreadNobodyBid", (UserManager.getInstance().getUser().getUnreadNobodyBid() + 1))
+                .document(String.valueOf(UserManager.getInstance().getUser().getId()))
+                .update("unreadNobodyBid", UserManager.getInstance().getUser().getUnreadNobodyBid() + 1)
                 .addOnSuccessListener(aVoid -> {
                     Log.d("Johnsi", "Unread Nobody Bit Count successfully added!");
 
                     UserManager.getInstance().getUserProfile(new UserManager.LoadCallback() {
                         @Override
                         public void onSuccess() {
-                            if (UserManager.getInstance().getUser().getId() == document.toObject(Product.class).getSellerId()) {
-                                mPresenter.loadMySellingData();
-                                mPresenter.loadNobodyBidData();
-                            }
+
+                            mPresenter.loadMySellingData();
+                            mPresenter.loadNobodyBidData();
+                            mPresenter.loadNobodyBidBadgeData();
+
                         }
 
                         @Override
@@ -417,63 +455,91 @@ public class AuctionItemAdapter extends RecyclerView.Adapter {
 
     }
 
-    private void removeBiddingProductsIdOnFirebase(DocumentSnapshot document, Product product) {
+    private void addSoldProductsIdOnFirebase(Product product) {
+
+        Log.d("deeeebug", "將商品加入賣家的已出售陣列  !!!");
 
         Firebase.getFirestore().collection("users")
-                .document(String.valueOf(document.toObject(Product.class).getHighestUserId()))
-                .update("myBiddingProductsId", FieldValue.arrayRemove(product.getProductId()))
-                .addOnSuccessListener(aVoid -> {
-                    Log.d("Johnsi", "Bidding Products Id successfully removed!");
-                    addBoughtProductsIdOnFirebase(document, product);
-                })
-                .addOnFailureListener(e -> Log.w("Johnsi", "Bidding Products Id Error updating document", e));
-
-    }
-
-    private void addBoughtProductsIdOnFirebase(DocumentSnapshot document, Product product) {
-
-        Firebase.getFirestore().collection("users")
-                .document(String.valueOf(document.toObject(Product.class).getHighestUserId()))
-                .update("myBoughtProductsId", FieldValue.arrayUnion(product.getProductId()))
-                .addOnSuccessListener(aVoid -> {
-                    Log.d("Johnsi", "Bought Products Id successfully added!");
-                    addSoldProductsIdOnFirebase(document, product);
-                })
-                .addOnFailureListener(e -> Log.w("Johnsi", "Bought Products Id Error updating document", e));
-
-    }
-
-    private void addSoldProductsIdOnFirebase(DocumentSnapshot document, Product product) {
-
-        Firebase.getFirestore().collection("users")
-                .document(String.valueOf(document.toObject(Product.class).getSellerId()))
+                .document(String.valueOf(UserManager.getInstance().getUser().getId()))
                 .update("mySoldProductsId", FieldValue.arrayUnion(product.getProductId()))
                 .addOnSuccessListener(aVoid -> {
                     Log.d("Johnsi", "Sold Products Id successfully added!");
-                    updateUnreadSoldOnFirebase(document, product);
+                    updateUnreadSoldOnFirebase();
                 })
                 .addOnFailureListener(e -> Log.w("Johnsi", "Sold Products Id Error updating document", e));
 
     }
 
-    private void updateUnreadSoldOnFirebase(DocumentSnapshot document, Product product) {
+
+    private void updateUnreadSoldOnFirebase() {
+
+        Log.d("deeeebug", "更新賣家未讀已出售數 !!!");
 
         Firebase.getFirestore().collection("users")
-                .document(String.valueOf(document.toObject(Product.class).getSellerId()))
-                .update("unreadSold", (UserManager.getInstance().getUser().getUnreadSold() + 1))
+                .document(String.valueOf(UserManager.getInstance().getUser().getId()))
+                .update("unreadSold", UserManager.getInstance().getUser().getUnreadSold() + 1)
                 .addOnSuccessListener(aVoid -> {
-                    updateUnreadBoughtOnFirebase(document);
                     Log.d("Johnsi", "Unread Sold Count successfully added!");
+
+                    UserManager.getInstance().getUserProfile(new UserManager.LoadCallback() {
+                        @Override
+                        public void onSuccess() {
+
+                            mPresenter.loadMySellingData();
+                            mPresenter.loadMySoldData();
+                            mPresenter.loadSoldBadgeData();
+
+                        }
+
+                        @Override
+                        public void onFail(String errorMessage) {
+
+                        }
+                    });
+
                 })
                 .addOnFailureListener(e -> Log.w("Johnsi", "Unread Sold Count Error updating document", e));
 
     }
 
-    private void updateUnreadBoughtOnFirebase(DocumentSnapshot document) {
+    private void removeBiddingProductsIdOnFirebase(Product product) {
+
+        Log.d("deeeebug", "將商品從買家的競標中陣列移除  !!!");
 
         Firebase.getFirestore().collection("users")
-                .document(String.valueOf(document.toObject(Product.class).getHighestUserId()))
-                .update("unreadBought", (UserManager.getInstance().getUser().getUnreadBought() + 1))
+                .document(String.valueOf(UserManager.getInstance().getUser().getId()))
+                .update("myBiddingProductsId", FieldValue.arrayRemove(product.getProductId()))
+                .addOnSuccessListener(aVoid -> {
+                    Log.d("Johnsi", "Bidding Products Id successfully removed!");
+                    addBoughtProductsIdOnFirebase(product);
+                })
+                .addOnFailureListener(e -> Log.w("Johnsi", "Bidding Products Id Error updating document", e));
+
+    }
+
+    private void addBoughtProductsIdOnFirebase(Product product) {
+
+        Log.d("deeeebug", "將商品加入買家的已得標陣列  !!!");
+
+        Firebase.getFirestore().collection("users")
+                .document(String.valueOf(UserManager.getInstance().getUser().getId()))
+                .update("myBoughtProductsId", FieldValue.arrayUnion(product.getProductId()))
+                .addOnSuccessListener(aVoid -> {
+                    Log.d("Johnsi", "Bought Products Id successfully added!");
+                    updateUnreadBoughtOnFirebase();
+                })
+                .addOnFailureListener(e -> Log.w("Johnsi", "Bought Products Id Error updating document", e));
+
+    }
+
+
+    private void updateUnreadBoughtOnFirebase() {
+
+        Log.d("deeeebug", "更新買家未讀已得標數 !!!");
+
+        Firebase.getFirestore().collection("users")
+                .document(String.valueOf(UserManager.getInstance().getUser().getId()))
+                .update("unreadBought", UserManager.getInstance().getUser().getUnreadBought() + 1)
                 .addOnSuccessListener(aVoid -> {
                     Log.d("Johnsi", "Unread Bought Count successfully added!");
 
@@ -481,17 +547,9 @@ public class AuctionItemAdapter extends RecyclerView.Adapter {
                         @Override
                         public void onSuccess() {
 
-                            if (UserManager.getInstance().getUser().getId() == document.toObject(Product.class).getSellerId()) {
-                                Log.d("Johnsi", "I'm a seller");
-                                mPresenter.loadMySellingData();
-                                mPresenter.loadMySoldData();
-                            }
-
-                            if (UserManager.getInstance().getUser().getId() == document.toObject(Product.class).getHighestUserId()) {
-                                Log.d("Johnsi", "I'm a buyer");
-                                mPresenter.loadMyBiddingData();
-                                mPresenter.loadMyBoughtData();
-                            }
+                            mPresenter.loadMyBiddingData();
+                            mPresenter.loadMyBoughtData();
+                            mPresenter.loadBoughtBadgeData();
 
                         }
 
@@ -503,6 +561,16 @@ public class AuctionItemAdapter extends RecyclerView.Adapter {
 
                 })
                 .addOnFailureListener(e -> Log.w("Johnsi", "Unread Bought Count Error updating document", e));
+
+    }
+
+    private void updateProductAuctionCondition(Product latestProduct) {
+
+        Firebase.getFirestore().collection("products")
+                .document(String.valueOf(latestProduct.getProductId()))
+                .update("auctionCondition", "finish")
+                .addOnSuccessListener(aVoid -> Log.d("Johnsi", "Product condition (finish) successfully updated!"))
+                .addOnFailureListener(e -> Log.w("Johnsi", "Product condition (finish) Error updating document", e));
 
     }
 

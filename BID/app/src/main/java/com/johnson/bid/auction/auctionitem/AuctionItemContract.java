@@ -36,6 +36,13 @@ public interface AuctionItemContract {
 
         void loadMyBoughtData();
 
+        void loadNobodyBidBadgeData();
+
+        void loadSoldBadgeData();
+
+        void loadBoughtBadgeData();
+
+
     }
 
 }

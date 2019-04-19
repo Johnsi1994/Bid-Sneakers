@@ -437,6 +437,48 @@ public class MainPresenter implements MainContract.Presenter, AuctionContract.Pr
         return mMainView.findNobodyBidView();
     }
 
+    @Override
+    public void loadBoughtBadgeData() {
+
+        if (mTradePresenter != null) {
+            mTradePresenter.loadBoughtBadgeData();
+        }
+
+    }
+
+    @Override
+    public void setBoughtBadgeData(int unreadBought) {
+        mTradePresenter.setBoughtBadgeData(unreadBought);
+    }
+
+    @Override
+    public void loadSoldBadgeData() {
+
+        if (mTradePresenter != null) {
+            mTradePresenter.loadSoldBadgeData();
+        }
+
+    }
+
+    @Override
+    public void setSoldBadgeData(int unreadSold) {
+        mTradePresenter.setSoldBadgeData(unreadSold);
+    }
+
+    @Override
+    public void loadNobodyBidBadgeData() {
+
+        if (mTradePresenter != null) {
+            mTradePresenter.loadNobodyBidBadgeData();
+        }
+
+    }
+
+    @Override
+    public void setNobodyBidBadgeData(int unreadNobodyBid) {
+        mTradePresenter.setNobodyBidBadgeData(unreadNobodyBid);
+    }
+
 
     @Override
     public void openBidding(String auctionType, Product product) {
@@ -521,7 +563,11 @@ public class MainPresenter implements MainContract.Presenter, AuctionContract.Pr
 
     @Override
     public void loadNobodyBidData() {
-        mNobodyBidPresenter.loadNobodyBidData();
+
+        if (mNobodyBidPresenter != null) {
+            mNobodyBidPresenter.loadNobodyBidData();
+        }
+
     }
 
     @Override

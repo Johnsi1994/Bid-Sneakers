@@ -98,6 +98,7 @@ public class PostAdapter extends RecyclerView.Adapter {
 
         @SuppressLint("SimpleDateFormat")
         private SimpleDateFormat sf = new SimpleDateFormat("MM 月 dd 日 HH 時 mm 分");
+        long oneMinute = 1000 * 60L;
         long oneHour = 1000 * 60 * 60 * 1L;
         long oneWeek = 7 * 1000 * 60 * 60 * 24L;
 
@@ -188,7 +189,7 @@ public class PostAdapter extends RecyclerView.Adapter {
                     .setHourText("時")
                     .setMinuteText("分")
                     .setCyclic(false)
-                    .setMinMillseconds(System.currentTimeMillis() + oneHour)
+                    .setMinMillseconds(System.currentTimeMillis() + oneMinute)
                     .setMaxMillseconds(System.currentTimeMillis() + oneWeek)
                     .setCurrentMillseconds(System.currentTimeMillis())
                     .setThemeColor(mMainActivity.getResources().getColor(R.color.colorPrimary))

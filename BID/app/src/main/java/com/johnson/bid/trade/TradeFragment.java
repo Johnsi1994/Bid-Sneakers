@@ -56,9 +56,9 @@ public class TradeFragment extends Fragment implements TradeContract.View {
         mViewPager.setAdapter(mTradeAdapter);
         mTabLayout.setupWithViewPager(mViewPager);
 
-        mTabLayout.setBadgeText(2, String.valueOf(1));
-        mTabLayout.setBadgeText(3,String.valueOf(3));
-        mTabLayout.setBadgeText(4,String.valueOf(5));
+        mPresenter.loadBoughtBadgeData();
+        mPresenter.loadSoldBadgeData();
+        mPresenter.loadNobodyBidBadgeData();
 
     }
 
@@ -68,5 +68,36 @@ public class TradeFragment extends Fragment implements TradeContract.View {
     }
 
 
+    @Override
+    public void showBoughtBadgeUI(int unreadBought) {
 
+        if (unreadBought > 0) {
+            mTabLayout.setBadgeText(2, String.valueOf(unreadBought));
+        } else {
+            mTabLayout.setBadgeText(2, null);
+        }
+
+    }
+
+    @Override
+    public void showSoldBadgeUI(int unreadBought) {
+
+        if (unreadBought > 0) {
+            mTabLayout.setBadgeText(3,String.valueOf(unreadBought));
+        } else {
+            mTabLayout.setBadgeText(3, null);
+        }
+
+    }
+
+    @Override
+    public void showNobodyBidBadgeUI(int unreadBought) {
+
+        if (unreadBought > 0) {
+            mTabLayout.setBadgeText(4,String.valueOf(unreadBought));
+        } else {
+            mTabLayout.setBadgeText(4, null);
+        }
+
+    }
 }

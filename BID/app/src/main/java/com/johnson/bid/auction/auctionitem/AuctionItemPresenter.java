@@ -119,4 +119,19 @@ public class AuctionItemPresenter implements AuctionItemContract.Presenter {
 
     }
 
+    @Override
+    public void loadNobodyBidBadgeData() {
+
+    }
+
+    @Override
+    public void loadSoldBadgeData() {
+
+    }
+
+    @Override
+    public void loadBoughtBadgeData() {
+
+    }
+
 }

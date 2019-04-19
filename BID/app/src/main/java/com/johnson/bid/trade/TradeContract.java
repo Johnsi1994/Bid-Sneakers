@@ -8,7 +8,11 @@ public interface TradeContract {
 
     interface View extends BaseView<Presenter> {
 
-        
+        void showBoughtBadgeUI(int unreadBought);
+
+        void showSoldBadgeUI(int unreadSold);
+
+        void showNobodyBidBadgeUI(int unreadNobodyBid);
 
     }
 
@@ -23,6 +27,18 @@ public interface TradeContract {
         TradeItemFragment findMySold();
 
         TradeItemFragment findNobodyBid();
+
+        void loadBoughtBadgeData();
+
+        void setBoughtBadgeData(int unreadBought);
+
+        void loadSoldBadgeData();
+
+        void setSoldBadgeData(int unreadBought);
+
+        void loadNobodyBidBadgeData();
+
+        void setNobodyBidBadgeData(int unreadBought);
 
     }
 }

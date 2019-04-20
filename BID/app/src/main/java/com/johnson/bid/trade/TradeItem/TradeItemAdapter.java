@@ -188,7 +188,7 @@ public class TradeItemAdapter extends RecyclerView.Adapter {
 
         holder.getBiddingLayout().setOnClickListener(v -> {
 
-            if (product.getAuctionType().equals("English")) {
+            if (product.getAuctionType().equals("一般拍賣")) {
                 mPresenter.openBidding(ENGLISH, product);
             } else {
                 mPresenter.openBidding(SEALED, product);
@@ -201,7 +201,7 @@ public class TradeItemAdapter extends RecyclerView.Adapter {
 
         holder.getTextTitle().setText(product.getTitle());
 
-        if (product.getAuctionType().equals("English")) {
+        if (product.getAuctionType().equals("一般拍賣")) {
 
             holder.getTextPrice().setText(String.valueOf(product.getCurrentPrice()));
 
@@ -308,7 +308,7 @@ public class TradeItemAdapter extends RecyclerView.Adapter {
 
         holder.getSellingLayout().setOnClickListener(v -> {
 
-            if (product.getAuctionType().equals("English")) {
+            if (product.getAuctionType().equals("一般拍賣")) {
                 mPresenter.openSelling(ENGLISH, product);
             } else {
                 mPresenter.openSelling(SEALED, product);
@@ -321,7 +321,7 @@ public class TradeItemAdapter extends RecyclerView.Adapter {
 
         holder.getTextTitle().setText(product.getTitle());
 
-        if (product.getAuctionType().equals("English")) {
+        if (product.getAuctionType().equals("一般拍賣")) {
 
             holder.getTextPrice().setText(String.valueOf(product.getCurrentPrice()));
 
@@ -560,7 +560,6 @@ public class TradeItemAdapter extends RecyclerView.Adapter {
         holder.getNobodyBidLayout().setOnClickListener(v -> {
 
             if (!product.isSellerHasRead()) {
-                Log.d("JOHNSITESTING", "Nobody Bid : " + product.isSellerHasRead());
 
                 //3rd parameter : 1 = Sold / 2 = Nobody Bid
                 mPresenter.setSellerHasRead(true, product, 2);

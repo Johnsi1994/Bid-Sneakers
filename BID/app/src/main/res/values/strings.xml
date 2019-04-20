@@ -32,4 +32,12 @@
     <string name="nobody">無</string>
     <string name="delete_success">刪除成功</string>
 
+    <!--placeholder-->
+    <string name="nike_air_mag">Nike Air Mag</string>
+    <string name="placeholder_time">1 天 12 時 12 分 12 秒</string>
+    <string name="nt_dollars">NT$</string>
+    <string name="placeholder_price">300000</string>
+    <string name="slash">/</string>
+    <string name="bit_times_on_brief">次出價</string>
+
 </resources>

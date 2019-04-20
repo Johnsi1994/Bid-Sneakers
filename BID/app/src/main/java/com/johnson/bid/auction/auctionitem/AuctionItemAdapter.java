@@ -3,6 +3,7 @@ package com.johnson.bid.auction.auctionitem;
 import android.os.CountDownTimer;
 import android.support.annotation.NonNull;
 import android.support.constraint.ConstraintLayout;
+import android.support.v7.widget.CardView;
 import android.support.v7.widget.RecyclerView;
 import android.util.Log;
 import android.util.SparseArray;
@@ -17,13 +18,11 @@ import com.google.firebase.firestore.FieldValue;
 import com.johnson.bid.MainMvpController;
 import com.johnson.bid.R;
 import com.johnson.bid.data.Product;
-import com.johnson.bid.data.User;
 import com.johnson.bid.util.Firebase;
 import com.johnson.bid.util.ImageManager;
 import com.johnson.bid.util.UserManager;
 
 import java.util.ArrayList;
-import java.util.concurrent.atomic.AtomicReference;
 
 import static com.johnson.bid.MainMvpController.ENGLISH;
 import static com.johnson.bid.MainMvpController.SEALED;
@@ -51,7 +50,7 @@ public class AuctionItemAdapter extends RecyclerView.Adapter {
         if (viewType == TYPE_PRODUCT) {
             if (mAuctionType.equals(ENGLISH)) {
                 return new EnglishAuctionViewHolder(LayoutInflater.from(viewGroup.getContext())
-                        .inflate(R.layout.item_bidding_english, viewGroup, false));
+                        .inflate(R.layout.item_product_most, viewGroup, false));
             } else {
                 return new SealedAuctionViewHolder(LayoutInflater.from(viewGroup.getContext())
                         .inflate(R.layout.item_bidding_sealed, viewGroup, false));
@@ -89,26 +88,26 @@ public class AuctionItemAdapter extends RecyclerView.Adapter {
 
     private class EnglishAuctionViewHolder extends RecyclerView.ViewHolder {
 
-        private ConstraintLayout mLayoutEnglishAuction;
+        private CardView mLayoutEnglishAuction;
         private ImageView mImageMain;
         private TextView mTextTitle;
         private TextView mTextTime;
         private TextView mTextPrice;
-        private TextView mTextPeople;
+        private TextView mTextPlaceBidTimes;
         CountDownTimer countDownTimer;
 
         private EnglishAuctionViewHolder(View itemView) {
             super(itemView);
 
-            mLayoutEnglishAuction = itemView.findViewById(R.id.layout_e_auction);
-            mImageMain = itemView.findViewById(R.id.image_product_e_auction);
-            mTextTitle = itemView.findViewById(R.id.text_product_title_e_auction);
-            mTextTime = itemView.findViewById(R.id.text_last_time_e_auction);
-            mTextPrice = itemView.findViewById(R.id.text_price_e_auction);
-            mTextPeople = itemView.findViewById(R.id.text_participant_num_e_auction);
+            mLayoutEnglishAuction = itemView.findViewById(R.id.layout_product_most_brief);
+            mImageMain = itemView.findViewById(R.id.image_product_most);
+            mTextTitle = itemView.findViewById(R.id.text_product_most_title);
+            mTextTime = itemView.findViewById(R.id.text_product_most_remaining_time);
+            mTextPrice = itemView.findViewById(R.id.text_product_most_price);
+            mTextPlaceBidTimes = itemView.findViewById(R.id.text_product_most_place_bid_times);
         }
 
-        private ConstraintLayout getLayoutEnglishAuction() {
+        private CardView getLayoutEnglishAuction() {
             return mLayoutEnglishAuction;
         }
 
@@ -128,8 +127,8 @@ public class AuctionItemAdapter extends RecyclerView.Adapter {
             return mTextPrice;
         }
 
-        private TextView getTextPeople() {
-            return mTextPeople;
+        private TextView getTextPlaceBidTimes() {
+            return mTextPlaceBidTimes;
         }
     }
 
@@ -222,7 +221,7 @@ public class AuctionItemAdapter extends RecyclerView.Adapter {
 
         holder.getTextPrice().setText(String.valueOf(product.getCurrentPrice()));
 
-        holder.getTextPeople().setText(String.valueOf(product.getParticipantsNumber()));
+        holder.getTextPlaceBidTimes().setText(String.valueOf(product.getParticipantsNumber()));
 
     }
 

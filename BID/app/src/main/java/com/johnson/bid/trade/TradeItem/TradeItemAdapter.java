@@ -4,8 +4,8 @@ import android.graphics.Color;
 import android.os.CountDownTimer;
 import android.support.annotation.NonNull;
 import android.support.constraint.ConstraintLayout;
+import android.support.v7.widget.CardView;
 import android.support.v7.widget.RecyclerView;
-import android.util.Log;
 import android.util.SparseArray;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -16,9 +16,7 @@ import android.widget.TextView;
 import com.johnson.bid.MainMvpController;
 import com.johnson.bid.R;
 import com.johnson.bid.data.Product;
-import com.johnson.bid.util.Firebase;
 import com.johnson.bid.util.ImageManager;
-import com.johnson.bid.util.UserManager;
 
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
@@ -55,7 +53,7 @@ public class TradeItemAdapter extends RecyclerView.Adapter {
             switch (mTradeType) {
                 case MYBIDDING:
                     return new BiddingViewHolder(LayoutInflater.from(viewGroup.getContext())
-                            .inflate(R.layout.item_bidding_english, viewGroup, false));
+                            .inflate(R.layout.item_product_most, viewGroup, false));
                 case MYSELLING:
                     return new SellingViewHolder(LayoutInflater.from(viewGroup.getContext())
                             .inflate(R.layout.item_selling_english, viewGroup, false));
@@ -121,32 +119,32 @@ public class TradeItemAdapter extends RecyclerView.Adapter {
 
     private class BiddingViewHolder extends RecyclerView.ViewHolder {
 
-        private ConstraintLayout mBiddingLayout;
+        private CardView mBiddingLayout;
         private ImageView mImageMain;
         private TextView mTextTitle;
         private TextView mTextTime;
         private TextView mTextPrice;
-        private TextView mTextPeople;
+        private TextView mTextPlaceBidTimes;
         private TextView mTextPriceTitle;
         private TextView mTextSlash;
-        private TextView mTextPeopleTitle;
+        private TextView mTextPlaceBidTimesTitle;
         CountDownTimer countDownTimer;
 
         private BiddingViewHolder(View itemView) {
             super(itemView);
 
-            mBiddingLayout = itemView.findViewById(R.id.layout_e_auction);
-            mImageMain = itemView.findViewById(R.id.image_product_e_auction);
-            mTextTitle = itemView.findViewById(R.id.text_product_title_e_auction);
-            mTextTime = itemView.findViewById(R.id.text_last_time_e_auction);
-            mTextPrice = itemView.findViewById(R.id.text_price_e_auction);
-            mTextPeople = itemView.findViewById(R.id.text_participant_num_e_auction);
-            mTextPriceTitle = itemView.findViewById(R.id.text_price_title);
-            mTextSlash = itemView.findViewById(R.id.text_slash);
-            mTextPeopleTitle = itemView.findViewById(R.id.text_people_title);
+            mBiddingLayout = itemView.findViewById(R.id.layout_product_most_brief);
+            mImageMain = itemView.findViewById(R.id.image_product_most);
+            mTextTitle = itemView.findViewById(R.id.text_product_most_title);
+            mTextTime = itemView.findViewById(R.id.text_product_most_remaining_time);
+            mTextPrice = itemView.findViewById(R.id.text_product_most_price);
+            mTextPriceTitle = itemView.findViewById(R.id.text_product_most_price_title);
+            mTextPlaceBidTimes = itemView.findViewById(R.id.text_product_most_place_bid_times);
+            mTextPlaceBidTimesTitle = itemView.findViewById(R.id.text_product_most_place_bid_times_title);
+            mTextSlash = itemView.findViewById(R.id.text_product_most_slash);
         }
 
-        private ConstraintLayout getBiddingLayout() {
+        private CardView getBiddingLayout() {
             return mBiddingLayout;
         }
 
@@ -166,12 +164,12 @@ public class TradeItemAdapter extends RecyclerView.Adapter {
             return mTextPrice;
         }
 
-        private TextView getTextPeople() {
-            return mTextPeople;
+        private TextView getTextPlaceBidTimes() {
+            return mTextPlaceBidTimes;
         }
 
-        private TextView getTextPeopleTitle() {
-            return mTextPeopleTitle;
+        private TextView getTextPlaceBidTimesTitle() {
+            return mTextPlaceBidTimesTitle;
         }
 
         private TextView getTextPriceTitle() {
@@ -205,16 +203,17 @@ public class TradeItemAdapter extends RecyclerView.Adapter {
 
             holder.getTextPrice().setText(String.valueOf(product.getCurrentPrice()));
 
-            holder.getTextPeople().setText(String.valueOf(product.getParticipantsNumber()));
+            holder.getTextPlaceBidTimes().setText(String.valueOf(product.getParticipantsNumber()));
 
         } else {
 
-            holder.getTextTitle().setPadding(0, 40, 0, 0);
+            holder.getTextTitle().setPadding(0, 24, 0, 0);
+            holder.getTextTime().setPadding(0, 28, 0, 0);
 
             holder.getTextPrice().setVisibility(View.GONE);
             holder.getTextPriceTitle().setVisibility(View.GONE);
-            holder.getTextPeople().setVisibility(View.GONE);
-            holder.getTextPeopleTitle().setVisibility(View.GONE);
+            holder.getTextPlaceBidTimes().setVisibility(View.GONE);
+            holder.getTextPlaceBidTimesTitle().setVisibility(View.GONE);
             holder.getTextSlash().setVisibility(View.GONE);
 
         }

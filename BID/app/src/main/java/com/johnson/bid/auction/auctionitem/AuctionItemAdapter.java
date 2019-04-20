@@ -53,7 +53,7 @@ public class AuctionItemAdapter extends RecyclerView.Adapter {
                         .inflate(R.layout.item_product_most, viewGroup, false));
             } else {
                 return new SealedAuctionViewHolder(LayoutInflater.from(viewGroup.getContext())
-                        .inflate(R.layout.item_bidding_sealed, viewGroup, false));
+                        .inflate(R.layout.item_product_sealed, viewGroup, false));
             }
         } else {
             return new LoadingViewHolder(LayoutInflater.from(viewGroup.getContext())
@@ -227,7 +227,7 @@ public class AuctionItemAdapter extends RecyclerView.Adapter {
 
     private class SealedAuctionViewHolder extends RecyclerView.ViewHolder {
 
-        private ConstraintLayout mLayoutSealedAuction;
+        private CardView mLayoutSealedAuction;
         private ImageView mImageMain;
         private TextView mTextTitle;
         private TextView mTextTime;
@@ -236,14 +236,14 @@ public class AuctionItemAdapter extends RecyclerView.Adapter {
         private SealedAuctionViewHolder(View itemView) {
             super(itemView);
 
-            mLayoutSealedAuction = itemView.findViewById(R.id.layout_s_auction);
-            mImageMain = itemView.findViewById(R.id.image_product_s_auction);
-            mTextTitle = itemView.findViewById(R.id.text_product_title_s_auction);
-            mTextTime = itemView.findViewById(R.id.text_last_time_s_auction);
+            mLayoutSealedAuction = itemView.findViewById(R.id.layout_product_sealed_brief);
+            mImageMain = itemView.findViewById(R.id.image_product_sealed);
+            mTextTitle = itemView.findViewById(R.id.text_product_sealed_title);
+            mTextTime = itemView.findViewById(R.id.text_product_sealed_remaining_time);
 
         }
 
-        private ConstraintLayout getLayoutSealedAuction() {
+        private CardView getLayoutSealedAuction() {
             return mLayoutSealedAuction;
         }
 

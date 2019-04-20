@@ -49,7 +49,7 @@ public class BiddingDetailFragment extends Fragment implements BiddingDetailCont
     @Nullable
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
-        View root = inflater.inflate(R.layout.fragment_recycler_bidding, container, false);
+        View root = inflater.inflate(R.layout.fragment_recycler_container, container, false);
 
         RecyclerView recyclerView = root.findViewById(R.id.recycler_container);
         recyclerView.setLayoutManager(new LinearLayoutManager(getActivity()));

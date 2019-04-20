@@ -41,7 +41,7 @@
         android:layout_marginBottom="16dp"
         android:clickable="true"
         android:focusable="true"
-        app:backgroundTint="@color/color_FAB"
+        app:backgroundTint="@color/gray_EEEEEE"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:srcCompat="@drawable/ic_search" />
@@ -54,10 +54,10 @@
         android:layout_marginBottom="16dp"
         android:clickable="true"
         android:focusable="true"
-        app:backgroundTint="@color/color_FAB"
+        app:backgroundTint="@color/gray_EEEEEE"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
-        app:srcCompat="@drawable/ic_post" />
+        app:srcCompat="@drawable/ic_add" />
 
     <android.support.design.widget.FloatingActionButton
         android:id="@+id/fab_eyes_on"
@@ -67,10 +67,10 @@
         android:layout_marginBottom="16dp"
         android:clickable="true"
         android:focusable="true"
-        app:backgroundTint="@color/color_FAB"
+        app:backgroundTint="@color/gray_EEEEEE"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
-        app:srcCompat="@drawable/ic_like" />
+        app:srcCompat="@drawable/ic_eyes_on" />
 
     <android.support.design.widget.FloatingActionButton
         android:id="@+id/fab_menu"
@@ -80,9 +80,9 @@
         android:layout_marginBottom="16dp"
         android:clickable="true"
         android:focusable="true"
-        app:backgroundTint="@color/color_FAB"
+        app:backgroundTint="@color/gray_EEEEEE"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
-        app:srcCompat="@drawable/ic_hand" />
+        app:srcCompat="@drawable/ic_up_arrow" />
 
 </android.support.constraint.ConstraintLayout>

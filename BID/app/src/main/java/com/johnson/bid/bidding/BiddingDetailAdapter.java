@@ -335,17 +335,17 @@ public class BiddingDetailAdapter extends RecyclerView.Adapter {
         for (int i = 0; i < myEyesOn.size(); i++) {
             if (myEyesOn.get(i).equals(mProduct.getProductId())) {
                 isEyesOn = true;
-                mEyesOnBtn.setBackgroundResource(R.drawable.ic_like);
+                mEyesOnBtn.setBackgroundResource(R.drawable.ic_eyes_on_selected);
             }
         }
 
         mEyesOnBtn.setOnClickListener(v -> {
             if (isEyesOn) {
                 isEyesOn = false;
-                mEyesOnBtn.setBackgroundResource(R.drawable.ic_unlike);
+                mEyesOnBtn.setBackgroundResource(R.drawable.ic_eyes_on);
             } else {
                 isEyesOn = true;
-                mEyesOnBtn.setBackgroundResource(R.drawable.ic_like);
+                mEyesOnBtn.setBackgroundResource(R.drawable.ic_eyes_on_selected);
             }
         });
     }

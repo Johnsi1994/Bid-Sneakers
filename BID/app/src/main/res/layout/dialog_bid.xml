@@ -4,7 +4,7 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
-    android:background="@drawable/dialog_shape">
+    android:background="@drawable/bg_dialog">
 
     <EditText
         android:id="@+id/edit_bit_your_price"

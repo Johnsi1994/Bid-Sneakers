@@ -10,6 +10,8 @@
     <color name="color_FAB">#FFEE99</color>
     <color name="color_red">#FF4545</color>
 
+    <color name="color_FF7070">#FF7070</color>
+
     <color name="color_BFE2E7">#BFE2E7</color>
 
     <color name="color_FFDDC7">#FFDDC7</color>
@@ -20,6 +22,9 @@
     <color name="gray_888888">#888888</color>
     <color name="gray_DAD7E0">#DAD7E0</color>
     <color name="gray_FCF7FF">#FCF7FF</color>
+    <color name="gray_EEEEEE">#EEEEEE</color>
+
+    <color name="gray_BBBBBB">#BBBBBB</color>
 
     <color name="gray_F7FFFB">#F7FFFB</color>
 

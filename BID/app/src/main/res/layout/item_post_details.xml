@@ -5,189 +5,306 @@
     android:layout_width="match_parent"
     android:layout_height="wrap_content">
 
+    <android.support.v7.widget.RecyclerView
+        android:id="@+id/recycler_post_pics"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="8dp"
+        android:layout_marginTop="8dp"
+        android:layout_marginEnd="8dp"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent" />
+
+    <View
+        android:id="@+id/view"
+        android:layout_width="0dp"
+        android:layout_height="44dp"
+        android:layout_marginTop="8dp"
+        android:background="@color/gray_EEEEEE"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/recycler_post_pics" />
+
     <TextView
         android:id="@+id/text_product_info"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginStart="8dp"
-        android:layout_marginTop="16dp"
+        android:layout_marginStart="16dp"
         android:text="@string/product_information"
         android:textColor="@color/black"
         android:textSize="18sp"
-        android:textStyle="bold"
         android:visibility="visible"
-        app:layout_constraintStart_toStartOf="@+id/recycler_post_pics"
-        app:layout_constraintTop_toBottomOf="@+id/recycler_post_pics" />
+        android:typeface="monospace"
+        app:layout_constraintBottom_toBottomOf="@+id/view"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="@+id/view" />
 
     <EditText
         android:id="@+id/edit_product_title"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
-        android:layout_marginStart="8dp"
-        android:layout_marginTop="8dp"
-        android:layout_marginEnd="24dp"
+        android:layout_marginStart="16dp"
+        android:layout_marginTop="16dp"
+        android:layout_marginEnd="16dp"
+        android:background="@null"
         android:ems="10"
         android:hint="@string/product_title"
+        android:textSize="16sp"
+        android:textColorHint="@color/black_3f3a3a"
         android:inputType="textPersonName"
         android:visibility="visible"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="@+id/text_product_info"
-        app:layout_constraintTop_toBottomOf="@+id/text_product_info" />
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/view" />
+
+    <View
+        android:id="@+id/view2"
+        android:layout_width="0dp"
+        android:layout_height="1dp"
+        android:layout_marginTop="16dp"
+        android:background="@color/gray_EEEEEE"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/edit_product_title" />
 
     <EditText
         android:id="@+id/edit_product_intro"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
+        android:layout_marginStart="16dp"
         android:layout_marginTop="16dp"
+        android:layout_marginEnd="16dp"
+        android:background="@null"
         android:ems="200"
         android:hint="@string/product_intro"
+        android:textSize="16sp"
+        android:textColorHint="@color/black_3f3a3a"
         android:inputType="textMultiLine"
-        app:layout_constraintEnd_toEndOf="@+id/edit_product_title"
-        app:layout_constraintStart_toStartOf="@+id/edit_product_title"
-        app:layout_constraintTop_toBottomOf="@+id/edit_product_title" />
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/view2" />
+
+    <View
+        android:id="@+id/view3"
+        android:layout_width="0dp"
+        android:layout_height="1dp"
+        android:layout_marginTop="16dp"
+        android:background="@color/gray_EEEEEE"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/edit_product_intro" />
 
     <TextView
         android:id="@+id/text_product_condition"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginStart="4dp"
-        android:layout_marginTop="24dp"
+        android:layout_marginStart="16dp"
+        android:layout_marginTop="16dp"
         android:text="@string/product_condition"
-        android:textColor="@color/black"
-        android:textSize="18sp"
+        android:textColor="@color/black_3f3a3a"
+        android:textSize="16sp"
+        android:typeface="monospace"
         android:visibility="visible"
-        app:layout_constraintStart_toStartOf="@+id/edit_product_intro"
-        app:layout_constraintTop_toBottomOf="@+id/edit_product_intro" />
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/view3" />
 
     <Spinner
         android:id="@+id/spinner_product_condition"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
         android:layout_marginStart="16dp"
+        android:layout_marginEnd="16dp"
         android:entries="@array/product_condition_list"
         android:prompt="@string/product_condition"
         android:spinnerMode="dropdown"
         app:layout_constraintBottom_toBottomOf="@+id/text_product_condition"
-        app:layout_constraintEnd_toEndOf="@+id/edit_product_intro"
+        app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toEndOf="@+id/text_product_condition"
         app:layout_constraintTop_toTopOf="@+id/text_product_condition" />
+
+    <View
+        android:id="@+id/view4"
+        android:layout_width="0dp"
+        android:layout_height="44dp"
+        android:layout_marginTop="16dp"
+        android:background="@color/gray_EEEEEE"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/text_product_condition" />
 
     <TextView
         android:id="@+id/text_auction_settings"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginTop="32dp"
+        android:layout_marginStart="16dp"
         android:text="@string/auction_settings"
         android:textColor="@color/black"
         android:textSize="18sp"
-        android:textStyle="bold"
         android:visibility="visible"
-        app:layout_constraintStart_toStartOf="@+id/text_product_info"
-        app:layout_constraintTop_toBottomOf="@+id/text_product_condition" />
+        android:typeface="monospace"
+        app:layout_constraintBottom_toBottomOf="@+id/view4"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="@+id/view4" />
 
     <EditText
         android:id="@+id/edit_starting_price"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
-        android:layout_marginStart="8dp"
-        android:layout_marginTop="8dp"
+        android:layout_marginStart="16dp"
+        android:layout_marginTop="16dp"
+        android:layout_marginEnd="16dp"
+        android:background="@null"
         android:ems="10"
         android:hint="@string/starting_price"
+        android:textSize="16sp"
+        android:textColorHint="@color/black_3f3a3a"
         android:inputType="number"
         android:visibility="visible"
-        app:layout_constraintEnd_toEndOf="@+id/spinner_product_condition"
-        app:layout_constraintStart_toStartOf="@+id/text_auction_settings"
-        app:layout_constraintTop_toBottomOf="@+id/text_auction_settings" />
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/view4" />
+
+    <View
+        android:id="@+id/view5"
+        android:layout_width="0dp"
+        android:layout_height="1dp"
+        android:layout_marginTop="16dp"
+        android:background="@color/gray_EEEEEE"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/edit_starting_price" />
 
     <EditText
         android:id="@+id/edit_reserve_price"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
+        android:layout_marginStart="16dp"
         android:layout_marginTop="16dp"
+        android:layout_marginEnd="16dp"
+        android:background="@null"
         android:ems="10"
+        android:textSize="16sp"
         android:hint="@string/reserve_price"
         android:inputType="number"
-        app:layout_constraintEnd_toEndOf="@+id/edit_starting_price"
-        app:layout_constraintStart_toStartOf="@+id/edit_starting_price"
-        app:layout_constraintTop_toBottomOf="@+id/edit_starting_price" />
+        android:textColorHint="@color/black_3f3a3a"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/view5" />
+
+    <View
+        android:id="@+id/view6"
+        android:layout_width="0dp"
+        android:layout_height="1dp"
+        android:layout_marginTop="16dp"
+        android:background="@color/gray_EEEEEE"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/edit_reserve_price" />
 
     <TextView
         android:id="@+id/text_auction_type"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginStart="4dp"
-        android:layout_marginTop="24dp"
+        android:layout_marginStart="16dp"
+        android:layout_marginTop="16dp"
         android:text="@string/auction_type"
-        android:textColor="@color/black"
-        android:textSize="18sp"
-        app:layout_constraintStart_toStartOf="@+id/edit_reserve_price"
-        app:layout_constraintTop_toBottomOf="@+id/edit_reserve_price" />
+        android:textColor="@color/black_3f3a3a"
+        android:textSize="16sp"
+        android:typeface="monospace"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/view6" />
 
     <Spinner
         android:id="@+id/spinner_auction_type"
         android:layout_width="0dp"
         android:layout_height="25dp"
         android:layout_marginStart="16dp"
+        android:layout_marginEnd="16dp"
         android:entries="@array/auction_type_list"
         android:prompt="@string/auction_type"
         android:spinnerMode="dropdown"
         app:layout_constraintBottom_toBottomOf="@+id/text_auction_type"
-        app:layout_constraintEnd_toEndOf="@+id/spinner_product_condition"
+        app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toEndOf="@+id/text_auction_type"
         app:layout_constraintTop_toTopOf="@+id/text_auction_type" />
+
+    <View
+        android:id="@+id/view_increase"
+        android:layout_width="0dp"
+        android:layout_height="1dp"
+        android:layout_marginTop="16dp"
+        android:background="@color/gray_EEEEEE"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/text_auction_type" />
 
     <TextView
         android:id="@+id/text_increase"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginTop="28dp"
+        android:layout_marginStart="16dp"
+        android:layout_marginTop="16dp"
         android:text="@string/increase"
-        android:textColor="@color/black"
-        android:textSize="18sp"
-        app:layout_constraintStart_toStartOf="@+id/text_auction_type"
-        app:layout_constraintTop_toBottomOf="@+id/text_auction_type" />
+        android:textColor="@color/black_3f3a3a"
+        android:textSize="16sp"
+        android:typeface="monospace"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/view_increase" />
 
     <Spinner
         android:id="@+id/spinner_increase"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
         android:layout_marginStart="16dp"
+        android:layout_marginEnd="16dp"
         android:entries="@array/increase_list"
         android:prompt="@string/increase"
         android:spinnerMode="dropdown"
         app:layout_constraintBottom_toBottomOf="@+id/text_increase"
-        app:layout_constraintEnd_toEndOf="@+id/spinner_auction_type"
+        app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toEndOf="@+id/text_increase"
         app:layout_constraintTop_toTopOf="@+id/text_increase" />
+
+    <View
+        android:id="@+id/view8"
+        android:layout_width="0dp"
+        android:layout_height="1dp"
+        android:layout_marginTop="16dp"
+        android:background="@color/gray_EEEEEE"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/text_increase" />
 
     <android.support.constraint.ConstraintLayout
         android:id="@+id/layout_time_picker"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
-        android:layout_marginTop="16dp"
         app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.0"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/text_increase">
+        app:layout_constraintTop_toBottomOf="@+id/view8">
 
         <TextView
             android:id="@+id/text_expire_time_title"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_marginStart="36dp"
-            android:layout_marginTop="12dp"
+            android:layout_marginStart="16dp"
+            android:layout_marginTop="16dp"
             android:layout_marginBottom="16dp"
-            android:text="@string/finish_time"
-            android:textColor="@color/black"
-            android:textSize="18sp"
+            android:text="@string/finish_time_post"
+            android:textColor="@color/black_3f3a3a"
+            android:textSize="16sp"
+            android:typeface="monospace"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toTopOf="parent" />
 
         <ImageView
             android:id="@+id/imageView"
-            android:layout_width="20dp"
-            android:layout_height="20dp"
-            android:layout_marginEnd="38dp"
+            android:layout_width="10dp"
+            android:layout_height="10dp"
+            android:layout_marginEnd="35dp"
             app:layout_constraintBottom_toBottomOf="@+id/text_expire_time_title"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintTop_toTopOf="@+id/text_expire_time_title"
@@ -195,36 +312,47 @@
 
         <TextView
             android:id="@+id/text_expire_time"
-            android:layout_width="wrap_content"
+            android:layout_width="0dp"
             android:layout_height="wrap_content"
-            android:layout_marginEnd="24dp"
-            android:text="4月6日15時32分"
+            android:layout_marginStart="16dp"
+            android:layout_marginEnd="16dp"
+            android:text="@string/placeholder_time"
             android:textColor="@color/color_red"
             android:textSize="15sp"
             android:visibility="invisible"
             app:layout_constraintBottom_toBottomOf="@+id/text_expire_time_title"
             app:layout_constraintEnd_toStartOf="@+id/imageView"
+            app:layout_constraintStart_toEndOf="@+id/text_expire_time_title"
             app:layout_constraintTop_toTopOf="@+id/text_expire_time_title" />
 
 
     </android.support.constraint.ConstraintLayout>
+
+    <View
+        android:id="@+id/view9"
+        android:layout_width="0dp"
+        android:layout_height="1dp"
+        android:background="@color/gray_EEEEEE"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/layout_time_picker" />
 
     <android.support.constraint.ConstraintLayout
         android:layout_width="0dp"
         android:layout_height="wrap_content"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/layout_time_picker">
+        app:layout_constraintTop_toBottomOf="@+id/view9">
 
         <Button
             android:id="@+id/button_post"
             android:layout_width="0dp"
-            android:layout_height="wrap_content"
-            android:layout_marginStart="24dp"
-            android:layout_marginTop="8dp"
-            android:layout_marginEnd="24dp"
-            android:layout_marginBottom="16dp"
-            android:background="@color/color_FAB"
+            android:layout_height="40dp"
+            android:layout_marginStart="16dp"
+            android:layout_marginTop="12dp"
+            android:layout_marginEnd="16dp"
+            android:layout_marginBottom="12dp"
+            android:background="@color/gray_EEEEEE"
             android:text="@string/post"
             android:textColor="@color/black"
             android:textSize="18sp"
@@ -233,16 +361,5 @@
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toTopOf="parent" />
     </android.support.constraint.ConstraintLayout>
-
-    <android.support.v7.widget.RecyclerView
-        android:id="@+id/recycler_post_pics"
-        android:layout_width="0dp"
-        android:layout_height="wrap_content"
-        android:layout_marginStart="16dp"
-        android:layout_marginTop="16dp"
-        android:layout_marginEnd="16dp"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent" />
 
 </android.support.constraint.ConstraintLayout>

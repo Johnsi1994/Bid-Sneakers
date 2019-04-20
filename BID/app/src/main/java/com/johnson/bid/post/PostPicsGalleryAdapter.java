@@ -37,11 +37,11 @@ public class PostPicsGalleryAdapter extends RecyclerView.Adapter {
         if (viewType == TYPE_PHOTO) {
 
             return new PhotoViewHolder(LayoutInflater.from(viewGroup.getContext())
-                    .inflate(R.layout.item_post_pic, viewGroup, false));
+                    .inflate(R.layout.item_post_added_pic, viewGroup, false));
         }  else {
 
             return new AddViewHolder(LayoutInflater.from(viewGroup.getContext())
-                    .inflate(R.layout.item_add, viewGroup, false));
+                    .inflate(R.layout.item_post_add_pics, viewGroup, false));
         }
     }
 

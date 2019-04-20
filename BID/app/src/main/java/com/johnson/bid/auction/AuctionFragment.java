@@ -46,7 +46,7 @@ public class AuctionFragment extends Fragment implements AuctionContract.View {
     @Nullable
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
-        View root = inflater.inflate(R.layout.fragment_center, container, false);
+        View root = inflater.inflate(R.layout.fragment_auction, container, false);
 
         mTabLayout = root.findViewById(R.id.tab_center);
         mViewPager = root.findViewById(R.id.viewpager_center);
@@ -58,14 +58,17 @@ public class AuctionFragment extends Fragment implements AuctionContract.View {
 
         mMenuFloatingActionButton.setOnClickListener(v -> {
             if (isFABOpen) {
+                mMenuFloatingActionButton.setImageResource(R.drawable.ic_up_arrow);
                 closeFABMenu();
             } else {
+                mMenuFloatingActionButton.setImageResource(R.drawable.ic_closs_arrow);
                 showFABMenu();
             }
         });
 
         mPostFloatingActionButton.setOnClickListener(v -> {
             closeFABMenu();
+            mMenuFloatingActionButton.setImageResource(R.drawable.ic_up_arrow);
             mPresenter.openGalleryDialog("CENTER");
         });
 

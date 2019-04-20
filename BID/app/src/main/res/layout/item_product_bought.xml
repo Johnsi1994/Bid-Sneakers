@@ -1,0 +1,87 @@
+<?xml version="1.0" encoding="utf-8"?>
+
+<android.support.v7.widget.CardView xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/tools"
+    xmlns:card_view="http://schemas.android.com/apk/res-auto"
+    android:id="@+id/layout_product_bought_brief"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:layout_marginStart="8dp"
+    android:layout_marginTop="8dp"
+    android:layout_marginEnd="8dp"
+    android:background="@color/white"
+    app:ignore="NamespaceTypo"
+    card_view:cardCornerRadius="4dp">
+
+    <android.support.constraint.ConstraintLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content">
+
+        <ImageView
+            android:id="@+id/image_product_bought"
+            android:layout_width="80dp"
+            android:layout_height="80dp"
+            android:layout_marginStart="8dp"
+            android:layout_marginTop="8dp"
+            android:layout_marginBottom="8dp"
+            android:scaleType="centerCrop"
+            app:srcCompat="@drawable/ic_128"
+            card_view:layout_constraintBottom_toBottomOf="parent"
+            card_view:layout_constraintStart_toStartOf="parent"
+            card_view:layout_constraintTop_toTopOf="parent" />
+
+        <TextView
+            android:id="@+id/text_product_bought_title"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="12dp"
+            android:layout_marginTop="10dp"
+            android:layout_marginEnd="8dp"
+            android:ellipsize="end"
+            android:text="@string/nike_air_mag"
+            android:textColor="@color/black"
+            android:textSize="16sp"
+            card_view:layout_constraintEnd_toEndOf="parent"
+            card_view:layout_constraintStart_toEndOf="@+id/image_product_bought"
+            card_view:layout_constraintTop_toTopOf="parent" />
+
+        <TextView
+            android:id="@+id/text_0000"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="8dp"
+            android:text="@string/bought_time"
+            card_view:layout_constraintStart_toStartOf="@+id/text_product_bought_title"
+            card_view:layout_constraintTop_toBottomOf="@+id/text_product_bought_title" />
+
+        <TextView
+            android:id="@+id/text_price_title"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="8dp"
+            android:text="@string/nt_dollars"
+            card_view:layout_constraintStart_toStartOf="@+id/text_0000"
+            card_view:layout_constraintTop_toBottomOf="@+id/text_0000" />
+
+        <TextView
+            android:id="@+id/text_product_bought_price"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="4dp"
+            android:text="@string/placeholder_price"
+            card_view:layout_constraintBottom_toBottomOf="@+id/text_price_title"
+            card_view:layout_constraintStart_toEndOf="@+id/text_price_title"
+            card_view:layout_constraintTop_toTopOf="@+id/text_price_title" />
+
+        <TextView
+            android:id="@+id/text_product_bought_time"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="4dp"
+            android:text="@string/placeholder_date"
+            card_view:layout_constraintBottom_toBottomOf="@+id/text_0000"
+            card_view:layout_constraintStart_toEndOf="@+id/text_0000"
+            card_view:layout_constraintTop_toTopOf="@+id/text_0000" />
+
+    </android.support.constraint.ConstraintLayout>
+</android.support.v7.widget.CardView>

@@ -40,9 +40,9 @@ public class PostFragment extends Fragment implements PostContract.View {
     @Nullable
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
-        View root = inflater.inflate(R.layout.fragment_post, container, false);
+        View root = inflater.inflate(R.layout.fragment_recycler_container, container, false);
 
-        RecyclerView recyclerView = root.findViewById(R.id.recycler_post);
+        RecyclerView recyclerView = root.findViewById(R.id.recycler_container);
         recyclerView.setLayoutManager(new LinearLayoutManager(getActivity()));
         recyclerView.setAdapter(mPostAdapter);
 

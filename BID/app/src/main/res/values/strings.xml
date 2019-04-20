@@ -1,6 +1,5 @@
 <resources>
     <string name="app_name">Bid</string>
-    <string name="NTS">NT$</string>
     <string name="bit_times">出價次數 :</string>
 
     <!--Facebook-->
@@ -24,7 +23,7 @@
     <string name="product_information">商品資訊</string>
     <string name="auction_settings">拍賣設定</string>
     <string name="starting_price">起標價格</string>
-    <string name="finish_time">結標時間</string>
+    <string name="finish_time">結標時間 : </string>
     <string name="post">提交</string>
     <string name="toolbar_title_post">刊登</string>
     <string name="post_success">刊登成功</string>
@@ -39,5 +38,16 @@
     <string name="placeholder_price">300000</string>
     <string name="slash">/</string>
     <string name="bit_times_on_brief">次出價</string>
+    <string name="bought_time">得標時間 :</string>
+    <string name="placeholder_date">02 月 29 日 18 時 30 分</string>
+    <string name="sold_time">售出時間 :</string>
+    <string name="add_pics">新增照片</string>
+    <string name="finish_time_post">結標時間</string>
+    <string name="add_pics_from">新增商品照片從</string>
+    <string name="album">相簿</string>
+    <string name="camera">相機</string>
+    <string name="delete_product_or_not">確定要刪除此商品?</string>
+    <string name="not_today">先不要</string>
+    <string name="yes">確定</string>
 
 </resources>

@@ -92,6 +92,7 @@ public class PostAdapter extends RecyclerView.Adapter {
         private TimePickerDialog mDialogMonthDayHourMinute;
         private Button mPostBtn;
         private TextView mIncreaseTitle;
+        private View mView;
 
         private ArrayList<String> mUrls = new ArrayList<>();
         private long mTime = -1;
@@ -116,6 +117,7 @@ public class PostAdapter extends RecyclerView.Adapter {
             mIncrease = itemView.findViewById(R.id.spinner_increase);
             mTimePickerLayout = itemView.findViewById(R.id.layout_time_picker);
             mExpireTimeText = itemView.findViewById(R.id.text_expire_time);
+            mView = itemView.findViewById(R.id.view_increase);
             mPostBtn = itemView.findViewById(R.id.button_post);
 
             mProductCondition.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
@@ -141,10 +143,12 @@ public class PostAdapter extends RecyclerView.Adapter {
                         mPresenter.setAuctionType("一般拍賣");
                         mIncreaseTitle.setVisibility(View.VISIBLE);
                         mIncrease.setVisibility(View.VISIBLE);
+                        mView.setVisibility(View.VISIBLE);
                     } else {
                         mPresenter.setAuctionType("封閉拍賣");
                         mIncreaseTitle.setVisibility(View.GONE);
                         mIncrease.setVisibility(View.GONE);
+                        mView.setVisibility(View.GONE);
                     }
                 }
 

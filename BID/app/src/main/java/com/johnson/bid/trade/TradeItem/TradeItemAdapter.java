@@ -56,17 +56,17 @@ public class TradeItemAdapter extends RecyclerView.Adapter {
                             .inflate(R.layout.item_product_most, viewGroup, false));
                 case MYSELLING:
                     return new SellingViewHolder(LayoutInflater.from(viewGroup.getContext())
-                            .inflate(R.layout.item_selling_english, viewGroup, false));
+                            .inflate(R.layout.item_product_most, viewGroup, false));
                 case MYBOUGHT:
                     return new BoughtViewHolder(LayoutInflater.from(viewGroup.getContext())
-                            .inflate(R.layout.item_bought, viewGroup, false));
+                            .inflate(R.layout.item_product_bought, viewGroup, false));
                 case MYSOLD:
                     return new SoldViewHolder(LayoutInflater.from(viewGroup.getContext())
-                            .inflate(R.layout.item_sold, viewGroup, false));
+                            .inflate(R.layout.item_product_sold, viewGroup, false));
                 case NOBODYBID:
                 default:
                     return new NobodyBidViewHolder(LayoutInflater.from(viewGroup.getContext())
-                            .inflate(R.layout.item_nobody_bid, viewGroup, false));
+                            .inflate(R.layout.item_product_nobody_bid, viewGroup, false));
             }
         } else {
             return new LoadingViewHolder(LayoutInflater.from(viewGroup.getContext())
@@ -207,8 +207,7 @@ public class TradeItemAdapter extends RecyclerView.Adapter {
 
         } else {
 
-            holder.getTextTitle().setPadding(0, 24, 0, 0);
-            holder.getTextTime().setPadding(0, 28, 0, 0);
+            holder.getTextTitle().setPadding(0, 32, 0, 0);
 
             holder.getTextPrice().setVisibility(View.GONE);
             holder.getTextPriceTitle().setVisibility(View.GONE);
@@ -231,7 +230,7 @@ public class TradeItemAdapter extends RecyclerView.Adapter {
 
             @Override
             public void onFinish() {
-
+                holder.getTextTime().setText("競標結束");
             }
         }.start();
 
@@ -241,32 +240,33 @@ public class TradeItemAdapter extends RecyclerView.Adapter {
 
     private class SellingViewHolder extends RecyclerView.ViewHolder {
 
-        private ConstraintLayout mSellingLayout;
+        private CardView mSellingLayout;
         private ImageView mImageMain;
         private TextView mTextTitle;
         private TextView mTextTime;
         private TextView mTextPrice;
-        private TextView mTextPeople;
         private TextView mTextPriceTitle;
+        private TextView mTextPlaceBidTimes;
+        private TextView mTextPlaceBidTimesTitle;
         private TextView mTextSlash;
-        private TextView mTextPeopleTitle;
         CountDownTimer countDownTimer;
 
         private SellingViewHolder(View itemView) {
             super(itemView);
 
-            mSellingLayout = itemView.findViewById(R.id.layout_selling);
-            mImageMain = itemView.findViewById(R.id.image_selling_e);
-            mTextTitle = itemView.findViewById(R.id.text_title_selling_e);
-            mTextTime = itemView.findViewById(R.id.text_last_time_selling_e);
-            mTextPrice = itemView.findViewById(R.id.text_price_selling_e);
-            mTextPeople = itemView.findViewById(R.id.text_people_selling_e);
-            mTextPriceTitle = itemView.findViewById(R.id.text_price_title);
-            mTextSlash = itemView.findViewById(R.id.text_slash);
-            mTextPeopleTitle = itemView.findViewById(R.id.text_people_title);
+            mSellingLayout = itemView.findViewById(R.id.layout_product_most_brief);
+            mImageMain = itemView.findViewById(R.id.image_product_most);
+            mTextTitle = itemView.findViewById(R.id.text_product_most_title);
+            mTextTime = itemView.findViewById(R.id.text_product_most_remaining_time);
+            mTextPrice = itemView.findViewById(R.id.text_product_most_price);
+            mTextPriceTitle = itemView.findViewById(R.id.text_product_most_price_title);
+            mTextPlaceBidTimes = itemView.findViewById(R.id.text_product_most_place_bid_times);
+            mTextPlaceBidTimesTitle = itemView.findViewById(R.id.text_product_most_place_bid_times_title);
+            mTextSlash = itemView.findViewById(R.id.text_product_most_slash);
+
         }
 
-        private ConstraintLayout getSellingLayout() {
+        private CardView getSellingLayout() {
             return mSellingLayout;
         }
 
@@ -286,12 +286,12 @@ public class TradeItemAdapter extends RecyclerView.Adapter {
             return mTextPrice;
         }
 
-        private TextView getTextPeople() {
-            return mTextPeople;
+        private TextView getTextPlaceBidTimes() {
+            return mTextPlaceBidTimes;
         }
 
-        private TextView getTextPeopleTitle() {
-            return mTextPeopleTitle;
+        private TextView getTextPlaceBidTimesTitle() {
+            return mTextPlaceBidTimesTitle;
         }
 
         private TextView getTextPriceTitle() {
@@ -324,17 +324,17 @@ public class TradeItemAdapter extends RecyclerView.Adapter {
 
             holder.getTextPrice().setText(String.valueOf(product.getCurrentPrice()));
 
-            holder.getTextPeople().setText(String.valueOf(product.getParticipantsNumber()));
+            holder.getTextPlaceBidTimes().setText(String.valueOf(product.getParticipantsNumber()));
 
         } else {
 
-            holder.getTextTitle().setPadding(0, 40, 0, 0);
+            holder.getTextTitle().setPadding(0, 32, 0, 0);
 
             holder.getTextPriceTitle().setVisibility(View.GONE);
             holder.getTextPrice().setVisibility(View.GONE);
             holder.getTextSlash().setVisibility(View.GONE);
-            holder.getTextPeople().setVisibility(View.GONE);
-            holder.getTextPeopleTitle().setVisibility(View.GONE);
+            holder.getTextPlaceBidTimes().setVisibility(View.GONE);
+            holder.getTextPlaceBidTimesTitle().setVisibility(View.GONE);
         }
 
         long lastTime = product.getExpired() - System.currentTimeMillis();
@@ -350,7 +350,7 @@ public class TradeItemAdapter extends RecyclerView.Adapter {
 
             @Override
             public void onFinish() {
-
+                holder.getTextTime().setText("競標結束");
             }
         }.start();
 
@@ -359,39 +359,39 @@ public class TradeItemAdapter extends RecyclerView.Adapter {
 
     private class BoughtViewHolder extends RecyclerView.ViewHolder {
 
-        private ConstraintLayout mBoughtLayout;
+        private CardView mBoughtLayout;
         private ImageView mImageMain;
         private TextView mTextTitle;
         private TextView mTextTime;
         private TextView mTextPrice;
 
-        public BoughtViewHolder(View itemView) {
+        private BoughtViewHolder(View itemView) {
             super(itemView);
 
-            mBoughtLayout = itemView.findViewById(R.id.layout_bought);
-            mImageMain = itemView.findViewById(R.id.image_bought);
-            mTextTitle = itemView.findViewById(R.id.text_title_bought);
-            mTextTime = itemView.findViewById(R.id.text_time_bought);
-            mTextPrice = itemView.findViewById(R.id.text_price_bought);
+            mBoughtLayout = itemView.findViewById(R.id.layout_product_bought_brief);
+            mImageMain = itemView.findViewById(R.id.image_product_bought);
+            mTextTitle = itemView.findViewById(R.id.text_product_bought_title);
+            mTextTime = itemView.findViewById(R.id.text_product_bought_time);
+            mTextPrice = itemView.findViewById(R.id.text_product_bought_price);
         }
 
-        public ConstraintLayout getBoughtLayout() {
+        private CardView getBoughtLayout() {
             return mBoughtLayout;
         }
 
-        public ImageView getImageMain() {
+        private ImageView getImageMain() {
             return mImageMain;
         }
 
-        public TextView getTextTitle() {
+        private TextView getTextTitle() {
             return mTextTitle;
         }
 
-        public TextView getTextTime() {
+        private TextView getTextTime() {
             return mTextTime;
         }
 
-        public TextView getTextPrice() {
+        private TextView getTextPrice() {
             return mTextPrice;
         }
     }
@@ -442,7 +442,7 @@ public class TradeItemAdapter extends RecyclerView.Adapter {
 
     private class SoldViewHolder extends RecyclerView.ViewHolder {
 
-        private ConstraintLayout mSoldLayout;
+        private CardView mSoldLayout;
         private ImageView mImageMain;
         private TextView mTextTitle;
         private TextView mTextTime;
@@ -451,14 +451,14 @@ public class TradeItemAdapter extends RecyclerView.Adapter {
         private SoldViewHolder(View itemView) {
             super(itemView);
 
-            mSoldLayout = itemView.findViewById(R.id.layout_sold);
-            mImageMain = itemView.findViewById(R.id.image_sold);
-            mTextTitle = itemView.findViewById(R.id.text_title_sold);
-            mTextTime = itemView.findViewById(R.id.text_time_sold);
-            mTextPrice = itemView.findViewById(R.id.text_price_sold);
+            mSoldLayout = itemView.findViewById(R.id.layout_product_sold_brief);
+            mImageMain = itemView.findViewById(R.id.image_product_sold);
+            mTextTitle = itemView.findViewById(R.id.text_product_sold_title);
+            mTextTime = itemView.findViewById(R.id.text_product_sold_time);
+            mTextPrice = itemView.findViewById(R.id.text_product_sold_price);
         }
 
-        private ConstraintLayout getSoldLayout() {
+        private CardView getSoldLayout() {
             return mSoldLayout;
         }
 
@@ -523,7 +523,7 @@ public class TradeItemAdapter extends RecyclerView.Adapter {
 
     private class NobodyBidViewHolder extends RecyclerView.ViewHolder {
 
-        private ConstraintLayout mNobodyBidLayout;
+        private CardView mNobodyBidLayout;
         private ImageView mImageMain;
         private TextView mTextTitle;
         private TextView mTextTime;
@@ -531,13 +531,13 @@ public class TradeItemAdapter extends RecyclerView.Adapter {
         public NobodyBidViewHolder(View itemView) {
             super(itemView);
 
-            mNobodyBidLayout = itemView.findViewById(R.id.layout_nobody_bid);
-            mImageMain = itemView.findViewById(R.id.image_nobody_bit);
-            mTextTitle = itemView.findViewById(R.id.text_product_title_nobody_bid);
-            mTextTime = itemView.findViewById(R.id.text_time_nobody_bid);
+            mNobodyBidLayout = itemView.findViewById(R.id.layout_product_nobody_bid_brief);
+            mImageMain = itemView.findViewById(R.id.image_product_nobody_bit);
+            mTextTitle = itemView.findViewById(R.id.text_product_nobody_bid_title);
+            mTextTime = itemView.findViewById(R.id.text_product_nobody_bid_time);
         }
 
-        private ConstraintLayout getNobodyBidLayout() {
+        private CardView getNobodyBidLayout() {
             return mNobodyBidLayout;
         }
 

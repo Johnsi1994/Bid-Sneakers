@@ -48,9 +48,9 @@ public class TradeItemFragment extends Fragment implements TradeItemContract.Vie
     @Nullable
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
-        View root = inflater.inflate(R.layout.fragment_trade_recycler, container, false);
+        View root = inflater.inflate(R.layout.fragment_recycler_container, container, false);
 
-        RecyclerView recyclerView = root.findViewById(R.id.recycler_trade);
+        RecyclerView recyclerView = root.findViewById(R.id.recycler_container);
         recyclerView.setLayoutManager(new LinearLayoutManager(getActivity()));
         recyclerView.setAdapter(mTradeItemAdapter);
 

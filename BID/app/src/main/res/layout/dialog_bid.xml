@@ -6,16 +6,74 @@
     android:layout_height="wrap_content"
     android:background="@drawable/bg_dialog">
 
+    <TextView
+        android:id="@+id/textView11"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="16dp"
+        android:layout_marginTop="16dp"
+        android:text="@string/place_bid_title"
+        android:textColor="@color/black"
+        android:textSize="20sp"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent" />
+
+    <TextView
+        android:id="@+id/text_current_price_hint_title"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="12dp"
+        android:text="@string/dialog_current_price"
+        android:textSize="16sp"
+        app:layout_constraintStart_toStartOf="@+id/textView11"
+        app:layout_constraintTop_toBottomOf="@+id/textView11" />
+
+    <TextView
+        android:id="@+id/text_current_price_hint"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="8dp"
+        android:text="@string/placeholder_price"
+        android:textSize="16sp"
+        app:layout_constraintBottom_toBottomOf="@+id/text_current_price_hint_title"
+        app:layout_constraintStart_toEndOf="@+id/text_current_price_hint_title"
+        app:layout_constraintTop_toTopOf="@+id/text_current_price_hint_title" />
+
+    <TextView
+        android:id="@+id/text_increase_hint_title"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="8dp"
+        android:text="@string/dialog_increase_title"
+        android:textSize="16sp"
+        app:layout_constraintStart_toStartOf="@+id/text_current_price_hint_title"
+        app:layout_constraintTop_toBottomOf="@+id/text_current_price_hint_title" />
+
+    <TextView
+        android:id="@+id/text_increase_hint"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="8dp"
+        android:text="@string/dialog_increase"
+        android:textSize="16sp"
+        app:layout_constraintBottom_toBottomOf="@+id/text_increase_hint_title"
+        app:layout_constraintStart_toEndOf="@+id/text_increase_hint_title"
+        app:layout_constraintTop_toTopOf="@+id/text_increase_hint_title" />
+
     <EditText
         android:id="@+id/edit_bit_your_price"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
         android:layout_marginStart="16dp"
-        android:layout_marginTop="8dp"
+        android:layout_marginTop="12dp"
         android:layout_marginEnd="16dp"
+        android:background="@drawable/edittext_normal"
         android:ems="10"
-        android:hint="請輸入出價"
+        android:hint="@string/please_place_bid"
+        android:textCursorDrawable="@null"
         android:inputType="number"
+        android:padding="8dp"
+        android:textSize="16sp"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="1.0"
         app:layout_constraintStart_toStartOf="parent"
@@ -26,10 +84,11 @@
         android:layout_width="0dp"
         android:layout_height="wrap_content"
         android:layout_marginStart="16dp"
-        android:layout_marginTop="8dp"
+        android:layout_marginTop="16dp"
         android:layout_marginEnd="8dp"
-        android:layout_marginBottom="8dp"
-        android:text="取消"
+        android:layout_marginBottom="16dp"
+        android:background="@drawable/bg_btn"
+        android:text="@string/cancel"
         app:layout_constraintBottom_toTopOf="@+id/text_bid_warning"
         app:layout_constraintEnd_toStartOf="@+id/button_send_price"
         app:layout_constraintHorizontal_bias="0.5"
@@ -42,37 +101,16 @@
         android:layout_width="0dp"
         android:layout_height="wrap_content"
         android:layout_marginStart="8dp"
-        android:layout_marginTop="8dp"
+        android:layout_marginTop="16dp"
         android:layout_marginEnd="16dp"
-        android:layout_marginBottom="8dp"
-        android:text="出價"
+        android:layout_marginBottom="16dp"
+        android:background="@drawable/bg_btn"
+        android:text="@string/place_the_bid"
         app:layout_constraintBottom_toTopOf="@+id/text_bid_warning"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="0.5"
         app:layout_constraintStart_toEndOf="@+id/button_bit_cancel"
         app:layout_constraintTop_toBottomOf="@+id/edit_bit_your_price" />
-
-    <TextView
-        android:id="@+id/text_current_price_hint_title"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginStart="16dp"
-        android:layout_marginTop="16dp"
-        android:text="目前最高出價 : "
-        android:textSize="18sp"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent" />
-
-    <TextView
-        android:id="@+id/text_current_price_hint"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginStart="8dp"
-        android:layout_marginTop="16dp"
-        android:text="5000"
-        android:textSize="18sp"
-        app:layout_constraintStart_toEndOf="@+id/text_current_price_hint_title"
-        app:layout_constraintTop_toTopOf="parent" />
 
     <TextView
         android:id="@+id/text_bid_warning"
@@ -90,24 +128,5 @@
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent" />
 
-    <TextView
-        android:id="@+id/text_increase_hint_title"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginTop="8dp"
-        android:text="出價增額 : "
-        android:textSize="18sp"
-        app:layout_constraintStart_toStartOf="@+id/text_current_price_hint_title"
-        app:layout_constraintTop_toBottomOf="@+id/text_current_price_hint_title" />
 
-    <TextView
-        android:id="@+id/text_increase_hint"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginStart="8dp"
-        android:text="100"
-        android:textSize="18sp"
-        app:layout_constraintBottom_toBottomOf="@+id/text_increase_hint_title"
-        app:layout_constraintStart_toEndOf="@+id/text_increase_hint_title"
-        app:layout_constraintTop_toTopOf="@+id/text_increase_hint_title" />
 </android.support.constraint.ConstraintLayout>

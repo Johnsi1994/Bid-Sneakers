@@ -44,10 +44,10 @@ public class BiddingDetailAdapter extends RecyclerView.Adapter {
 
         if (mAuctionType.equals(ENGLISH)) {
             return new EnglishViewHolder(LayoutInflater.from(viewGroup.getContext())
-                    .inflate(R.layout.item_bid_page_e, viewGroup, false));
+                    .inflate(R.layout.item_bidding_detail_e, viewGroup, false));
         } else {
             return new SealedViewHolder(LayoutInflater.from(viewGroup.getContext())
-                    .inflate(R.layout.item_bid_page_s, viewGroup, false));
+                    .inflate(R.layout.item_bidding_detail_s, viewGroup, false));
         }
 
     }
@@ -301,7 +301,7 @@ public class BiddingDetailAdapter extends RecyclerView.Adapter {
         long minutes = (millSeconds - days * (1000 * 60 * 60 * 24) - hours * (1000* 60 * 60)) / (1000 * 60);
         long seconds = (millSeconds - days * (1000 * 60 * 60 * 24) - hours * (1000* 60 * 60) - minutes * (1000 * 60)) / 1000;
 
-        String time = days + "天 " + hours + "時 " + minutes + "分 " + seconds + "秒";
+        String time = days + " 天 " + hours + " 時 " + minutes + " 分 " + seconds + " 秒";
         return time;
     }
 

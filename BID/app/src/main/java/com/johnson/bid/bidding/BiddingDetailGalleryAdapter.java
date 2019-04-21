@@ -27,7 +27,7 @@ public class BiddingDetailGalleryAdapter extends RecyclerView.Adapter {
     @Override
     public RecyclerView.ViewHolder onCreateViewHolder(@NonNull ViewGroup viewGroup, int i) {
         return new BiddingDetailGalleryAdapter.PhotoViewHolder(LayoutInflater.from(viewGroup.getContext())
-                .inflate(R.layout.item_bidding_gallery, viewGroup, false));
+                .inflate(R.layout.item_gallery_pic, viewGroup, false));
     }
 
     @Override
@@ -49,7 +49,7 @@ public class BiddingDetailGalleryAdapter extends RecyclerView.Adapter {
         public PhotoViewHolder(View itemView) {
             super(itemView);
 
-            mPhoto = itemView.findViewById(R.id.image_bidding_gallery);
+            mPhoto = itemView.findViewById(R.id.image_gallery_pic);
         }
 
         public ImageView getPhoto() {

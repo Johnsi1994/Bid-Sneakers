@@ -4,6 +4,7 @@ import android.graphics.Color;
 import android.os.CountDownTimer;
 import android.support.annotation.NonNull;
 import android.support.constraint.ConstraintLayout;
+import android.support.v4.content.ContextCompat;
 import android.support.v7.widget.CardView;
 import android.support.v7.widget.RecyclerView;
 import android.util.SparseArray;
@@ -13,6 +14,7 @@ import android.view.ViewGroup;
 import android.widget.ImageView;
 import android.widget.TextView;
 
+import com.johnson.bid.Bid;
 import com.johnson.bid.MainMvpController;
 import com.johnson.bid.R;
 import com.johnson.bid.data.Product;
@@ -427,9 +429,9 @@ public class TradeItemAdapter extends RecyclerView.Adapter {
         ImageManager.getInstance().setImageByUrl(holder.getImageMain(), product.getImages().get(0));
 
         if (!product.isBuyerHasRead()) {
-            holder.getTextTitle().setTextColor(Color.RED);
+            holder.getBoughtLayout().setCardBackgroundColor(ContextCompat.getColor(Bid.getAppContext(), R.color.color_ccFFAAB5));
         } else {
-            holder.getTextTitle().setTextColor(Color.BLACK);
+            holder.getBoughtLayout().setCardBackgroundColor(Color.WHITE);
         }
 
         holder.getTextTitle().setText(product.getTitle());
@@ -508,9 +510,9 @@ public class TradeItemAdapter extends RecyclerView.Adapter {
         ImageManager.getInstance().setImageByUrl(holder.getImageMain(), product.getImages().get(0));
 
         if (!product.isSellerHasRead()) {
-            holder.getTextTitle().setTextColor(Color.RED);
+            holder.getSoldLayout().setCardBackgroundColor(ContextCompat.getColor(Bid.getAppContext(), R.color.color_ccFFAAB5));
         } else {
-            holder.getTextTitle().setTextColor(Color.BLACK);
+            holder.getSoldLayout().setCardBackgroundColor(Color.WHITE);
         }
 
         holder.getTextTitle().setText(product.getTitle());
@@ -584,9 +586,9 @@ public class TradeItemAdapter extends RecyclerView.Adapter {
         ImageManager.getInstance().setImageByUrl(holder.getImageMain(), product.getImages().get(0));
 
         if (!product.isSellerHasRead()) {
-            holder.getTextTitle().setTextColor(Color.RED);
+            holder.getNobodyBidLayout().setCardBackgroundColor(ContextCompat.getColor(Bid.getAppContext(), R.color.color_ccFFAAB5));
         } else {
-            holder.getTextTitle().setTextColor(Color.BLACK);
+            holder.getNobodyBidLayout().setCardBackgroundColor(Color.WHITE);
         }
 
         holder.getTextTitle().setText(product.getTitle());

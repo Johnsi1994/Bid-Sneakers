@@ -8,7 +8,7 @@
     <android.support.v7.widget.RecyclerView
         android:id="@+id/recycler_sold_gallery"
         android:layout_width="0dp"
-        android:layout_height="400dp"
+        android:layout_height="300dp"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent" />
@@ -19,76 +19,91 @@
         android:layout_height="30dp"
         android:layout_marginStart="16dp"
         android:layout_marginTop="32dp"
-        android:background="@drawable/ic_left_arrow"
+        android:background="@drawable/ic_back"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent" />
 
     <TextView
         android:id="@+id/text_sold_title"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="16dp"
+        android:layout_marginTop="16dp"
+        android:layout_marginEnd="16dp"
+        android:text="@string/nike_air_mag"
+        android:textColor="@color/black"
+        android:textSize="20sp"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/recycler_sold_gallery" />
+
+    <TextView
+        android:id="@+id/textView69"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginStart="16dp"
         android:layout_marginTop="16dp"
-        android:text="Air Jordan 1 Gold Top Three"
+        android:text="@string/product_introduction"
+        android:textColor="@color/black_3f3a3a"
         android:textSize="16sp"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/recycler_sold_gallery" />
+        app:layout_constraintTop_toBottomOf="@+id/text_sold_title" />
 
-    <android.support.constraint.ConstraintLayout
-        android:id="@+id/constraintLayout5"
+    <TextView
+        android:id="@+id/text_sold_intro"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
+        android:layout_marginStart="16dp"
         android:layout_marginTop="8dp"
+        android:layout_marginEnd="16dp"
+        android:text="@string/product_intro_content"
+        android:textSize="16sp"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.0"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/text_sold_title">
+        app:layout_constraintTop_toBottomOf="@+id/textView69" />
 
-        <TextView
-            android:id="@+id/textView69"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_marginStart="16dp"
-            android:layout_marginTop="8dp"
-            android:text="商品介紹"
-            android:textSize="16sp"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toTopOf="parent" />
-
-        <TextView
-            android:id="@+id/text_sold_intro"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_marginStart="24dp"
-            android:layout_marginTop="8dp"
-            android:layout_marginBottom="8dp"
-            android:text="無鞋盒，無配件，鞋墊很臭"
-            app:layout_constraintBottom_toBottomOf="parent"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/textView69" />
-    </android.support.constraint.ConstraintLayout>
+    <View
+        android:id="@+id/view30"
+        android:layout_width="0dp"
+        android:layout_height="1dp"
+        android:layout_marginTop="16dp"
+        android:background="@color/gray_EEEEEE"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/text_sold_intro" />
 
     <TextView
         android:id="@+id/textView71"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginStart="16dp"
-        android:layout_marginTop="8dp"
-        android:text="商品狀況 : "
+        android:layout_marginTop="16dp"
+        android:text="@string/product_condition_title"
+        android:textColor="@color/black_3f3a3a"
         android:textSize="16sp"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/constraintLayout5" />
+        app:layout_constraintTop_toBottomOf="@+id/view30" />
 
     <TextView
         android:id="@+id/text_sold_condition"
-        android:layout_width="wrap_content"
+        android:layout_width="0dp"
         android:layout_height="wrap_content"
-        android:layout_marginStart="4dp"
-        android:text="全新"
+        android:layout_marginStart="8dp"
+        android:text="@string/brand_new"
         android:textSize="16sp"
         app:layout_constraintBottom_toBottomOf="@+id/textView71"
         app:layout_constraintStart_toEndOf="@+id/textView71"
         app:layout_constraintTop_toTopOf="@+id/textView71" />
+
+    <View
+        android:id="@+id/view31"
+        android:layout_width="0dp"
+        android:layout_height="1dp"
+        android:layout_marginTop="16dp"
+        android:background="@color/gray_EEEEEE"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/textView71" />
 
     <TextView
         android:id="@+id/textView73"
@@ -96,21 +111,32 @@
         android:layout_height="wrap_content"
         android:layout_marginStart="16dp"
         android:layout_marginTop="16dp"
-        android:text="拍賣模式 : "
+        android:text="@string/auction_type_title"
+        android:textColor="@color/black_3f3a3a"
         android:textSize="16sp"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/textView71" />
+        app:layout_constraintTop_toBottomOf="@+id/view31" />
 
     <TextView
         android:id="@+id/text_sold_auction_type"
-        android:layout_width="wrap_content"
+        android:layout_width="0dp"
         android:layout_height="wrap_content"
-        android:layout_marginStart="4dp"
-        android:text="封閉模式"
+        android:layout_marginStart="8dp"
+        android:text="@string/auction_type_sealed"
         android:textSize="16sp"
         app:layout_constraintBottom_toBottomOf="@+id/textView73"
         app:layout_constraintStart_toEndOf="@+id/textView73"
         app:layout_constraintTop_toTopOf="@+id/textView73" />
+
+    <View
+        android:id="@+id/view32"
+        android:layout_width="0dp"
+        android:layout_height="1dp"
+        android:layout_marginTop="16dp"
+        android:background="@color/gray_EEEEEE"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/textView73" />
 
     <TextView
         android:id="@+id/textView75"
@@ -118,21 +144,34 @@
         android:layout_height="wrap_content"
         android:layout_marginStart="16dp"
         android:layout_marginTop="16dp"
-        android:text="出售時間 : "
+        android:text="@string/sold_time"
+        android:textColor="@color/black_3f3a3a"
         android:textSize="16sp"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/textView73" />
+        app:layout_constraintTop_toBottomOf="@+id/view32" />
 
     <TextView
         android:id="@+id/text_sold_expired"
-        android:layout_width="wrap_content"
+        android:layout_width="0dp"
         android:layout_height="wrap_content"
-        android:layout_marginStart="4dp"
-        android:text="04月23號08時35分"
+        android:layout_marginStart="8dp"
+        android:layout_marginEnd="16dp"
+        android:text="@string/placeholder_date"
         android:textSize="16sp"
         app:layout_constraintBottom_toBottomOf="@+id/textView75"
+        app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toEndOf="@+id/textView75"
         app:layout_constraintTop_toTopOf="@+id/textView75" />
+
+    <View
+        android:id="@+id/view33"
+        android:layout_width="0dp"
+        android:layout_height="1dp"
+        android:layout_marginTop="16dp"
+        android:background="@color/gray_EEEEEE"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/textView75" />
 
     <TextView
         android:id="@+id/textView77"
@@ -140,21 +179,34 @@
         android:layout_height="wrap_content"
         android:layout_marginStart="16dp"
         android:layout_marginTop="16dp"
-        android:text="出售價錢 : "
+        android:text="@string/sold_price"
+        android:textColor="@color/black_3f3a3a"
         android:textSize="16sp"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/textView75" />
+        app:layout_constraintTop_toBottomOf="@+id/view33" />
 
     <TextView
         android:id="@+id/text_sold_price"
-        android:layout_width="wrap_content"
+        android:layout_width="0dp"
         android:layout_height="wrap_content"
-        android:layout_marginStart="4dp"
-        android:text="9000"
+        android:layout_marginStart="8dp"
+        android:layout_marginEnd="16dp"
+        android:text="@string/placeholder_price"
         android:textSize="16sp"
         app:layout_constraintBottom_toBottomOf="@+id/textView77"
+        app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toEndOf="@+id/textView77"
         app:layout_constraintTop_toTopOf="@+id/textView77" />
+
+    <View
+        android:id="@+id/view34"
+        android:layout_width="0dp"
+        android:layout_height="1dp"
+        android:layout_marginTop="16dp"
+        android:background="@color/gray_EEEEEE"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/textView77" />
 
     <TextView
         android:id="@+id/textView79"
@@ -162,35 +214,50 @@
         android:layout_height="wrap_content"
         android:layout_marginStart="16dp"
         android:layout_marginTop="16dp"
-        android:text="買家 : "
+        android:text="@string/buyer"
+        android:textColor="@color/black_3f3a3a"
         android:textSize="16sp"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/textView77" />
+        app:layout_constraintTop_toBottomOf="@+id/view34" />
 
     <TextView
         android:id="@+id/text_sold_buyer"
-        android:layout_width="wrap_content"
+        android:layout_width="0dp"
         android:layout_height="wrap_content"
-        android:layout_marginStart="4dp"
-        android:text="Rondo"
+        android:layout_marginStart="8dp"
+        android:layout_marginEnd="16dp"
+        android:text="@string/placeholder_buyer"
         android:textSize="16sp"
         app:layout_constraintBottom_toBottomOf="@+id/textView79"
+        app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toEndOf="@+id/textView79"
         app:layout_constraintTop_toTopOf="@+id/textView79" />
+
+    <View
+        android:id="@+id/view35"
+        android:layout_width="0dp"
+        android:layout_height="1dp"
+        android:layout_marginTop="16dp"
+        android:background="@color/gray_EEEEEE"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/textView79" />
 
     <Button
         android:id="@+id/button_sold_connect_buyer"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
         android:layout_marginStart="16dp"
-        android:layout_marginTop="16dp"
+        android:layout_marginTop="12dp"
         android:layout_marginEnd="16dp"
-        android:layout_marginBottom="16dp"
+        android:layout_marginBottom="4dp"
         android:background="@drawable/bg_btn"
         android:text="聯絡買家"
         android:textSize="16sp"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/textView79" />
+        app:layout_constraintTop_toBottomOf="@+id/view35" />
+
+
 </android.support.constraint.ConstraintLayout>

@@ -36,6 +36,7 @@
             android:layout_marginStart="12dp"
             android:layout_marginTop="10dp"
             android:layout_marginEnd="8dp"
+            android:singleLine="true"
             android:ellipsize="end"
             android:text="@string/nike_air_mag"
             android:textColor="@color/black"

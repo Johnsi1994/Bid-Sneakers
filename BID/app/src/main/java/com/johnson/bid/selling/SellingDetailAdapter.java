@@ -16,6 +16,9 @@ import com.johnson.bid.MainActivity;
 import com.johnson.bid.R;
 import com.johnson.bid.data.Product;
 
+import java.text.SimpleDateFormat;
+import java.util.Date;
+
 import static com.johnson.bid.MainMvpController.ENGLISH;
 
 public class SellingDetailAdapter extends RecyclerView.Adapter {
@@ -181,7 +184,7 @@ public class SellingDetailAdapter extends RecyclerView.Adapter {
         holder.getIntroText().setText(product.getIntroduction());
         holder.getConditionText().setText(product.getCondition());
         holder.getAuctionTypeText().setText(product.getAuctionType());
-        holder.getExpireText().setText(String.valueOf(product.getExpired()));
+        holder.getExpireText().setText(getDateToString(product.getExpired()));
         holder.getPriceText().setText(String.valueOf(product.getCurrentPrice()));
         holder.getPeopleText().setText(String.valueOf(product.getParticipantsNumber()));
         holder.getIncreaseText().setText(String.valueOf(product.getIncrease()));
@@ -273,7 +276,7 @@ public class SellingDetailAdapter extends RecyclerView.Adapter {
         holder.getIntroText().setText(product.getIntroduction());
         holder.getConditionText().setText(product.getCondition());
         holder.getAuctionTypeText().setText(product.getAuctionType());
-        holder.getExpireText().setText(String.valueOf(product.getExpired()));
+        holder.getExpireText().setText(getDateToString(product.getExpired()));
         holder.getReservePriceText().setText(String.valueOf(product.getReservePrice()));
 
         timer(holder, product);
@@ -281,13 +284,19 @@ public class SellingDetailAdapter extends RecyclerView.Adapter {
     }
 
     private String getDateToString(long millSeconds) {
+        Date d = new Date(millSeconds);
+        SimpleDateFormat sf = new SimpleDateFormat("MM 月 dd 日 HH 時 mm 分");
+        return sf.format(d);
+    }
+
+    private String getRemainingTimeToString(long millSeconds) {
 
         long days = millSeconds / (1000 * 60 * 60 * 24);
         long hours = (millSeconds - days * (1000 * 60 * 60 * 24)) / (1000 * 60 * 60);
         long minutes = (millSeconds - days * (1000 * 60 * 60 * 24) - hours * (1000 * 60 * 60)) / (1000 * 60);
         long seconds = (millSeconds - days * (1000 * 60 * 60 * 24) - hours * (1000 * 60 * 60) - minutes * (1000 * 60)) / 1000;
 
-        String time = days + "天 " + hours + "時 " + minutes + "分 " + seconds + "秒";
+        String time = days + " 天 " + hours + " 時 " + minutes + " 分 " + seconds + " 秒";
         return time;
     }
 
@@ -305,7 +314,7 @@ public class SellingDetailAdapter extends RecyclerView.Adapter {
 
             @Override
             public void onTick(long millisUntilFinished) {
-                textView.setText(getDateToString(millisUntilFinished));
+                textView.setText(getRemainingTimeToString(millisUntilFinished));
             }
 
             @Override

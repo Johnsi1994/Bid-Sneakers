@@ -255,7 +255,7 @@
         android:id="@+id/text_nobody_bit_reserve_price"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginStart="4dp"
+        android:layout_marginStart="8dp"
         android:text="@string/placeholder_reserve_price"
         android:textSize="16sp"
         app:layout_constraintBottom_toBottomOf="@+id/textView40"

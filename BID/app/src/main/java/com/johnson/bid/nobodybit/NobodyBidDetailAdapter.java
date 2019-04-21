@@ -16,6 +16,9 @@ import com.johnson.bid.MainActivity;
 import com.johnson.bid.R;
 import com.johnson.bid.data.Product;
 
+import java.text.SimpleDateFormat;
+import java.util.Date;
+
 public class NobodyBidDetailAdapter extends RecyclerView.Adapter {
 
     private NobodyBidDetailContract.Presenter mPresenter;
@@ -139,11 +142,17 @@ public class NobodyBidDetailAdapter extends RecyclerView.Adapter {
         holder.getIntroText().setText(product.getIntroduction());
         holder.getConditionText().setText(product.getCondition());
         holder.getAuctionTypeText().setText(product.getAuctionType());
-        holder.getExpiredText().setText(String.valueOf(product.getExpired()));
+        holder.getExpiredText().setText(getDateToString(product.getExpired()));
         holder.getStartingPriceText().setText(String.valueOf(product.getCurrentPrice()));
         holder.getIncreaseText().setText(String.valueOf(product.getIncrease()));
         holder.getReservePriceText().setText(String.valueOf(product.getReservePrice()));
 
+    }
+
+    private String getDateToString(long millSeconds) {
+        Date d = new Date(millSeconds);
+        SimpleDateFormat sf = new SimpleDateFormat("MM 月 dd 日 HH 時 mm 分");
+        return sf.format(d);
     }
 
     public void updateData(Product product) {

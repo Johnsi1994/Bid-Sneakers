@@ -81,5 +81,8 @@
     <string name="buyer">買家 :</string>
     <string name="starting_price_title">起標價錢 :</string>
     <string name="repost">重新刊登</string>
+    <string name="warning_msg_under_current_price">您的出價低於目前價格，請重新出價</string>
+    <string name="warning_msg_under_increase">您的出價低於出價增額，請重新出價</string>
+    <string name="warning_msg_under_reserve_price">您的出價仍低於保留價，建議再增高出價</string>
 
 </resources>

@@ -6,6 +6,7 @@ import android.util.Log;
 import com.google.firebase.firestore.QueryDocumentSnapshot;
 import com.johnson.bid.data.Product;
 import com.johnson.bid.util.Firebase;
+import com.johnson.bid.util.UserManager;
 
 import java.util.ArrayList;
 
@@ -142,6 +143,54 @@ public class AuctionItemPresenter implements AuctionItemContract.Presenter {
     @Override
     public void openSelling(String from, Product product) {
 
+    }
+
+    @Override
+    public void removeSellingProductId(long productId, String from) {
+        UserManager.getInstance().removeSellingProductId(productId);
+        UserManager.getInstance().setHasUserDataChange(true);
+    }
+
+    @Override
+    public void addNobodyBidProductId(long productId, String from) {
+        UserManager.getInstance().addNobodyBidProductId(productId);
+        UserManager.getInstance().setHasUserDataChange(true);
+    }
+
+    @Override
+    public void addSoldProductId(long productId, String from) {
+        UserManager.getInstance().addSoldProductId(productId);
+        UserManager.getInstance().setHasUserDataChange(true);
+    }
+
+    @Override
+    public void removeBiddingProductId(long productId, String from) {
+        UserManager.getInstance().removeBiddingProductId(productId);
+        UserManager.getInstance().setHasUserDataChange(true);
+    }
+
+    @Override
+    public void addBoughtProductId(long productId, String from) {
+        UserManager.getInstance().addBoughtProductId(productId);
+        UserManager.getInstance().setHasUserDataChange(true);
+    }
+
+    @Override
+    public void increaseUnreadNobodyBid(String from) {
+        UserManager.getInstance().increaseUnreadNobodyBid();
+        UserManager.getInstance().setHasUserDataChange(true);
+    }
+
+    @Override
+    public void increaseUnreadSold(String from) {
+        UserManager.getInstance().increaseUnreadSold();
+        UserManager.getInstance().setHasUserDataChange(true);
+    }
+
+    @Override
+    public void increaseUnreadBought(String from) {
+        UserManager.getInstance().increaseUnreadBought();
+        UserManager.getInstance().setHasUserDataChange(true);
     }
 
 }

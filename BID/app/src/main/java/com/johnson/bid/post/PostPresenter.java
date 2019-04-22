@@ -3,7 +3,6 @@ package com.johnson.bid.post;
 import android.support.annotation.NonNull;
 
 import com.johnson.bid.data.Product;
-import com.johnson.bid.data.User;
 import com.johnson.bid.util.UserManager;
 
 import java.util.ArrayList;
@@ -16,12 +15,10 @@ public class PostPresenter implements PostContract.Presenter {
 
     private Product mProduct;
     private ArrayList<String> mImagePath;
-    private User mUser;
 
     public PostPresenter(@NonNull PostContract.View postView) {
         mPostView = checkNotNull(postView, "postView cannot be null!");
         mProduct = new Product();
-        mUser = UserManager.getInstance().getUser();
     }
 
     @Override
@@ -86,7 +83,8 @@ public class PostPresenter implements PostContract.Presenter {
 
     @Override
     public void setPostProductId2User(long productId) {
-        mUser.getMySellingProductsId().add(productId);
+        UserManager.getInstance().addSellingProductId(productId);
+        UserManager.getInstance().setHasUserDataChange(true);
     }
 
     @Override
@@ -105,8 +103,8 @@ public class PostPresenter implements PostContract.Presenter {
     }
 
     @Override
-    public void setParticipantsNumber(int participantsNumber) {
-        mProduct.setParticipantsNumber(participantsNumber);
+    public void setPlaceBidTimes(int participantsNumber) {
+        mProduct.setPlaceBidTimes(participantsNumber);
     }
 
     @Override

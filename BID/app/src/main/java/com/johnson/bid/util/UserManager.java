@@ -33,13 +33,15 @@ import org.json.JSONObject;
 import java.io.IOException;
 import java.util.Arrays;
 import java.util.HashMap;
+import java.util.Iterator;
 import java.util.Map;
 import java.util.Objects;
 
 public class UserManager {
 
-    private User mUser;
+    private User mUser = new User();
     private CallbackManager mFbCallbackManager;
+    private boolean mHasUserDataChange = false;
 
     private static class UserManagerHolder {
         private static final UserManager INSTANCE = new UserManager();
@@ -173,6 +175,16 @@ public class UserManager {
 
     }
 
+    public void updateUser2Firebase() {
+
+        Firebase.getFirestore().collection("users")
+                .document(String.valueOf(mUser.getId()))
+                .set(mUser)
+                .addOnSuccessListener(documentReference -> Log.d("Johnsi", "DocumentSnapshot added"))
+                .addOnFailureListener(e -> Log.w("Johnsi", "Error adding document", e));
+
+    }
+
     private void loginFacebook(Context context) {
 
         LoginManager.getInstance().logInWithReadPermissions(
@@ -192,6 +204,88 @@ public class UserManager {
     public void setUser(User user) {
         mUser = user;
     }
+
+    public  void addBiddingProductId(long productId) {
+        mUser.getMyBiddingProductsId().add(productId);
+    }
+
+    public void removeBiddingProductId(long productId) {
+
+        Iterator<Long> iterator = mUser.getMyBiddingProductsId().iterator();
+        while (iterator.hasNext()) {
+            long id = iterator.next();
+            if (id == productId) {
+                iterator.remove();
+            }
+        }
+    }
+
+    public void addSellingProductId(long productId) {
+        mUser.getMySellingProductsId().add(productId);
+    }
+
+    public void removeSellingProductId(long productId) {
+
+        Iterator<Long> iterator = mUser.getMySellingProductsId().iterator();
+        while (iterator.hasNext()) {
+            long id = iterator.next();
+            if (id == productId) {
+                iterator.remove();
+            }
+        }
+    }
+
+    public  void addBoughtProductId(long productId) {
+        mUser.getMyBoughtProductsId().add(productId);
+    }
+
+    public  void addSoldProductId(long productId) {
+        mUser.getMySoldProductsId().add(productId);
+    }
+
+    public void addNobodyBidProductId(long productId) {
+        mUser.getNobodyBitProductsId().add(productId);
+    }
+
+    public void increaseUnreadBought() {
+        int unread = mUser.getUnreadBought();
+        mUser.setUnreadBought(unread + 1);
+    }
+
+    public void decreaseUnreadBought() {
+        int unread = mUser.getUnreadBought();
+        mUser.setUnreadBought(unread - 1);
+    }
+
+    public void increaseUnreadSold() {
+        int unread = mUser.getUnreadSold();
+        mUser.setUnreadSold(unread + 1);
+    }
+
+    public void decreaseUnreadSold() {
+        int unread = mUser.getUnreadSold();
+        mUser.setUnreadSold(unread - 1);
+    }
+
+    public void increaseUnreadNobodyBid() {
+        int unread = mUser.getUnreadNobodyBid();
+        mUser.setUnreadNobodyBid(unread + 1);
+    }
+
+    public void decreaseUnreadNobodyBid() {
+        int unread = mUser.getUnreadNobodyBid();
+        mUser.setUnreadNobodyBid(unread - 1);
+    }
+
+    public void setHasUserDataChange(boolean hasUserDataChange) {
+        mHasUserDataChange = hasUserDataChange;
+    }
+
+    public boolean isHasUserDataChange() {
+        return mHasUserDataChange;
+    }
+
+
 
     public CallbackManager getFbCallbackManager() {
         return mFbCallbackManager;

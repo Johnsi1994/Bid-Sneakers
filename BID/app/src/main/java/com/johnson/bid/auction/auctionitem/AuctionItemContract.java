@@ -46,6 +46,22 @@ public interface AuctionItemContract {
 
         void openSelling(String from, Product product);
 
+        void removeSellingProductId(long productId, String from);
+
+        void addNobodyBidProductId(long productId, String from);
+
+        void addSoldProductId(long productId, String from);
+
+        void removeBiddingProductId(long productId, String from);
+
+        void addBoughtProductId(long productId, String from);
+
+        void increaseUnreadNobodyBid(String from);
+
+        void increaseUnreadSold(String from);
+
+        void increaseUnreadBought(String from);
+
 
     }
 

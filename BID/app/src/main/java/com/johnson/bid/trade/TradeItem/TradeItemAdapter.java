@@ -3,10 +3,10 @@ package com.johnson.bid.trade.TradeItem;
 import android.graphics.Color;
 import android.os.CountDownTimer;
 import android.support.annotation.NonNull;
-import android.support.constraint.ConstraintLayout;
 import android.support.v4.content.ContextCompat;
 import android.support.v7.widget.CardView;
 import android.support.v7.widget.RecyclerView;
+import android.util.Log;
 import android.util.SparseArray;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -205,7 +205,7 @@ public class TradeItemAdapter extends RecyclerView.Adapter {
 
             holder.getTextPrice().setText(String.valueOf(product.getCurrentPrice()));
 
-            holder.getTextPlaceBidTimes().setText(String.valueOf(product.getParticipantsNumber()));
+            holder.getTextPlaceBidTimes().setText(String.valueOf(product.getPlaceBidTimes()));
 
         } else {
 
@@ -326,7 +326,7 @@ public class TradeItemAdapter extends RecyclerView.Adapter {
 
             holder.getTextPrice().setText(String.valueOf(product.getCurrentPrice()));
 
-            holder.getTextPlaceBidTimes().setText(String.valueOf(product.getParticipantsNumber()));
+            holder.getTextPlaceBidTimes().setText(String.valueOf(product.getPlaceBidTimes()));
 
         } else {
 
@@ -404,21 +404,9 @@ public class TradeItemAdapter extends RecyclerView.Adapter {
 
             if (!product.isBuyerHasRead()) {
 
-                //3rd parameter : 1 = Bought / 2 = Sold / 3 = Nobody Bid
                 mPresenter.setBuyerHasRead(true, product);
-
-                mPresenter.minusBoughtBadgeCount(new TradeItemPresenter.LoadCallback() {
-                    @Override
-                    public void onSuccess() {
-                        mPresenter.loadBoughtBadgeData();
-                    }
-
-                    @Override
-                    public void onFail(String errorMessage) {
-
-                    }
-                });
-
+                mPresenter.decreaseUnreadBought();
+                mPresenter.loadBoughtBadgeData();
                 mPresenter.updateTradeBadge();
             }
 
@@ -486,20 +474,11 @@ public class TradeItemAdapter extends RecyclerView.Adapter {
         holder.getSoldLayout().setOnClickListener(v -> {
 
             if (!product.isSellerHasRead()) {
+
                 //3rd parameter : 1 = Sold / 2 = Nobody Bid
                 mPresenter.setSellerHasRead(true, product, 1);
-
-                mPresenter.minusSoldBadgeCount(new TradeItemPresenter.LoadCallback() {
-                    @Override
-                    public void onSuccess() {
-                        mPresenter.loadSoldBadgeData();
-                    }
-
-                    @Override
-                    public void onFail(String errorMessage) {
-
-                    }
-                });
+                mPresenter.decreaseUnreadSold();
+                mPresenter.loadSoldBadgeData();
                 mPresenter.updateTradeBadge();
             }
 
@@ -564,18 +543,8 @@ public class TradeItemAdapter extends RecyclerView.Adapter {
 
                 //3rd parameter : 1 = Sold / 2 = Nobody Bid
                 mPresenter.setSellerHasRead(true, product, 2);
-
-                mPresenter.minusNobodyBidBadgeCount(new TradeItemPresenter.LoadCallback() {
-                    @Override
-                    public void onSuccess() {
-                        mPresenter.loadNobodyBidBadgeData();
-                    }
-
-                    @Override
-                    public void onFail(String errorMessage) {
-
-                    }
-                });
+                mPresenter.decreaseUnreadNobodyBid();
+                mPresenter.loadNobodyBidBadgeData();
                 mPresenter.updateTradeBadge();
             }
 

@@ -99,7 +99,6 @@ public class TradeItemFragment extends Fragment implements TradeItemContract.Vie
 
     @Override
     public void showTradeUi(ArrayList<Product> productsList) {
-        Log.d("Johnsi", "Start update UI");
         mTradeItemAdapter.updateData(productsList);
     }
 }

@@ -46,7 +46,7 @@ public interface PostContract {
 
         void setSellerId(long sellerId);
 
-        void setParticipantsNumber(int participantsNumber);
+        void setPlaceBidTimes(int participantsNumber);
 
         void setCurrentPrice(int currentPrice);
 

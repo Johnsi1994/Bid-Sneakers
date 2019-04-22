@@ -49,9 +49,6 @@ public class TradePresenter implements TradeContract.Presenter {
     @Override
     public void loadBoughtBadgeData() {
         int unreadBought = UserManager.getInstance().getUser().getUnreadBought();
-
-        Log.d("JOHNSITESTING", "Bought Badge Count : " + unreadBought);
-
         setBoughtBadgeData(unreadBought);
     }
 

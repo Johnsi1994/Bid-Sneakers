@@ -19,10 +19,10 @@ public class Product {
     private int mCurrentPrice;
     private int mReservePrice;
     private int mIncrease;
+    private int mPlaceBidTimes;
 
     private long mSellerId;
     private long mHighestUserId;
-    private int mParticipantsNumber;
 
     private boolean sellerHasRead;
     private boolean buyerHasRead;
@@ -45,7 +45,7 @@ public class Product {
         mReservePrice = -1;
         mIncrease = -1;
         mHighestUserId = -1;
-        mParticipantsNumber = -1;
+        mPlaceBidTimes = -1;
         sellerHasRead = false;
         buyerHasRead = false;
 //        mChats = new ArrayList<>();
@@ -163,12 +163,12 @@ public class Product {
         mHighestUserId = highestUserId;
     }
 
-    public int getParticipantsNumber() {
-        return mParticipantsNumber;
+    public int getPlaceBidTimes() {
+        return mPlaceBidTimes;
     }
 
-    public void setParticipantsNumber(int participantsNumber) {
-        mParticipantsNumber = participantsNumber;
+    public void setPlaceBidTimes(int placeBidTimes) {
+        mPlaceBidTimes = placeBidTimes;
     }
 
 //    public ArrayList<ChatContent> getChats() {

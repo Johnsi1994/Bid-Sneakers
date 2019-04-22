@@ -2,7 +2,6 @@ package com.johnson.bid.auction.auctionitem;
 
 import android.os.CountDownTimer;
 import android.support.annotation.NonNull;
-import android.support.constraint.ConstraintLayout;
 import android.support.v7.widget.CardView;
 import android.support.v7.widget.RecyclerView;
 import android.util.Log;
@@ -180,36 +179,46 @@ public class AuctionItemAdapter extends RecyclerView.Adapter {
                                         UserManager.getInstance().getUser().getId() == latestProduct.getSellerId()) {
                                     updateProductAuctionCondition(latestProduct);
 
-                                    UserManager.getInstance().getUserProfile(new UserManager.LoadCallback() {
-                                        @Override
-                                        public void onSuccess() {
+                                    if (latestProduct.getHighestUserId() == -1
+                                            && latestProduct.getSellerId() == UserManager.getInstance().getUser().getId()) {
 
-                                            if (latestProduct.getHighestUserId() == -1
-                                                    && latestProduct.getSellerId() == UserManager.getInstance().getUser().getId()) {
+                                        mPresenter.removeSellingProductId(latestProduct.getProductId(), ENGLISH);
+                                        mPresenter.addNobodyBidProductId(latestProduct.getProductId(), ENGLISH);
+                                        mPresenter.increaseUnreadNobodyBid(ENGLISH);
 
-                                                //3rd parameter : 0 Nobody Bid / 1 somebody won the auction
-                                                removeSellingProductsIdOnFirebase(latestProduct, 0);
+                                        mPresenter.loadMySellingData();
+                                        mPresenter.loadNobodyBidData();
+                                        mPresenter.loadNobodyBidBadgeData();
 
-                                            } else {
 
-                                                if (UserManager.getInstance().getUser().getId() == latestProduct.getSellerId()) {
+                                    } else {
 
-                                                    removeSellingProductsIdOnFirebase(latestProduct, 1);
+                                        if (UserManager.getInstance().getUser().getId() == latestProduct.getSellerId()) {
 
-                                                } else if (UserManager.getInstance().getUser().getId() == latestProduct.getHighestUserId()) {
+                                            mPresenter.removeSellingProductId(latestProduct.getProductId(), ENGLISH);
+                                            mPresenter.addSoldProductId(latestProduct.getProductId(), ENGLISH);
+                                            mPresenter.increaseUnreadSold(ENGLISH);
 
-                                                    removeBiddingProductsIdOnFirebase(latestProduct);
+                                            mPresenter.loadMySellingData();
+                                            mPresenter.loadMySoldData();
+                                            mPresenter.loadSoldBadgeData();
 
-                                                }
-                                            }
+                                        } else if (UserManager.getInstance().getUser().getId() == latestProduct.getHighestUserId()) {
+
+                                            mPresenter.removeBiddingProductId(latestProduct.getProductId(), ENGLISH);
+                                            mPresenter.addBoughtProductId(latestProduct.getProductId(), ENGLISH);
+                                            mPresenter.increaseUnreadBought(ENGLISH);
+
+                                            mPresenter.loadMyBiddingData();
+                                            mPresenter.loadMyBoughtData();
+                                            mPresenter.loadBoughtBadgeData();
+
                                         }
+                                    }
 
-                                        @Override
-                                        public void onFail(String errorMessage) {
-
-                                        }
-                                    });
+                                    mPresenter.updateTradeBadge();
                                 }
+
                             } else {
                                 Log.d("Johnsi", "Error getting documents: ", task.getException());
                             }
@@ -221,7 +230,7 @@ public class AuctionItemAdapter extends RecyclerView.Adapter {
 
         holder.getTextPrice().setText(String.valueOf(product.getCurrentPrice()));
 
-        holder.getTextPlaceBidTimes().setText(String.valueOf(product.getParticipantsNumber()));
+        holder.getTextPlaceBidTimes().setText(String.valueOf(product.getPlaceBidTimes()));
 
     }
 
@@ -308,36 +317,45 @@ public class AuctionItemAdapter extends RecyclerView.Adapter {
                                         UserManager.getInstance().getUser().getId() == latestProduct.getSellerId()) {
                                     updateProductAuctionCondition(latestProduct);
 
-                                    UserManager.getInstance().getUserProfile(new UserManager.LoadCallback() {
-                                        @Override
-                                        public void onSuccess() {
+                                    if (latestProduct.getHighestUserId() == -1
+                                            && latestProduct.getSellerId() == UserManager.getInstance().getUser().getId()) {
 
-                                            if (latestProduct.getHighestUserId() == -1
-                                                    && latestProduct.getSellerId() == UserManager.getInstance().getUser().getId()) {
+                                        mPresenter.removeSellingProductId(latestProduct.getProductId(), SEALED);
+                                        mPresenter.addNobodyBidProductId(latestProduct.getProductId(), SEALED);
+                                        mPresenter.increaseUnreadNobodyBid(SEALED);
 
-                                                //3rd parameter : 0 Nobody Bid / 1 somebody won the auction
-                                                removeSellingProductsIdOnFirebase(latestProduct, 0);
+                                        mPresenter.loadMySellingData();
+                                        mPresenter.loadNobodyBidData();
+                                        mPresenter.loadNobodyBidBadgeData();
 
-                                            } else {
+                                    } else {
 
-                                                if (UserManager.getInstance().getUser().getId() == latestProduct.getSellerId()) {
+                                        if (UserManager.getInstance().getUser().getId() == latestProduct.getSellerId()) {
 
-                                                    removeSellingProductsIdOnFirebase(latestProduct, 1);
+                                            mPresenter.removeSellingProductId(latestProduct.getProductId(), SEALED);
+                                            mPresenter.addSoldProductId(latestProduct.getProductId(), SEALED);
+                                            mPresenter.increaseUnreadSold(SEALED);
 
-                                                } else if (UserManager.getInstance().getUser().getId() == latestProduct.getHighestUserId()) {
+                                            mPresenter.loadMySellingData();
+                                            mPresenter.loadMySoldData();
+                                            mPresenter.loadSoldBadgeData();
 
-                                                    removeBiddingProductsIdOnFirebase(latestProduct);
+                                        } else if (UserManager.getInstance().getUser().getId() == latestProduct.getHighestUserId()) {
 
-                                                }
-                                            }
+                                            mPresenter.removeBiddingProductId(latestProduct.getProductId(), SEALED);
+                                            mPresenter.addBoughtProductId(latestProduct.getProductId(), SEALED);
+                                            mPresenter.increaseUnreadBought(SEALED);
+
+                                            mPresenter.loadMyBiddingData();
+                                            mPresenter.loadMyBoughtData();
+                                            mPresenter.loadBoughtBadgeData();
+
                                         }
+                                    }
 
-                                        @Override
-                                        public void onFail(String errorMessage) {
-
-                                        }
-                                    });
+                                    mPresenter.updateTradeBadge();
                                 }
+
                             } else {
                                 Log.d("Johnsi", "Error getting documents: ", task.getException());
                             }
@@ -367,7 +385,7 @@ public class AuctionItemAdapter extends RecyclerView.Adapter {
         long minutes = (millSeconds - days * (1000 * 60 * 60 * 24) - hours * (1000 * 60 * 60)) / (1000 * 60);
         long seconds = (millSeconds - days * (1000 * 60 * 60 * 24) - hours * (1000 * 60 * 60) - minutes * (1000 * 60)) / 1000;
 
-        String time = days + "天 " + hours + "時 " + minutes + "分 " + seconds + "秒";
+        String time = days + " 天 " + hours + " 時 " + minutes + " 分 " + seconds + " 秒";
         return time;
     }
 
@@ -382,174 +400,6 @@ public class AuctionItemAdapter extends RecyclerView.Adapter {
                 cdt.cancel();
             }
         }
-    }
-
-
-    private void removeSellingProductsIdOnFirebase(Product product, int i) {
-
-        Firebase.getFirestore().collection("users")
-                .document(String.valueOf(UserManager.getInstance().getUser().getId()))
-                .update("mySellingProductsId", FieldValue.arrayRemove(product.getProductId()))
-                .addOnSuccessListener(aVoid -> {
-                    Log.d("Johnsi", "Selling Products Id successfully removed!");
-
-                    if (i == 0) {
-
-                        addNobodyBitProductsIdOnFirebase(product);
-                    } else {
-
-                        addSoldProductsIdOnFirebase(product);
-                    }
-
-                })
-                .addOnFailureListener(e -> {
-                    Log.w("Johnsi", "Selling Products Id Error updating document", e);
-                });
-
-    }
-
-    private void addNobodyBitProductsIdOnFirebase(Product product) {
-
-        Firebase.getFirestore().collection("users")
-                .document(String.valueOf(UserManager.getInstance().getUser().getId()))
-                .update("nobodyBitProductsId", FieldValue.arrayUnion(product.getProductId()))
-                .addOnSuccessListener(aVoid -> {
-                    Log.d("Johnsi", "Nobody Bit Products Id successfully added!");
-                    updateUnreadNobodyBidOnFirebase();
-                })
-                .addOnFailureListener(e -> Log.w("Johnsi", "Nobody Bit Products Id Products Id Error updating document", e));
-
-    }
-
-    private void updateUnreadNobodyBidOnFirebase() {
-
-        Firebase.getFirestore().collection("users")
-                .document(String.valueOf(UserManager.getInstance().getUser().getId()))
-                .update("unreadNobodyBid", UserManager.getInstance().getUser().getUnreadNobodyBid() + 1)
-                .addOnSuccessListener(aVoid -> {
-                    Log.d("Johnsi", "Unread Nobody Bit Count successfully added!");
-
-                    UserManager.getInstance().getUserProfile(new UserManager.LoadCallback() {
-                        @Override
-                        public void onSuccess() {
-
-                            mPresenter.loadMySellingData();
-                            mPresenter.loadNobodyBidData();
-                            mPresenter.loadNobodyBidBadgeData();
-                            mPresenter.updateTradeBadge();
-
-                        }
-
-                        @Override
-                        public void onFail(String errorMessage) {
-
-                        }
-                    });
-
-                })
-                .addOnFailureListener(e -> Log.w("Johnsi", "Unread Nobody Bit Count Error updating document", e));
-
-    }
-
-    private void addSoldProductsIdOnFirebase(Product product) {
-
-        Firebase.getFirestore().collection("users")
-                .document(String.valueOf(UserManager.getInstance().getUser().getId()))
-                .update("mySoldProductsId", FieldValue.arrayUnion(product.getProductId()))
-                .addOnSuccessListener(aVoid -> {
-                    Log.d("Johnsi", "Sold Products Id successfully added!");
-                    updateUnreadSoldOnFirebase();
-                })
-                .addOnFailureListener(e -> Log.w("Johnsi", "Sold Products Id Error updating document", e));
-
-    }
-
-
-    private void updateUnreadSoldOnFirebase() {
-
-        Firebase.getFirestore().collection("users")
-                .document(String.valueOf(UserManager.getInstance().getUser().getId()))
-                .update("unreadSold", UserManager.getInstance().getUser().getUnreadSold() + 1)
-                .addOnSuccessListener(aVoid -> {
-                    Log.d("Johnsi", "Unread Sold Count successfully added!");
-
-                    UserManager.getInstance().getUserProfile(new UserManager.LoadCallback() {
-                        @Override
-                        public void onSuccess() {
-
-                            mPresenter.loadMySellingData();
-                            mPresenter.loadMySoldData();
-                            mPresenter.loadSoldBadgeData();
-                            mPresenter.updateTradeBadge();
-
-                        }
-
-                        @Override
-                        public void onFail(String errorMessage) {
-
-                        }
-                    });
-
-                })
-                .addOnFailureListener(e -> Log.w("Johnsi", "Unread Sold Count Error updating document", e));
-
-    }
-
-    private void removeBiddingProductsIdOnFirebase(Product product) {
-
-        Firebase.getFirestore().collection("users")
-                .document(String.valueOf(UserManager.getInstance().getUser().getId()))
-                .update("myBiddingProductsId", FieldValue.arrayRemove(product.getProductId()))
-                .addOnSuccessListener(aVoid -> {
-                    Log.d("Johnsi", "Bidding Products Id successfully removed!");
-                    addBoughtProductsIdOnFirebase(product);
-                })
-                .addOnFailureListener(e -> Log.w("Johnsi", "Bidding Products Id Error updating document", e));
-
-    }
-
-    private void addBoughtProductsIdOnFirebase(Product product) {
-
-        Firebase.getFirestore().collection("users")
-                .document(String.valueOf(UserManager.getInstance().getUser().getId()))
-                .update("myBoughtProductsId", FieldValue.arrayUnion(product.getProductId()))
-                .addOnSuccessListener(aVoid -> {
-                    Log.d("Johnsi", "Bought Products Id successfully added!");
-                    updateUnreadBoughtOnFirebase();
-                })
-                .addOnFailureListener(e -> Log.w("Johnsi", "Bought Products Id Error updating document", e));
-
-    }
-
-
-    private void updateUnreadBoughtOnFirebase() {
-
-        Firebase.getFirestore().collection("users")
-                .document(String.valueOf(UserManager.getInstance().getUser().getId()))
-                .update("unreadBought", UserManager.getInstance().getUser().getUnreadBought() + 1)
-                .addOnSuccessListener(aVoid -> {
-                    Log.d("Johnsi", "Unread Bought Count successfully added!");
-
-                    UserManager.getInstance().getUserProfile(new UserManager.LoadCallback() {
-                        @Override
-                        public void onSuccess() {
-
-                            mPresenter.loadMyBiddingData();
-                            mPresenter.loadMyBoughtData();
-                            mPresenter.loadBoughtBadgeData();
-                            mPresenter.updateTradeBadge();
-
-                        }
-
-                        @Override
-                        public void onFail(String errorMessage) {
-
-                        }
-                    });
-
-                })
-                .addOnFailureListener(e -> Log.w("Johnsi", "Unread Bought Count Error updating document", e));
-
     }
 
     private void updateProductAuctionCondition(Product latestProduct) {

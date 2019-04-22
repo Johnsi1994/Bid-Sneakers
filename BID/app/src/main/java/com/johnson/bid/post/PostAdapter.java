@@ -18,8 +18,6 @@ import android.widget.Spinner;
 import android.widget.TextView;
 import android.widget.Toast;
 
-import com.google.android.gms.tasks.OnSuccessListener;
-import com.google.firebase.firestore.FieldValue;
 import com.google.firebase.storage.StorageReference;
 import com.johnson.bid.Bid;
 import com.johnson.bid.MainActivity;
@@ -33,8 +31,6 @@ import java.io.File;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Date;
-import java.util.HashMap;
-import java.util.Map;
 
 public class PostAdapter extends RecyclerView.Adapter {
 
@@ -267,7 +263,7 @@ public class PostAdapter extends RecyclerView.Adapter {
             mPresenter.setProductIntro(mProductIntro.getText().toString());
             mPresenter.setStartingPrice(Integer.parseInt(mStartingPrice.getText().toString()));
             mPresenter.setCurrentPrice(Integer.parseInt(mStartingPrice.getText().toString()));
-            mPresenter.setParticipantsNumber(0);
+            mPresenter.setPlaceBidTimes(0);
             if ("".equals(mReservePrice.getText().toString())) {
                 mPresenter.setReservePrice(0);
             } else {
@@ -290,11 +286,6 @@ public class PostAdapter extends RecyclerView.Adapter {
 
             mPresenter.setPostProductId2User(id);
 
-            Firebase.getFirestore().collection("users")
-                    .document(String.valueOf(UserManager.getInstance().getUser().getId()))
-                    .update("mySellingProductsId", FieldValue.arrayUnion(id))
-                    .addOnSuccessListener(aVoid -> Log.d("Johnsi", "BID DocumentSnapshot successfully updated!"))
-                    .addOnFailureListener(e -> Log.w("Johnsi", "BID Error updating document", e));
         }
 
         private void setUrl(String url) {

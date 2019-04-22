@@ -334,27 +334,19 @@ public class MainActivity extends AppCompatActivity implements MainContract.View
         TextView mCurrentPriceTitle;
         TextView mIncreaseHint;
         TextView mIncreaseHintTitle;
-        EditText mYourPrice;
+        EditText mBidPrice;
         Button mCancelBtn;
-        Button mSendPriceBtn;
+        Button mPlaceBidBtn;
         TextView mWarningMsg;
-        int mParticipantsNum = product.getParticipantsNumber();
-        final ArrayList<Long> myProductsId = UserManager.getInstance().getUser().getMyBiddingProductsId();
-        Boolean hasProduct = false;
-
-        for (int i = 0; i < myProductsId.size(); i++) {
-            if (myProductsId.get(i).equals(product.getProductId())) {
-                hasProduct = true;
-            }
-        }
+        int placeBidTimes = product.getPlaceBidTimes();
 
         mCurrentPriceTitle = view.findViewById(R.id.text_current_price_hint_title);
         mCurrentPrice = view.findViewById(R.id.text_current_price_hint);
         mIncreaseHintTitle = view.findViewById(R.id.text_increase_hint_title);
         mIncreaseHint = view.findViewById(R.id.text_increase_hint);
-        mYourPrice = view.findViewById(R.id.edit_bit_your_price);
+        mBidPrice = view.findViewById(R.id.edit_bit_your_price);
         mCancelBtn = view.findViewById(R.id.button_bit_cancel);
-        mSendPriceBtn = view.findViewById(R.id.button_send_price);
+        mPlaceBidBtn = view.findViewById(R.id.button_send_price);
         mWarningMsg = view.findViewById(R.id.text_bid_warning);
 
         mCurrentPrice.setText(String.valueOf(product.getCurrentPrice()));
@@ -376,50 +368,60 @@ public class MainActivity extends AppCompatActivity implements MainContract.View
             mIncreaseHint.setVisibility(View.GONE);
         }
 
-
-        Boolean finalHasProduct = hasProduct;
-        mSendPriceBtn.setOnClickListener(v -> {
+        mPlaceBidBtn.setOnClickListener(v -> {
 
             if (from.equals(ENGLISH)) {
 
-                if ("".equals(mYourPrice.getText().toString())) {
+                if ("".equals(mBidPrice.getText().toString())) {
+
                     mWarningMsg.setVisibility(View.VISIBLE);
-                    mWarningMsg.setText("請輸入價格");
-                } else if (Integer.parseInt(mYourPrice.getText().toString()) < product.getCurrentPrice()) {
+                    mWarningMsg.setText(R.string.please_place_bid);
+
+                } else if (Integer.parseInt(mBidPrice.getText().toString()) < product.getCurrentPrice()) {
+
                     mWarningMsg.setVisibility(View.VISIBLE);
-                    mWarningMsg.setText("您的出價低於目前價格，請重新出價");
-                } else if ((Integer.parseInt(mYourPrice.getText().toString()) - product.getCurrentPrice()) < product.getIncrease()) {
+                    mWarningMsg.setText(getString(R.string.warning_msg_under_current_price));
+
+                } else if ((Integer.parseInt(mBidPrice.getText().toString()) - product.getCurrentPrice()) < product.getIncrease()) {
+
                     mWarningMsg.setVisibility(View.VISIBLE);
-                    mWarningMsg.setText("您的出價低於出價增額，請重新出價");
+                    mWarningMsg.setText(getString(R.string.warning_msg_under_increase));
+
                 } else {
 
-                    if (Integer.parseInt(mYourPrice.getText().toString()) < product.getReservePrice()) {
-                        Toast.makeText(this, "您的出價仍低於保留價，建議再增高出價", Toast.LENGTH_LONG).show();
+                    if (Integer.parseInt(mBidPrice.getText().toString()) < product.getReservePrice()) {
+                        Toast.makeText(this, getString(R.string.warning_msg_under_reserve_price), Toast.LENGTH_LONG).show();
                     }
 
                     mWarningMsg.setVisibility(View.GONE);
 
-                    product.setCurrentPrice(Integer.parseInt(mYourPrice.getText().toString()));
+                    product.setCurrentPrice(Integer.parseInt(mBidPrice.getText().toString()));
                     product.setHighestUserId(UserManager.getInstance().getUser().getId());
-                    product.setParticipantsNumber(mParticipantsNum + 1);
+                    product.setPlaceBidTimes(placeBidTimes + 1);
 
                     setAfterBidData(product);
 
                     Firebase.getFirestore().collection("products")
                             .document(String.valueOf(product.getProductId()))
-                            .update("currentPrice", Integer.parseInt(mYourPrice.getText().toString()),
+                            .update("currentPrice", Integer.parseInt(mBidPrice.getText().toString()),
                                     "highestUserId", UserManager.getInstance().getUser().getId(),
-                                    "participantsNumber", mParticipantsNum + 1)
+                                    "placeBidTimes", placeBidTimes + 1)
                             .addOnSuccessListener(aVoid -> Log.d("Johnsi", "BID DocumentSnapshot successfully updated!"))
                             .addOnFailureListener(e -> Log.w("Johnsi", "BID Error updating document", e));
 
-                    if (!finalHasProduct) {
-                        Firebase.getFirestore().collection("users")
-                                .document(String.valueOf(UserManager.getInstance().getUser().getId()))
-                                .update("myBiddingProductsId", FieldValue.arrayUnion(product.getProductId()))
-                                .addOnSuccessListener(aVoid -> Log.d("Johnsi", "BID DocumentSnapshot successfully updated!"))
-                                .addOnFailureListener(e -> Log.w("Johnsi", "BID Error updating document", e));
+                    ArrayList<Long> myProductsId = UserManager.getInstance().getUser().getMyBiddingProductsId();
+                    boolean hasProduct = false;
+
+                    for (int i = 0; i < myProductsId.size(); i++) {
+                        if (myProductsId.get(i).equals(product.getProductId())) {
+                            hasProduct = true;
+                        }
                     }
+
+                    if (!hasProduct) {
+                        UserManager.getInstance().addBiddingProductId(product.getProductId());
+                    }
+                    UserManager.getInstance().setHasUserDataChange(true);
 
                     dialog.dismiss();
                     showMessageDialogUi(BID_SUCCESS);
@@ -427,42 +429,36 @@ public class MainActivity extends AppCompatActivity implements MainContract.View
 
             } else {
 
-                if ("".equals(mYourPrice.getText().toString())) {
+                if ("".equals(mBidPrice.getText().toString())) {
                     mWarningMsg.setVisibility(View.VISIBLE);
-                    mWarningMsg.setText("請輸入價格");
+                    mWarningMsg.setText(R.string.please_place_bid);
                 } else {
                     mWarningMsg.setVisibility(View.GONE);
 
-                    product.setParticipantsNumber(mParticipantsNum + 1);
+                    product.setPlaceBidTimes(placeBidTimes + 1);
 
-                    if (Integer.parseInt(mYourPrice.getText().toString()) > product.getCurrentPrice()) {
-                        product.setCurrentPrice(Integer.parseInt(mYourPrice.getText().toString()));
-                        product.setHighestUserId(UserManager.getInstance().getUser().getId());
+                    if (Integer.parseInt(mBidPrice.getText().toString()) > product.getCurrentPrice()) {
 
                         Firebase.getFirestore().collection("products")
                                 .document(String.valueOf(product.getProductId()))
-                                .update("currentPrice", Integer.parseInt(mYourPrice.getText().toString()),
+                                .update("currentPrice", Integer.parseInt(mBidPrice.getText().toString()),
                                         "highestUserId", UserManager.getInstance().getUser().getId(),
-                                        "participantsNumber", mParticipantsNum + 1)
+                                        "placeBidTimes", placeBidTimes + 1)
                                 .addOnSuccessListener(aVoid -> Log.d("Johnsi", "BID DocumentSnapshot successfully updated!"))
                                 .addOnFailureListener(e -> Log.w("Johnsi", "BID Error updating document", e));
                     } else {
                         Firebase.getFirestore().collection("products")
                                 .document(String.valueOf(product.getProductId()))
-                                .update("participantsNumber", mParticipantsNum + 1)
+                                .update("placeBidTimes", placeBidTimes + 1)
                                 .addOnSuccessListener(aVoid -> Log.d("Johnsi", "BID DocumentSnapshot successfully updated!"))
                                 .addOnFailureListener(e -> Log.w("Johnsi", "BID Error updating document", e));
                     }
 
-
-                    Firebase.getFirestore().collection("users")
-                            .document(String.valueOf(UserManager.getInstance().getUser().getId()))
-                            .update("myBiddingProductsId", FieldValue.arrayUnion(product.getProductId()))
-                            .addOnSuccessListener(aVoid -> Log.d("Johnsi", "BID DocumentSnapshot successfully updated!"))
-                            .addOnFailureListener(e -> Log.w("Johnsi", "BID Error updating document", e));
-
-                    UserManager.getInstance().getUser().getMyBiddingProductsId().add(product.getProductId());
                     setAfterBidData(product);
+
+                    UserManager.getInstance().addBiddingProductId(product.getProductId());
+                    UserManager.getInstance().setHasUserDataChange(true);
+
                     dialog.dismiss();
                     showMessageDialogUi(BID_SUCCESS);
                 }
@@ -491,17 +487,14 @@ public class MainActivity extends AppCompatActivity implements MainContract.View
 
         mDeleteBtn.setOnClickListener(v -> {
 
+            UserManager.getInstance().removeSellingProductId(product.getProductId());
+            UserManager.getInstance().setHasUserDataChange(true);
+
             Firebase.getFirestore().collection("products")
                     .document(String.valueOf(product.getProductId()))
                     .delete()
                     .addOnSuccessListener(aVoid -> Log.d("Johnsi", product.getProductId() + " successfully deleted!"))
                     .addOnFailureListener(e -> Log.w("Johnsi", "Error deleting document", e));
-
-            Firebase.getFirestore().collection("users")
-                    .document(String.valueOf(UserManager.getInstance().getUser().getId()))
-                    .update("mySellingProductsId", FieldValue.arrayRemove(product.getProductId()))
-                    .addOnSuccessListener(aVoid -> Log.d("Johnsi", "Selling Products Id successfully removed!"))
-                    .addOnFailureListener(e -> Log.w("Johnsi", "Selling Products Id Error updating document", e));
 
             Firebase.getFirestore().collection("users")
                     .whereArrayContains("myBiddingProductsId", product.getProductId())
@@ -561,17 +554,35 @@ public class MainActivity extends AppCompatActivity implements MainContract.View
         mPresenter = checkNotNull(presenter);
     }
 
+    @Override
+    protected void onStop() {
+        super.onStop();
+
+        if (UserManager.getInstance().isHasUserDataChange()) {
+
+            UserManager.getInstance().updateUser2Firebase();
+            UserManager.getInstance().setHasUserDataChange(false);
+        }
+
+    }
+
     private void init() {
         mMainMvpController = MainMvpController.create(this);
 
-        setToolbar();
-        setBottomNavigation();
+
 
         if (UserManager.getInstance().isLoggedIn()) {
             UserManager.getInstance().getUserProfile(new UserManager.LoadCallback() {
                 @Override
                 public void onSuccess() {
                     Log.d("Johnsi", "Load User Profile Success !");
+                    UserManager.getInstance().setHasUserDataChange(false);
+
+                    setToolbar();
+                    setBottomNavigation();
+                    mPresenter.openCenter();
+                    showToolbarUi();
+                    showBottomNavigationUi();
                 }
 
                 @Override
@@ -580,12 +591,11 @@ public class MainActivity extends AppCompatActivity implements MainContract.View
                 }
             });
 
-            mPresenter.openCenter();
-            showToolbarUi();
-            showBottomNavigationUi();
         } else {
+
             mPresenter.openLogin();
         }
+
     }
 
     private void setToolbar() {

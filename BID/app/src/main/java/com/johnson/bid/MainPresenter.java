@@ -37,6 +37,7 @@ import com.johnson.bid.util.UserManager;
 import java.util.ArrayList;
 
 import static com.google.common.base.Preconditions.checkNotNull;
+import static com.johnson.bid.MainMvpController.ENGLISH;
 
 
 public class MainPresenter implements MainContract.Presenter, AuctionContract.Presenter, TradeContract.Presenter,
@@ -295,21 +296,26 @@ public class MainPresenter implements MainContract.Presenter, AuctionContract.Pr
     @Override
     public void updateTradeBadge() {
 
-        UserManager.getInstance().getUserProfile(new UserManager.LoadCallback() {
-            @Override
-            public void onSuccess() {
-                int unreadCount = UserManager.getInstance().getUser().getUnreadBought() +
-                        UserManager.getInstance().getUser().getUnreadSold() +
-                        UserManager.getInstance().getUser().getUnreadNobodyBid();
+        int unreadCount = UserManager.getInstance().getUser().getUnreadBought() +
+                UserManager.getInstance().getUser().getUnreadSold() +
+                UserManager.getInstance().getUser().getUnreadNobodyBid();
 
-                mMainView.updateTradeBadgeUi(unreadCount);
-            }
+        mMainView.updateTradeBadgeUi(unreadCount);
+    }
 
-            @Override
-            public void onFail(String errorMessage) {
+    @Override
+    public void decreaseUnreadBought() {
+        mMyBoughtPresenter.decreaseUnreadBought();
+    }
 
-            }
-        });
+    @Override
+    public void decreaseUnreadSold() {
+        mMySoldPresenter.decreaseUnreadSold();
+    }
+
+    @Override
+    public void decreaseUnreadNobodyBid() {
+        mNobodyBidPresenter.decreaseUnreadNobodyBid();
     }
 
     @Override
@@ -426,8 +432,8 @@ public class MainPresenter implements MainContract.Presenter, AuctionContract.Pr
     }
 
     @Override
-    public void setParticipantsNumber(int participantsNumber) {
-        mPostPresenter.setParticipantsNumber(participantsNumber);
+    public void setPlaceBidTimes(int participantsNumber) {
+        mPostPresenter.setPlaceBidTimes(participantsNumber);
     }
 
     @Override
@@ -467,8 +473,6 @@ public class MainPresenter implements MainContract.Presenter, AuctionContract.Pr
     public void loadBoughtBadgeData() {
 
         if (mTradePresenter != null) {
-
-            Log.d("JOHNSITESTING", "Load Bought Badge Data In MainPresenter");
             mTradePresenter.loadBoughtBadgeData();
         }
 
@@ -516,6 +520,86 @@ public class MainPresenter implements MainContract.Presenter, AuctionContract.Pr
     @Override
     public void openSelling(String auctionType, Product product) {
         mMainView.findSellingView(auctionType, product);
+    }
+
+    @Override
+    public void removeSellingProductId(long productId, String from) {
+
+        if (from.equals(ENGLISH)) {
+            mEnglishAuctionItemPresenter.removeSellingProductId(productId, from);
+        } else {
+            mSealedAuctionItemPresenter.removeSellingProductId(productId, from);
+        }
+    }
+
+    @Override
+    public void addNobodyBidProductId(long productId, String from) {
+
+        if (from.equals(ENGLISH)) {
+            mEnglishAuctionItemPresenter.addNobodyBidProductId(productId, from);
+        } else {
+            mSealedAuctionItemPresenter.addNobodyBidProductId(productId, from);
+        }
+    }
+
+    @Override
+    public void addSoldProductId(long productId, String from) {
+
+        if (from.equals(ENGLISH)) {
+            mEnglishAuctionItemPresenter.addSoldProductId(productId, from);
+        } else {
+            mSealedAuctionItemPresenter.addSoldProductId(productId, from);
+        }
+    }
+
+    @Override
+    public void removeBiddingProductId(long productId, String from) {
+
+        if (from.equals(ENGLISH)) {
+            mEnglishAuctionItemPresenter.removeBiddingProductId(productId, from);
+        } else {
+            mSealedAuctionItemPresenter.removeBiddingProductId(productId, from);
+        }
+    }
+
+    @Override
+    public void addBoughtProductId(long productId, String from) {
+
+        if (from.equals(ENGLISH)) {
+            mEnglishAuctionItemPresenter.addBoughtProductId(productId, from);
+        } else {
+            mSealedAuctionItemPresenter.addBoughtProductId(productId, from);
+        }
+    }
+
+    @Override
+    public void increaseUnreadNobodyBid(String from) {
+
+        if (from.equals(ENGLISH)) {
+            mEnglishAuctionItemPresenter.increaseUnreadNobodyBid(from);
+        } else {
+            mSealedAuctionItemPresenter.increaseUnreadNobodyBid(from);
+        }
+    }
+
+    @Override
+    public void increaseUnreadSold(String from) {
+
+        if (from.equals(ENGLISH)) {
+            mEnglishAuctionItemPresenter.increaseUnreadSold(from);
+        } else {
+            mSealedAuctionItemPresenter.increaseUnreadSold(from);
+        }
+    }
+
+    @Override
+    public void increaseUnreadBought(String from) {
+
+        if (from.equals(ENGLISH)) {
+            mEnglishAuctionItemPresenter.increaseUnreadBought(from);
+        } else {
+            mSealedAuctionItemPresenter.increaseUnreadBought(from);
+        }
     }
 
     @Override

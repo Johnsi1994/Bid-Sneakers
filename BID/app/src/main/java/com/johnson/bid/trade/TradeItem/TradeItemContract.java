@@ -65,6 +65,12 @@ public interface TradeItemContract {
 
         void updateTradeBadge();
 
+        void decreaseUnreadBought();
+
+        void decreaseUnreadSold();
+
+        void decreaseUnreadNobodyBid();
+
     }
 
 }

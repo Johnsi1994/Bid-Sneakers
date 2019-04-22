@@ -186,7 +186,7 @@ public class SellingDetailAdapter extends RecyclerView.Adapter {
         holder.getAuctionTypeText().setText(product.getAuctionType());
         holder.getExpireText().setText(getDateToString(product.getExpired()));
         holder.getPriceText().setText(String.valueOf(product.getCurrentPrice()));
-        holder.getPeopleText().setText(String.valueOf(product.getParticipantsNumber()));
+        holder.getPeopleText().setText(String.valueOf(product.getPlaceBidTimes()));
         holder.getIncreaseText().setText(String.valueOf(product.getIncrease()));
         holder.getReservePriceText().setText(String.valueOf(product.getReservePrice()));
 

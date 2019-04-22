@@ -187,7 +187,7 @@ public class BiddingDetailAdapter extends RecyclerView.Adapter {
         } else {
             holder.getBuyerText().setText(String.valueOf(product.getHighestUserId()));
         }
-        holder.getPeopleText().setText(String.valueOf(product.getParticipantsNumber()));
+        holder.getPeopleText().setText(String.valueOf(product.getPlaceBidTimes()));
         holder.getSellerText().setText(String.valueOf(product.getSellerId()));
 
     }

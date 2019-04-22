@@ -233,6 +233,24 @@ public class TradeItemPresenter implements TradeItemContract.Presenter {
     }
 
     @Override
+    public void decreaseUnreadBought() {
+        UserManager.getInstance().decreaseUnreadBought();
+        UserManager.getInstance().setHasUserDataChange(true);
+    }
+
+    @Override
+    public void decreaseUnreadSold() {
+        UserManager.getInstance().decreaseUnreadSold();
+        UserManager.getInstance().setHasUserDataChange(true);
+    }
+
+    @Override
+    public void decreaseUnreadNobodyBid() {
+        UserManager.getInstance().decreaseUnreadNobodyBid();
+        UserManager.getInstance().setHasUserDataChange(true);
+    }
+
+    @Override
     public void loadSoldBadgeData() {
 
     }

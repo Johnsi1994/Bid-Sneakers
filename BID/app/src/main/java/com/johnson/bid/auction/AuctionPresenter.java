@@ -37,4 +37,14 @@ public class AuctionPresenter implements AuctionContract.Presenter {
 
     }
 
+    @Override
+    public void openEyesOn(String toolbarTitle) {
+
+    }
+
+    @Override
+    public void hideBottomNavigation() {
+
+    }
+
 }

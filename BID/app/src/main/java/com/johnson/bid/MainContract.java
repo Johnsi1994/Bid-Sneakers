@@ -23,6 +23,8 @@ public interface MainContract {
 
         void openPostUi(ArrayList<String> imagePath);
 
+        void openEyesOnUi();
+
         void setPostPics(ArrayList<String> imagePath);
 
         void setAfterBidData(Product product);

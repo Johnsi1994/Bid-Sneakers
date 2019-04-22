@@ -16,6 +16,8 @@ import com.johnson.bid.bought.BoughtDetailPresenter;
 import com.johnson.bid.chat.ChatFragment;
 import com.johnson.bid.chat.ChatPresenter;
 import com.johnson.bid.data.Product;
+import com.johnson.bid.eyeson.EyesOnFragment;
+import com.johnson.bid.eyeson.EyesOnPresenter;
 import com.johnson.bid.login.LoginFragment;
 import com.johnson.bid.login.LoginPresenter;
 import com.johnson.bid.nobodybit.NobodyBidDetailFragment;
@@ -55,6 +57,7 @@ public class MainMvpController {
     private BoughtDetailPresenter mBoughtDetailPresenter;
     private SoldDetailPresenter mSoldDetailPresenter;
     private NobodyBidDetailPresenter mNobodyBidDetailPresenter;
+    private EyesOnPresenter mEyesOnPresenter;
 
     private AuctionItemPresenter mEnglishAuctionItemPresenter;
     private AuctionItemPresenter mSealedAuctionItemPresenter;
@@ -67,7 +70,8 @@ public class MainMvpController {
 
     @Retention(RetentionPolicy.SOURCE)
     @StringDef({
-            LOGIN, CENTER, TRADE, CHAT, SETTINGS, POST, BIDDING, SELLING, BOUGHTDETAIL, SOLDDETAIL, NOBODYBIDDETAIL
+            LOGIN, CENTER, TRADE, CHAT, SETTINGS, POST, BIDDING, SELLING, BOUGHTDETAIL, SOLDDETAIL, NOBODYBIDDETAIL,
+            EYESON
     })
 
     public @interface FragmentType {
@@ -84,6 +88,7 @@ public class MainMvpController {
     static final String BOUGHTDETAIL = "BOUGHTDETAIL";
     static final String SOLDDETAIL = "SOLDDETAIL";
     static final String NOBODYBIDDETAIL = "NOBODYBIDDETAIL";
+    static final String EYESON = "EYESON";
 
     @Retention(RetentionPolicy.SOURCE)
     @StringDef({
@@ -178,6 +183,17 @@ public class MainMvpController {
             settingsFragment.setPresenter(mMainPresenter);
         }
     }
+
+    void createEyesOnView() {
+
+        EyesOnFragment eyesOnFragment = createEyesOnFragment();
+
+        mEyesOnPresenter = new EyesOnPresenter(eyesOnFragment);
+        mMainPresenter.setEyesOnPresenter(mEyesOnPresenter);
+        eyesOnFragment.setPresenter(mMainPresenter);
+
+    }
+
 
     void createPostView(ArrayList<String> imagePath) {
 
@@ -353,6 +369,17 @@ public class MainMvpController {
                 getFragmentManager(), postFragment, POST);
 
         return postFragment;
+    }
+
+    @NonNull
+    private EyesOnFragment createEyesOnFragment() {
+
+        EyesOnFragment eyesOnFragment = EyesOnFragment.newInstance();
+
+        ActivityUtils.addFragmentByTag(
+                getFragmentManager(), eyesOnFragment, EYESON);
+
+        return eyesOnFragment;
     }
 
     @NonNull

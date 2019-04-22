@@ -17,5 +17,9 @@ public interface AuctionContract {
         AuctionItemFragment findSealedAuction();
 
         void openGalleryDialog(String from);
+
+        void openEyesOn(String toolbarTitle);
+
+        void hideBottomNavigation();
     }
 }

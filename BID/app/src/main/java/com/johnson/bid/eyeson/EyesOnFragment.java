@@ -1,4 +1,4 @@
-package com.johnson.bid.bidding;
+package com.johnson.bid.eyeson;
 
 import android.os.Bundle;
 import android.support.annotation.NonNull;
@@ -6,44 +6,33 @@ import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 
-import com.google.firebase.firestore.FieldValue;
 import com.johnson.bid.MainActivity;
 import com.johnson.bid.R;
 import com.johnson.bid.data.Product;
-import com.johnson.bid.util.Firebase;
-import com.johnson.bid.util.UserManager;
 
 import java.util.ArrayList;
-import java.util.Iterator;
 
 import static com.google.common.base.Preconditions.checkNotNull;
 
-public class BiddingDetailFragment extends Fragment implements BiddingDetailContract.View {
+public class EyesOnFragment extends Fragment implements EyesOnContract.View {
 
-    private BiddingDetailContract.Presenter mPresenter;
-    private BiddingDetailAdapter mBiddingDetailAdapter;
-    private String mAuctionType;
-    private ArrayList<Long> myEyesOn;
-    private Boolean isEyesOn = false;
-    private Product mProduct;
+    private EyesOnContract.Presenter mPresenter;
+    private EyesOnAdapter mEyesOnAdapter;
 
-    public BiddingDetailFragment() {
-    }
+    public EyesOnFragment() {}
 
-    public static BiddingDetailFragment newInstance() {
-        return new BiddingDetailFragment();
+    public static EyesOnFragment newInstance() {
+        return new EyesOnFragment();
     }
 
     @Override
     public void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-
-        mBiddingDetailAdapter = new BiddingDetailAdapter(mPresenter, (MainActivity) getActivity(), mAuctionType);
+        mEyesOnAdapter = new EyesOnAdapter(mPresenter, (MainActivity) getActivity());
     }
 
     @Nullable
@@ -53,7 +42,7 @@ public class BiddingDetailFragment extends Fragment implements BiddingDetailCont
 
         RecyclerView recyclerView = root.findViewById(R.id.recycler_container);
         recyclerView.setLayoutManager(new LinearLayoutManager(getActivity()));
-        recyclerView.setAdapter(mBiddingDetailAdapter);
+        recyclerView.setAdapter(mEyesOnAdapter);
 
         return root;
     }
@@ -62,11 +51,11 @@ public class BiddingDetailFragment extends Fragment implements BiddingDetailCont
     public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
 
-        mPresenter.loadProductData();
+        mPresenter.loadEyesOnData();
     }
 
     @Override
-    public void setPresenter(BiddingDetailContract.Presenter presenter) {
+    public void setPresenter(EyesOnContract.Presenter presenter) {
         mPresenter = checkNotNull(presenter);
     }
 
@@ -74,22 +63,16 @@ public class BiddingDetailFragment extends Fragment implements BiddingDetailCont
     public void onDestroy() {
         super.onDestroy();
 
-        mPresenter.showToolbarAndBottomNavigation();
+        mEyesOnAdapter.cancelAllTimers();
 
-        mPresenter.updateCenterData();
-
-    }
-
-    public void setAuctionType(String type) {
-        mAuctionType = type;
+        mPresenter.showBottomNavigation();
+        mPresenter.updateToolbar("拍賣中心");
     }
 
     @Override
-    public void showBiddingUi(Product product) {
-        if (mBiddingDetailAdapter == null) {
-            mBiddingDetailAdapter = new BiddingDetailAdapter(mPresenter, (MainActivity) getActivity(), mAuctionType);
+    public void showEyesOnUi(ArrayList<Product> products) {
+        if (mEyesOnAdapter != null) {
+            mEyesOnAdapter.updateData(products);
         }
-        mProduct = product;
-        mBiddingDetailAdapter.updateData(product);
     }
 }

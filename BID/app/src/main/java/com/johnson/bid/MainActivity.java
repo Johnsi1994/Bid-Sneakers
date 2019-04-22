@@ -106,6 +106,11 @@ public class MainActivity extends AppCompatActivity implements MainContract.View
     }
 
     @Override
+    public void openEyesOnUi() {
+        mMainMvpController.createEyesOnView();
+    }
+
+    @Override
     public void setPostPics(ArrayList<String> imagePath) {
         mMainMvpController.setPostPics(imagePath);
     }
@@ -290,7 +295,7 @@ public class MainActivity extends AppCompatActivity implements MainContract.View
     @Override
     public void setToolbarTitleUi(String title) {
 
-        if (title.equals("刊登")) {
+        if (title.equals("刊登") || title.equals("關注")) {
             mToolbar.setNavigationIcon(R.drawable.ic_left_arrow);
             mToolbar.setNavigationOnClickListener(v -> onBackPressed());
         } else {

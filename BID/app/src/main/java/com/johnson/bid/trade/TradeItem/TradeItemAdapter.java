@@ -6,7 +6,6 @@ import android.support.annotation.NonNull;
 import android.support.v4.content.ContextCompat;
 import android.support.v7.widget.CardView;
 import android.support.v7.widget.RecyclerView;
-import android.util.Log;
 import android.util.SparseArray;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -227,7 +226,7 @@ public class TradeItemAdapter extends RecyclerView.Adapter {
 
             @Override
             public void onTick(long millisUntilFinished) {
-                holder.getTextTime().setText(getLastTimeToString(millisUntilFinished));
+                holder.getTextTime().setText(getRemainingTimeToString(millisUntilFinished));
             }
 
             @Override
@@ -347,7 +346,7 @@ public class TradeItemAdapter extends RecyclerView.Adapter {
 
             @Override
             public void onTick(long millisUntilFinished) {
-                holder.getTextTime().setText(getLastTimeToString(millisUntilFinished));
+                holder.getTextTime().setText(getRemainingTimeToString(millisUntilFinished));
             }
 
             @Override
@@ -572,7 +571,7 @@ public class TradeItemAdapter extends RecyclerView.Adapter {
         }
     }
 
-    private String getLastTimeToString(long millSeconds) {
+    private String getRemainingTimeToString(long millSeconds) {
 
         long days = millSeconds / (1000 * 60 * 60 * 24);
         long hours = (millSeconds - days * (1000 * 60 * 60 * 24)) / (1000 * 60 * 60);

@@ -18,6 +18,7 @@ import com.johnson.bid.data.Product;
 import com.johnson.bid.util.UserManager;
 
 import java.util.ArrayList;
+import java.util.Iterator;
 
 import static com.johnson.bid.MainMvpController.ENGLISH;
 import static com.johnson.bid.MainMvpController.SEALED;
@@ -290,10 +291,6 @@ public class BiddingDetailAdapter extends RecyclerView.Adapter {
         notifyDataSetChanged();
     }
 
-    public Boolean getIsEyesOn() {
-        return isEyesOn;
-    }
-
     private String getDateToString(long millSeconds) {
 
         long days = millSeconds / (1000 * 60 * 60 * 24);
@@ -329,6 +326,10 @@ public class BiddingDetailAdapter extends RecyclerView.Adapter {
         }.start();
     }
 
+    public Boolean getIsEyesOn() {
+        return isEyesOn;
+    }
+
     private void eyeOnSwitch(Button mEyesOnBtn) {
         myEyesOn = UserManager.getInstance().getUser().getEyesOn();
 
@@ -343,9 +344,24 @@ public class BiddingDetailAdapter extends RecyclerView.Adapter {
             if (isEyesOn) {
                 isEyesOn = false;
                 mEyesOnBtn.setBackgroundResource(R.drawable.ic_eyes_on);
+
+                ArrayList<Long> EyesOnList = UserManager.getInstance().getUser().getEyesOn();
+                Iterator<Long> iterator = EyesOnList.iterator();
+
+                while (iterator.hasNext()) {
+                    long id = iterator.next();
+                    if (id == mProduct.getProductId()) {
+                        iterator.remove();
+                    }
+                }
+
+                UserManager.getInstance().setHasUserDataChange(true);
+
             } else {
                 isEyesOn = true;
                 mEyesOnBtn.setBackgroundResource(R.drawable.ic_eyes_on_selected);
+                UserManager.getInstance().getUser().getEyesOn().add(mProduct.getProductId());
+                UserManager.getInstance().setHasUserDataChange(true);
             }
         });
     }

@@ -73,6 +73,13 @@ public class AuctionFragment extends Fragment implements AuctionContract.View {
         });
 
 
+        mEyesOnFloatingActionButton.setOnClickListener(v -> {
+            closeFABMenu();
+            mMenuFloatingActionButton.setImageResource(R.drawable.ic_up_arrow);
+            mPresenter.openEyesOn("關注");
+            mPresenter.hideBottomNavigation();
+        });
+
         return root;
     }
 

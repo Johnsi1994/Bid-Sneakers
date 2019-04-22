@@ -15,6 +15,8 @@ import com.johnson.bid.auction.AuctionPresenter;
 import com.johnson.bid.auction.auctionitem.AuctionItemFragment;
 import com.johnson.bid.data.Product;
 import com.johnson.bid.dialog.MessageDialog;
+import com.johnson.bid.eyeson.EyesOnContract;
+import com.johnson.bid.eyeson.EyesOnPresenter;
 import com.johnson.bid.login.LoginContract;
 import com.johnson.bid.login.LoginPresenter;
 import com.johnson.bid.nobodybit.NobodyBidDetailContract;
@@ -43,7 +45,7 @@ import static com.johnson.bid.MainMvpController.ENGLISH;
 public class MainPresenter implements MainContract.Presenter, AuctionContract.Presenter, TradeContract.Presenter,
         ChatContract.Presenter, SettingsContract.Presenter, AuctionItemContract.Presenter, LoginContract.Presenter,
         PostContract.Presenter, TradeItemContract.Presenter, BiddingDetailContract.Presenter, SellingDetailContract.Presenter,
-        BoughtDetailContract.Presenter, SoldDetailContract.Presenter, NobodyBidDetailContract.Presenter {
+        BoughtDetailContract.Presenter, SoldDetailContract.Presenter, NobodyBidDetailContract.Presenter, EyesOnContract.Presenter {
 
     private MainContract.View mMainView;
 
@@ -58,6 +60,7 @@ public class MainPresenter implements MainContract.Presenter, AuctionContract.Pr
     private BoughtDetailPresenter mBoughtDetailPresenter;
     private SoldDetailPresenter mSoldDetailPresenter;
     private NobodyBidDetailPresenter mNobodyBidDetailPresenter;
+    private EyesOnPresenter mEyesOnPresenter;
 
     private AuctionItemPresenter mEnglishAuctionItemPresenter;
     private AuctionItemPresenter mSealedAuctionItemPresenter;
@@ -95,6 +98,10 @@ public class MainPresenter implements MainContract.Presenter, AuctionContract.Pr
 
     void setSettingsPresenter(SettingsPresenter settingsPresenter) {
         mSettingsPresenter = checkNotNull(settingsPresenter);
+    }
+
+    void setEyesOnPresenter(EyesOnPresenter eyesOnPresenter) {
+        mEyesOnPresenter = checkNotNull(eyesOnPresenter);
     }
 
     void setEnglishAuctionItemPresenter(AuctionItemPresenter englishAuctionItemPresenter) {
@@ -205,6 +212,16 @@ public class MainPresenter implements MainContract.Presenter, AuctionContract.Pr
     public void hideToolbarAndBottomNavigation() {
         mMainView.hideToolbarUi();
         mMainView.hideBottomNavigationUi();
+    }
+
+    @Override
+    public void loadEyesOnData() {
+        mEyesOnPresenter.loadEyesOnData();
+    }
+
+    @Override
+    public void setMyEyesOnData(ArrayList<Product> products) {
+        mEyesOnPresenter.setMyEyesOnData(products);
     }
 
     @Override
@@ -342,6 +359,12 @@ public class MainPresenter implements MainContract.Presenter, AuctionContract.Pr
     @Override
     public void openGalleryDialog(String from) {
         mMainView.openGalleryDialog(from);
+    }
+
+    @Override
+    public void openEyesOn(String toolbarTitle) {
+        mMainView.openEyesOnUi();
+        updateToolbar(toolbarTitle);
     }
 
     @Override

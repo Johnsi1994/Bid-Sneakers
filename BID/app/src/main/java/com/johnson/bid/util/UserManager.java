@@ -112,7 +112,7 @@ public class UserManager {
 //
 //                    Bitmap bitmap = getFacebookProfilePicture(userId);
 
-                    Firebase.getFirestore().collection("users")
+                    Firebase.getInstance().getFirestore().collection("users")
                             .whereEqualTo("id", id)
                             .get()
                             .addOnCompleteListener(task -> {
@@ -126,7 +126,7 @@ public class UserManager {
                                         user.setImage(userPhoto);
                                         setUser(user);
 
-                                        Firebase.getFirestore().collection("users")
+                                        Firebase.getInstance().getFirestore().collection("users")
                                                 .document(String.valueOf(id))
                                                 .set(user)
                                                 .addOnSuccessListener(documentReference -> Log.d("Johnsi", "DocumentSnapshot added"))
@@ -157,7 +157,7 @@ public class UserManager {
 
     public void getUserProfile(LoadCallback loadCallback) {
 
-        Firebase.getFirestore().collection("users")
+        Firebase.getInstance().getFirestore().collection("users")
                 .document(AccessToken.getCurrentAccessToken().getUserId())
                 .get()
                 .addOnCompleteListener(task -> {
@@ -177,7 +177,7 @@ public class UserManager {
 
     public void updateUser2Firebase() {
 
-        Firebase.getFirestore().collection("users")
+        Firebase.getInstance().getFirestore().collection("users")
                 .document(String.valueOf(mUser.getId()))
                 .set(mUser)
                 .addOnSuccessListener(documentReference -> Log.d("Johnsi", "DocumentSnapshot added"))

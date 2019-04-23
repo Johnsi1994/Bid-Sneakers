@@ -1,6 +1,7 @@
 package com.johnson.bid;
 
 import android.Manifest;
+import android.app.Dialog;
 import android.content.ContentUris;
 import android.content.ContentValues;
 import android.content.Intent;
@@ -21,11 +22,17 @@ import android.support.design.widget.BottomSheetDialog;
 import android.support.v4.app.ActivityCompat;
 import android.support.v4.content.ContextCompat;
 import android.support.v7.app.AppCompatActivity;
+import android.support.v7.widget.SearchView;
 import android.support.v7.widget.Toolbar;
 import android.util.DisplayMetrics;
 import android.util.Log;
+import android.view.Gravity;
 import android.view.LayoutInflater;
+import android.view.Menu;
+import android.view.MenuItem;
 import android.view.View;
+import android.view.Window;
+import android.view.WindowManager;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.TextView;
@@ -67,6 +74,8 @@ public class MainActivity extends AppCompatActivity implements MainContract.View
     private ArrayList<String> mImagePath;
     private Boolean mIsFromCenter = false;
 
+    private SearchView searchView;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -106,8 +115,51 @@ public class MainActivity extends AppCompatActivity implements MainContract.View
     }
 
     @Override
+    public void openSearchUi(String keyword) {
+        mMainMvpController.createSearchUi(keyword);
+    }
+
+    @Override
     public void openEyesOnUi() {
         mMainMvpController.createEyesOnView();
+    }
+
+    @Override
+    public void openSearchDialog() {
+
+        LayoutInflater factory = LayoutInflater.from(this);
+        final View view = factory.inflate(R.layout.dialog_searchview, null);
+        final Dialog dialog = new Dialog(this);
+
+        Window window = dialog.getWindow();
+        WindowManager.LayoutParams params = window.getAttributes();
+        params.y = 400;
+        window.setAttributes(params);
+
+        dialog.getWindow().setGravity(Gravity.TOP);
+        dialog.setContentView(view);
+        ((View) view.getParent()).setBackgroundColor(this.getColor(android.R.color.transparent));
+        dialog.show();
+
+
+        searchView = view.findViewById(R.id.search_view);
+        searchView.setIconified(false);
+
+        searchView.setOnQueryTextListener(new SearchView.OnQueryTextListener() {
+            @Override
+            public boolean onQueryTextSubmit(String keyword) {
+                mPresenter.openSearch("搜尋結果", keyword);
+                dialog.dismiss();
+                return false;
+            }
+
+            @Override
+            public boolean onQueryTextChange(String keyword) {
+
+                return false;
+            }
+        });
+
     }
 
     @Override
@@ -295,7 +347,7 @@ public class MainActivity extends AppCompatActivity implements MainContract.View
     @Override
     public void setToolbarTitleUi(String title) {
 
-        if (title.equals("刊登") || title.equals("關注")) {
+        if (title.equals("刊登") || title.equals("搜尋結果")) {
             mToolbar.setNavigationIcon(R.drawable.ic_left_arrow);
             mToolbar.setNavigationOnClickListener(v -> onBackPressed());
         } else {
@@ -406,7 +458,7 @@ public class MainActivity extends AppCompatActivity implements MainContract.View
 
                     setAfterBidData(product);
 
-                    Firebase.getFirestore().collection("products")
+                    Firebase.getInstance().getFirestore().collection("products")
                             .document(String.valueOf(product.getProductId()))
                             .update("currentPrice", Integer.parseInt(mBidPrice.getText().toString()),
                                     "highestUserId", UserManager.getInstance().getUser().getId(),
@@ -444,7 +496,7 @@ public class MainActivity extends AppCompatActivity implements MainContract.View
 
                     if (Integer.parseInt(mBidPrice.getText().toString()) > product.getCurrentPrice()) {
 
-                        Firebase.getFirestore().collection("products")
+                        Firebase.getInstance().getFirestore().collection("products")
                                 .document(String.valueOf(product.getProductId()))
                                 .update("currentPrice", Integer.parseInt(mBidPrice.getText().toString()),
                                         "highestUserId", UserManager.getInstance().getUser().getId(),
@@ -452,7 +504,7 @@ public class MainActivity extends AppCompatActivity implements MainContract.View
                                 .addOnSuccessListener(aVoid -> Log.d("Johnsi", "BID DocumentSnapshot successfully updated!"))
                                 .addOnFailureListener(e -> Log.w("Johnsi", "BID Error updating document", e));
                     } else {
-                        Firebase.getFirestore().collection("products")
+                        Firebase.getInstance().getFirestore().collection("products")
                                 .document(String.valueOf(product.getProductId()))
                                 .update("placeBidTimes", placeBidTimes + 1)
                                 .addOnSuccessListener(aVoid -> Log.d("Johnsi", "BID DocumentSnapshot successfully updated!"))
@@ -495,13 +547,13 @@ public class MainActivity extends AppCompatActivity implements MainContract.View
             UserManager.getInstance().removeSellingProductId(product.getProductId());
             UserManager.getInstance().setHasUserDataChange(true);
 
-            Firebase.getFirestore().collection("products")
+            Firebase.getInstance().getFirestore().collection("products")
                     .document(String.valueOf(product.getProductId()))
                     .delete()
                     .addOnSuccessListener(aVoid -> Log.d("Johnsi", product.getProductId() + " successfully deleted!"))
                     .addOnFailureListener(e -> Log.w("Johnsi", "Error deleting document", e));
 
-            Firebase.getFirestore().collection("users")
+            Firebase.getInstance().getFirestore().collection("users")
                     .whereArrayContains("myBiddingProductsId", product.getProductId())
                     .get()
                     .addOnCompleteListener(task -> {
@@ -509,7 +561,7 @@ public class MainActivity extends AppCompatActivity implements MainContract.View
                             for (QueryDocumentSnapshot document : task.getResult()) {
                                 Log.d("Johnsi", document.getId() + " => " + document.getData());
 
-                                Firebase.getFirestore().collection("users")
+                                Firebase.getInstance().getFirestore().collection("users")
                                         .document(document.getId())
                                         .update("myBiddingProductsId", FieldValue.arrayRemove(product.getProductId()))
                                         .addOnSuccessListener(aVoid -> Log.d("Johnsi", "Bidding Products Id successfully removed!"))
@@ -574,8 +626,6 @@ public class MainActivity extends AppCompatActivity implements MainContract.View
     private void init() {
         mMainMvpController = MainMvpController.create(this);
 
-
-
         if (UserManager.getInstance().isLoggedIn()) {
             UserManager.getInstance().getUserProfile(new UserManager.LoadCallback() {
                 @Override
@@ -594,12 +644,15 @@ public class MainActivity extends AppCompatActivity implements MainContract.View
                 public void onFail(String errorMessage) {
                     Log.d("Johnsi", "Load User Profile Fail !");
                 }
+
             });
 
         } else {
 
             mPresenter.openLogin();
         }
+
+        Firebase.getInstance().getAllBiddingProductsFromFirebase();
 
     }
 

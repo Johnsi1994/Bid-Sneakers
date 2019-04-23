@@ -20,6 +20,8 @@ public interface AuctionContract {
 
         void openEyesOn(String toolbarTitle);
 
+        void openSearchDialog();
+
         void hideBottomNavigation();
     }
 }

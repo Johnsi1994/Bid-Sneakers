@@ -1,9 +1,16 @@
 package com.johnson.bid.eyeson;
 
+import android.app.NotificationChannel;
+import android.app.NotificationManager;
+import android.content.Context;
+import android.content.Intent;
+import android.os.Build;
 import android.os.CountDownTimer;
 import android.support.annotation.NonNull;
+import android.support.v4.app.NotificationCompat;
 import android.support.v7.widget.CardView;
 import android.support.v7.widget.RecyclerView;
+import android.util.Log;
 import android.util.SparseArray;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -11,6 +18,7 @@ import android.view.ViewGroup;
 import android.widget.ImageView;
 import android.widget.TextView;
 
+import com.johnson.bid.Bid;
 import com.johnson.bid.MainActivity;
 import com.johnson.bid.R;
 import com.johnson.bid.data.Product;
@@ -27,11 +35,22 @@ public class EyesOnAdapter extends RecyclerView.Adapter {
     private MainActivity mMainActivity;
     private SparseArray<CountDownTimer> mCountDownMap;
     private ArrayList<Product> mProductsList;
+    private NotificationManager mNotificationManager;
+    private NotificationCompat.Builder mBuilder;
 
     public EyesOnAdapter(EyesOnContract.Presenter presenter, MainActivity mainActivity) {
         mPresenter = presenter;
         mMainActivity = mainActivity;
         mCountDownMap = new SparseArray<>();
+
+        mNotificationManager = (NotificationManager) mMainActivity.getSystemService(Context.NOTIFICATION_SERVICE);
+
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
+            NotificationChannel notificationChannel =
+                    new NotificationChannel("com.johnson.bid", "J",
+                            NotificationManager.IMPORTANCE_HIGH);
+            mNotificationManager.createNotificationChannel(notificationChannel);
+        }
     }
 
     @NonNull
@@ -43,7 +62,7 @@ public class EyesOnAdapter extends RecyclerView.Adapter {
 
     @Override
     public void onBindViewHolder(@NonNull RecyclerView.ViewHolder holder, int i) {
-        bindViewHolder((ViewHolder) holder, mProductsList.get(i));
+        bindViewHolder((ViewHolder) holder, mProductsList.get(i), i);
     }
 
     @Override
@@ -120,7 +139,7 @@ public class EyesOnAdapter extends RecyclerView.Adapter {
         }
     }
 
-    private void bindViewHolder(ViewHolder holder, Product product) {
+    private void bindViewHolder(ViewHolder holder, Product product, int i) {
 
 
         holder.getBiddingLayout().setOnClickListener(v -> {
@@ -160,11 +179,22 @@ public class EyesOnAdapter extends RecyclerView.Adapter {
         if (holder.countDownTimer != null) {
             holder.countDownTimer.cancel();
         }
+
         holder.countDownTimer = new CountDownTimer(lastTime, 1000) {
 
             @Override
             public void onTick(long millisUntilFinished) {
                 holder.getTextTime().setText(getRemainingTimeToString(millisUntilFinished));
+
+                if (millisUntilFinished > 1799000 && millisUntilFinished < 1801000) {
+
+                    mBuilder = new NotificationCompat.Builder(mMainActivity, "com.johnson.bid");
+                    mBuilder.setContentTitle("快結標嘍!!!")
+                            .setContentText(product.getTitle() + " 即將在30分鐘後結標，千萬別錯過!!!")
+                            .setTicker("Ticker")
+                            .setSmallIcon(R.drawable.icons_24px_notification);
+                    mNotificationManager.notify(i, mBuilder.build());
+                }
             }
 
             @Override

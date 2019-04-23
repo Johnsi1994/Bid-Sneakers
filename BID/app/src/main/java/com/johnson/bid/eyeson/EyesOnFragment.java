@@ -64,9 +64,6 @@ public class EyesOnFragment extends Fragment implements EyesOnContract.View {
         super.onDestroy();
 
         mEyesOnAdapter.cancelAllTimers();
-
-        mPresenter.showBottomNavigation();
-        mPresenter.updateToolbar("拍賣中心");
     }
 
     @Override

@@ -69,6 +69,8 @@ public class PostFragment extends Fragment implements PostContract.View {
         mPresenter = checkNotNull(presenter);
     }
 
+
+
     @Override
     public void showPostUi(ArrayList<String> imagePath) {
         if (mPostAdapter != null) {

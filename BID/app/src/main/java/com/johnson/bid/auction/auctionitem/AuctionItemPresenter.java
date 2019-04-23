@@ -43,7 +43,7 @@ public class AuctionItemPresenter implements AuctionItemContract.Presenter {
 
         mProductList = new ArrayList<>();
 
-        Firebase.getFirestore().collection("products")
+        Firebase.getInstance().getFirestore().collection("products")
                 .whereEqualTo("auctionType", "一般拍賣")
                 .whereEqualTo("auctionCondition", "bidding")
                 .get()
@@ -72,7 +72,7 @@ public class AuctionItemPresenter implements AuctionItemContract.Presenter {
 
         mProductList = new ArrayList<>();
 
-        Firebase.getFirestore().collection("products")
+        Firebase.getInstance().getFirestore().collection("products")
                 .whereEqualTo("auctionType", "封閉拍賣")
                 .whereEqualTo("auctionCondition", "bidding")
                 .get()

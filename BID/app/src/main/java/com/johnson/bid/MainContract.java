@@ -23,7 +23,11 @@ public interface MainContract {
 
         void openPostUi(ArrayList<String> imagePath);
 
+        void openSearchUi(String keyword);
+
         void openEyesOnUi();
+
+        void openSearchDialog();
 
         void setPostPics(ArrayList<String> imagePath);
 
@@ -103,5 +107,7 @@ public interface MainContract {
         void showBottomNavigation();
 
         void updateTradeBadge();
+
+        void openSearch(String toolbarTitle, String keyWord);
     }
 }

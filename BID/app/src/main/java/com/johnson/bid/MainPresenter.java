@@ -23,6 +23,8 @@ import com.johnson.bid.nobodybit.NobodyBidDetailContract;
 import com.johnson.bid.nobodybit.NobodyBidDetailPresenter;
 import com.johnson.bid.post.PostContract;
 import com.johnson.bid.post.PostPresenter;
+import com.johnson.bid.search.SearchContract;
+import com.johnson.bid.search.SearchPresenter;
 import com.johnson.bid.selling.SellingDetailContract;
 import com.johnson.bid.selling.SellingDetailPresenter;
 import com.johnson.bid.settings.SettingsContract;
@@ -45,7 +47,8 @@ import static com.johnson.bid.MainMvpController.ENGLISH;
 public class MainPresenter implements MainContract.Presenter, AuctionContract.Presenter, TradeContract.Presenter,
         ChatContract.Presenter, SettingsContract.Presenter, AuctionItemContract.Presenter, LoginContract.Presenter,
         PostContract.Presenter, TradeItemContract.Presenter, BiddingDetailContract.Presenter, SellingDetailContract.Presenter,
-        BoughtDetailContract.Presenter, SoldDetailContract.Presenter, NobodyBidDetailContract.Presenter, EyesOnContract.Presenter {
+        BoughtDetailContract.Presenter, SoldDetailContract.Presenter, NobodyBidDetailContract.Presenter, EyesOnContract.Presenter,
+        SearchContract.Presenter {
 
     private MainContract.View mMainView;
 
@@ -61,6 +64,7 @@ public class MainPresenter implements MainContract.Presenter, AuctionContract.Pr
     private SoldDetailPresenter mSoldDetailPresenter;
     private NobodyBidDetailPresenter mNobodyBidDetailPresenter;
     private EyesOnPresenter mEyesOnPresenter;
+    private SearchPresenter mSearchPresenter;
 
     private AuctionItemPresenter mEnglishAuctionItemPresenter;
     private AuctionItemPresenter mSealedAuctionItemPresenter;
@@ -82,6 +86,10 @@ public class MainPresenter implements MainContract.Presenter, AuctionContract.Pr
 
     void setPostPresenter(PostPresenter postPresenter) {
         mPostPresenter = checkNotNull(postPresenter);
+    }
+
+    void setSearchPresenter(SearchPresenter searchPresenter) {
+        mSearchPresenter = checkNotNull(searchPresenter);
     }
 
     void setAuctionPresenter(AuctionPresenter auctionPresenter) {
@@ -215,6 +223,16 @@ public class MainPresenter implements MainContract.Presenter, AuctionContract.Pr
     }
 
     @Override
+    public void loadSearchData() {
+        mSearchPresenter.loadSearchData();
+    }
+
+    @Override
+    public void setKeyword(String keyword) {
+        mSearchPresenter.setKeyword(keyword);
+    }
+
+    @Override
     public void loadEyesOnData() {
         mEyesOnPresenter.loadEyesOnData();
     }
@@ -321,6 +339,12 @@ public class MainPresenter implements MainContract.Presenter, AuctionContract.Pr
     }
 
     @Override
+    public void openSearch(String toolbarTitle, String keyWord) {
+        mMainView.openSearchUi(keyWord);
+        updateToolbar(toolbarTitle);
+    }
+
+    @Override
     public void decreaseUnreadBought() {
         mMyBoughtPresenter.decreaseUnreadBought();
     }
@@ -365,6 +389,11 @@ public class MainPresenter implements MainContract.Presenter, AuctionContract.Pr
     public void openEyesOn(String toolbarTitle) {
         mMainView.openEyesOnUi();
         updateToolbar(toolbarTitle);
+    }
+
+    @Override
+    public void openSearchDialog() {
+        mMainView.openSearchDialog();
     }
 
     @Override

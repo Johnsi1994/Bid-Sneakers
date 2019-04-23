@@ -24,6 +24,8 @@ import com.johnson.bid.nobodybit.NobodyBidDetailFragment;
 import com.johnson.bid.nobodybit.NobodyBidDetailPresenter;
 import com.johnson.bid.post.PostFragment;
 import com.johnson.bid.post.PostPresenter;
+import com.johnson.bid.search.SearchFragment;
+import com.johnson.bid.search.SearchPresenter;
 import com.johnson.bid.selling.SellingDetailFragment;
 import com.johnson.bid.selling.SellingDetailPresenter;
 import com.johnson.bid.settings.SettingsFragment;
@@ -58,6 +60,7 @@ public class MainMvpController {
     private SoldDetailPresenter mSoldDetailPresenter;
     private NobodyBidDetailPresenter mNobodyBidDetailPresenter;
     private EyesOnPresenter mEyesOnPresenter;
+    private SearchPresenter mSearchPresenter;
 
     private AuctionItemPresenter mEnglishAuctionItemPresenter;
     private AuctionItemPresenter mSealedAuctionItemPresenter;
@@ -71,7 +74,7 @@ public class MainMvpController {
     @Retention(RetentionPolicy.SOURCE)
     @StringDef({
             LOGIN, CENTER, TRADE, CHAT, SETTINGS, POST, BIDDING, SELLING, BOUGHTDETAIL, SOLDDETAIL, NOBODYBIDDETAIL,
-            EYESON
+            EYESON, SEARCH
     })
 
     public @interface FragmentType {
@@ -89,6 +92,7 @@ public class MainMvpController {
     static final String SOLDDETAIL = "SOLDDETAIL";
     static final String NOBODYBIDDETAIL = "NOBODYBIDDETAIL";
     static final String EYESON = "EYESON";
+    static final String SEARCH = "SEARCH";
 
     @Retention(RetentionPolicy.SOURCE)
     @StringDef({
@@ -186,11 +190,13 @@ public class MainMvpController {
 
     void createEyesOnView() {
 
-        EyesOnFragment eyesOnFragment = createEyesOnFragment();
+        EyesOnFragment eyesOnFragment = findOrCreateEyesOnFragment();
 
-        mEyesOnPresenter = new EyesOnPresenter(eyesOnFragment);
-        mMainPresenter.setEyesOnPresenter(mEyesOnPresenter);
-        eyesOnFragment.setPresenter(mMainPresenter);
+        if (mEyesOnPresenter == null) {
+            mEyesOnPresenter = new EyesOnPresenter(eyesOnFragment);
+            mMainPresenter.setEyesOnPresenter(mEyesOnPresenter);
+            eyesOnFragment.setPresenter(mMainPresenter);
+        }
 
     }
 
@@ -203,6 +209,17 @@ public class MainMvpController {
         mMainPresenter.setPostPresenter(mPostPresenter);
         postFragment.setPresenter(mMainPresenter);
         mPostPresenter.setPostPics(imagePath);
+    }
+
+    void createSearchUi(String keyword) {
+
+        SearchFragment searchFragment = createSearchFragment();
+
+        mSearchPresenter = new SearchPresenter(searchFragment);
+        mMainPresenter.setSearchPresenter(mSearchPresenter);
+        searchFragment.setPresenter(mMainPresenter);
+        mSearchPresenter.setKeyword(keyword);
+
     }
 
     void setPostPics(ArrayList<String> imagePath) {
@@ -372,11 +389,27 @@ public class MainMvpController {
     }
 
     @NonNull
-    private EyesOnFragment createEyesOnFragment() {
+    private SearchFragment createSearchFragment() {
 
-        EyesOnFragment eyesOnFragment = EyesOnFragment.newInstance();
+        SearchFragment searchFragment = SearchFragment.newInstance();
 
         ActivityUtils.addFragmentByTag(
+                getFragmentManager(), searchFragment, SEARCH);
+
+        return searchFragment;
+    }
+
+    @NonNull
+    private EyesOnFragment findOrCreateEyesOnFragment() {
+
+        EyesOnFragment eyesOnFragment =
+                (EyesOnFragment) getFragmentManager().findFragmentByTag(EYESON);
+
+        if (eyesOnFragment == null) {
+            eyesOnFragment = EyesOnFragment.newInstance();
+        }
+
+        ActivityUtils.showOrAddFragmentByTag(
                 getFragmentManager(), eyesOnFragment, EYESON);
 
         return eyesOnFragment;

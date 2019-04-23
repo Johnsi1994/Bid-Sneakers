@@ -43,6 +43,11 @@ public class AuctionPresenter implements AuctionContract.Presenter {
     }
 
     @Override
+    public void openSearchDialog() {
+
+    }
+
+    @Override
     public void hideBottomNavigation() {
 
     }

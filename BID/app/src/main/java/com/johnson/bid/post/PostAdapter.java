@@ -233,7 +233,7 @@ public class PostAdapter extends RecyclerView.Adapter {
         private void uploadImages(int i) {
 
             Uri file = Uri.fromFile(new File(mImagePath.get(i)));
-            StorageReference riversRef = Firebase.getStorage().child(file.getLastPathSegment());
+            StorageReference riversRef = Firebase.getInstance().getStorage().child(file.getLastPathSegment());
             int j = i + 1;
 
             riversRef.putFile(file)
@@ -275,7 +275,7 @@ public class PostAdapter extends RecyclerView.Adapter {
             mPresenter.setSellerHasRead(false);
             mPresenter.setBuyerHasRead(false);
 
-            Firebase.getFirestore().collection("products")
+            Firebase.getInstance().getFirestore().collection("products")
                     .document(String.valueOf(id))
                     .set(mPresenter.getProduct())
                     .addOnSuccessListener(documentReference -> {

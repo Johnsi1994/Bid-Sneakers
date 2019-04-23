@@ -70,7 +70,7 @@ public class EyesOnPresenter implements EyesOnContract.Presenter {
     private void loadDataFromFireBase(int i) {
 
         int j = i + 1;
-        Firebase.getFirestore().collection("products")
+        Firebase.getInstance().getFirestore().collection("products")
                 .document(String.valueOf(mEyesOnList.get(i)))
                 .get()
                 .addOnCompleteListener(task -> {

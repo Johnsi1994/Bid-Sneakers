@@ -142,7 +142,7 @@ public class TradeItemPresenter implements TradeItemContract.Presenter {
     @Override
     public void setBuyerHasRead(boolean hasRead, Product product) {
 
-        Firebase.getFirestore().collection("products")
+        Firebase.getInstance().getFirestore().collection("products")
                 .document(String.valueOf(product.getProductId()))
                 .update("buyerHasRead", hasRead)
                 .addOnSuccessListener(aVoid -> {
@@ -156,7 +156,7 @@ public class TradeItemPresenter implements TradeItemContract.Presenter {
     @Override
     public void setSellerHasRead(boolean hasRead, Product product, int from) {
 
-        Firebase.getFirestore().collection("products")
+        Firebase.getInstance().getFirestore().collection("products")
                 .document(String.valueOf(product.getProductId()))
                 .update("sellerHasRead", hasRead)
                 .addOnSuccessListener(aVoid -> {
@@ -176,7 +176,7 @@ public class TradeItemPresenter implements TradeItemContract.Presenter {
     @Override
     public void minusNobodyBidBadgeCount(LoadCallback loadCallback) {
 
-        Firebase.getFirestore().collection("users")
+        Firebase.getInstance().getFirestore().collection("users")
                 .document(String.valueOf(UserManager.getInstance().getUser().getId()))
                 .update("unreadNobodyBid", UserManager.getInstance().getUser().getUnreadNobodyBid() - 1)
                 .addOnSuccessListener(aVoid -> {
@@ -193,7 +193,7 @@ public class TradeItemPresenter implements TradeItemContract.Presenter {
     @Override
     public void minusSoldBadgeCount(LoadCallback loadCallback) {
 
-        Firebase.getFirestore().collection("users")
+        Firebase.getInstance().getFirestore().collection("users")
                 .document(String.valueOf(UserManager.getInstance().getUser().getId()))
                 .update("unreadSold", UserManager.getInstance().getUser().getUnreadSold() - 1)
                 .addOnSuccessListener(aVoid -> {
@@ -209,7 +209,7 @@ public class TradeItemPresenter implements TradeItemContract.Presenter {
     @Override
     public void minusBoughtBadgeCount(LoadCallback loadCallback) {
 
-        Firebase.getFirestore().collection("users")
+        Firebase.getInstance().getFirestore().collection("users")
                 .document(String.valueOf(UserManager.getInstance().getUser().getId()))
                 .update("unreadBought", UserManager.getInstance().getUser().getUnreadBought() - 1)
                 .addOnSuccessListener(aVoid -> {
@@ -264,7 +264,7 @@ public class TradeItemPresenter implements TradeItemContract.Presenter {
     private void loadDataFromFireBase(int i, String type) {
 
         int j = i + 1;
-        Firebase.getFirestore().collection("products")
+        Firebase.getInstance().getFirestore().collection("products")
                 .document(String.valueOf(mProductIdList.get(i)))
                 .get()
                 .addOnCompleteListener(task -> {

@@ -166,7 +166,7 @@ public class AuctionItemAdapter extends RecyclerView.Adapter {
 
                 holder.getTextTime().setText("競標結束");
 
-                Firebase.getFirestore().collection("products")
+                Firebase.getInstance().getFirestore().collection("products")
                         .document(String.valueOf(product.getProductId()))
                         .get()
                         .addOnCompleteListener(task -> {
@@ -304,7 +304,7 @@ public class AuctionItemAdapter extends RecyclerView.Adapter {
 
                 holder.getTextTime().setText("競標結束");
 
-                Firebase.getFirestore().collection("products")
+                Firebase.getInstance().getFirestore().collection("products")
                         .document(String.valueOf(product.getProductId()))
                         .get()
                         .addOnCompleteListener(task -> {
@@ -404,7 +404,7 @@ public class AuctionItemAdapter extends RecyclerView.Adapter {
 
     private void updateProductAuctionCondition(Product latestProduct) {
 
-        Firebase.getFirestore().collection("products")
+        Firebase.getInstance().getFirestore().collection("products")
                 .document(String.valueOf(latestProduct.getProductId()))
                 .update("auctionCondition", "finish")
                 .addOnSuccessListener(aVoid -> Log.d("Johnsi", "Product condition (finish) successfully updated!"))

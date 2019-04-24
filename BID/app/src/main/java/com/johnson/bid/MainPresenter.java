@@ -386,6 +386,11 @@ public class MainPresenter implements MainContract.Presenter, AuctionContract.Pr
     }
 
     @Override
+    public void setProfile(String imagePath) {
+        mSettingsPresenter.setProfile(imagePath);
+    }
+
+    @Override
     public void openEyesOn(String toolbarTitle) {
         mMainView.openEyesOnUi();
         updateToolbar(toolbarTitle);
@@ -781,5 +786,10 @@ public class MainPresenter implements MainContract.Presenter, AuctionContract.Pr
     @Override
     public void loadSoldDetailData() {
         mSoldDetailPresenter.loadSoldDetailData();
+    }
+
+    @Override
+    public void setUserName(String userName) {
+        mSettingsPresenter.setUserName(userName);
     }
 }

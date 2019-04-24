@@ -73,7 +73,7 @@ public class MainMvpController {
 
     @Retention(RetentionPolicy.SOURCE)
     @StringDef({
-            LOGIN, CENTER, TRADE, CHAT, SETTINGS, POST, BIDDING, SELLING, BOUGHTDETAIL, SOLDDETAIL, NOBODYBIDDETAIL,
+            LOGIN, AUCTION, TRADE, CHAT, SETTINGS, POST, BIDDING, SELLING, BOUGHTDETAIL, SOLDDETAIL, NOBODYBIDDETAIL,
             EYESON, SEARCH
     })
 
@@ -81,11 +81,11 @@ public class MainMvpController {
     }
 
     static final String LOGIN = "LOGIN";
-    static final String CENTER = "CENTER";
+    public static final String AUCTION = "AUCTION";
     static final String TRADE = "TRADE";
     static final String CHAT = "CHAT";
-    static final String SETTINGS = "SETTINGS";
-    static final String POST = "POST";
+    public static final String SETTINGS = "SETTINGS";
+    public static final String POST = "POST";
     static final String BIDDING = "BIDDING";
     static final String SELLING = "SELLING";
     static final String BOUGHTDETAIL = "BOUGHTDETAIL";
@@ -224,6 +224,10 @@ public class MainMvpController {
 
     void setPostPics(ArrayList<String> imagePath) {
         mPostPresenter.setPostPics(imagePath);
+    }
+
+    void setSettingsProfile(String imagePath) {
+        mSettingsPresenter.setProfile(imagePath);
     }
 
     void setAfterBidData(Product product) {
@@ -474,14 +478,14 @@ public class MainMvpController {
     private AuctionFragment findOrCreateCenterFragment() {
 
         AuctionFragment auctionFragment =
-                (AuctionFragment) getFragmentManager().findFragmentByTag(CENTER);
+                (AuctionFragment) getFragmentManager().findFragmentByTag(AUCTION);
         if (auctionFragment == null) {
             // Create the fragment
             auctionFragment = AuctionFragment.newInstance();
         }
 
         ActivityUtils.showOrAddFragmentByTag(
-                getFragmentManager(), auctionFragment, CENTER);
+                getFragmentManager(), auctionFragment, AUCTION);
 
         return auctionFragment;
     }
@@ -538,7 +542,7 @@ public class MainMvpController {
     private AuctionItemFragment findOrCreateAuctionFragment(@AuctionType String auctionType) {
 
         AuctionItemFragment fragment =
-                (AuctionItemFragment) ((getFragmentManager().findFragmentByTag(CENTER)))
+                (AuctionItemFragment) ((getFragmentManager().findFragmentByTag(AUCTION)))
                         .getChildFragmentManager().findFragmentByTag(auctionType);
         if (fragment == null) {
             // Create the fragment

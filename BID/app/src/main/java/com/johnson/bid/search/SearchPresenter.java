@@ -43,10 +43,14 @@ public class SearchPresenter implements SearchContract.Presenter {
 
         ArrayList<Product> allBiddingProducts = Firebase.getInstance().getAllBiddingProducts();
         ArrayList<Product> searchProducts = new ArrayList<>();
+        String keywordLowercase = mKeyword.toLowerCase();
+        String productLowercase;
 
         if (allBiddingProducts != null) {
             for (int i = 0; i < allBiddingProducts.size(); i++) {
-                if (allBiddingProducts.get(i).getTitle().contains(mKeyword)) {
+                productLowercase = allBiddingProducts.get(i).getTitle().toLowerCase();
+
+                if (productLowercase.contains(keywordLowercase)) {
                     searchProducts.add(allBiddingProducts.get(i));
                 }
             }

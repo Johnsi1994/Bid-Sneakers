@@ -33,11 +33,13 @@ public interface MainContract {
 
         void setAfterBidData(Product product);
 
-        void openGallery(Boolean isFromCenter);
+        void openGallery(String from);
 
-        void openCamera(Boolean isFromCenter);
+        void openCamera(String from);
 
         void openGalleryDialog(String from);
+
+        void setSettingsProfile(String imagePath);
 
         AuctionItemFragment findEnglishAuctionView();
 

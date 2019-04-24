@@ -100,7 +100,7 @@ public class UserManager {
                     long id = object.getLong("id");
 //                    Log.d("Johnsi", "ID : " + id);
                     String name = object.getString("name");
-                    String userPhoto = "https://graph.facebook.com/" + id + "/picture?type=small";
+                    String userPhoto = "https://graph.facebook.com/" + id + "/picture?type=large";
 
 //                    大頭照處理
 //                    public static Bitmap getFacebookProfilePicture(String userID){
@@ -275,6 +275,14 @@ public class UserManager {
     public void decreaseUnreadNobodyBid() {
         int unread = mUser.getUnreadNobodyBid();
         mUser.setUnreadNobodyBid(unread - 1);
+    }
+
+    public void setUserName(String userName) {
+        mUser.setName(userName);
+    }
+
+    public void setUserProfile(String imageUrl) {
+        mUser.setImage(imageUrl);
     }
 
     public void setHasUserDataChange(boolean hasUserDataChange) {

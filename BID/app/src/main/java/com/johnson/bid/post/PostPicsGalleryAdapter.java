@@ -17,6 +17,8 @@ import java.io.FileNotFoundException;
 import java.io.InputStream;
 import java.util.ArrayList;
 
+import static com.johnson.bid.MainMvpController.POST;
+
 public class PostPicsGalleryAdapter extends RecyclerView.Adapter {
 
     private static final int TYPE_PHOTO   = 0x01;
@@ -115,7 +117,7 @@ public class PostPicsGalleryAdapter extends RecyclerView.Adapter {
             mAddLayout = itemView.findViewById(R.id.layout_add_pic);
 
             mAddLayout.setOnClickListener(v ->
-                mPresenter.openGalleryDialog("POSTGALLERY")
+                mPresenter.openGalleryDialog(POST)
             );
 
         }

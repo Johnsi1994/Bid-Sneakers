@@ -28,8 +28,6 @@ import android.util.DisplayMetrics;
 import android.util.Log;
 import android.view.Gravity;
 import android.view.LayoutInflater;
-import android.view.Menu;
-import android.view.MenuItem;
 import android.view.View;
 import android.view.Window;
 import android.view.WindowManager;
@@ -50,7 +48,9 @@ import com.johnson.bid.util.UserManager;
 import java.util.ArrayList;
 
 import static com.google.common.base.Preconditions.checkNotNull;
+import static com.johnson.bid.MainMvpController.AUCTION;
 import static com.johnson.bid.MainMvpController.ENGLISH;
+import static com.johnson.bid.MainMvpController.POST;
 import static com.johnson.bid.dialog.MessageDialog.BID_SUCCESS;
 import static com.johnson.bid.dialog.MessageDialog.DELETE_SUCCESS;
 
@@ -63,18 +63,19 @@ public class MainActivity extends AppCompatActivity implements MainContract.View
     private MessageDialog mMessageDialog;
     private View mBadge;
 
-    private final static int CAMERA = 666;
-    private final static int CAMERA_INNER = 667;
-    public final static int CHOOSE_PHOTO = 222;
-    public final static int CHOOSE_PHOTO_INNER = 223;
+    private final static int CAMERA_AUCTION = 666;
+    private final static int CAMERA_POST = 667;
+    public final static int CHOOSE_PHOTO_AUCTION = 222;
+    public final static int CHOOSE_PHOTO_POST = 223;
+    public final static int PHOTO_SETTINGS = 999;
 
     private MainContract.Presenter mPresenter;
     private MainMvpController mMainMvpController;
 
-    private ArrayList<String> mImagePath;
-    private Boolean mIsFromCenter = false;
+    private ArrayList<String> mImagePathList;
 
     private SearchView searchView;
+    private String mFrom;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -173,32 +174,30 @@ public class MainActivity extends AppCompatActivity implements MainContract.View
     }
 
     @Override
-    public void openGallery(Boolean isFromCenter) {
+    public void openGallery(String from) {
         if (ContextCompat.checkSelfPermission(this, Manifest.permission.WRITE_EXTERNAL_STORAGE) != PackageManager.PERMISSION_GRANTED) {
             ActivityCompat.requestPermissions(this, new String[]{Manifest.permission.WRITE_EXTERNAL_STORAGE}, 1);
         } else {
-            openAlbum(isFromCenter);
+            openAlbum(from);
         }
     }
 
     @Override
-    public void openCamera(Boolean isFromCenter) {
+    public void openCamera(String from) {
 
         if (ContextCompat.checkSelfPermission(this, Manifest.permission.CAMERA) != PackageManager.PERMISSION_GRANTED) {
             ActivityCompat.requestPermissions(this, new String[]{Manifest.permission.CAMERA}, 2);
         } else {
-            opennCamera(isFromCenter);
+            opennCamera(from);
         }
     }
 
     @Override
     public void openGalleryDialog(String from) {
 
-        if (from.equals("CENTER")) {
-            mImagePath = new ArrayList<>();
-            mIsFromCenter = true;
-        } else {
-            mIsFromCenter = false;
+        mFrom = from;
+        if (from.equals(AUCTION)) {
+            mImagePathList = new ArrayList<>();
         }
 
         Button mCancelBtn;
@@ -220,13 +219,18 @@ public class MainActivity extends AppCompatActivity implements MainContract.View
 
         mOpenGalleryBtn.setOnClickListener(v -> {
             dialog.dismiss();
-            openGallery(mIsFromCenter);
+            openGallery(from);
         });
 
         mOpenCameraBtn.setOnClickListener(v -> {
             dialog.dismiss();
-            openCamera(mIsFromCenter);
+            openCamera(from);
         });
+    }
+
+    @Override
+    public void setSettingsProfile(String imagePath) {
+        mMainMvpController.setSettingsProfile(imagePath);
     }
 
     @Override
@@ -236,14 +240,14 @@ public class MainActivity extends AppCompatActivity implements MainContract.View
         switch (requestCode) {
             case 1:
                 if (grantResults.length > 0 && grantResults[0] == PackageManager.PERMISSION_GRANTED) {
-                    openAlbum(mIsFromCenter);
+                    openAlbum(mFrom);
                 } else {
                     Toast.makeText(this, "授權失敗，無法操作", Toast.LENGTH_SHORT).show();
                 }
                 break;
             case 2:
                 if (grantResults.length > 0 && grantResults[0] == PackageManager.PERMISSION_GRANTED) {
-                    opennCamera(mIsFromCenter);
+                    opennCamera(mFrom);
                 } else {
                     Toast.makeText(this, "授權失敗，無法操作", Toast.LENGTH_SHORT).show();
                 }
@@ -257,31 +261,37 @@ public class MainActivity extends AppCompatActivity implements MainContract.View
     protected void onActivityResult(int requestCode, int resultCode, Intent data) {
         super.onActivityResult(requestCode, resultCode, data);
 
-        if (resultCode == RESULT_OK && requestCode == CHOOSE_PHOTO) {
+        if (resultCode == RESULT_OK && requestCode == CHOOSE_PHOTO_AUCTION) {
 
-            mImagePath.add(handleImage(data));
-            mPresenter.openPost(getString(R.string.toolbar_title_post), mImagePath);
+            mImagePathList.add(handleImage(data));
+            mPresenter.openPost(getString(R.string.toolbar_title_post), mImagePathList);
 
-        } else if (resultCode == RESULT_OK && requestCode == CAMERA) {
+        } else if (resultCode == RESULT_OK && requestCode == CAMERA_AUCTION) {
 
-            mImagePath.add(handleImage(data));
-            mPresenter.openPost(getString(R.string.toolbar_title_post), mImagePath);
+            mImagePathList.add(handleImage(data));
+            mPresenter.openPost(getString(R.string.toolbar_title_post), mImagePathList);
 
-        } else if (resultCode == RESULT_OK && requestCode == CHOOSE_PHOTO_INNER) {
+        } else if (resultCode == RESULT_OK && requestCode == CHOOSE_PHOTO_POST) {
 
-            mImagePath.add(handleImage(data));
-            setPostPics(mImagePath);
+            mImagePathList.add(handleImage(data));
+            setPostPics(mImagePathList);
 
-        } else if (resultCode == RESULT_OK && requestCode == CAMERA_INNER) {
+        } else if (resultCode == RESULT_OK && requestCode == CAMERA_POST) {
 
-            mImagePath.add(handleImage(data));
-            setPostPics(mImagePath);
+            mImagePathList.add(handleImage(data));
+            setPostPics(mImagePathList);
+
+        } else if (resultCode == RESULT_OK && requestCode == PHOTO_SETTINGS) {
+
+            setSettingsProfile(handleImage(data));
 
         } else if (resultCode == RESULT_CANCELED) {
 
         } else {
             UserManager.getInstance().getFbCallbackManager().onActivityResult(requestCode, resultCode, data);
         }
+
+
     }
 
     @Override
@@ -718,19 +728,21 @@ public class MainActivity extends AppCompatActivity implements MainContract.View
         return false;
     };
 
-    public void openAlbum(Boolean isFromCenter) {
+    public void openAlbum(String from) {
 
         Intent intent = new Intent(Intent.ACTION_PICK, MediaStore.Images.Media.INTERNAL_CONTENT_URI);
         intent.setType("image/*");
 
-        if (isFromCenter) {
-            startActivityForResult(intent, CHOOSE_PHOTO);
+        if (from.equals(AUCTION)) {
+            startActivityForResult(intent, CHOOSE_PHOTO_AUCTION);
+        } else if (from.equals(POST)) {
+            startActivityForResult(intent, CHOOSE_PHOTO_POST);
         } else {
-            startActivityForResult(intent, CHOOSE_PHOTO_INNER);
+            startActivityForResult(intent, PHOTO_SETTINGS);
         }
     }
 
-    public void opennCamera(Boolean isFromCenter) {
+    public void opennCamera(String from) {
 
         mPhone = new DisplayMetrics();
         getWindowManager().getDefaultDisplay().getMetrics(mPhone);
@@ -742,10 +754,12 @@ public class MainActivity extends AppCompatActivity implements MainContract.View
         Intent intent = new Intent(MediaStore.ACTION_IMAGE_CAPTURE);
         intent.putExtra(MediaStore.EXTRA_OUTPUT, uri.getPath());
 
-        if (isFromCenter) {
-            startActivityForResult(intent, CAMERA);
+        if (from.equals(AUCTION)) {
+            startActivityForResult(intent, CAMERA_AUCTION);
+        } else if (from.equals(POST)) {
+            startActivityForResult(intent, CAMERA_POST);
         } else {
-            startActivityForResult(intent, CAMERA_INNER);
+            startActivityForResult(intent, PHOTO_SETTINGS);
         }
     }
 

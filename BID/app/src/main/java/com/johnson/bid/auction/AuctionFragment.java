@@ -14,6 +14,7 @@ import android.view.ViewGroup;
 import com.johnson.bid.R;
 
 import static com.google.common.base.Preconditions.checkNotNull;
+import static com.johnson.bid.MainMvpController.AUCTION;
 
 public class AuctionFragment extends Fragment implements AuctionContract.View {
 
@@ -61,7 +62,7 @@ public class AuctionFragment extends Fragment implements AuctionContract.View {
                 mMenuFloatingActionButton.setImageResource(R.drawable.ic_up_arrow);
                 closeFABMenu();
             } else {
-                mMenuFloatingActionButton.setImageResource(R.drawable.ic_closs_arrow);
+                mMenuFloatingActionButton.setImageResource(R.drawable.ic_close_arrow);
                 showFABMenu();
             }
         });
@@ -69,7 +70,7 @@ public class AuctionFragment extends Fragment implements AuctionContract.View {
         mPostFloatingActionButton.setOnClickListener(v -> {
             closeFABMenu();
             mMenuFloatingActionButton.setImageResource(R.drawable.ic_up_arrow);
-            mPresenter.openGalleryDialog("CENTER");
+            mPresenter.openGalleryDialog(AUCTION);
         });
 
 

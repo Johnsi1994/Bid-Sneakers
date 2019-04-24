@@ -4,6 +4,7 @@ import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
+import android.support.v4.widget.SwipeRefreshLayout;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
@@ -22,6 +23,7 @@ public class EyesOnFragment extends Fragment implements EyesOnContract.View {
 
     private EyesOnContract.Presenter mPresenter;
     private EyesOnAdapter mEyesOnAdapter;
+    private SwipeRefreshLayout swipeRefreshLayout;
 
     public EyesOnFragment() {}
 
@@ -40,6 +42,7 @@ public class EyesOnFragment extends Fragment implements EyesOnContract.View {
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
         View root = inflater.inflate(R.layout.fragment_recycler_container, container, false);
 
+        swipeRefreshLayout = root.findViewById(R.id.swipe_layout);
         RecyclerView recyclerView = root.findViewById(R.id.recycler_container);
         recyclerView.setLayoutManager(new LinearLayoutManager(getActivity()));
         recyclerView.setAdapter(mEyesOnAdapter);
@@ -52,6 +55,11 @@ public class EyesOnFragment extends Fragment implements EyesOnContract.View {
         super.onViewCreated(view, savedInstanceState);
 
         mPresenter.loadEyesOnData();
+
+        swipeRefreshLayout.setOnRefreshListener(() -> {
+            swipeRefreshLayout.setRefreshing(false);
+            mPresenter.loadEyesOnData();
+        });
     }
 
     @Override

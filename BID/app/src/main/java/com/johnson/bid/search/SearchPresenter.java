@@ -63,4 +63,9 @@ public class SearchPresenter implements SearchContract.Presenter {
     public void setKeyword(String keyword) {
         mKeyword = keyword;
     }
+
+    @Override
+    public void showBottomNavigation() {
+
+    }
 }

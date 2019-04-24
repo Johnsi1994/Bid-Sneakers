@@ -4,6 +4,7 @@ import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
+import android.support.v4.widget.SwipeRefreshLayout;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
@@ -21,6 +22,7 @@ public class SearchFragment extends Fragment implements SearchContract.View {
 
     private SearchContract.Presenter mPresenter;
     private SearchAdapter mSearchAdapter;
+    private SwipeRefreshLayout swipeRefreshLayout;
 
     public SearchFragment() {}
 
@@ -39,6 +41,7 @@ public class SearchFragment extends Fragment implements SearchContract.View {
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
         View root = inflater.inflate(R.layout.fragment_recycler_container, container, false);
 
+        swipeRefreshLayout = root.findViewById(R.id.swipe_layout);
         RecyclerView recyclerView = root.findViewById(R.id.recycler_container);
         recyclerView.setLayoutManager(new LinearLayoutManager(getActivity()));
         recyclerView.setAdapter(mSearchAdapter);
@@ -51,6 +54,11 @@ public class SearchFragment extends Fragment implements SearchContract.View {
         super.onViewCreated(view, savedInstanceState);
 
         mPresenter.loadSearchData();
+
+        swipeRefreshLayout.setOnRefreshListener(() -> {
+            swipeRefreshLayout.setRefreshing(false);
+            mPresenter.loadSearchData();
+        });
     }
 
 
@@ -59,6 +67,7 @@ public class SearchFragment extends Fragment implements SearchContract.View {
         super.onDestroy();
 
         mPresenter.updateToolbar("拍賣中心");
+        mPresenter.showBottomNavigation();
         mSearchAdapter.cancelAllTimers();
     }
 

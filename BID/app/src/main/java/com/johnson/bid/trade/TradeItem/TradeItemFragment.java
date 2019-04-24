@@ -4,6 +4,7 @@ import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
+import android.support.v4.widget.SwipeRefreshLayout;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.util.Log;
@@ -28,6 +29,7 @@ public class TradeItemFragment extends Fragment implements TradeItemContract.Vie
 
     private TradeItemContract.Presenter mPresenter;
     private TradeItemAdapter mTradeItemAdapter;
+    private SwipeRefreshLayout swipeRefreshLayout;
 
     private String mTradeType;
 
@@ -50,6 +52,7 @@ public class TradeItemFragment extends Fragment implements TradeItemContract.Vie
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
         View root = inflater.inflate(R.layout.fragment_recycler_container, container, false);
 
+        swipeRefreshLayout = root.findViewById(R.id.swipe_layout);
         RecyclerView recyclerView = root.findViewById(R.id.recycler_container);
         recyclerView.setLayoutManager(new LinearLayoutManager(getActivity()));
         recyclerView.setAdapter(mTradeItemAdapter);
@@ -61,6 +64,16 @@ public class TradeItemFragment extends Fragment implements TradeItemContract.Vie
     public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
 
+        loadData();
+
+        swipeRefreshLayout.setOnRefreshListener(() -> {
+            swipeRefreshLayout.setRefreshing(false);
+            loadData();
+        });
+    }
+
+    private void loadData() {
+
         switch (mTradeType) {
             case MYBIDDING:
                 mPresenter.loadMyBiddingData();
@@ -69,8 +82,8 @@ public class TradeItemFragment extends Fragment implements TradeItemContract.Vie
                 mPresenter.loadMySellingData();
                 break;
             case MYBOUGHT:
-            mPresenter.loadMyBoughtData();
-            break;
+                mPresenter.loadMyBoughtData();
+                break;
             case MYSOLD:
                 mPresenter.loadMySoldData();
                 break;
@@ -79,6 +92,7 @@ public class TradeItemFragment extends Fragment implements TradeItemContract.Vie
                 break;
             default:
         }
+
     }
 
     @Override

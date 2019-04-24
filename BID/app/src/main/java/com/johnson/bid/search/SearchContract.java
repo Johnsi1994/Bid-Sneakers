@@ -23,6 +23,8 @@ public interface SearchContract {
         void loadSearchData();
 
         void setKeyword(String keyword);
+
+        void showBottomNavigation();
     }
 
 }

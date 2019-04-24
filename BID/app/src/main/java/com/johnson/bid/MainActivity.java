@@ -150,6 +150,7 @@ public class MainActivity extends AppCompatActivity implements MainContract.View
             @Override
             public boolean onQueryTextSubmit(String keyword) {
                 mPresenter.openSearch("搜尋結果", keyword);
+                hideBottomNavigationUi();
                 dialog.dismiss();
                 return false;
             }
@@ -636,6 +637,8 @@ public class MainActivity extends AppCompatActivity implements MainContract.View
     private void init() {
         mMainMvpController = MainMvpController.create(this);
 
+        setToolbar();
+
         if (UserManager.getInstance().isLoggedIn()) {
             UserManager.getInstance().getUserProfile(new UserManager.LoadCallback() {
                 @Override
@@ -643,7 +646,6 @@ public class MainActivity extends AppCompatActivity implements MainContract.View
                     Log.d("Johnsi", "Load User Profile Success !");
                     UserManager.getInstance().setHasUserDataChange(false);
 
-                    setToolbar();
                     setBottomNavigation();
                     mPresenter.openCenter();
                     showToolbarUi();
@@ -687,7 +689,8 @@ public class MainActivity extends AppCompatActivity implements MainContract.View
         return result;
     }
 
-    private void setBottomNavigation() {
+    @Override
+    public void setBottomNavigation() {
 
         mBottomNavigation = findViewById(R.id.bottom_navigation_main);
         mBottomNavigation.setOnNavigationItemSelectedListener(mOnNavigationItemSelectedListener);

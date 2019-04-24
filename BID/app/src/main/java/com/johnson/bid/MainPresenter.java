@@ -409,8 +409,9 @@ public class MainPresenter implements MainContract.Presenter, AuctionContract.Pr
 
     @Override
     public void onLoginSuccess() {
-        mMainView.openCenterUi();
+        mMainView.setBottomNavigation();
         showToolbarAndBottomNavigation();
+        mMainView.openCenterUi();
     }
 
     @Override

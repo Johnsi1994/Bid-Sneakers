@@ -11,6 +11,8 @@ public interface MainContract {
 
     interface View extends BaseView<Presenter> {
 
+        void setBottomNavigation();
+
         void openLoginUi();
 
         void openCenterUi();

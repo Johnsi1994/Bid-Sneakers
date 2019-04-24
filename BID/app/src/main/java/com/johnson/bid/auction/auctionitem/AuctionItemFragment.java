@@ -4,6 +4,7 @@ import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
+import android.support.v4.widget.SwipeRefreshLayout;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
@@ -24,6 +25,7 @@ public class AuctionItemFragment extends Fragment implements AuctionItemContract
 
     private AuctionItemContract.Presenter mPresenter;
     private AuctionItemAdapter mAuctionItemAdapter;
+    private SwipeRefreshLayout swipeRefreshLayout;
 
     private String mAuctionType;
 
@@ -44,6 +46,7 @@ public class AuctionItemFragment extends Fragment implements AuctionItemContract
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
         View root = inflater.inflate(R.layout.fragment_recycler_container, container, false);
 
+        swipeRefreshLayout = root.findViewById(R.id.swipe_layout);
         RecyclerView recyclerView = root.findViewById(R.id.recycler_container);
         recyclerView.setLayoutManager(new LinearLayoutManager(getActivity()));
         recyclerView.setAdapter(mAuctionItemAdapter);
@@ -55,6 +58,16 @@ public class AuctionItemFragment extends Fragment implements AuctionItemContract
     public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
 
+        loadData();
+
+        swipeRefreshLayout.setOnRefreshListener(() -> {
+            swipeRefreshLayout.setRefreshing(false);
+            loadData();
+        });
+
+    }
+
+    private void loadData() {
         switch (mAuctionType) {
             case ENGLISH:
                 mPresenter.loadEnglishData();

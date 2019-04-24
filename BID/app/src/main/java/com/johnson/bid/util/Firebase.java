@@ -2,11 +2,13 @@ package com.johnson.bid.util;
 
 import android.util.Log;
 
+import com.google.firebase.firestore.DocumentSnapshot;
 import com.google.firebase.firestore.FirebaseFirestore;
 import com.google.firebase.firestore.QueryDocumentSnapshot;
 import com.google.firebase.storage.FirebaseStorage;
 import com.google.firebase.storage.StorageReference;
 import com.johnson.bid.data.Product;
+import com.johnson.bid.data.User;
 
 import java.util.ArrayList;
 
@@ -40,7 +42,7 @@ public class Firebase {
 
     public void getAllBiddingProductsFromFirebase() {
 
-        Firebase.getInstance().getFirestore().collection("products")
+        db.collection("products")
                 .whereEqualTo("auctionCondition", "bidding")
                 .get()
                 .addOnCompleteListener(task -> {
@@ -57,12 +59,13 @@ public class Firebase {
 
     }
 
-    public void setAllBiddingProducts(ArrayList<Product> productList) {
+    private void setAllBiddingProducts(ArrayList<Product> productList) {
         mProductList = productList;
     }
 
     public ArrayList<Product> getAllBiddingProducts() {
         return mProductList;
     }
+
 
 }

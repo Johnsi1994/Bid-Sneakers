@@ -50,16 +50,27 @@ public class EyesOnPresenter implements EyesOnContract.Presenter {
     @Override
     public void loadEyesOnData() {
 
-        mEyesOnList =  UserManager.getInstance().getUser().getEyesOn();
-        mProductsList = new ArrayList<>();
+        UserManager.getInstance().getUserProfile(new UserManager.LoadCallback() {
+            @Override
+            public void onSuccess() {
+                mEyesOnList =  UserManager.getInstance().getUser().getEyesOn();
+                mProductsList = new ArrayList<>();
 
-        if (mEyesOnList.size() > 0) {
+                if (mEyesOnList.size() > 0) {
 
-            loadDataFromFireBase(0);
-        } else {
+                    loadDataFromFireBase(0);
+                } else {
 
-            setMyEyesOnData(mProductsList);
-        }
+                    setMyEyesOnData(mProductsList);
+                }
+            }
+
+            @Override
+            public void onFail(String errorMessage) {
+
+            }
+        });
+
     }
 
     @Override

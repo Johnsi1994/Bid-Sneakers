@@ -29,14 +29,26 @@ public class TradeItemPresenter implements TradeItemContract.Presenter {
 
     @Override
     public void loadMyBiddingData() {
-        mProductIdList = UserManager.getInstance().getUser().getMyBiddingProductsId();
-        mProductsList = new ArrayList<>();
 
-        if (mProductIdList.size() > 0) {
-            loadDataFromFireBase(0, "BIDDING");
-        } else {
-            setMyBiddingData(mProductsList);
-        }
+        UserManager.getInstance().getUserProfile(new UserManager.LoadCallback() {
+            @Override
+            public void onSuccess() {
+                mProductIdList = UserManager.getInstance().getUser().getMyBiddingProductsId();
+                mProductsList = new ArrayList<>();
+
+                if (mProductIdList.size() > 0) {
+                    loadDataFromFireBase(0, "BIDDING");
+                } else {
+                    setMyBiddingData(mProductsList);
+                }
+            }
+
+            @Override
+            public void onFail(String errorMessage) {
+
+            }
+        });
+
     }
 
     @Override

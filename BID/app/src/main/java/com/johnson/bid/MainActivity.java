@@ -488,8 +488,9 @@ public class MainActivity extends AppCompatActivity implements MainContract.View
 
                     if (!hasProduct) {
                         UserManager.getInstance().addBiddingProductId(product.getProductId());
+                        UserManager.getInstance().updateUser2Firebase();
                     }
-                    UserManager.getInstance().setHasUserDataChange(true);
+
 
                     dialog.dismiss();
                     showMessageDialogUi(BID_SUCCESS);
@@ -525,7 +526,7 @@ public class MainActivity extends AppCompatActivity implements MainContract.View
                     setAfterBidData(product);
 
                     UserManager.getInstance().addBiddingProductId(product.getProductId());
-                    UserManager.getInstance().setHasUserDataChange(true);
+                    UserManager.getInstance().updateUser2Firebase();
 
                     dialog.dismiss();
                     showMessageDialogUi(BID_SUCCESS);
@@ -575,6 +576,26 @@ public class MainActivity extends AppCompatActivity implements MainContract.View
                                 Firebase.getInstance().getFirestore().collection("users")
                                         .document(document.getId())
                                         .update("myBiddingProductsId", FieldValue.arrayRemove(product.getProductId()))
+                                        .addOnSuccessListener(aVoid -> Log.d("Johnsi", "Bidding Products Id successfully removed!"))
+                                        .addOnFailureListener(e -> Log.w("Johnsi", "Bidding Products Id Error updating document", e));
+
+                            }
+                        } else {
+                            Log.d("Johnsi", "Error getting documents: ", task.getException());
+                        }
+                    });
+
+            Firebase.getInstance().getFirestore().collection("users")
+                    .whereArrayContains("eyesOn", product.getProductId())
+                    .get()
+                    .addOnCompleteListener(task -> {
+                        if (task.isSuccessful()) {
+                            for (QueryDocumentSnapshot document : task.getResult()) {
+                                Log.d("Johnsi", document.getId() + " => " + document.getData());
+
+                                Firebase.getInstance().getFirestore().collection("users")
+                                        .document(document.getId())
+                                        .update("eyesOn", FieldValue.arrayRemove(product.getProductId()))
                                         .addOnSuccessListener(aVoid -> Log.d("Johnsi", "Bidding Products Id successfully removed!"))
                                         .addOnFailureListener(e -> Log.w("Johnsi", "Bidding Products Id Error updating document", e));
 

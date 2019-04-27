@@ -189,12 +189,15 @@ public class UserManager {
 
         LoginManager.getInstance().logInWithReadPermissions(
                 (Activity) context, Arrays.asList("email"));
-
     }
 
     public boolean isLoggedIn() {
         AccessToken accessToken = AccessToken.getCurrentAccessToken();
         return accessToken != null;
+    }
+
+    public void logout() {
+        LoginManager.getInstance().logOut();
     }
 
     public User getUser() {

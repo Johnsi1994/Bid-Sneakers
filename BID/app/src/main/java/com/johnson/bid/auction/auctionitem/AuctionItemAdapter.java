@@ -37,7 +37,6 @@ public class AuctionItemAdapter extends RecyclerView.Adapter {
     private ArrayList<Product> mProductList;
     private SparseArray<CountDownTimer> countDownMap;
 
-
     public AuctionItemAdapter(AuctionItemContract.Presenter presenter, @MainMvpController.AuctionType String auctionType) {
         mPresenter = presenter;
         mAuctionType = auctionType;

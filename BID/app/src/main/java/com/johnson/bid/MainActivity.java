@@ -60,6 +60,7 @@ public class MainActivity extends AppCompatActivity implements MainContract.View
     private BottomNavigationView mBottomNavigation;
     private Toolbar mToolbar;
     private TextView mToolbarTitle;
+    private TextView mToolbarLogout;
     private DisplayMetrics mPhone;
     private MessageDialog mMessageDialog;
     private View mBadge;
@@ -367,11 +368,25 @@ public class MainActivity extends AppCompatActivity implements MainContract.View
         if (title.equals("刊登") || title.equals("搜尋結果")) {
             mToolbar.setNavigationIcon(R.drawable.ic_left_arrow);
             mToolbar.setNavigationOnClickListener(v -> onBackPressed());
-        } else {
+            mToolbarLogout.setVisibility(View.GONE);
+        } else if (title.equals("設定")) {
+
+            mToolbarLogout.setVisibility(View.VISIBLE);
+            mToolbarLogout.setOnClickListener( v -> {
+                UserManager.getInstance().logout();
+                Toast.makeText(this, "登出成功", Toast.LENGTH_SHORT).show();
+                hideToolbarUi();
+                hideBottomNavigationUi();
+                mPresenter.openLogin();
+            });
+        }else {
             mToolbar.setNavigationIcon(null);
+            mToolbarLogout.setVisibility(View.GONE);
         }
 
         mToolbarTitle.setText(title);
+
+
     }
 
     @Override
@@ -705,6 +720,7 @@ public class MainActivity extends AppCompatActivity implements MainContract.View
         mToolbar.setPadding(0, getStatusBarHeight(), 0, 0);
 
         mToolbarTitle = mToolbar.findViewById(R.id.text_toolbar_title);
+        mToolbarLogout = mToolbar.findViewById(R.id.text_logout);
     }
 
     public int getStatusBarHeight() {

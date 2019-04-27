@@ -3,14 +3,10 @@ package com.johnson.bid.chat.chatcontent;
 import android.support.annotation.NonNull;
 import android.util.Log;
 
-import com.google.firebase.firestore.DocumentChange;
 import com.google.firebase.firestore.FieldValue;
-import com.google.firebase.firestore.Query;
-import com.google.firebase.firestore.QueryDocumentSnapshot;
 import com.johnson.bid.data.ChatContent;
 import com.johnson.bid.data.ChatRoom;
 import com.johnson.bid.util.Firebase;
-import com.johnson.bid.util.UserManager;
 
 import java.util.ArrayList;
 
@@ -21,7 +17,6 @@ public class ChatContentPresenter implements ChatContentContract.Presenter {
     private ChatContentContract.View mChatContentView;
     private ArrayList<ChatContent> mChatContentArrayList;
     private ChatRoom mChatRoom;
-    private long mProductId;
 
     public ChatContentPresenter(@NonNull ChatContentContract.View chatContentView) {
         mChatContentView = checkNotNull(chatContentView, "chatContentView cannot be null!");
@@ -53,14 +48,12 @@ public class ChatContentPresenter implements ChatContentContract.Presenter {
         mChatRoom = chatRoom;
         mChatContentArrayList = new ArrayList<>();
         mChatContentArrayList = chatRoom.getChatContentArrayList();
-
     }
 
     @Override
     public void loadChatContentData() {
 
         mChatContentView.showChatContentUi(mChatContentArrayList);
-
     }
 
     @Override
@@ -79,9 +72,6 @@ public class ChatContentPresenter implements ChatContentContract.Presenter {
                         mChatContentArrayList = new ArrayList<>();
                         mChatContentArrayList = queryDocumentSnapshots.toObject(ChatRoom.class).getChatContentArrayList();
                         loadChatContentData();
-
-                    } else {
-
                     }
 
                 });

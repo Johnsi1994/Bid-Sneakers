@@ -31,6 +31,18 @@
             android:textSize="20sp"
             android:typeface="monospace" />
 
+        <TextView
+            android:id="@+id/text_logout"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:letterSpacing="0.15"
+            android:paddingTop="12dp"
+            android:text="登出"
+            android:visibility="invisible"
+            android:textColor="@color/gray_F8F8F8"
+            android:textSize="14sp"
+            android:typeface="monospace" />
+
     </android.support.v7.widget.Toolbar>
 
     <FrameLayout

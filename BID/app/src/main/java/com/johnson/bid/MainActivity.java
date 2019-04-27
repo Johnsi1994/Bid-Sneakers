@@ -39,6 +39,7 @@ import android.widget.Toast;
 import com.google.firebase.firestore.FieldValue;
 import com.google.firebase.firestore.QueryDocumentSnapshot;
 import com.johnson.bid.auction.auctionitem.AuctionItemFragment;
+import com.johnson.bid.data.ChatRoom;
 import com.johnson.bid.data.Product;
 import com.johnson.bid.dialog.MessageDialog;
 import com.johnson.bid.trade.TradeItem.TradeItemFragment;
@@ -123,6 +124,11 @@ public class MainActivity extends AppCompatActivity implements MainContract.View
     @Override
     public void openEyesOnUi() {
         mMainMvpController.createEyesOnView();
+    }
+
+    @Override
+    public void openChatContentUi(ChatRoom chatRoom) {
+        mMainMvpController.createChatContentView(chatRoom);
     }
 
     @Override

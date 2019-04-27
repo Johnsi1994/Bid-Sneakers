@@ -15,6 +15,9 @@ import com.johnson.bid.bought.BoughtDetailFragment;
 import com.johnson.bid.bought.BoughtDetailPresenter;
 import com.johnson.bid.chat.ChatFragment;
 import com.johnson.bid.chat.ChatPresenter;
+import com.johnson.bid.chat.chatcontent.ChatContentFragment;
+import com.johnson.bid.chat.chatcontent.ChatContentPresenter;
+import com.johnson.bid.data.ChatRoom;
 import com.johnson.bid.data.Product;
 import com.johnson.bid.eyeson.EyesOnFragment;
 import com.johnson.bid.eyeson.EyesOnPresenter;
@@ -61,6 +64,7 @@ public class MainMvpController {
     private NobodyBidDetailPresenter mNobodyBidDetailPresenter;
     private EyesOnPresenter mEyesOnPresenter;
     private SearchPresenter mSearchPresenter;
+    private ChatContentPresenter mChatContentPresenter;
 
     private AuctionItemPresenter mEnglishAuctionItemPresenter;
     private AuctionItemPresenter mSealedAuctionItemPresenter;
@@ -74,7 +78,7 @@ public class MainMvpController {
     @Retention(RetentionPolicy.SOURCE)
     @StringDef({
             LOGIN, AUCTION, TRADE, CHAT, SETTINGS, POST, BIDDING, SELLING, BOUGHTDETAIL, SOLDDETAIL, NOBODYBIDDETAIL,
-            EYESON, SEARCH
+            EYESON, SEARCH, CHATCONTENT
     })
 
     public @interface FragmentType {
@@ -93,6 +97,7 @@ public class MainMvpController {
     static final String NOBODYBIDDETAIL = "NOBODYBIDDETAIL";
     static final String EYESON = "EYESON";
     static final String SEARCH = "SEARCH";
+    static final String CHATCONTENT = "CHATCONTENT";
 
     @Retention(RetentionPolicy.SOURCE)
     @StringDef({
@@ -200,6 +205,16 @@ public class MainMvpController {
 
     }
 
+    void createChatContentView(ChatRoom chatRoom) {
+
+        ChatContentFragment chatContentFragment = createChatContentFragment();
+
+        mChatContentPresenter = new ChatContentPresenter(chatContentFragment);
+        mMainPresenter.setChatContentPresenter(mChatContentPresenter);
+        chatContentFragment.setPresenter(mMainPresenter);
+        mChatContentPresenter.setChatRoomData(chatRoom);
+
+    }
 
     void createPostView(ArrayList<String> imagePath) {
 
@@ -390,6 +405,17 @@ public class MainMvpController {
                 getFragmentManager(), postFragment, POST);
 
         return postFragment;
+    }
+
+    @NonNull
+    private ChatContentFragment createChatContentFragment() {
+
+        ChatContentFragment chatContentFragment = ChatContentFragment.newInstance();
+
+        ActivityUtils.addFragmentByTag(
+                getFragmentManager(), chatContentFragment, CHATCONTENT);
+
+        return chatContentFragment;
     }
 
     @NonNull

@@ -13,6 +13,11 @@ import com.johnson.bid.chat.ChatPresenter;
 import com.johnson.bid.auction.AuctionContract;
 import com.johnson.bid.auction.AuctionPresenter;
 import com.johnson.bid.auction.auctionitem.AuctionItemFragment;
+import com.johnson.bid.chat.chatcontent.ChatContentContract;
+import com.johnson.bid.chat.chatcontent.ChatContentPresenter;
+import com.johnson.bid.data.ChatBrief;
+import com.johnson.bid.data.ChatContent;
+import com.johnson.bid.data.ChatRoom;
 import com.johnson.bid.data.Product;
 import com.johnson.bid.dialog.MessageDialog;
 import com.johnson.bid.eyeson.EyesOnContract;
@@ -48,7 +53,7 @@ public class MainPresenter implements MainContract.Presenter, AuctionContract.Pr
         ChatContract.Presenter, SettingsContract.Presenter, AuctionItemContract.Presenter, LoginContract.Presenter,
         PostContract.Presenter, TradeItemContract.Presenter, BiddingDetailContract.Presenter, SellingDetailContract.Presenter,
         BoughtDetailContract.Presenter, SoldDetailContract.Presenter, NobodyBidDetailContract.Presenter, EyesOnContract.Presenter,
-        SearchContract.Presenter {
+        SearchContract.Presenter, ChatContentContract.Presenter {
 
     private MainContract.View mMainView;
 
@@ -65,6 +70,7 @@ public class MainPresenter implements MainContract.Presenter, AuctionContract.Pr
     private NobodyBidDetailPresenter mNobodyBidDetailPresenter;
     private EyesOnPresenter mEyesOnPresenter;
     private SearchPresenter mSearchPresenter;
+    private ChatContentPresenter mChatContentPresenter;
 
     private AuctionItemPresenter mEnglishAuctionItemPresenter;
     private AuctionItemPresenter mSealedAuctionItemPresenter;
@@ -110,6 +116,10 @@ public class MainPresenter implements MainContract.Presenter, AuctionContract.Pr
 
     void setEyesOnPresenter(EyesOnPresenter eyesOnPresenter) {
         mEyesOnPresenter = checkNotNull(eyesOnPresenter);
+    }
+
+    void setChatContentPresenter(ChatContentPresenter chatContentPresenter) {
+        mChatContentPresenter = checkNotNull(chatContentPresenter);
     }
 
     void setEnglishAuctionItemPresenter(AuctionItemPresenter englishAuctionItemPresenter) {
@@ -174,6 +184,11 @@ public class MainPresenter implements MainContract.Presenter, AuctionContract.Pr
     public void updateCenterData() {
         mEnglishAuctionItemPresenter.loadEnglishData();
         mSealedAuctionItemPresenter.loadSealedData();
+    }
+
+    @Override
+    public void loadBiddingFreshData() {
+        mBiddingDetailPresenter.loadBiddingFreshData();
     }
 
     @Override
@@ -304,6 +319,11 @@ public class MainPresenter implements MainContract.Presenter, AuctionContract.Pr
     }
 
     @Override
+    public void loadSellingFreshData() {
+        mSellingDetailPresenter.loadSellingFreshData();
+    }
+
+    @Override
     public void setProductData(Product product) {
         mBiddingDetailPresenter.setProductData(product);
     }
@@ -324,8 +344,38 @@ public class MainPresenter implements MainContract.Presenter, AuctionContract.Pr
     }
 
     @Override
+    public void loadChatData() {
+        mChatPresenter.loadChatData();
+    }
+
+    @Override
+    public void setChatData(ArrayList<ChatRoom> chatRoomArrayList) {
+        mChatPresenter.setChatData(chatRoomArrayList);
+    }
+
+    @Override
     public void showBottomNavigation() {
         mMainView.showBottomNavigationUi();
+    }
+
+    @Override
+    public void sendMessage(ChatContent chatContent) {
+        mChatContentPresenter.sendMessage(chatContent);
+    }
+
+    @Override
+    public void setChatRoomData(ChatRoom chatRoom) {
+        mChatContentPresenter.setChatRoomData(chatRoom);
+    }
+
+    @Override
+    public void loadChatContentData() {
+        mChatContentPresenter.loadChatContentData();
+    }
+
+    @Override
+    public void setChatListener() {
+        mChatContentPresenter.setChatListener();
     }
 
     @Override
@@ -792,5 +842,10 @@ public class MainPresenter implements MainContract.Presenter, AuctionContract.Pr
     @Override
     public void setUserName(String userName) {
         mSettingsPresenter.setUserName(userName);
+    }
+
+    @Override
+    public void openChatContent(ChatRoom chatRoom) {
+        mMainView.openChatContentUi(chatRoom);
     }
 }

@@ -1,6 +1,7 @@
 package com.johnson.bid;
 
 import com.johnson.bid.auction.auctionitem.AuctionItemFragment;
+import com.johnson.bid.data.ChatRoom;
 import com.johnson.bid.data.Product;
 import com.johnson.bid.dialog.MessageDialog;
 import com.johnson.bid.trade.TradeItem.TradeItemFragment;
@@ -28,6 +29,8 @@ public interface MainContract {
         void openSearchUi(String keyword);
 
         void openEyesOnUi();
+
+        void openChatContentUi(ChatRoom chatRoom);
 
         void openSearchDialog();
 

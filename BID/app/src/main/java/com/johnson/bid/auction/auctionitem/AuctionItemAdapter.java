@@ -13,10 +13,11 @@ import android.widget.ImageView;
 import android.widget.TextView;
 
 import com.google.firebase.firestore.DocumentSnapshot;
-import com.google.firebase.firestore.FieldValue;
 import com.johnson.bid.MainMvpController;
 import com.johnson.bid.R;
+import com.johnson.bid.data.ChatRoom;
 import com.johnson.bid.data.Product;
+import com.johnson.bid.data.User;
 import com.johnson.bid.util.Firebase;
 import com.johnson.bid.util.ImageManager;
 import com.johnson.bid.util.UserManager;
@@ -214,6 +215,8 @@ public class AuctionItemAdapter extends RecyclerView.Adapter {
                                             mPresenter.loadBoughtBadgeData();
 
                                         }
+
+                                        createChatRoom(product);
                                     }
 
                                     mPresenter.updateTradeBadge();
@@ -351,6 +354,8 @@ public class AuctionItemAdapter extends RecyclerView.Adapter {
                                             mPresenter.loadBoughtBadgeData();
 
                                         }
+
+                                        createChatRoom(product);
                                     }
 
                                     mPresenter.updateTradeBadge();
@@ -360,6 +365,7 @@ public class AuctionItemAdapter extends RecyclerView.Adapter {
                                 Log.d("Johnsi", "Error getting documents: ", task.getException());
                             }
                         });
+
             }
         }.start();
 
@@ -412,4 +418,63 @@ public class AuctionItemAdapter extends RecyclerView.Adapter {
 
     }
 
+    private void createChatRoom(Product product) {
+
+        ChatRoom chatRoom = new ChatRoom();
+
+        if (UserManager.getInstance().getUser().getId() == product.getSellerId()) {
+            Firebase.getInstance().getFirestore().collection("users")
+                    .document(String.valueOf(product.getHighestUserId()))
+                    .get()
+                    .addOnCompleteListener(task -> {
+                        if (task.isSuccessful()) {
+
+                            DocumentSnapshot document = task.getResult();
+                            chatRoom.setBuyerImage(document.toObject(User.class).getImage());
+                            chatRoom.setSellerImage(UserManager.getInstance().getUser().getImage());
+                            chatRoom.setChatRoomId(product.getProductId());
+                            chatRoom.setBuyerId(product.getHighestUserId());
+                            chatRoom.setSellerId(product.getSellerId());
+
+                            uploadChatRoom(chatRoom);
+
+                        } else {
+                            Log.d("Johnsi", "Error getting documents: ", task.getException());
+                        }
+                    });
+
+        } else {
+            Firebase.getInstance().getFirestore().collection("users")
+                    .document(String.valueOf(product.getSellerId()))
+                    .get()
+                    .addOnCompleteListener(task -> {
+                        if (task.isSuccessful()) {
+
+                            DocumentSnapshot document = task.getResult();
+                            chatRoom.setSellerImage(document.toObject(User.class).getImage());
+                            chatRoom.setBuyerImage(UserManager.getInstance().getUser().getImage());
+                            chatRoom.setChatRoomId(product.getProductId());
+                            chatRoom.setBuyerId(product.getHighestUserId());
+                            chatRoom.setSellerId(product.getSellerId());
+
+                            uploadChatRoom(chatRoom);
+
+                        } else {
+                            Log.d("Johnsi", "Error getting documents: ", task.getException());
+                        }
+                    });
+
+        }
+
+    }
+
+    private void uploadChatRoom(ChatRoom chatRoom) {
+
+        Firebase.getInstance().getFirestore().collection("chatrooms")
+                .document(String.valueOf(chatRoom.getChatRoomId()))
+                .set(chatRoom)
+                .addOnSuccessListener(documentReference -> Log.d("Johnsi", "DocumentSnapshot added"))
+                .addOnFailureListener(e -> Log.w("Johnsi", "Error adding document", e));
+
+    }
 }

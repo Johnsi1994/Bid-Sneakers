@@ -23,6 +23,8 @@ public interface BiddingDetailContract {
         void openBidDialog(String from, Product product);
 
         void updateCenterData();
+
+        void loadBiddingFreshData();
     }
 
 }

@@ -44,7 +44,7 @@ public class AuctionItemFragment extends Fragment implements AuctionItemContract
     @Nullable
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
-        View root = inflater.inflate(R.layout.fragment_recycler_container, container, false);
+        View root = inflater.inflate(R.layout.fragment_recycler_swipe_container, container, false);
 
         swipeRefreshLayout = root.findViewById(R.id.swipe_layout);
         RecyclerView recyclerView = root.findViewById(R.id.recycler_container);

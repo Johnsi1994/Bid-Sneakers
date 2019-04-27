@@ -28,6 +28,15 @@ public class PostPresenter implements PostContract.Presenter {
 
     @Override
     public Product getProduct() {
+
+//        ChatRoom chatContent = new ChatRoom();
+//        chatContent.setTime(System.currentTimeMillis());
+//        chatContent.setContent("哈哈哈");
+//        chatContent.setUserId(UserManager.getInstance().getUser().getId());
+//        chatContent.setImage(UserManager.getInstance().getUser().getImage());
+//
+//        mProduct.getChatContentArrayList().add(chatContent);
+
         return mProduct;
     }
 

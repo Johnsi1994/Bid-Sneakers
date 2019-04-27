@@ -26,7 +26,6 @@ public class Product {
 
     private boolean sellerHasRead;
     private boolean buyerHasRead;
-//    private ArrayList<ChatContent> mChats;
 
     public Product() {
 
@@ -48,7 +47,7 @@ public class Product {
         mPlaceBidTimes = -1;
         sellerHasRead = false;
         buyerHasRead = false;
-//        mChats = new ArrayList<>();
+
     }
 
     public String getAuctionCondition() {
@@ -171,14 +170,6 @@ public class Product {
         mPlaceBidTimes = placeBidTimes;
     }
 
-//    public ArrayList<ChatContent> getChats() {
-//        return mChats;
-//    }
-//
-//    public void setChats(ArrayList<ChatContent> chats) {
-//        mChats = chats;
-//    }
-
     public int getStartPrice() {
         return mStartPrice;
     }
@@ -202,4 +193,5 @@ public class Product {
     public void setBuyerHasRead(boolean buyerHasRead) {
         this.buyerHasRead = buyerHasRead;
     }
+
 }

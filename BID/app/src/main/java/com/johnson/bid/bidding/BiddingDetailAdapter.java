@@ -326,10 +326,6 @@ public class BiddingDetailAdapter extends RecyclerView.Adapter {
         }.start();
     }
 
-    public Boolean getIsEyesOn() {
-        return isEyesOn;
-    }
-
     private void eyeOnSwitch(Button mEyesOnBtn) {
         myEyesOn = UserManager.getInstance().getUser().getEyesOn();
 

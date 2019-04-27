@@ -22,6 +22,8 @@ public interface SellingDetailContract {
 
         void openDeleteProductDialog(Product product);
 
+        void loadSellingFreshData();
+
     }
 
 }

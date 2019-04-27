@@ -4,8 +4,10 @@ import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
+import android.support.v4.widget.SwipeRefreshLayout;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -21,6 +23,7 @@ public class SellingDetailFragment extends Fragment implements SellingDetailCont
     private SellingDetailContract.Presenter mPresenter;
     private String mAuctionType;
     private SellingDetailAdapter mSellingDetailAdapter;
+    private SwipeRefreshLayout swipeRefreshLayout;
 
     public SellingDetailFragment() {}
 
@@ -38,8 +41,9 @@ public class SellingDetailFragment extends Fragment implements SellingDetailCont
     @Nullable
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
-        View root = inflater.inflate(R.layout.fragment_recycler_container, container, false);
+        View root = inflater.inflate(R.layout.fragment_recycler_swipe_container, container, false);
 
+        swipeRefreshLayout = root.findViewById(R.id.swipe_layout);
         RecyclerView recyclerView = root.findViewById(R.id.recycler_container);
         recyclerView.setLayoutManager(new LinearLayoutManager(getActivity()));
         recyclerView.setAdapter(mSellingDetailAdapter);
@@ -52,6 +56,10 @@ public class SellingDetailFragment extends Fragment implements SellingDetailCont
         super.onViewCreated(view, savedInstanceState);
 
         mPresenter.loadSellingDetailData();
+        swipeRefreshLayout.setOnRefreshListener(() -> {
+            swipeRefreshLayout.setRefreshing(false);
+            mPresenter.loadSellingFreshData();
+        });
     }
 
     @Override

@@ -1,8 +1,11 @@
 package com.johnson.bid.bidding;
 
 import android.support.annotation.NonNull;
+import android.util.Log;
 
+import com.google.firebase.firestore.DocumentSnapshot;
 import com.johnson.bid.data.Product;
+import com.johnson.bid.util.Firebase;
 
 import static com.google.common.base.Preconditions.checkNotNull;
 
@@ -48,6 +51,26 @@ public class BiddingDetailPresenter implements BiddingDetailContract.Presenter {
 
     @Override
     public void updateCenterData() {
+
+    }
+
+    @Override
+    public void loadBiddingFreshData() {
+
+        Firebase.getInstance().getFirestore().collection("products")
+                .document(String.valueOf(mProduct.getProductId()))
+                .get()
+                .addOnCompleteListener(task -> {
+                    if (task.isSuccessful()) {
+
+                        DocumentSnapshot document = task.getResult();
+                        mProduct = document.toObject(Product.class);
+                        loadProductData();
+
+                    } else {
+                        Log.d("Johnsi", "Error getting documents: ", task.getException());
+                    }
+                });
 
     }
 

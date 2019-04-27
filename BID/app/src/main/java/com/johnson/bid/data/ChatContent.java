@@ -2,40 +2,25 @@ package com.johnson.bid.data;
 
 public class ChatContent {
 
-    private long mUserId;
-    private String mAuthor;
-    private String mContent;
     private long mTime;
+    private long mAuthorId;
+    private String mAuthorImage;
+    private String mMessage;
 
     public ChatContent() {
-        mUserId = -1;
-        mAuthor = "";
-        mContent = "";
+
+        mAuthorId = -1;
         mTime = -1;
+        mMessage = "";
+        mAuthorImage = "";
     }
 
-    public long getUserId() {
-        return mUserId;
+    public long getAuthorId() {
+        return mAuthorId;
     }
 
-    public void setUserId(long userId) {
-        mUserId = userId;
-    }
-
-    public String getAuthor() {
-        return mAuthor;
-    }
-
-    public void setAuthor(String author) {
-        mAuthor = author;
-    }
-
-    public String getContent() {
-        return mContent;
-    }
-
-    public void setContent(String content) {
-        mContent = content;
+    public void setAuthorId(long authorId) {
+        mAuthorId = authorId;
     }
 
     public long getTime() {
@@ -44,5 +29,21 @@ public class ChatContent {
 
     public void setTime(long time) {
         mTime = time;
+    }
+
+    public String getAuthorImage() {
+        return mAuthorImage;
+    }
+
+    public void setAuthorImage(String authorImage) {
+        mAuthorImage = authorImage;
+    }
+
+    public String getMessage() {
+        return mMessage;
+    }
+
+    public void setMessage(String message) {
+        mMessage = message;
     }
 }

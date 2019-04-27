@@ -4,6 +4,7 @@ import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
+import android.support.v4.widget.SwipeRefreshLayout;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.util.Log;
@@ -11,15 +12,12 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 
-import com.google.firebase.firestore.FieldValue;
 import com.johnson.bid.MainActivity;
 import com.johnson.bid.R;
 import com.johnson.bid.data.Product;
-import com.johnson.bid.util.Firebase;
 import com.johnson.bid.util.UserManager;
 
 import java.util.ArrayList;
-import java.util.Iterator;
 
 import static com.google.common.base.Preconditions.checkNotNull;
 
@@ -28,6 +26,7 @@ public class BiddingDetailFragment extends Fragment implements BiddingDetailCont
     private BiddingDetailContract.Presenter mPresenter;
     private BiddingDetailAdapter mBiddingDetailAdapter;
     private String mAuctionType;
+    private SwipeRefreshLayout swipeRefreshLayout;
     private ArrayList<Long> myEyesOn;
     private Boolean isEyesOn = false;
     private Product mProduct;
@@ -44,13 +43,16 @@ public class BiddingDetailFragment extends Fragment implements BiddingDetailCont
         super.onCreate(savedInstanceState);
 
         mBiddingDetailAdapter = new BiddingDetailAdapter(mPresenter, (MainActivity) getActivity(), mAuctionType);
+
+
     }
 
     @Nullable
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
-        View root = inflater.inflate(R.layout.fragment_recycler_container, container, false);
+        View root = inflater.inflate(R.layout.fragment_recycler_swipe_container, container, false);
 
+        swipeRefreshLayout = root.findViewById(R.id.swipe_layout);
         RecyclerView recyclerView = root.findViewById(R.id.recycler_container);
         recyclerView.setLayoutManager(new LinearLayoutManager(getActivity()));
         recyclerView.setAdapter(mBiddingDetailAdapter);
@@ -63,6 +65,10 @@ public class BiddingDetailFragment extends Fragment implements BiddingDetailCont
         super.onViewCreated(view, savedInstanceState);
 
         mPresenter.loadProductData();
+        swipeRefreshLayout.setOnRefreshListener(() -> {
+            swipeRefreshLayout.setRefreshing(false);
+            mPresenter.loadBiddingFreshData();
+        });
     }
 
     @Override
@@ -80,6 +86,7 @@ public class BiddingDetailFragment extends Fragment implements BiddingDetailCont
         if (UserManager.getInstance().isHasUserDataChange()) {
             UserManager.getInstance().updateUser2Firebase();
         }
+
 
     }
 

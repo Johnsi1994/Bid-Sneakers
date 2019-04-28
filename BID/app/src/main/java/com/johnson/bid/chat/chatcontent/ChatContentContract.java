@@ -27,6 +27,8 @@ public class ChatContentContract {
 
         void setChatListener();
 
+        void updateToolbar(String title);
+
     }
 
 }

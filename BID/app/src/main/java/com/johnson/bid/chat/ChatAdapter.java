@@ -92,7 +92,7 @@ public class ChatAdapter extends RecyclerView.Adapter {
                 (UserManager.getInstance().getUser().getId() == chatRoom.getSellerId()) ? chatRoom.getBuyerImage() : chatRoom.getSellerImage());
 
         holder.getName().setText(
-                (UserManager.getInstance().getUser().getId() == chatRoom.getSellerId()) ? String.valueOf(chatRoom.getBuyerId()) : String.valueOf(chatRoom.getSellerId()));
+                (UserManager.getInstance().getUser().getId() == chatRoom.getSellerId()) ? chatRoom.getBuyerName() : chatRoom.getSellerName());
 
         holder.getContent().setText((chatRoom.getChatContentArrayList().size() > 0) ? chatRoom.getChatContentArrayList().get(0).getMessage() : "開始聊天吧");
 
@@ -101,6 +101,12 @@ public class ChatAdapter extends RecyclerView.Adapter {
 
             mPresenter.openChatContent(chatRoom);
             mPresenter.hideBottomNavigation();
+
+            if (UserManager.getInstance().getUser().getId() == chatRoom.getSellerId()) {
+                mPresenter.updateToolbar(chatRoom.getBuyerName());
+            } else {
+                mPresenter.updateToolbar(chatRoom.getSellerName());
+            }
 
         });
     }

@@ -3,7 +3,9 @@ package com.johnson.bid.auction.auctionitem;
 import android.support.annotation.NonNull;
 import android.util.Log;
 
+import com.google.firebase.firestore.Query;
 import com.google.firebase.firestore.QueryDocumentSnapshot;
+import com.google.firebase.firestore.core.OrderBy;
 import com.johnson.bid.data.Product;
 import com.johnson.bid.util.Firebase;
 import com.johnson.bid.util.UserManager;

@@ -7,6 +7,8 @@ public class ChatRoom {
     private long mChatRoomId;
     private long mBuyerId;
     private long mSellerId;
+    private String mBuyerName;
+    private String mSellerName;
     private String mBuyerImage;
     private String mSellerImage;
     private ArrayList<ChatContent> mChatContentArrayList;
@@ -16,6 +18,8 @@ public class ChatRoom {
         mChatRoomId = -1;
         mBuyerId = -1;
         mSellerId = -1;
+        mBuyerName = "";
+        mSellerName = "";
         mBuyerImage = "";
         mSellerImage = "";
         mChatContentArrayList = new ArrayList<>();
@@ -43,6 +47,22 @@ public class ChatRoom {
 
     public void setSellerId(long sellerId) {
         mSellerId = sellerId;
+    }
+
+    public String getBuyerName() {
+        return mBuyerName;
+    }
+
+    public void setBuyerName(String buyerName) {
+        mBuyerName = buyerName;
+    }
+
+    public String getSellerName() {
+        return mSellerName;
+    }
+
+    public void setSellerName(String sellerName) {
+        mSellerName = sellerName;
     }
 
     public String getBuyerImage() {

@@ -48,6 +48,11 @@ public class ChatPresenter implements ChatContract.Presenter {
         mChatView.showChatUI(chatRoomArrayList);
     }
 
+    @Override
+    public void updateToolbar(String name) {
+
+    }
+
     private void findAllChatRoom() {
 
         Firebase.getInstance().getFirestore().collection("chatrooms")

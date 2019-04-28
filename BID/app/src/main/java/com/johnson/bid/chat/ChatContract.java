@@ -24,6 +24,8 @@ public interface ChatContract {
 
         void setChatData(ArrayList<ChatRoom> chatRoomArrayList);
 
+        void updateToolbar(String name);
+
     }
 
 }

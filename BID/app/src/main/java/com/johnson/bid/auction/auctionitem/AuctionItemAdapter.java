@@ -220,7 +220,7 @@ public class AuctionItemAdapter extends RecyclerView.Adapter {
                                             UserManager.getInstance().updateUser2Firebase();
                                             UserManager.getInstance().setHasUserDataChange(false);
                                         }
-//                                        createChatRoom(product);
+                                        createChatRoom(product);
                                     }
 
                                     mPresenter.updateTradeBadge();
@@ -364,7 +364,7 @@ public class AuctionItemAdapter extends RecyclerView.Adapter {
                                             UserManager.getInstance().updateUser2Firebase();
                                             UserManager.getInstance().setHasUserDataChange(false);
                                         }
-//                                        createChatRoom(product);
+                                        createChatRoom(product);
                                     }
 
                                     mPresenter.updateTradeBadge();
@@ -440,17 +440,13 @@ public class AuctionItemAdapter extends RecyclerView.Adapter {
 
                             DocumentSnapshot document = task.getResult();
 
-//                            if (document.toObject(User.class).getImage() == null) {
-//                                Log.d("documentCheck", "getImage is null ");
-//                            } else {
-//                                Log.d("documentCheck", "getImage not null ");
-//                            }
-
-                            chatRoom.setBuyerImage(document.toObject(User.class).getImage());
+//                            chatRoom.setBuyerImage(document.toObject(User.class).getImage());
                             chatRoom.setSellerImage(UserManager.getInstance().getUser().getImage());
                             chatRoom.setChatRoomId(product.getProductId());
                             chatRoom.setBuyerId(product.getHighestUserId());
                             chatRoom.setSellerId(product.getSellerId());
+                            chatRoom.setBuyerName(product.getBuyerName());
+                            chatRoom.setSellerName(product.getSellerName());
 
                             uploadChatRoom(chatRoom);
 
@@ -472,6 +468,8 @@ public class AuctionItemAdapter extends RecyclerView.Adapter {
                             chatRoom.setChatRoomId(product.getProductId());
                             chatRoom.setBuyerId(product.getHighestUserId());
                             chatRoom.setSellerId(product.getSellerId());
+                            chatRoom.setBuyerName(product.getBuyerName());
+                            chatRoom.setSellerName(product.getSellerName());
 
                             uploadChatRoom(chatRoom);
 

@@ -15,7 +15,9 @@ import com.johnson.bid.util.ImageManager;
 import com.johnson.bid.util.ProfileAvatarOutlineProvider;
 import com.johnson.bid.util.UserManager;
 
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Date;
 
 public class ChatContentAdapter extends RecyclerView.Adapter {
 
@@ -105,10 +107,8 @@ public class ChatContentAdapter extends RecyclerView.Adapter {
     private void bindMyContentViewHolder(MyContentViewHolder holder, ChatContent chatContent) {
 
         ImageManager.getInstance().setImageByUrl(holder.getChatProfile(), chatContent.getAuthorImage());
-        holder.getTime().setText(String.valueOf(chatContent.getTime()));
+        holder.getTime().setText(getDateToString(chatContent.getTime()));
         holder.getContent().setText(chatContent.getMessage());
-
-        Log.d("IDTEST", "MyContentView AuthorId : " + chatContent.getAuthorId());
 
     }
 
@@ -146,11 +146,15 @@ public class ChatContentAdapter extends RecyclerView.Adapter {
     private void bindHisContentViewHolder(HisContentViewHolder holder, ChatContent chatContent) {
 
         ImageManager.getInstance().setImageByUrl(holder.getChatProfile(), chatContent.getAuthorImage());
-        holder.getTime().setText(String.valueOf(chatContent.getTime()));
+        holder.getTime().setText(getDateToString(chatContent.getTime()));
         holder.getContent().setText(chatContent.getMessage());
 
-        Log.d("IDTEST", "HisContentView AuthorId : " + chatContent.getAuthorId());
+    }
 
+    private String getDateToString(long millSeconds) {
+        Date d = new Date(millSeconds);
+        SimpleDateFormat sf = new SimpleDateFormat("E  HH : mm");
+        return sf.format(d);
     }
 
     public void updateData(ArrayList<ChatContent> chatContentArrayList) {

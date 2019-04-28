@@ -6,6 +6,7 @@ import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -27,6 +28,8 @@ public class ChatContentFragment extends Fragment implements ChatContentContract
     private ChatContentAdapter mChatContentAdapter;
     private EditText mMessageEditText;
     private Button mSendBtn;
+    private RecyclerView mRecyclerView;
+    private ArrayList<ChatContent> mChatContentArrayList;
 
     public ChatContentFragment() {}
 
@@ -46,9 +49,9 @@ public class ChatContentFragment extends Fragment implements ChatContentContract
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
         View root = inflater.inflate(R.layout.fragment_chat_content, container, false);
 
-        RecyclerView recyclerView = root.findViewById(R.id.recycler_container);
-        recyclerView.setLayoutManager(new LinearLayoutManager(getActivity()));
-        recyclerView.setAdapter(mChatContentAdapter);
+        mRecyclerView = root.findViewById(R.id.recycler_container);
+        mRecyclerView.setLayoutManager(new LinearLayoutManager(getActivity()));
+        mRecyclerView.setAdapter(mChatContentAdapter);
 
         mMessageEditText = root.findViewById(R.id.edit_send_message);
         mSendBtn = root.findViewById(R.id.button_send_message);
@@ -74,7 +77,9 @@ public class ChatContentFragment extends Fragment implements ChatContentContract
             chatContent.setMessage(mMessageEditText.getText().toString());
 
             mPresenter.sendMessage(chatContent);
+            mMessageEditText.setText("");
         });
+
 
     }
 
@@ -83,6 +88,7 @@ public class ChatContentFragment extends Fragment implements ChatContentContract
         super.onDestroy();
 
         mPresenter.showBottomNavigation();
+        mPresenter.updateToolbar("聊聊");
     }
 
     @Override
@@ -91,7 +97,9 @@ public class ChatContentFragment extends Fragment implements ChatContentContract
     }
 
     @Override
-    public void showChatContentUi(ArrayList<ChatContent> mChatContentArrayList) {
-        mChatContentAdapter.updateData(mChatContentArrayList);
+    public void showChatContentUi(ArrayList<ChatContent> chatContentArrayList) {
+        mChatContentArrayList = chatContentArrayList;
+        mRecyclerView.scrollToPosition(mChatContentArrayList.size());
+        mChatContentAdapter.updateData(chatContentArrayList);
     }
 }

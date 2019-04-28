@@ -304,12 +304,12 @@ public class MainActivity extends AppCompatActivity implements MainContract.View
 
     @Override
     public AuctionItemFragment findEnglishAuctionView() {
-        return mMainMvpController.findOrCreateEnglishAuctionView();
+        return mMainMvpController.createEnglishAuctionView();
     }
 
     @Override
     public AuctionItemFragment findSealedAuctionView() {
-        return mMainMvpController.findOrCreateSealedAuctionView();
+        return mMainMvpController.createSealedAuctionView();
     }
 
     @Override
@@ -486,6 +486,7 @@ public class MainActivity extends AppCompatActivity implements MainContract.View
 
                     product.setCurrentPrice(Integer.parseInt(mBidPrice.getText().toString()));
                     product.setHighestUserId(UserManager.getInstance().getUser().getId());
+                    product.setBuyerName(UserManager.getInstance().getUser().getName());
                     product.setPlaceBidTimes(placeBidTimes + 1);
 
                     setAfterBidData(product);
@@ -494,6 +495,7 @@ public class MainActivity extends AppCompatActivity implements MainContract.View
                             .document(String.valueOf(product.getProductId()))
                             .update("currentPrice", Integer.parseInt(mBidPrice.getText().toString()),
                                     "highestUserId", UserManager.getInstance().getUser().getId(),
+                                    "buyerName", UserManager.getInstance().getUser().getName(),
                                     "placeBidTimes", placeBidTimes + 1)
                             .addOnSuccessListener(aVoid -> Log.d("Johnsi", "BID DocumentSnapshot successfully updated!"))
                             .addOnFailureListener(e -> Log.w("Johnsi", "BID Error updating document", e));
@@ -533,6 +535,7 @@ public class MainActivity extends AppCompatActivity implements MainContract.View
                                 .document(String.valueOf(product.getProductId()))
                                 .update("currentPrice", Integer.parseInt(mBidPrice.getText().toString()),
                                         "highestUserId", UserManager.getInstance().getUser().getId(),
+                                        "buyerName", UserManager.getInstance().getUser().getName(),
                                         "placeBidTimes", placeBidTimes + 1)
                                 .addOnSuccessListener(aVoid -> Log.d("Johnsi", "BID DocumentSnapshot successfully updated!"))
                                 .addOnFailureListener(e -> Log.w("Johnsi", "BID Error updating document", e));

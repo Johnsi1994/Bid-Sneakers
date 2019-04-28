@@ -2,7 +2,6 @@ package com.johnson.bid.chat;
 
 import com.johnson.bid.BasePresenter;
 import com.johnson.bid.BaseView;
-import com.johnson.bid.data.ChatBrief;
 import com.johnson.bid.data.ChatRoom;
 
 import java.util.ArrayList;

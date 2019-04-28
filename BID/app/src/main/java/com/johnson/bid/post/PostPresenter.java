@@ -29,14 +29,6 @@ public class PostPresenter implements PostContract.Presenter {
     @Override
     public Product getProduct() {
 
-//        ChatRoom chatContent = new ChatRoom();
-//        chatContent.setTime(System.currentTimeMillis());
-//        chatContent.setContent("哈哈哈");
-//        chatContent.setUserId(UserManager.getInstance().getUser().getId());
-//        chatContent.setImage(UserManager.getInstance().getUser().getImage());
-//
-//        mProduct.getChatContentArrayList().add(chatContent);
-
         return mProduct;
     }
 
@@ -93,7 +85,8 @@ public class PostPresenter implements PostContract.Presenter {
     @Override
     public void setPostProductId2User(long productId) {
         UserManager.getInstance().addSellingProductId(productId);
-        UserManager.getInstance().setHasUserDataChange(true);
+        UserManager.getInstance().updateUser2Firebase();
+//        UserManager.getInstance().setHasUserDataChange(true);
     }
 
     @Override
@@ -155,11 +148,6 @@ public class PostPresenter implements PostContract.Presenter {
     }
 
     @Override
-    public void openCenter() {
-
-    }
-
-    @Override
     public void updateCenterData() {
 
     }
@@ -172,6 +160,11 @@ public class PostPresenter implements PostContract.Presenter {
     @Override
     public void setBuyerHasRead(boolean isRead) {
         mProduct.setBuyerHasRead(isRead);
+    }
+
+    @Override
+    public void setSellerName(String name) {
+        mProduct.setSellerName(name);
     }
 
 

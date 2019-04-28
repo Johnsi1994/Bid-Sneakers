@@ -10,7 +10,6 @@ import android.widget.ImageView;
 import android.widget.TextView;
 
 import com.johnson.bid.R;
-import com.johnson.bid.data.ChatBrief;
 import com.johnson.bid.data.ChatRoom;
 import com.johnson.bid.util.ImageManager;
 import com.johnson.bid.util.ProfileAvatarOutlineProvider;

@@ -236,6 +236,8 @@ public class UserManager {
                 iterator.remove();
             }
         }
+
+        Log.d("removesellingcheck", "Selling Product Size : " + mUser.getMySellingProductsId().size());
     }
 
     public  void addBoughtProductId(long productId) {

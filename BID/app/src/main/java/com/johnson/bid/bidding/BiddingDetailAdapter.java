@@ -186,10 +186,10 @@ public class BiddingDetailAdapter extends RecyclerView.Adapter {
         if (product.getHighestUserId() == -1) {
             holder.getBuyerText().setText(mMainActivity.getString(R.string.nobody));
         } else {
-            holder.getBuyerText().setText(String.valueOf(product.getHighestUserId()));
+            holder.getBuyerText().setText(product.getBuyerName());
         }
         holder.getPeopleText().setText(String.valueOf(product.getPlaceBidTimes()));
-        holder.getSellerText().setText(String.valueOf(product.getSellerId()));
+        holder.getSellerText().setText(product.getSellerName());
 
     }
 
@@ -265,7 +265,7 @@ public class BiddingDetailAdapter extends RecyclerView.Adapter {
         holder.getIntroText().setText(product.getIntroduction());
         holder.getConditionText().setText(product.getCondition());
         timer(holder, product);
-        holder.getSellerText().setText(String.valueOf(product.getSellerId()));
+        holder.getSellerText().setText(product.getSellerName());
 
         ArrayList<Long> myProductsId = UserManager.getInstance().getUser().getMyBiddingProductsId();
         boolean hasProduct = false;

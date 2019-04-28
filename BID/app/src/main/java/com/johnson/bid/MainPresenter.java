@@ -15,7 +15,6 @@ import com.johnson.bid.auction.AuctionPresenter;
 import com.johnson.bid.auction.auctionitem.AuctionItemFragment;
 import com.johnson.bid.chat.chatcontent.ChatContentContract;
 import com.johnson.bid.chat.chatcontent.ChatContentPresenter;
-import com.johnson.bid.data.ChatBrief;
 import com.johnson.bid.data.ChatContent;
 import com.johnson.bid.data.ChatRoom;
 import com.johnson.bid.data.Product;
@@ -199,6 +198,11 @@ public class MainPresenter implements MainContract.Presenter, AuctionContract.Pr
     @Override
     public void setBuyerHasRead(boolean isRead) {
         mPostPresenter.setBuyerHasRead(isRead);
+    }
+
+    @Override
+    public void setSellerName(String name) {
+        mPostPresenter.setSellerName(name);
     }
 
     @Override

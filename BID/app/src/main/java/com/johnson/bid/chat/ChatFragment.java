@@ -12,7 +12,6 @@ import android.view.View;
 import android.view.ViewGroup;
 
 import com.johnson.bid.R;
-import com.johnson.bid.data.ChatBrief;
 import com.johnson.bid.data.ChatRoom;
 
 import java.util.ArrayList;

@@ -274,6 +274,7 @@ public class PostAdapter extends RecyclerView.Adapter {
             mPresenter.setStartingTime(id);
             mPresenter.setSellerHasRead(false);
             mPresenter.setBuyerHasRead(false);
+            mPresenter.setSellerName(UserManager.getInstance().getUser().getName());
 
             Firebase.getInstance().getFirestore().collection("products")
                     .document(String.valueOf(id))

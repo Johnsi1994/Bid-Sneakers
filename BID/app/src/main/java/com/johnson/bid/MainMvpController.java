@@ -249,9 +249,9 @@ public class MainMvpController {
         mBiddingDetailPresenter.setProductData(product);
     }
 
-    AuctionItemFragment findOrCreateEnglishAuctionView() {
+    AuctionItemFragment createEnglishAuctionView() {
 
-        AuctionItemFragment fragment = findOrCreateAuctionFragment(ENGLISH);
+        AuctionItemFragment fragment = createAuctionFragment(ENGLISH);
 
         mEnglishAuctionItemPresenter = new AuctionItemPresenter(fragment);
         fragment.setPresenter(mMainPresenter);
@@ -261,9 +261,9 @@ public class MainMvpController {
         return fragment;
     }
 
-    AuctionItemFragment findOrCreateSealedAuctionView() {
+    AuctionItemFragment createSealedAuctionView() {
 
-        AuctionItemFragment fragment = findOrCreateAuctionFragment(SEALED);
+        AuctionItemFragment fragment = createAuctionFragment(SEALED);
 
         mSealedAuctionItemPresenter = new AuctionItemPresenter(fragment);
         fragment.setPresenter(mMainPresenter);
@@ -565,11 +565,12 @@ public class MainMvpController {
     }
 
     @NonNull
-    private AuctionItemFragment findOrCreateAuctionFragment(@AuctionType String auctionType) {
+    private AuctionItemFragment createAuctionFragment(@AuctionType String auctionType) {
 
         AuctionItemFragment fragment =
                 (AuctionItemFragment) ((getFragmentManager().findFragmentByTag(AUCTION)))
                         .getChildFragmentManager().findFragmentByTag(auctionType);
+
         if (fragment == null) {
             // Create the fragment
             fragment = AuctionItemFragment.newInstance();

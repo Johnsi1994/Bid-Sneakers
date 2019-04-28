@@ -59,8 +59,14 @@ public class TradeItemPresenter implements TradeItemContract.Presenter {
     @Override
     public void loadMySellingData() {
         mProductIdList = UserManager.getInstance().getUser().getMySellingProductsId();
-        mProductsList = new ArrayList<>();
 
+        Log.d("tradedatatest", "My Selling Data size : " + mProductIdList.size());
+
+        for(int i = 0; i < mProductIdList.size(); i++) {
+            Log.d("tradedatatest", "My Selling Data : " + mProductIdList.get(i));
+        }
+
+        mProductsList = new ArrayList<>();
 
         if (mProductIdList.size() > 0) {
             loadDataFromFireBase(0, "SELLING");
@@ -94,6 +100,13 @@ public class TradeItemPresenter implements TradeItemContract.Presenter {
     @Override
     public void loadMySoldData() {
         mProductIdList = UserManager.getInstance().getUser().getMySoldProductsId();
+
+        Log.d("tradedatatest", "My Sold Data size : " + mProductIdList.size());
+
+        for(int i = 0; i < mProductIdList.size(); i++) {
+            Log.d("tradedatatest", "My Sold Data : " + mProductIdList.get(i));
+        }
+
         mProductsList = new ArrayList<>();
 
         if (mProductIdList.size() > 0) {

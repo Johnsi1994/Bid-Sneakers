@@ -23,6 +23,8 @@ public class Product {
 
     private long mSellerId;
     private long mHighestUserId;
+    private String mSellerName;
+    private String mBuyerName;
 
     private boolean sellerHasRead;
     private boolean buyerHasRead;
@@ -45,6 +47,8 @@ public class Product {
         mIncrease = -1;
         mHighestUserId = -1;
         mPlaceBidTimes = -1;
+        mSellerName = "";
+        mBuyerName = "";
         sellerHasRead = false;
         buyerHasRead = false;
 
@@ -194,4 +198,19 @@ public class Product {
         this.buyerHasRead = buyerHasRead;
     }
 
+    public String getSellerName() {
+        return mSellerName;
+    }
+
+    public void setSellerName(String sellerName) {
+        mSellerName = sellerName;
+    }
+
+    public String getBuyerName() {
+        return mBuyerName;
+    }
+
+    public void setBuyerName(String buyerName) {
+        mBuyerName = buyerName;
+    }
 }

@@ -141,7 +141,7 @@ public class BoughtDetailAdapter extends RecyclerView.Adapter {
         holder.getPriceText().setText(String.valueOf(product.getCurrentPrice()));
         holder.getAuctionTypeText().setText(product.getAuctionType());
         holder.getExpiredText().setText(getDateToString(product.getExpired()));
-        holder.getSellerText().setText(String.valueOf(product.getSellerId()));
+        holder.getSellerText().setText(product.getSellerName());
 
     }
 

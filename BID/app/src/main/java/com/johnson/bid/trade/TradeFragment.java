@@ -56,6 +56,7 @@ public class TradeFragment extends Fragment implements TradeContract.View {
         mViewPager.addOnPageChangeListener(
                 new TabLayout.TabLayoutOnPageChangeListener(mTabLayout));
         mViewPager.setAdapter(mTradeAdapter);
+        mViewPager.setOffscreenPageLimit(0);
         mTabLayout.setupWithViewPager(mViewPager);
 
         mPresenter.loadBoughtBadgeData();

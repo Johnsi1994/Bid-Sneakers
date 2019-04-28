@@ -193,7 +193,7 @@ public class SellingDetailAdapter extends RecyclerView.Adapter {
         if (product.getHighestUserId() == -1) {
             holder.getBuyerText().setText(mMainActivity.getString(R.string.nobody));
         } else {
-            holder.getBuyerText().setText(String.valueOf(product.getHighestUserId()));
+            holder.getBuyerText().setText(product.getBuyerName());
         }
 
         timer(holder, product);

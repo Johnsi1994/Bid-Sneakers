@@ -62,13 +62,13 @@ public interface PostContract {
 
         void showPostSuccessDialog();
 
-        void openCenter();
-
         void updateCenterData();
 
         void setSellerHasRead(boolean isRead);
 
         void setBuyerHasRead(boolean isRead);
+
+        void setSellerName(String name);
     }
 
 }

@@ -96,6 +96,7 @@ public class AuctionFragment extends Fragment implements AuctionContract.View {
         mViewPager.setAdapter(mAuctionAdapter);
         mViewPager.addOnPageChangeListener(
                 new TabLayout.TabLayoutOnPageChangeListener(mTabLayout));
+        mViewPager.setOffscreenPageLimit(0);
         mTabLayout.setupWithViewPager(mViewPager);
     }
 

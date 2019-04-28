@@ -215,7 +215,12 @@ public class AuctionItemAdapter extends RecyclerView.Adapter {
 
                                         }
 
-                                        createChatRoom(product);
+                                        if (UserManager.getInstance().isHasUserDataChange()) {
+
+                                            UserManager.getInstance().updateUser2Firebase();
+                                            UserManager.getInstance().setHasUserDataChange(false);
+                                        }
+//                                        createChatRoom(product);
                                     }
 
                                     mPresenter.updateTradeBadge();
@@ -354,7 +359,12 @@ public class AuctionItemAdapter extends RecyclerView.Adapter {
 
                                         }
 
-                                        createChatRoom(product);
+                                        if (UserManager.getInstance().isHasUserDataChange()) {
+
+                                            UserManager.getInstance().updateUser2Firebase();
+                                            UserManager.getInstance().setHasUserDataChange(false);
+                                        }
+//                                        createChatRoom(product);
                                     }
 
                                     mPresenter.updateTradeBadge();
@@ -429,6 +439,13 @@ public class AuctionItemAdapter extends RecyclerView.Adapter {
                         if (task.isSuccessful()) {
 
                             DocumentSnapshot document = task.getResult();
+
+//                            if (document.toObject(User.class).getImage() == null) {
+//                                Log.d("documentCheck", "getImage is null ");
+//                            } else {
+//                                Log.d("documentCheck", "getImage not null ");
+//                            }
+
                             chatRoom.setBuyerImage(document.toObject(User.class).getImage());
                             chatRoom.setSellerImage(UserManager.getInstance().getUser().getImage());
                             chatRoom.setChatRoomId(product.getProductId());

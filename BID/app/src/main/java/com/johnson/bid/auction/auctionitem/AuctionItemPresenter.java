@@ -6,6 +6,7 @@ import android.util.Log;
 import com.google.firebase.firestore.Query;
 import com.google.firebase.firestore.QueryDocumentSnapshot;
 import com.google.firebase.firestore.core.OrderBy;
+import com.google.firestore.v1.StructuredQuery;
 import com.johnson.bid.data.Product;
 import com.johnson.bid.util.Firebase;
 import com.johnson.bid.util.UserManager;
@@ -48,6 +49,7 @@ public class AuctionItemPresenter implements AuctionItemContract.Presenter {
         Firebase.getInstance().getFirestore().collection("products")
                 .whereEqualTo("auctionType", "一般拍賣")
                 .whereEqualTo("auctionCondition", "bidding")
+                .orderBy("startTime", Query.Direction.DESCENDING)
                 .get()
                 .addOnCompleteListener(task -> {
                     if (task.isSuccessful()) {
@@ -77,6 +79,7 @@ public class AuctionItemPresenter implements AuctionItemContract.Presenter {
         Firebase.getInstance().getFirestore().collection("products")
                 .whereEqualTo("auctionType", "封閉拍賣")
                 .whereEqualTo("auctionCondition", "bidding")
+                .orderBy("startTime", Query.Direction.DESCENDING)
                 .get()
                 .addOnCompleteListener(task -> {
                     if (task.isSuccessful()) {

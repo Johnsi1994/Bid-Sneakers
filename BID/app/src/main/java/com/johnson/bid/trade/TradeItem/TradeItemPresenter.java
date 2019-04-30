@@ -4,6 +4,7 @@ import android.support.annotation.NonNull;
 import android.util.Log;
 
 import com.google.firebase.firestore.DocumentSnapshot;
+import com.google.firebase.firestore.Query;
 import com.johnson.bid.data.Product;
 import com.johnson.bid.util.Firebase;
 import com.johnson.bid.util.UserManager;
@@ -37,7 +38,7 @@ public class TradeItemPresenter implements TradeItemContract.Presenter {
                 mProductsList = new ArrayList<>();
 
                 if (mProductIdList.size() > 0) {
-                    loadDataFromFireBase(0, "BIDDING");
+                    loadDataFromFireBase(mProductIdList.size(), "BIDDING");
                 } else {
                     setMyBiddingData(mProductsList);
                 }
@@ -60,16 +61,10 @@ public class TradeItemPresenter implements TradeItemContract.Presenter {
     public void loadMySellingData() {
         mProductIdList = UserManager.getInstance().getUser().getMySellingProductsId();
 
-        Log.d("tradedatatest", "My Selling Data size : " + mProductIdList.size());
-
-        for(int i = 0; i < mProductIdList.size(); i++) {
-            Log.d("tradedatatest", "My Selling Data : " + mProductIdList.get(i));
-        }
-
         mProductsList = new ArrayList<>();
 
         if (mProductIdList.size() > 0) {
-            loadDataFromFireBase(0, "SELLING");
+            loadDataFromFireBase(mProductIdList.size(), "SELLING");
         } else {
             setMySellingData(mProductsList);
         }
@@ -87,7 +82,7 @@ public class TradeItemPresenter implements TradeItemContract.Presenter {
         mProductsList = new ArrayList<>();
 
         if (mProductIdList.size() > 0) {
-            loadDataFromFireBase(0, "BOUGHT");
+            loadDataFromFireBase(mProductIdList.size(), "BOUGHT");
         }
 
     }
@@ -101,16 +96,10 @@ public class TradeItemPresenter implements TradeItemContract.Presenter {
     public void loadMySoldData() {
         mProductIdList = UserManager.getInstance().getUser().getMySoldProductsId();
 
-        Log.d("tradedatatest", "My Sold Data size : " + mProductIdList.size());
-
-        for(int i = 0; i < mProductIdList.size(); i++) {
-            Log.d("tradedatatest", "My Sold Data : " + mProductIdList.get(i));
-        }
-
         mProductsList = new ArrayList<>();
 
         if (mProductIdList.size() > 0) {
-            loadDataFromFireBase(0, "SOLD");
+            loadDataFromFireBase(mProductIdList.size(), "SOLD");
         }
     }
 
@@ -125,7 +114,7 @@ public class TradeItemPresenter implements TradeItemContract.Presenter {
         mProductsList = new ArrayList<>();
 
         if (mProductIdList.size() > 0) {
-            loadDataFromFireBase(0, "NOBODYBIT");
+            loadDataFromFireBase(mProductIdList.size(), "NOBODYBIT");
         }
     }
 
@@ -288,16 +277,16 @@ public class TradeItemPresenter implements TradeItemContract.Presenter {
 
     private void loadDataFromFireBase(int i, String type) {
 
-        int j = i + 1;
+        int j = i - 1;
         Firebase.getInstance().getFirestore().collection("products")
-                .document(String.valueOf(mProductIdList.get(i)))
+                .document(String.valueOf(mProductIdList.get(j)))
                 .get()
                 .addOnCompleteListener(task -> {
                     if (task.isSuccessful()) {
                         DocumentSnapshot document = task.getResult();
                         mProductsList.add(document.toObject(Product.class));
 
-                        if (j < mProductIdList.size()) {
+                        if (j > 0) {
                             loadDataFromFireBase(j, type);
                         } else {
                             switch (type) {

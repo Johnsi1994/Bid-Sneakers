@@ -29,7 +29,6 @@ public class ChatContentFragment extends Fragment implements ChatContentContract
     private EditText mMessageEditText;
     private Button mSendBtn;
     private RecyclerView mRecyclerView;
-    private ArrayList<ChatContent> mChatContentArrayList;
 
     public ChatContentFragment() {}
 
@@ -52,6 +51,7 @@ public class ChatContentFragment extends Fragment implements ChatContentContract
         mRecyclerView = root.findViewById(R.id.recycler_container);
         mRecyclerView.setLayoutManager(new LinearLayoutManager(getActivity()));
         mRecyclerView.setAdapter(mChatContentAdapter);
+        mRecyclerView.scrollToPosition(mChatContentAdapter.getItemCount() - 1);
 
         mMessageEditText = root.findViewById(R.id.edit_send_message);
         mSendBtn = root.findViewById(R.id.button_send_message);
@@ -98,8 +98,6 @@ public class ChatContentFragment extends Fragment implements ChatContentContract
 
     @Override
     public void showChatContentUi(ArrayList<ChatContent> chatContentArrayList) {
-        mChatContentArrayList = chatContentArrayList;
-        mRecyclerView.scrollToPosition(mChatContentArrayList.size());
         mChatContentAdapter.updateData(chatContentArrayList);
     }
 }

@@ -158,7 +158,7 @@ public class UserManager {
     public void getUserProfile(LoadCallback loadCallback) {
 
         Firebase.getInstance().getFirestore().collection("users")
-                .document(AccessToken.getCurrentAccessToken().getUserId())
+                .document(AccessToken.getCurrentAccessToken().getUserId().trim())
                 .get()
                 .addOnCompleteListener(task -> {
                     if (task.isSuccessful()) {

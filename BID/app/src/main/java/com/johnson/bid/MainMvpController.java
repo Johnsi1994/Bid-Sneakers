@@ -4,6 +4,7 @@ import android.support.annotation.NonNull;
 import android.support.annotation.StringDef;
 import android.support.v4.app.FragmentActivity;
 import android.support.v4.app.FragmentManager;
+import android.support.v4.app.FragmentTransaction;
 
 import com.johnson.bid.auction.AuctionFragment;
 import com.johnson.bid.auction.AuctionPresenter;
@@ -74,6 +75,8 @@ public class MainMvpController {
     private TradeItemPresenter mMyBoughtPresenter;
     private TradeItemPresenter mMySoldPresenter;
     private TradeItemPresenter mNobodyBidPresenter;
+
+    private FragmentTransaction mTransaction;
 
     @Retention(RetentionPolicy.SOURCE)
     @StringDef({
@@ -153,44 +156,40 @@ public class MainMvpController {
 
         AuctionFragment auctionFragment = findOrCreateCenterFragment();
 
-        if (mAuctionPresenter == null) {
-            mAuctionPresenter = new AuctionPresenter(auctionFragment, (MainActivity) mActivity);
-            mMainPresenter.setAuctionPresenter(mAuctionPresenter);
-            auctionFragment.setPresenter(mMainPresenter);
-        }
+        mAuctionPresenter = new AuctionPresenter(auctionFragment, (MainActivity) mActivity);
+        mMainPresenter.setAuctionPresenter(mAuctionPresenter);
+        auctionFragment.setPresenter(mMainPresenter);
+
     }
 
     void findOrCreateTradeView() {
 
         TradeFragment tradeFragment = findOrCreateTradeFragment();
 
-        if (mTradePresenter == null) {
-            mTradePresenter = new TradePresenter(tradeFragment);
-            mMainPresenter.setTradePresenter(mTradePresenter);
-            tradeFragment.setPresenter(mMainPresenter);
-        }
+        mTradePresenter = new TradePresenter(tradeFragment);
+        mMainPresenter.setTradePresenter(mTradePresenter);
+        tradeFragment.setPresenter(mMainPresenter);
+
     }
 
     void findOrCreateChatView() {
 
         ChatFragment chatFragment = findOrCreateChatFragment();
 
-        if (mChatPresenter == null) {
-            mChatPresenter = new ChatPresenter(chatFragment);
-            mMainPresenter.setChatPresenter(mChatPresenter);
-            chatFragment.setPresenter(mMainPresenter);
-        }
+        mChatPresenter = new ChatPresenter(chatFragment);
+        mMainPresenter.setChatPresenter(mChatPresenter);
+        chatFragment.setPresenter(mMainPresenter);
+
     }
 
     void findOrCreateSettingsView() {
 
         SettingsFragment settingsFragment = findOrCreateSettingsFragment();
 
-        if (mSettingsPresenter == null) {
-            mSettingsPresenter = new SettingsPresenter(settingsFragment);
-            mMainPresenter.setSettingsPresenter(mSettingsPresenter);
-            settingsFragment.setPresenter(mMainPresenter);
-        }
+        mSettingsPresenter = new SettingsPresenter(settingsFragment);
+        mMainPresenter.setSettingsPresenter(mSettingsPresenter);
+        settingsFragment.setPresenter(mMainPresenter);
+
     }
 
     void createEyesOnView() {
@@ -503,15 +502,10 @@ public class MainMvpController {
     @NonNull
     private AuctionFragment findOrCreateCenterFragment() {
 
-        AuctionFragment auctionFragment =
-                (AuctionFragment) getFragmentManager().findFragmentByTag(AUCTION);
-        if (auctionFragment == null) {
-            // Create the fragment
-            auctionFragment = AuctionFragment.newInstance();
-        }
-
-        ActivityUtils.showOrAddFragmentByTag(
-                getFragmentManager(), auctionFragment, AUCTION);
+        mTransaction = getFragmentManager().beginTransaction();
+        AuctionFragment auctionFragment = AuctionFragment.newInstance();
+        mTransaction.replace(R.id.layout_main_container, auctionFragment, AUCTION);
+        mTransaction.commit();
 
         return auctionFragment;
     }
@@ -519,15 +513,10 @@ public class MainMvpController {
     @NonNull
     private TradeFragment findOrCreateTradeFragment() {
 
-        TradeFragment tradeFragment =
-                (TradeFragment) getFragmentManager().findFragmentByTag(TRADE);
-        if (tradeFragment == null) {
-            // Create the fragment
-            tradeFragment = TradeFragment.newInstance();
-        }
-
-        ActivityUtils.showOrAddFragmentByTag(
-                getFragmentManager(), tradeFragment, TRADE);
+        mTransaction = getFragmentManager().beginTransaction();
+        TradeFragment tradeFragment = TradeFragment.newInstance();
+        mTransaction.replace(R.id.layout_main_container, tradeFragment, TRADE);
+        mTransaction.commit();
 
         return tradeFragment;
     }
@@ -535,15 +524,10 @@ public class MainMvpController {
     @NonNull
     private ChatFragment findOrCreateChatFragment() {
 
-        ChatFragment chatFragment =
-                (ChatFragment) getFragmentManager().findFragmentByTag(CHAT);
-        if (chatFragment == null) {
-            // Create the fragment
-            chatFragment = ChatFragment.newInstance();
-        }
-
-        ActivityUtils.showOrAddFragmentByTag(
-                getFragmentManager(), chatFragment, CHAT);
+        mTransaction = getFragmentManager().beginTransaction();
+        ChatFragment chatFragment = ChatFragment.newInstance();
+        mTransaction.replace(R.id.layout_main_container, chatFragment, CHAT);
+        mTransaction.commit();
 
         return chatFragment;
     }
@@ -551,15 +535,10 @@ public class MainMvpController {
     @NonNull
     private SettingsFragment findOrCreateSettingsFragment() {
 
-        SettingsFragment settingsFragment =
-                (SettingsFragment) getFragmentManager().findFragmentByTag(SETTINGS);
-        if (settingsFragment == null) {
-            // Create the fragment
-            settingsFragment = SettingsFragment.newInstance();
-        }
-
-        ActivityUtils.showOrAddFragmentByTag(
-                getFragmentManager(), settingsFragment, SETTINGS);
+        mTransaction = getFragmentManager().beginTransaction();
+        SettingsFragment settingsFragment = SettingsFragment.newInstance();
+        mTransaction.replace(R.id.layout_main_container, settingsFragment, SETTINGS);
+        mTransaction.commit();
 
         return settingsFragment;
     }

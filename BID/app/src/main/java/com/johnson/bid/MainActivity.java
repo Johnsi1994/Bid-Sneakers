@@ -35,7 +35,11 @@ import android.widget.Button;
 import android.widget.EditText;
 import android.widget.TextView;
 import android.widget.Toast;
+import com.crashlytics.android.Crashlytics;
+import io.fabric.sdk.android.Fabric;
 
+import com.google.android.gms.analytics.GoogleAnalytics;
+import com.google.android.gms.analytics.Tracker;
 import com.google.firebase.firestore.FieldValue;
 import com.google.firebase.firestore.QueryDocumentSnapshot;
 import com.johnson.bid.auction.auctionitem.AuctionItemFragment;
@@ -64,6 +68,8 @@ public class MainActivity extends AppCompatActivity implements MainContract.View
     private DisplayMetrics mPhone;
     private MessageDialog mMessageDialog;
     private View mBadge;
+    private static GoogleAnalytics sAnalytics;
+    private static Tracker sTracker;
 
     private final static int CAMERA_AUCTION = 666;
     private final static int CAMERA_POST = 667;
@@ -82,6 +88,9 @@ public class MainActivity extends AppCompatActivity implements MainContract.View
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+
+        Fabric.with(this, new Crashlytics());
+        sAnalytics = GoogleAnalytics.getInstance(this);
         setContentView(R.layout.activity_main);
 
         init();
@@ -880,6 +889,15 @@ public class MainActivity extends AppCompatActivity implements MainContract.View
         } else {
 
         }
+    }
+
+    synchronized public Tracker getDefaultTracker() {
+        // To enable debug logging use: adb shell setprop log.tag.GAv4 DEBUG
+        if (sTracker == null) {
+            sTracker = sAnalytics.newTracker(R.xml.global_tracker);
+        }
+
+        return sTracker;
     }
 
 }

@@ -165,9 +165,20 @@ public class MainActivity extends AppCompatActivity implements MainContract.View
         searchView.setOnQueryTextListener(new SearchView.OnQueryTextListener() {
             @Override
             public boolean onQueryTextSubmit(String keyword) {
-                mPresenter.openSearch("搜尋結果", keyword);
-                hideBottomNavigationUi();
-                dialog.dismiss();
+                Firebase.getInstance().getAllBiddingProductsFromFirebase(new UserManager.LoadCallback() {
+                    @Override
+                    public void onSuccess() {
+                        mPresenter.openSearch("搜尋結果", keyword);
+                        hideBottomNavigationUi();
+                        dialog.dismiss();
+                    }
+
+                    @Override
+                    public void onFail(String errorMessage) {
+
+                    }
+                });
+
                 return false;
             }
 
@@ -717,9 +728,6 @@ public class MainActivity extends AppCompatActivity implements MainContract.View
 
             mPresenter.openLogin();
         }
-
-        Firebase.getInstance().getAllBiddingProductsFromFirebase();
-
     }
 
     private void setToolbar() {

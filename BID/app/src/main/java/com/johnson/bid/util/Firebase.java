@@ -14,7 +14,7 @@ import java.util.ArrayList;
 
 public class Firebase {
 
-    private ArrayList<Product> mProductList = new ArrayList<>();
+    private ArrayList<Product> mProductList;
 
     private static class FirebaseHolder {
         private static final Firebase INSTANCE = new Firebase();
@@ -40,7 +40,9 @@ public class Firebase {
         return mStorageRef;
     }
 
-    public void getAllBiddingProductsFromFirebase() {
+    public void getAllBiddingProductsFromFirebase(UserManager.LoadCallback loadCallback) {
+
+        mProductList = new ArrayList<>();
 
         db.collection("products")
                 .whereEqualTo("auctionCondition", "bidding")
@@ -52,6 +54,7 @@ public class Firebase {
                         }
 
                         setAllBiddingProducts(mProductList);
+                        loadCallback.onSuccess();
                     } else {
                         Log.d("Johnsi", "Error getting documents: ", task.getException());
                     }

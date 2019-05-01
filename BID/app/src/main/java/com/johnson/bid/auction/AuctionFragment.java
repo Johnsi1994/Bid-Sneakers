@@ -59,30 +59,25 @@ public class AuctionFragment extends Fragment implements AuctionContract.View {
 
         mMenuFloatingActionButton.setOnClickListener(v -> {
             if (isFABOpen) {
-                mMenuFloatingActionButton.setImageResource(R.drawable.ic_up_arrow);
                 closeFABMenu();
             } else {
-                mMenuFloatingActionButton.setImageResource(R.drawable.ic_close_arrow);
                 showFABMenu();
             }
         });
 
         mPostFloatingActionButton.setOnClickListener(v -> {
             closeFABMenu();
-            mMenuFloatingActionButton.setImageResource(R.drawable.ic_up_arrow);
             mPresenter.openGalleryDialog(AUCTION);
         });
 
 
         mEyesOnFloatingActionButton.setOnClickListener(v -> {
             closeFABMenu();
-            mMenuFloatingActionButton.setImageResource(R.drawable.ic_up_arrow);
             mPresenter.openEyesOn("關注");
         });
 
         mSearchFloatingActionButton.setOnClickListener(v -> {
             closeFABMenu();
-            mMenuFloatingActionButton.setImageResource(R.drawable.ic_up_arrow);
             mPresenter.openSearchDialog();
         });
 
@@ -96,7 +91,6 @@ public class AuctionFragment extends Fragment implements AuctionContract.View {
         mViewPager.setAdapter(mAuctionAdapter);
         mViewPager.addOnPageChangeListener(
                 new TabLayout.TabLayoutOnPageChangeListener(mTabLayout));
-//        mViewPager.setOffscreenPageLimit(0);
         mTabLayout.setupWithViewPager(mViewPager);
     }
 
@@ -110,6 +104,7 @@ public class AuctionFragment extends Fragment implements AuctionContract.View {
         mPostFloatingActionButton.animate().translationY(-getResources().getDimension(R.dimen.standard_70));
         mSearchFloatingActionButton.animate().translationY(-getResources().getDimension(R.dimen.standard_140));
         mEyesOnFloatingActionButton.animate().translationY(-getResources().getDimension(R.dimen.standard_210));
+        mMenuFloatingActionButton.animate().rotationBy(180);
     }
 
     private void closeFABMenu() {
@@ -117,6 +112,7 @@ public class AuctionFragment extends Fragment implements AuctionContract.View {
         mPostFloatingActionButton.animate().translationY(0);
         mSearchFloatingActionButton.animate().translationY(0);
         mEyesOnFloatingActionButton.animate().translationY(0);
+        mMenuFloatingActionButton.animate().rotationBy(180);
     }
 
 }

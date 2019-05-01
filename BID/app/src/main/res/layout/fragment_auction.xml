@@ -83,6 +83,6 @@
         app:backgroundTint="@color/gray_EEEEEE"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
-        app:srcCompat="@drawable/ic_up_arrow" />
+        app:srcCompat="@drawable/ic_jordan" />
 
 </android.support.constraint.ConstraintLayout>

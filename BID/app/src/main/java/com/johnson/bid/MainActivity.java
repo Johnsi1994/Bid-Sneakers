@@ -651,6 +651,7 @@ public class MainActivity extends AppCompatActivity implements MainContract.View
 
             dialog.dismiss();
             showMessageDialogUi(DELETE_SUCCESS);
+            onBackPressed();
         });
     }
 

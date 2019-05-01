@@ -18,6 +18,7 @@ import com.johnson.bid.R;
 import com.johnson.bid.data.ChatRoom;
 import com.johnson.bid.data.Product;
 import com.johnson.bid.data.User;
+import com.johnson.bid.util.CardViewImageOutlineProvider;
 import com.johnson.bid.util.Firebase;
 import com.johnson.bid.util.ImageManager;
 import com.johnson.bid.util.UserManager;
@@ -146,7 +147,8 @@ public class AuctionItemAdapter extends RecyclerView.Adapter {
             mPresenter.hideToolbarAndBottomNavigation();
         });
 
-        ImageManager.getInstance().setImageByUrl(holder.getImageMain(), product.getImages().get(0));
+        holder.getImageMain().setOutlineProvider(new CardViewImageOutlineProvider());
+        ImageManager.getInstance().setBriefImageByUrl(holder.getImageMain(), product.getImages().get(0));
 
         holder.getTextTitle().setText(product.getTitle());
 
@@ -179,8 +181,8 @@ public class AuctionItemAdapter extends RecyclerView.Adapter {
                                         UserManager.getInstance().getUser().getId() == latestProduct.getSellerId()) {
                                     updateProductAuctionCondition(latestProduct);
 
-                                    if (latestProduct.getHighestUserId() == -1
-                                            && latestProduct.getSellerId() == UserManager.getInstance().getUser().getId()) {
+                                    if (UserManager.getInstance().getUser().getId() == latestProduct.getSellerId()
+                                            && latestProduct.getHighestUserId() == -1) {
 
                                         mPresenter.removeSellingProductId(latestProduct.getProductId(), ENGLISH);
                                         mPresenter.addNobodyBidProductId(latestProduct.getProductId(), ENGLISH);
@@ -291,7 +293,8 @@ public class AuctionItemAdapter extends RecyclerView.Adapter {
             mPresenter.hideToolbarAndBottomNavigation();
         });
 
-        ImageManager.getInstance().setImageByUrl(holder.getImageMain(), product.getImages().get(0));
+        holder.getImageMain().setOutlineProvider(new CardViewImageOutlineProvider());
+        ImageManager.getInstance().setBriefImageByUrl(holder.getImageMain(), product.getImages().get(0));
 
         holder.getTextTitle().setText(product.getTitle());
 

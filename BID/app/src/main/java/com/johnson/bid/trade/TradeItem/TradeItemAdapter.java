@@ -17,6 +17,7 @@ import com.johnson.bid.Bid;
 import com.johnson.bid.MainMvpController;
 import com.johnson.bid.R;
 import com.johnson.bid.data.Product;
+import com.johnson.bid.util.CardViewImageOutlineProvider;
 import com.johnson.bid.util.ImageManager;
 
 import java.text.SimpleDateFormat;
@@ -196,7 +197,8 @@ public class TradeItemAdapter extends RecyclerView.Adapter {
             mPresenter.hideToolbarAndBottomNavigation();
         });
 
-        ImageManager.getInstance().setImageByUrl(holder.getImageMain(), product.getImages().get(0));
+        holder.getImageMain().setOutlineProvider(new CardViewImageOutlineProvider());
+        ImageManager.getInstance().setBriefImageByUrl(holder.getImageMain(), product.getImages().get(0));
 
         holder.getTextTitle().setText(product.getTitle());
 
@@ -317,7 +319,8 @@ public class TradeItemAdapter extends RecyclerView.Adapter {
             mPresenter.hideToolbarAndBottomNavigation();
         });
 
-        ImageManager.getInstance().setImageByUrl(holder.getImageMain(), product.getImages().get(0));
+        holder.getImageMain().setOutlineProvider(new CardViewImageOutlineProvider());
+        ImageManager.getInstance().setBriefImageByUrl(holder.getImageMain(), product.getImages().get(0));
 
         holder.getTextTitle().setText(product.getTitle());
 
@@ -413,10 +416,11 @@ public class TradeItemAdapter extends RecyclerView.Adapter {
             mPresenter.hideToolbarAndBottomNavigation();
         });
 
-        ImageManager.getInstance().setImageByUrl(holder.getImageMain(), product.getImages().get(0));
+        holder.getImageMain().setOutlineProvider(new CardViewImageOutlineProvider());
+        ImageManager.getInstance().setBriefImageByUrl(holder.getImageMain(), product.getImages().get(0));
 
         if (!product.isBuyerHasRead()) {
-            holder.getBoughtLayout().setCardBackgroundColor(ContextCompat.getColor(Bid.getAppContext(), R.color.color_ccFFAAB5));
+            holder.getBoughtLayout().setCardBackgroundColor(ContextCompat.getColor(Bid.getAppContext(), R.color.gray_EEEEEE));
         } else {
             holder.getBoughtLayout().setCardBackgroundColor(Color.WHITE);
         }
@@ -485,10 +489,11 @@ public class TradeItemAdapter extends RecyclerView.Adapter {
             mPresenter.hideToolbarAndBottomNavigation();
         });
 
-        ImageManager.getInstance().setImageByUrl(holder.getImageMain(), product.getImages().get(0));
+        holder.getImageMain().setOutlineProvider(new CardViewImageOutlineProvider());
+        ImageManager.getInstance().setBriefImageByUrl(holder.getImageMain(), product.getImages().get(0));
 
         if (!product.isSellerHasRead()) {
-            holder.getSoldLayout().setCardBackgroundColor(ContextCompat.getColor(Bid.getAppContext(), R.color.color_ccFFAAB5));
+            holder.getSoldLayout().setCardBackgroundColor(ContextCompat.getColor(Bid.getAppContext(), R.color.gray_EEEEEE));
         } else {
             holder.getSoldLayout().setCardBackgroundColor(Color.WHITE);
         }
@@ -551,10 +556,11 @@ public class TradeItemAdapter extends RecyclerView.Adapter {
             mPresenter.hideToolbarAndBottomNavigation();
         });
 
-        ImageManager.getInstance().setImageByUrl(holder.getImageMain(), product.getImages().get(0));
+        holder.getImageMain().setOutlineProvider(new CardViewImageOutlineProvider());
+        ImageManager.getInstance().setBriefImageByUrl(holder.getImageMain(), product.getImages().get(0));
 
         if (!product.isSellerHasRead()) {
-            holder.getNobodyBidLayout().setCardBackgroundColor(ContextCompat.getColor(Bid.getAppContext(), R.color.color_ccFFAAB5));
+            holder.getNobodyBidLayout().setCardBackgroundColor(ContextCompat.getColor(Bid.getAppContext(), R.color.gray_EEEEEE));
         } else {
             holder.getNobodyBidLayout().setCardBackgroundColor(Color.WHITE);
         }

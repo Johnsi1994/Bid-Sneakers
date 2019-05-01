@@ -186,15 +186,26 @@
         app:layout_constraintTop_toBottomOf="@+id/view39" />
 
     <TextView
-        android:id="@+id/text_nobody_bit_starting_time"
+        android:id="@+id/textView46"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginStart="8dp"
-        android:text="@string/placeholder_price"
+        android:text="@string/nt_dollars"
         android:textSize="16sp"
         app:layout_constraintBottom_toBottomOf="@+id/textView32"
         app:layout_constraintStart_toEndOf="@+id/textView32"
         app:layout_constraintTop_toTopOf="@+id/textView32" />
+
+    <TextView
+        android:id="@+id/text_nobody_bit_starting_time"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="4dp"
+        android:text="@string/placeholder_price"
+        android:textSize="16sp"
+        app:layout_constraintBottom_toBottomOf="@+id/textView46"
+        app:layout_constraintStart_toEndOf="@+id/textView46"
+        app:layout_constraintTop_toTopOf="@+id/textView46" />
 
     <View
         android:id="@+id/view40"
@@ -219,15 +230,26 @@
         app:layout_constraintTop_toBottomOf="@+id/view40" />
 
     <TextView
-        android:id="@+id/text_nobody_bit_increase"
+        android:id="@+id/textView48"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginStart="8dp"
-        android:text="@string/placeholder_increase"
+        android:text="@string/nt_dollars"
         android:textSize="16sp"
         app:layout_constraintBottom_toBottomOf="@+id/textView37"
         app:layout_constraintStart_toEndOf="@+id/textView37"
         app:layout_constraintTop_toTopOf="@+id/textView37" />
+
+    <TextView
+        android:id="@+id/text_nobody_bit_increase"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="4dp"
+        android:text="@string/placeholder_increase"
+        android:textSize="16sp"
+        app:layout_constraintBottom_toBottomOf="@+id/textView48"
+        app:layout_constraintStart_toEndOf="@+id/textView48"
+        app:layout_constraintTop_toTopOf="@+id/textView48" />
 
     <View
         android:id="@+id/view41"
@@ -252,15 +274,26 @@
         app:layout_constraintTop_toBottomOf="@+id/view41" />
 
     <TextView
-        android:id="@+id/text_nobody_bit_reserve_price"
+        android:id="@+id/textView50"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginStart="8dp"
-        android:text="@string/placeholder_reserve_price"
+        android:text="@string/nt_dollars"
         android:textSize="16sp"
         app:layout_constraintBottom_toBottomOf="@+id/textView40"
         app:layout_constraintStart_toEndOf="@+id/textView40"
         app:layout_constraintTop_toTopOf="@+id/textView40" />
+
+    <TextView
+        android:id="@+id/text_nobody_bit_reserve_price"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="4dp"
+        android:text="@string/placeholder_reserve_price"
+        android:textSize="16sp"
+        app:layout_constraintBottom_toBottomOf="@+id/textView50"
+        app:layout_constraintStart_toEndOf="@+id/textView50"
+        app:layout_constraintTop_toTopOf="@+id/textView50" />
 
     <View
         android:id="@+id/view42"
@@ -287,6 +320,5 @@
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/view42" />
-
 
 </android.support.constraint.ConstraintLayout>

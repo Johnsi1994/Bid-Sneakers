@@ -9,6 +9,7 @@ import android.widget.ImageView;
 
 import com.johnson.bid.R;
 
+import java.io.FileInputStream;
 import java.io.InputStream;
 import java.net.URL;
 import java.nio.charset.MalformedInputException;
@@ -69,6 +70,28 @@ public class ImageManager {
         }
     }
 
+    public void setBriefImageByUrl(ImageView imageView, String imageUrl) {
+
+        if (imageUrl != null) {
+            Bitmap bitmap = (Bitmap) getLruCache().get(imageUrl);
+
+            if (bitmap == null) {
+
+                Log.d("Johnsi", "LruCache doesn't exist, start download.: " + imageUrl);
+
+                lockImagePairing(imageView, imageUrl);
+                imageView.setImageResource(R.drawable.ic_128);
+
+                new DownloadBriefImageTask(imageView, imageUrl)
+                        .executeOnExecutor(Executors.newCachedThreadPool());
+            } else {
+
+                Log.d("Johnsi", "LruCache exist, setImageByUrl bitmap directly.: " + imageUrl);
+                imageView.setImageBitmap(bitmap);
+            }
+        }
+    }
+
     public int calculateInSampleSize(BitmapFactory.Options options, int reqWidth, int reqHeight) {
         // Raw height and width of image
         final int height = options.outHeight;
@@ -87,6 +110,7 @@ public class ImageManager {
                 inSampleSize *= 2;
             }
         }
+
         return inSampleSize;
     }
 
@@ -102,7 +126,28 @@ public class ImageManager {
             bitmap = BitmapFactory.decodeStream(is, null, options);
         } catch (MalformedInputException e) {
             e.printStackTrace();
-        } catch (Exception e) {
+        }
+        catch (Exception e) {
+            e.printStackTrace();
+        }
+        return bitmap;
+    }
+
+    public Bitmap decodeBriefBitmap(String url) {
+
+        Bitmap bitmap = null;
+        try {
+            BitmapFactory.Options options = new BitmapFactory.Options();
+            options.inPreferredConfig = Bitmap.Config.RGB_565;
+            options.inSampleSize = 4;
+
+            InputStream is = (InputStream) new URL(url).getContent();
+            bitmap = BitmapFactory.decodeStream(is, null, options);
+
+        } catch (MalformedInputException e) {
+            e.printStackTrace();
+        }
+        catch (Exception e) {
             e.printStackTrace();
         }
         return bitmap;
@@ -125,6 +170,41 @@ public class ImageManager {
         protected Object doInBackground(Object[] objects) {
 
             mBitmap = decodeBitmap(mImageUrl, 200);
+            return null;
+        }
+
+        @Override
+        protected void onPostExecute(Object o) {
+            super.onPostExecute(o);
+
+            if (mBitmap != null) {
+
+                getLruCache().put(mImageUrl, mBitmap);
+
+                if (isImagePairingCorrect(mImageView, mImageUrl)) {
+                    mImageView.setImageBitmap(mBitmap);
+                }
+            }
+        }
+    }
+
+    private class DownloadBriefImageTask extends AsyncTask {
+
+        private ImageView mImageView;
+        private String mImageUrl;
+        private Bitmap mBitmap;
+
+        public DownloadBriefImageTask(ImageView imageView, String imageUrl) {
+
+            mImageView = imageView;
+            mImageUrl = imageUrl;
+
+        }
+
+        @Override
+        protected Object doInBackground(Object[] objects) {
+
+            mBitmap = decodeBriefBitmap(mImageUrl);
             return null;
         }
 

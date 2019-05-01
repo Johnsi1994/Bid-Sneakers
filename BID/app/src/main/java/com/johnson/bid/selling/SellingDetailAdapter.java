@@ -196,7 +196,12 @@ public class SellingDetailAdapter extends RecyclerView.Adapter {
             holder.getBuyerText().setText(product.getBuyerName());
         }
 
-        timer(holder, product);
+        long remainingTime = product.getExpired() - System.currentTimeMillis();
+        if (remainingTime > 0) {
+            timer(holder, product, remainingTime);
+        } else {
+            holder.getLastTimeText().setText("競標結束");
+        }
 
     }
 
@@ -279,7 +284,13 @@ public class SellingDetailAdapter extends RecyclerView.Adapter {
         holder.getExpireText().setText(getDateToString(product.getExpired()));
         holder.getReservePriceText().setText(String.valueOf(product.getReservePrice()));
 
-        timer(holder, product);
+        long remainingTime = product.getExpired() - System.currentTimeMillis();
+        if (remainingTime > 0) {
+            timer(holder, product, remainingTime);
+        } else {
+            holder.getLastTimeText().setText("競標結束");
+        }
+
 
     }
 
@@ -300,8 +311,7 @@ public class SellingDetailAdapter extends RecyclerView.Adapter {
         return time;
     }
 
-    private void timer(@NonNull RecyclerView.ViewHolder holder, Product product) {
-        long lastTime = product.getExpired() - System.currentTimeMillis();
+    private void timer(@NonNull RecyclerView.ViewHolder holder, Product product, long remainingTime) {
         TextView textView;
 
         if (holder instanceof SellingEnglishViewHolder) {
@@ -310,7 +320,7 @@ public class SellingDetailAdapter extends RecyclerView.Adapter {
             textView = ((SellingSealedViewHolder) holder).getLastTimeText();
         }
 
-        new CountDownTimer(lastTime, 1000) {
+        new CountDownTimer(remainingTime, 1000) {
 
             @Override
             public void onTick(long millisUntilFinished) {
@@ -319,7 +329,7 @@ public class SellingDetailAdapter extends RecyclerView.Adapter {
 
             @Override
             public void onFinish() {
-
+                textView.setText("競標結束");
             }
         }.start();
     }

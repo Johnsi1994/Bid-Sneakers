@@ -156,9 +156,12 @@ public class MainMvpController {
 
         AuctionFragment auctionFragment = findOrCreateCenterFragment();
 
-        mAuctionPresenter = new AuctionPresenter(auctionFragment, (MainActivity) mActivity);
-        mMainPresenter.setAuctionPresenter(mAuctionPresenter);
-        auctionFragment.setPresenter(mMainPresenter);
+        if (mAuctionPresenter == null) {
+            mAuctionPresenter = new AuctionPresenter(auctionFragment, (MainActivity) mActivity);
+            mMainPresenter.setAuctionPresenter(mAuctionPresenter);
+            auctionFragment.setPresenter(mMainPresenter);
+        }
+
 
     }
 
@@ -166,9 +169,11 @@ public class MainMvpController {
 
         TradeFragment tradeFragment = findOrCreateTradeFragment();
 
-        mTradePresenter = new TradePresenter(tradeFragment);
-        mMainPresenter.setTradePresenter(mTradePresenter);
-        tradeFragment.setPresenter(mMainPresenter);
+        if (mTradePresenter == null) {
+            mTradePresenter = new TradePresenter(tradeFragment);
+            mMainPresenter.setTradePresenter(mTradePresenter);
+            tradeFragment.setPresenter(mMainPresenter);
+        }
 
     }
 
@@ -176,9 +181,11 @@ public class MainMvpController {
 
         ChatFragment chatFragment = findOrCreateChatFragment();
 
-        mChatPresenter = new ChatPresenter(chatFragment);
-        mMainPresenter.setChatPresenter(mChatPresenter);
-        chatFragment.setPresenter(mMainPresenter);
+        if (mChatPresenter == null) {
+            mChatPresenter = new ChatPresenter(chatFragment);
+            mMainPresenter.setChatPresenter(mChatPresenter);
+            chatFragment.setPresenter(mMainPresenter);
+        }
 
     }
 
@@ -186,9 +193,11 @@ public class MainMvpController {
 
         SettingsFragment settingsFragment = findOrCreateSettingsFragment();
 
-        mSettingsPresenter = new SettingsPresenter(settingsFragment);
-        mMainPresenter.setSettingsPresenter(mSettingsPresenter);
-        settingsFragment.setPresenter(mMainPresenter);
+        if (mSettingsPresenter == null) {
+            mSettingsPresenter = new SettingsPresenter(settingsFragment);
+            mMainPresenter.setSettingsPresenter(mSettingsPresenter);
+            settingsFragment.setPresenter(mMainPresenter);
+        }
 
     }
 
@@ -502,10 +511,15 @@ public class MainMvpController {
     @NonNull
     private AuctionFragment findOrCreateCenterFragment() {
 
-        mTransaction = getFragmentManager().beginTransaction();
-        AuctionFragment auctionFragment = AuctionFragment.newInstance();
-        mTransaction.replace(R.id.layout_main_container, auctionFragment, AUCTION);
-        mTransaction.commit();
+        AuctionFragment auctionFragment =
+                (AuctionFragment) getFragmentManager().findFragmentByTag(AUCTION);
+
+        if (auctionFragment == null) {
+            auctionFragment = AuctionFragment.newInstance();
+        }
+
+        ActivityUtils.showOrAddFragmentByTag(
+                getFragmentManager(), auctionFragment, AUCTION);
 
         return auctionFragment;
     }
@@ -513,10 +527,15 @@ public class MainMvpController {
     @NonNull
     private TradeFragment findOrCreateTradeFragment() {
 
-        mTransaction = getFragmentManager().beginTransaction();
-        TradeFragment tradeFragment = TradeFragment.newInstance();
-        mTransaction.replace(R.id.layout_main_container, tradeFragment, TRADE);
-        mTransaction.commit();
+        TradeFragment tradeFragment =
+                (TradeFragment) getFragmentManager().findFragmentByTag(TRADE);
+
+        if (tradeFragment == null) {
+            tradeFragment = TradeFragment.newInstance();
+        }
+
+        ActivityUtils.showOrAddFragmentByTag(
+                getFragmentManager(), tradeFragment, TRADE);
 
         return tradeFragment;
     }
@@ -524,10 +543,15 @@ public class MainMvpController {
     @NonNull
     private ChatFragment findOrCreateChatFragment() {
 
-        mTransaction = getFragmentManager().beginTransaction();
-        ChatFragment chatFragment = ChatFragment.newInstance();
-        mTransaction.replace(R.id.layout_main_container, chatFragment, CHAT);
-        mTransaction.commit();
+        ChatFragment chatFragment =
+                (ChatFragment) getFragmentManager().findFragmentByTag(CHAT);
+
+        if (chatFragment == null) {
+            chatFragment = ChatFragment.newInstance();
+        }
+
+        ActivityUtils.showOrAddFragmentByTag(
+                getFragmentManager(), chatFragment, CHAT);
 
         return chatFragment;
     }
@@ -535,10 +559,15 @@ public class MainMvpController {
     @NonNull
     private SettingsFragment findOrCreateSettingsFragment() {
 
-        mTransaction = getFragmentManager().beginTransaction();
-        SettingsFragment settingsFragment = SettingsFragment.newInstance();
-        mTransaction.replace(R.id.layout_main_container, settingsFragment, SETTINGS);
-        mTransaction.commit();
+        SettingsFragment settingsFragment =
+                (SettingsFragment) getFragmentManager().findFragmentByTag(SETTINGS);
+
+        if (settingsFragment == null) {
+            settingsFragment = SettingsFragment.newInstance();
+        }
+
+        ActivityUtils.showOrAddFragmentByTag(
+                getFragmentManager(), settingsFragment, SETTINGS);
 
         return settingsFragment;
     }

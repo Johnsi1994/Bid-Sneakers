@@ -171,6 +171,10 @@ public class BiddingDetailAdapter extends RecyclerView.Adapter {
         private TextView getSellerText() {
             return mSellerText;
         }
+
+        private Button getBidBtn() {
+            return mBidBtn;
+        }
     }
 
     private void bindEnglishViewHolder(EnglishViewHolder holder, Product product) {
@@ -179,7 +183,14 @@ public class BiddingDetailAdapter extends RecyclerView.Adapter {
         holder.getIntroText().setText(product.getIntroduction());
         holder.getConditionText().setText(product.getCondition());
 
-        timer(holder, product);
+        long remainingTime = product.getExpired() - System.currentTimeMillis();
+        if (remainingTime > 0) {
+            timer(holder, product, remainingTime);
+        } else {
+            holder.getLastTimeText().setText("競標結束");
+            holder.getBidBtn().setText("競標結束");
+            holder.getBidBtn().setClickable(false);
+        }
 
         holder.getPriceText().setText(String.valueOf(product.getCurrentPrice()));
         holder.getIncreaseText().setText(String.valueOf(product.getIncrease()));
@@ -264,7 +275,16 @@ public class BiddingDetailAdapter extends RecyclerView.Adapter {
         holder.getTitleText().setText(product.getTitle());
         holder.getIntroText().setText(product.getIntroduction());
         holder.getConditionText().setText(product.getCondition());
-        timer(holder, product);
+
+        long remainingTime = product.getExpired() - System.currentTimeMillis();
+        if (remainingTime > 0) {
+            timer(holder, product, remainingTime);
+        } else {
+            holder.getLastTimeText().setText("競標結束");
+            holder.getBidBtn().setText("競標結束");
+            holder.getBidBtn().setClickable(false);
+        }
+
         holder.getSellerText().setText(product.getSellerName());
 
         ArrayList<Long> myProductsId = UserManager.getInstance().getUser().getMyBiddingProductsId();
@@ -302,8 +322,7 @@ public class BiddingDetailAdapter extends RecyclerView.Adapter {
         return time;
     }
 
-    private void timer(@NonNull RecyclerView.ViewHolder holder, Product product) {
-        long lastTime = product.getExpired() - System.currentTimeMillis();
+    private void timer(@NonNull RecyclerView.ViewHolder holder, Product product, long remainingTime) {
         TextView textView;
 
         if (holder instanceof EnglishViewHolder) {
@@ -312,7 +331,7 @@ public class BiddingDetailAdapter extends RecyclerView.Adapter {
             textView = ((SealedViewHolder) holder).getLastTimeText();
         }
 
-        new CountDownTimer(lastTime, 1000) {
+        new CountDownTimer(remainingTime, 1000) {
 
             @Override
             public void onTick(long millisUntilFinished) {

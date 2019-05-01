@@ -184,6 +184,7 @@ public class AuctionItemAdapter extends RecyclerView.Adapter {
                                     if (UserManager.getInstance().getUser().getId() == latestProduct.getSellerId()
                                             && latestProduct.getHighestUserId() == -1) {
 
+                                        Log.d("nobodybidtest", "NOBODY BID");
                                         mPresenter.removeSellingProductId(latestProduct.getProductId(), ENGLISH);
                                         mPresenter.addNobodyBidProductId(latestProduct.getProductId(), ENGLISH);
                                         mPresenter.increaseUnreadNobodyBid(ENGLISH);
@@ -217,13 +218,11 @@ public class AuctionItemAdapter extends RecyclerView.Adapter {
 
                                         }
 
-                                        if (UserManager.getInstance().isHasUserDataChange()) {
-
-                                            UserManager.getInstance().updateUser2Firebase();
-                                            UserManager.getInstance().setHasUserDataChange(false);
-                                        }
                                         createChatRoom(product);
                                     }
+
+                                    UserManager.getInstance().updateUser2Firebase();
+                                    UserManager.getInstance().setHasUserDataChange(false);
 
                                     mPresenter.updateTradeBadge();
                                 }
@@ -362,13 +361,11 @@ public class AuctionItemAdapter extends RecyclerView.Adapter {
 
                                         }
 
-                                        if (UserManager.getInstance().isHasUserDataChange()) {
-
-                                            UserManager.getInstance().updateUser2Firebase();
-                                            UserManager.getInstance().setHasUserDataChange(false);
-                                        }
                                         createChatRoom(product);
                                     }
+
+                                    UserManager.getInstance().updateUser2Firebase();
+                                    UserManager.getInstance().setHasUserDataChange(false);
 
                                     mPresenter.updateTradeBadge();
                                 }

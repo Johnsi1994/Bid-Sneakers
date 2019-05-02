@@ -37,6 +37,18 @@
             android:name="io.fabric.ApiKey"
             android:value="0fc283c82d5b204fcc1d0bef28cbf2cbfbac3be1"
             />
+
+        <provider
+            android:name="android.support.v4.content.FileProvider"
+            android:authorities="com.johnson.bid.fileprovider"
+            android:exported="false"
+            android:grantUriPermissions="true">
+            <meta-data
+                android:name="android.support.FILE_PROVIDER_PATHS"
+                android:resource="@xml/file_paths">
+            </meta-data>
+
+        </provider>
     </application>
 
 </manifest>

@@ -7,11 +7,13 @@ import android.content.ContentValues;
 import android.content.Intent;
 import android.content.pm.PackageManager;
 import android.database.Cursor;
+import android.database.Observable;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.graphics.Matrix;
 import android.net.Uri;
 import android.os.Bundle;
+import android.os.Environment;
 import android.provider.DocumentsContract;
 import android.provider.MediaStore;
 import android.support.annotation.NonNull;
@@ -21,9 +23,11 @@ import android.support.design.widget.BottomNavigationView;
 import android.support.design.widget.BottomSheetDialog;
 import android.support.v4.app.ActivityCompat;
 import android.support.v4.content.ContextCompat;
+import android.support.v4.content.FileProvider;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.SearchView;
 import android.support.v7.widget.Toolbar;
+import android.text.TextUtils;
 import android.util.DisplayMetrics;
 import android.util.Log;
 import android.view.Gravity;
@@ -40,6 +44,7 @@ import io.fabric.sdk.android.Fabric;
 
 import com.google.android.gms.analytics.GoogleAnalytics;
 import com.google.android.gms.analytics.Tracker;
+import com.google.android.gms.common.data.DataBufferObserver;
 import com.google.firebase.firestore.FieldValue;
 import com.google.firebase.firestore.QueryDocumentSnapshot;
 import com.johnson.bid.auction.auctionitem.AuctionItemFragment;
@@ -50,7 +55,11 @@ import com.johnson.bid.trade.TradeItem.TradeItemFragment;
 import com.johnson.bid.util.Firebase;
 import com.johnson.bid.util.UserManager;
 
+import java.io.File;
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Date;
+import java.util.UUID;
 
 import static com.google.common.base.Preconditions.checkNotNull;
 import static com.johnson.bid.MainMvpController.AUCTION;
@@ -214,7 +223,7 @@ public class MainActivity extends AppCompatActivity implements MainContract.View
     public void openCamera(String from) {
 
         if (ContextCompat.checkSelfPermission(this, Manifest.permission.CAMERA) != PackageManager.PERMISSION_GRANTED) {
-            ActivityCompat.requestPermissions(this, new String[]{Manifest.permission.CAMERA}, 2);
+            ActivityCompat.requestPermissions(this, new String[]{Manifest.permission.CAMERA, Manifest.permission.WRITE_EXTERNAL_STORAGE}, 2);
         } else {
             opennCamera(from);
         }
@@ -828,6 +837,7 @@ public class MainActivity extends AppCompatActivity implements MainContract.View
         } else {
             startActivityForResult(intent, PHOTO_SETTINGS);
         }
+
     }
 
     private String handleImage(Intent data) {

@@ -53,6 +53,7 @@ dependencies {
         transitive = true
     }
     implementation 'com.google.android.gms:play-services-analytics:16.0.8'
+    implementation 'com.etiya.etiyabadgetablib:etiyabadgetablib:0.0.3'
 }
 
 repositories {

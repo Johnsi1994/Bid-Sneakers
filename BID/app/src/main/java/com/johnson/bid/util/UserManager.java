@@ -69,6 +69,8 @@ public class UserManager {
 
                     @Override
                     public void onFail(String errorMessage) {
+
+                        Log.d("logintest", "onFail : In User Manager");
                         loadCallback.onFail("Get User Info Failed");
                     }
                 });
@@ -78,6 +80,7 @@ public class UserManager {
             @Override
             public void onCancel() {
 
+                Log.d("logintest", "Cancel : In User Manager");
                 Log.d("Johnsi", "FB Login Cancel");
                 loadCallback.onFail("FB Login Cancel");
             }
@@ -85,6 +88,7 @@ public class UserManager {
             @Override
             public void onError(FacebookException exception) {
 
+                Log.d("logintest", "Error : In User Manager");
                 Log.d("Johnsi", "FB Login Error");
                 loadCallback.onFail("FB Login Error: " + exception.getMessage());
             }
@@ -236,8 +240,6 @@ public class UserManager {
                 iterator.remove();
             }
         }
-
-        Log.d("removesellingcheck", "Selling Product Size : " + mUser.getMySellingProductsId().size());
     }
 
     public  void addBoughtProductId(long productId) {

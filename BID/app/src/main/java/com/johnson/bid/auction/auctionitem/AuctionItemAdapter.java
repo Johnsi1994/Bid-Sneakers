@@ -184,7 +184,6 @@ public class AuctionItemAdapter extends RecyclerView.Adapter {
                                     if (UserManager.getInstance().getUser().getId() == latestProduct.getSellerId()
                                             && latestProduct.getHighestUserId() == -1) {
 
-                                        Log.d("nobodybidtest", "NOBODY BID");
                                         mPresenter.removeSellingProductId(latestProduct.getProductId(), ENGLISH);
                                         mPresenter.addNobodyBidProductId(latestProduct.getProductId(), ENGLISH);
                                         mPresenter.increaseUnreadNobodyBid(ENGLISH);
@@ -192,21 +191,30 @@ public class AuctionItemAdapter extends RecyclerView.Adapter {
                                         mPresenter.loadMySellingData();
                                         mPresenter.loadNobodyBidData();
                                         mPresenter.loadNobodyBidBadgeData();
-
-
                                     } else {
 
                                         if (UserManager.getInstance().getUser().getId() == latestProduct.getSellerId()) {
+                                            if (latestProduct.getReservePrice() > latestProduct.getCurrentPrice()) {
 
-                                            mPresenter.removeSellingProductId(latestProduct.getProductId(), ENGLISH);
-                                            mPresenter.addSoldProductId(latestProduct.getProductId(), ENGLISH);
-                                            mPresenter.increaseUnreadSold(ENGLISH);
+                                                mPresenter.removeSellingProductId(latestProduct.getProductId(), ENGLISH);
+                                                mPresenter.addNobodyBidProductId(latestProduct.getProductId(), ENGLISH);
+                                                mPresenter.increaseUnreadNobodyBid(ENGLISH);
 
-                                            mPresenter.loadMySellingData();
-                                            mPresenter.loadMySoldData();
-                                            mPresenter.loadSoldBadgeData();
+                                                mPresenter.loadMySellingData();
+                                                mPresenter.loadNobodyBidData();
+                                                mPresenter.loadNobodyBidBadgeData();
+                                            } else {
 
-                                        } else if (UserManager.getInstance().getUser().getId() == latestProduct.getHighestUserId()) {
+                                                mPresenter.removeSellingProductId(latestProduct.getProductId(), ENGLISH);
+                                                mPresenter.addSoldProductId(latestProduct.getProductId(), ENGLISH);
+                                                mPresenter.increaseUnreadSold(ENGLISH);
+
+                                                mPresenter.loadMySellingData();
+                                                mPresenter.loadMySoldData();
+                                                mPresenter.loadSoldBadgeData();
+                                            }
+                                        } else if (UserManager.getInstance().getUser().getId() == latestProduct.getHighestUserId()
+                                        && latestProduct.getReservePrice() < latestProduct.getCurrentPrice()) {
 
                                             mPresenter.removeBiddingProductId(latestProduct.getProductId(), ENGLISH);
                                             mPresenter.addBoughtProductId(latestProduct.getProductId(), ENGLISH);

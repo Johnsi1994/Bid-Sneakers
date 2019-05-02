@@ -46,17 +46,19 @@ public class LoginFragment extends Fragment implements LoginContract.View {
                 UserManager.getInstance().loginBidByFacebook(getActivity(), new UserManager.LoadCallback() {
                     @Override
                     public void onSuccess() {
+                        Log.d("logintest", "onSuccess : In Login Fragment");
                         mPresenter.onLoginSuccess();
                         setLoading(false);
                     }
 
                     @Override
                     public void onFail(String errorMessage) {
+
+                        Log.d("logintest", "onFail : In Login Fragment");
                         setLoading(false);
                     }
                 });
             }
-            setLoading(false);
         });
 
         return root;

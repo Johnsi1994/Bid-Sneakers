@@ -324,11 +324,14 @@ public class BiddingDetailAdapter extends RecyclerView.Adapter {
 
     private void timer(@NonNull RecyclerView.ViewHolder holder, Product product, long remainingTime) {
         TextView textView;
+        Button bidBtn;
 
         if (holder instanceof EnglishViewHolder) {
             textView = ((EnglishViewHolder) holder).getLastTimeText();
+            bidBtn = ((EnglishViewHolder) holder).getBidBtn();
         } else {
             textView = ((SealedViewHolder) holder).getLastTimeText();
+            bidBtn = ((SealedViewHolder) holder).getBidBtn();
         }
 
         new CountDownTimer(remainingTime, 1000) {
@@ -340,6 +343,9 @@ public class BiddingDetailAdapter extends RecyclerView.Adapter {
 
             @Override
             public void onFinish() {
+                textView.setText("競標結束");
+                bidBtn.setText("競標結束");
+                bidBtn.setClickable(false);
 
             }
         }.start();

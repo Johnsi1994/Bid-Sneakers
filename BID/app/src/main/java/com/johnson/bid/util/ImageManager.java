@@ -18,6 +18,7 @@ import java.util.concurrent.Executors;
 public class ImageManager {
 
     private LruCache mLruCache;
+    private LruCache mLruCacheBrief;
 
     private static class ImageManagerHolder {
         private static final ImageManager INSTANCE = new ImageManager();
@@ -25,6 +26,7 @@ public class ImageManager {
 
     private ImageManager() {
         initLruCache();
+        initLruCacheBrief();
     }
 
     public static final ImageManager getInstance() {
@@ -44,8 +46,25 @@ public class ImageManager {
         };
     }
 
+    private void initLruCacheBrief() {
+
+        int maxMemory = (int) (Runtime.getRuntime().maxMemory() / 1024);
+        int cacheSize = maxMemory / 4;
+
+        mLruCacheBrief = new LruCache<String, Bitmap>(cacheSize) {
+            @Override
+            protected int sizeOf(String key, Bitmap value) {
+                return value.getByteCount() / 1024;
+            }
+        };
+    }
+
     public LruCache getLruCache() {
         return mLruCache;
+    }
+
+    public LruCache getLruCacheBrief() {
+        return mLruCacheBrief;
     }
 
     public void setImageByUrl(ImageView imageView, String imageUrl) {
@@ -73,11 +92,11 @@ public class ImageManager {
     public void setBriefImageByUrl(ImageView imageView, String imageUrl) {
 
         if (imageUrl != null) {
-            Bitmap bitmap = (Bitmap) getLruCache().get(imageUrl);
+            Bitmap bitmap = (Bitmap) getLruCacheBrief().get(imageUrl);
 
             if (bitmap == null) {
 
-                Log.d("Johnsi", "LruCache doesn't exist, start download.: " + imageUrl);
+                Log.d("Johnsi", "LruCacheBrief doesn't exist, start download.: " + imageUrl);
 
                 lockImagePairing(imageView, imageUrl);
                 imageView.setImageResource(R.drawable.ic_128);
@@ -86,7 +105,7 @@ public class ImageManager {
                         .executeOnExecutor(Executors.newCachedThreadPool());
             } else {
 
-                Log.d("Johnsi", "LruCache exist, setImageByUrl bitmap directly.: " + imageUrl);
+                Log.d("Johnsi", "LruCacheBrief exist, setImageByUrl bitmap directly.: " + imageUrl);
                 imageView.setImageBitmap(bitmap);
             }
         }
@@ -214,7 +233,7 @@ public class ImageManager {
 
             if (mBitmap != null) {
 
-                getLruCache().put(mImageUrl, mBitmap);
+                getLruCacheBrief().put(mImageUrl, mBitmap);
 
                 if (isImagePairingCorrect(mImageView, mImageUrl)) {
                     mImageView.setImageBitmap(mBitmap);

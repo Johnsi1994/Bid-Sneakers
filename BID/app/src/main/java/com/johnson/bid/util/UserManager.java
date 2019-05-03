@@ -292,6 +292,23 @@ public class UserManager {
         mUser.setImage(imageUrl);
     }
 
+    public boolean hasChatRoom(long id) {
+
+        boolean hasRoom = false;
+
+        for (int i = 0; i < mUser.getChatRoomList().size(); i++) {
+            if (id == mUser.getChatRoomList().get(i)) {
+                hasRoom =  true;
+            }
+        }
+
+        return hasRoom;
+    }
+
+    public void setChatRoomList(long id) {
+        mUser.getChatRoomList().add(id);
+    }
+
     public void setHasUserDataChange(boolean hasUserDataChange) {
         mHasUserDataChange = hasUserDataChange;
     }

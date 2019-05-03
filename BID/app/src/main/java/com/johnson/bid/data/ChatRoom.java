@@ -12,6 +12,7 @@ public class ChatRoom {
     private String mBuyerImage;
     private String mSellerImage;
     private ArrayList<ChatContent> mChatContentArrayList;
+    
 
     public ChatRoom() {
 

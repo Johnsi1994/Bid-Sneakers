@@ -17,7 +17,7 @@ public class User {
     private int mUnreadSold;
     private int mUnreadNobodyBid;
 
-//    private ArrayList<Product> mChatRoomId;
+    private ArrayList<Long> mChatRoomList;
 
     public User() {
 
@@ -33,7 +33,7 @@ public class User {
         mUnreadBought = 0;
         mUnreadSold = 0;
         mUnreadNobodyBid = 0;
-//        mChatRoomId = new ArrayList<>();
+        mChatRoomList = new ArrayList<>();
 
     }
 
@@ -135,11 +135,11 @@ public class User {
     }
 
 
-    //    public ArrayList<Product> getChatRoomId() {
-//        return mChatRoomId;
-//    }
-//
-//    public void setChatRoomId(ArrayList<Product> chatRoomId) {
-//        mChatRoomId = chatRoomId;
-//    }
+        public ArrayList<Long> getChatRoomList() {
+        return mChatRoomList;
+    }
+
+    public void setChatRoomList(ArrayList<Long> chatRoomList) {
+        mChatRoomList = chatRoomList;
+    }
 }

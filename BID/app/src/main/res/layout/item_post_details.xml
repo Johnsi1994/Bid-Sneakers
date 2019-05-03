@@ -355,7 +355,7 @@
             android:layout_marginStart="16dp"
             android:layout_marginTop="12dp"
             android:layout_marginEnd="16dp"
-            android:layout_marginBottom="4dp"
+            android:layout_marginBottom="12dp"
             android:background="@color/gray_EEEEEE"
             android:text="@string/post"
             android:textColor="@color/black"

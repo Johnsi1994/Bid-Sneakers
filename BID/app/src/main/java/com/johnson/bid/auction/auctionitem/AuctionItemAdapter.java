@@ -212,6 +212,11 @@ public class AuctionItemAdapter extends RecyclerView.Adapter {
                                                 mPresenter.loadMySellingData();
                                                 mPresenter.loadMySoldData();
                                                 mPresenter.loadSoldBadgeData();
+
+                                                if (!UserManager.getInstance().hasChatRoom(latestProduct.getHighestUserId())) {
+                                                    Log.d("chatlisttest", "Not On The List");
+                                                    createChatRoom(latestProduct);
+                                                }
                                             }
                                         } else if (UserManager.getInstance().getUser().getId() == latestProduct.getHighestUserId()
                                         && latestProduct.getReservePrice() < latestProduct.getCurrentPrice()) {
@@ -224,9 +229,11 @@ public class AuctionItemAdapter extends RecyclerView.Adapter {
                                             mPresenter.loadMyBoughtData();
                                             mPresenter.loadBoughtBadgeData();
 
+                                            if (!UserManager.getInstance().hasChatRoom(latestProduct.getSellerId())) {
+                                                Log.d("chatlisttest", "Not On The List");
+                                                createChatRoom(latestProduct);
+                                            }
                                         }
-
-                                        createChatRoom(product);
                                     }
 
                                     UserManager.getInstance().updateUser2Firebase();
@@ -346,18 +353,34 @@ public class AuctionItemAdapter extends RecyclerView.Adapter {
                                         mPresenter.loadNobodyBidBadgeData();
 
                                     } else {
-
                                         if (UserManager.getInstance().getUser().getId() == latestProduct.getSellerId()) {
+                                            if (latestProduct.getReservePrice() > latestProduct.getCurrentPrice()) {
 
-                                            mPresenter.removeSellingProductId(latestProduct.getProductId(), SEALED);
-                                            mPresenter.addSoldProductId(latestProduct.getProductId(), SEALED);
-                                            mPresenter.increaseUnreadSold(SEALED);
+                                                mPresenter.removeSellingProductId(latestProduct.getProductId(), SEALED);
+                                                mPresenter.addNobodyBidProductId(latestProduct.getProductId(), SEALED);
+                                                mPresenter.increaseUnreadNobodyBid(SEALED);
 
-                                            mPresenter.loadMySellingData();
-                                            mPresenter.loadMySoldData();
-                                            mPresenter.loadSoldBadgeData();
+                                                mPresenter.loadMySellingData();
+                                                mPresenter.loadNobodyBidData();
+                                                mPresenter.loadNobodyBidBadgeData();
 
-                                        } else if (UserManager.getInstance().getUser().getId() == latestProduct.getHighestUserId()) {
+                                            } else {
+
+                                                mPresenter.removeSellingProductId(latestProduct.getProductId(), SEALED);
+                                                mPresenter.addSoldProductId(latestProduct.getProductId(), SEALED);
+                                                mPresenter.increaseUnreadSold(SEALED);
+
+                                                mPresenter.loadMySellingData();
+                                                mPresenter.loadMySoldData();
+                                                mPresenter.loadSoldBadgeData();
+
+                                                if (!UserManager.getInstance().hasChatRoom(latestProduct.getHighestUserId())) {
+                                                    Log.d("chatlisttest", "Not On The List");
+                                                    createChatRoom(latestProduct);
+                                                }
+                                            }
+                                        } else if (UserManager.getInstance().getUser().getId() == latestProduct.getHighestUserId()
+                                                && latestProduct.getReservePrice() < latestProduct.getCurrentPrice()) {
 
                                             mPresenter.removeBiddingProductId(latestProduct.getProductId(), SEALED);
                                             mPresenter.addBoughtProductId(latestProduct.getProductId(), SEALED);
@@ -367,9 +390,11 @@ public class AuctionItemAdapter extends RecyclerView.Adapter {
                                             mPresenter.loadMyBoughtData();
                                             mPresenter.loadBoughtBadgeData();
 
+                                            if (!UserManager.getInstance().hasChatRoom(latestProduct.getSellerId())) {
+                                                Log.d("chatlisttest", "Not On The List");
+                                                createChatRoom(latestProduct);
+                                            }
                                         }
-
-                                        createChatRoom(product);
                                     }
 
                                     UserManager.getInstance().updateUser2Firebase();
@@ -448,7 +473,7 @@ public class AuctionItemAdapter extends RecyclerView.Adapter {
 
                             DocumentSnapshot document = task.getResult();
 
-//                            chatRoom.setBuyerImage(document.toObject(User.class).getImage());
+                            chatRoom.setBuyerImage(document.toObject(User.class).getImage());
                             chatRoom.setSellerImage(UserManager.getInstance().getUser().getImage());
                             chatRoom.setChatRoomId(product.getProductId());
                             chatRoom.setBuyerId(product.getHighestUserId());
@@ -457,6 +482,9 @@ public class AuctionItemAdapter extends RecyclerView.Adapter {
                             chatRoom.setSellerName(product.getSellerName());
 
                             uploadChatRoom(chatRoom);
+
+                            UserManager.getInstance().setChatRoomList(product.getHighestUserId());
+                            UserManager.getInstance().setHasUserDataChange(true);
 
                         } else {
                             Log.d("Johnsi", "Error getting documents: ", task.getException());
@@ -480,6 +508,9 @@ public class AuctionItemAdapter extends RecyclerView.Adapter {
                             chatRoom.setSellerName(product.getSellerName());
 
                             uploadChatRoom(chatRoom);
+
+                            UserManager.getInstance().setChatRoomList(product.getSellerId());
+                            UserManager.getInstance().setHasUserDataChange(true);
 
                         } else {
                             Log.d("Johnsi", "Error getting documents: ", task.getException());

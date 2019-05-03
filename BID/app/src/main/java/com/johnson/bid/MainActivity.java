@@ -498,9 +498,9 @@ public class MainActivity extends AppCompatActivity implements MainContract.View
                     .addOnCompleteListener(task -> {
                         if (task.isSuccessful()) {
                             DocumentSnapshot document = task.getResult();
-                            Product product1;
-                            product1 = document.toObject(Product.class);
-                            int placeBidTimes = product1.getPlaceBidTimes();
+                            Product latestProduct;
+                            latestProduct = document.toObject(Product.class);
+                            int placeBidTimes = latestProduct.getPlaceBidTimes();
 
 
                             if (from.equals(ENGLISH)) {
@@ -510,33 +510,33 @@ public class MainActivity extends AppCompatActivity implements MainContract.View
                                     mWarningMsg.setVisibility(View.VISIBLE);
                                     mWarningMsg.setText(R.string.please_place_bid);
 
-                                } else if (Integer.parseInt(mBidPrice.getText().toString()) < product1.getCurrentPrice()) {
+                                } else if (Integer.parseInt(mBidPrice.getText().toString()) < latestProduct.getCurrentPrice()) {
 
                                     mWarningMsg.setVisibility(View.VISIBLE);
                                     mWarningMsg.setText(getString(R.string.warning_msg_under_current_price));
 
-                                } else if ((Integer.parseInt(mBidPrice.getText().toString()) - product1.getCurrentPrice()) < product1.getIncrease()) {
+                                } else if ((Integer.parseInt(mBidPrice.getText().toString()) - latestProduct.getCurrentPrice()) < latestProduct.getIncrease()) {
 
                                     mWarningMsg.setVisibility(View.VISIBLE);
                                     mWarningMsg.setText(getString(R.string.warning_msg_under_increase));
 
                                 } else {
 
-                                    if (Integer.parseInt(mBidPrice.getText().toString()) < product1.getReservePrice()) {
+                                    if (Integer.parseInt(mBidPrice.getText().toString()) < latestProduct.getReservePrice()) {
                                         Toast.makeText(this, getString(R.string.warning_msg_under_reserve_price), Toast.LENGTH_LONG).show();
                                     }
 
                                     mWarningMsg.setVisibility(View.GONE);
 
-                                    product1.setCurrentPrice(Integer.parseInt(mBidPrice.getText().toString()));
-                                    product1.setHighestUserId(UserManager.getInstance().getUser().getId());
-                                    product1.setBuyerName(UserManager.getInstance().getUser().getName());
-                                    product1.setPlaceBidTimes(placeBidTimes + 1);
+                                    latestProduct.setCurrentPrice(Integer.parseInt(mBidPrice.getText().toString()));
+                                    latestProduct.setHighestUserId(UserManager.getInstance().getUser().getId());
+                                    latestProduct.setBuyerName(UserManager.getInstance().getUser().getName());
+                                    latestProduct.setPlaceBidTimes(placeBidTimes + 1);
 
-                                    setAfterBidData(product1);
+                                    setAfterBidData(latestProduct);
 
                                     Firebase.getInstance().getFirestore().collection("products")
-                                            .document(String.valueOf(product1.getProductId()))
+                                            .document(String.valueOf(latestProduct.getProductId()))
                                             .update("currentPrice", Integer.parseInt(mBidPrice.getText().toString()),
                                                     "highestUserId", UserManager.getInstance().getUser().getId(),
                                                     "buyerName", UserManager.getInstance().getUser().getName(),
@@ -548,13 +548,13 @@ public class MainActivity extends AppCompatActivity implements MainContract.View
                                     boolean hasProduct = false;
 
                                     for (int i = 0; i < myProductsId.size(); i++) {
-                                        if (myProductsId.get(i).equals(product1.getProductId())) {
+                                        if (myProductsId.get(i).equals(latestProduct.getProductId())) {
                                             hasProduct = true;
                                         }
                                     }
 
                                     if (!hasProduct) {
-                                        UserManager.getInstance().addBiddingProductId(product1.getProductId());
+                                        UserManager.getInstance().addBiddingProductId(latestProduct.getProductId());
                                         UserManager.getInstance().updateUser2Firebase();
                                     }
 
@@ -571,12 +571,12 @@ public class MainActivity extends AppCompatActivity implements MainContract.View
                                 } else {
                                     mWarningMsg.setVisibility(View.GONE);
 
-                                    product1.setPlaceBidTimes(placeBidTimes + 1);
+                                    latestProduct.setPlaceBidTimes(placeBidTimes + 1);
 
-                                    if (Integer.parseInt(mBidPrice.getText().toString()) > product1.getCurrentPrice()) {
+                                    if (Integer.parseInt(mBidPrice.getText().toString()) > latestProduct.getCurrentPrice()) {
 
                                         Firebase.getInstance().getFirestore().collection("products")
-                                                .document(String.valueOf(product1.getProductId()))
+                                                .document(String.valueOf(latestProduct.getProductId()))
                                                 .update("currentPrice", Integer.parseInt(mBidPrice.getText().toString()),
                                                         "highestUserId", UserManager.getInstance().getUser().getId(),
                                                         "buyerName", UserManager.getInstance().getUser().getName(),
@@ -585,15 +585,15 @@ public class MainActivity extends AppCompatActivity implements MainContract.View
                                                 .addOnFailureListener(e -> Log.w("Johnsi", "BID Error updating document", e));
                                     } else {
                                         Firebase.getInstance().getFirestore().collection("products")
-                                                .document(String.valueOf(product1.getProductId()))
+                                                .document(String.valueOf(latestProduct.getProductId()))
                                                 .update("placeBidTimes", placeBidTimes + 1)
                                                 .addOnSuccessListener(aVoid -> Log.d("Johnsi", "BID DocumentSnapshot successfully updated!"))
                                                 .addOnFailureListener(e -> Log.w("Johnsi", "BID Error updating document", e));
                                     }
 
-                                    setAfterBidData(product1);
+                                    setAfterBidData(latestProduct);
 
-                                    UserManager.getInstance().addBiddingProductId(product1.getProductId());
+                                    UserManager.getInstance().addBiddingProductId(latestProduct.getProductId());
                                     UserManager.getInstance().updateUser2Firebase();
 
                                     dialog.dismiss();

@@ -480,6 +480,7 @@ public class AuctionItemAdapter extends RecyclerView.Adapter {
                             chatRoom.setSellerId(product.getSellerId());
                             chatRoom.setBuyerName(product.getBuyerName());
                             chatRoom.setSellerName(product.getSellerName());
+                            chatRoom.setOwnerList(setOwnerList(chatRoom, product.getHighestUserId(), product.getSellerId()));
 
                             uploadChatRoom(chatRoom);
 
@@ -506,6 +507,7 @@ public class AuctionItemAdapter extends RecyclerView.Adapter {
                             chatRoom.setSellerId(product.getSellerId());
                             chatRoom.setBuyerName(product.getBuyerName());
                             chatRoom.setSellerName(product.getSellerName());
+                            chatRoom.setOwnerList(setOwnerList(chatRoom, product.getHighestUserId(), product.getSellerId()));
 
                             uploadChatRoom(chatRoom);
 
@@ -529,5 +531,13 @@ public class AuctionItemAdapter extends RecyclerView.Adapter {
                 .addOnSuccessListener(documentReference -> Log.d("Johnsi", "DocumentSnapshot added"))
                 .addOnFailureListener(e -> Log.w("Johnsi", "Error adding document", e));
 
+    }
+
+    private ArrayList<Long> setOwnerList(ChatRoom chatRoom, long buyerId, long sellerId) {
+
+        ArrayList<Long> ownerList = chatRoom.getOwnerList();
+        ownerList.add(buyerId);
+        ownerList.add(sellerId);
+        return ownerList;
     }
 }

@@ -6,6 +6,7 @@ import android.util.Log;
 import com.google.firebase.firestore.QueryDocumentSnapshot;
 import com.johnson.bid.data.ChatRoom;
 import com.johnson.bid.util.Firebase;
+import com.johnson.bid.util.UserManager;
 
 import java.util.ArrayList;
 
@@ -56,12 +57,12 @@ public class ChatPresenter implements ChatContract.Presenter {
     private void findAllChatRoom() {
 
         Firebase.getInstance().getFirestore().collection("chatrooms")
+                .whereArrayContains("ownerList", UserManager.getInstance().getUser().getId())
                 .get()
                 .addOnCompleteListener(task -> {
                     if (task.isSuccessful()) {
 
                         for (QueryDocumentSnapshot document : task.getResult()) {
-
                             mChatRoomArrayList.add(document.toObject(ChatRoom.class));
                         }
 

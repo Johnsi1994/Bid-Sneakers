@@ -12,7 +12,7 @@ public class ChatRoom {
     private String mBuyerImage;
     private String mSellerImage;
     private ArrayList<ChatContent> mChatContentArrayList;
-    
+    private ArrayList<Long> mOwnerList;
 
     public ChatRoom() {
 
@@ -24,6 +24,7 @@ public class ChatRoom {
         mBuyerImage = "";
         mSellerImage = "";
         mChatContentArrayList = new ArrayList<>();
+        mOwnerList = new ArrayList<>();
     }
 
     public long getChatRoomId() {
@@ -88,5 +89,13 @@ public class ChatRoom {
 
     public void setChatContentArrayList(ArrayList<ChatContent> chatContentArrayList) {
         mChatContentArrayList = chatContentArrayList;
+    }
+
+    public ArrayList<Long> getOwnerList() {
+        return mOwnerList;
+    }
+
+    public void setOwnerList(ArrayList<Long> ownerList) {
+        mOwnerList = ownerList;
     }
 }

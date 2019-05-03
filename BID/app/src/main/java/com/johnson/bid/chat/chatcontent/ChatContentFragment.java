@@ -53,7 +53,6 @@ public class ChatContentFragment extends Fragment implements ChatContentContract
         mRecyclerView = root.findViewById(R.id.recycler_container);
         mRecyclerView.setLayoutManager(new LinearLayoutManager(getActivity()));
         mRecyclerView.setAdapter(mChatContentAdapter);
-        mRecyclerView.scrollToPosition(mChatContentAdapter.getItemCount() - 1);
 
         mMessageEditText = root.findViewById(R.id.edit_send_message);
         mSendBtn = root.findViewById(R.id.button_send_message);
@@ -70,16 +69,21 @@ public class ChatContentFragment extends Fragment implements ChatContentContract
 
         mSendBtn.setOnClickListener(v -> {
 
-            ChatContent chatContent = new ChatContent();
+            if (!"".equals(mMessageEditText.getText().toString())) {
 
-            long time = System.currentTimeMillis();
-            chatContent.setTime(time);
-            chatContent.setAuthorId(UserManager.getInstance().getUser().getId());
-            chatContent.setAuthorImage(UserManager.getInstance().getUser().getImage());
-            chatContent.setMessage(mMessageEditText.getText().toString());
+                ChatContent chatContent = new ChatContent();
 
-            mPresenter.sendMessage(chatContent);
-            mMessageEditText.setText("");
+                long time = System.currentTimeMillis();
+                chatContent.setTime(time);
+                chatContent.setAuthorId(UserManager.getInstance().getUser().getId());
+                chatContent.setAuthorImage(UserManager.getInstance().getUser().getImage());
+                chatContent.setMessage(mMessageEditText.getText().toString());
+
+                mPresenter.sendMessage(chatContent);
+                mMessageEditText.setText("");
+            }
+
+
         });
 
 
@@ -108,6 +112,7 @@ public class ChatContentFragment extends Fragment implements ChatContentContract
 
         if (mChatContentAdapter != null) {
             mChatContentAdapter.updateData(chatContentArrayList);
+            mRecyclerView.scrollToPosition(mChatContentAdapter.getItemCount() - 1);
         }
 
     }

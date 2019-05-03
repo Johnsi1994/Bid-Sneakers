@@ -96,8 +96,8 @@ public class ChatAdapter extends RecyclerView.Adapter {
         holder.getName().setText(
                 (UserManager.getInstance().getUser().getId() == chatRoom.getSellerId()) ? chatRoom.getBuyerName() : chatRoom.getSellerName());
 
-        holder.getContent().setText((chatRoom.getChatContentArrayList().size() > 0) ? chatRoom.getChatContentArrayList().get(0).getMessage() : "開始聊天吧");
-
+        holder.getContent().setText((chatRoom.getChatContentArrayList().size() > 0) ?
+                chatRoom.getChatContentArrayList().get((chatRoom.getChatContentArrayList().size() - 1)).getMessage() : "開始聊天吧");
 
         holder.getCardView().setOnClickListener(v -> {
 

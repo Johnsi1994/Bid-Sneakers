@@ -16,7 +16,7 @@ public interface ChatContract {
 
     interface Presenter extends BasePresenter {
 
-        void openChatContent(ChatRoom chatRoom);
+        void openChatContent(ChatRoom chatRoom, String from);
 
         void hideBottomNavigation();
 

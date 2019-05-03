@@ -30,7 +30,7 @@ public interface MainContract {
 
         void openEyesOnUi();
 
-        void openChatContentUi(ChatRoom chatRoom);
+        void openChatContentUi(ChatRoom chatRoom, String from);
 
         void openSearchDialog();
 

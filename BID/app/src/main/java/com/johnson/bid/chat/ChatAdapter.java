@@ -17,6 +17,8 @@ import com.johnson.bid.util.UserManager;
 
 import java.util.ArrayList;
 
+import static com.johnson.bid.MainMvpController.CHAT;
+
 public class ChatAdapter extends RecyclerView.Adapter {
 
     private ChatContract.Presenter mPresenter;
@@ -99,7 +101,7 @@ public class ChatAdapter extends RecyclerView.Adapter {
 
         holder.getCardView().setOnClickListener(v -> {
 
-            mPresenter.openChatContent(chatRoom);
+            mPresenter.openChatContent(chatRoom, CHAT);
             mPresenter.hideBottomNavigation();
 
             if (UserManager.getInstance().getUser().getId() == chatRoom.getSellerId()) {

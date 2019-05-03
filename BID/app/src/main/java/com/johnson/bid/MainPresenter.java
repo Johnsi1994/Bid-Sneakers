@@ -226,6 +226,16 @@ public class MainPresenter implements MainContract.Presenter, AuctionContract.Pr
     }
 
     @Override
+    public void hideToolbar() {
+        mMainView.hideToolbarUi();
+    }
+
+    @Override
+    public void showToolbar() {
+        mMainView.showToolbarUi();
+    }
+
+    @Override
     public void setPostPics(ArrayList<String> imagePath) {
         mPostPresenter.setPostPics(imagePath);
     }
@@ -849,7 +859,7 @@ public class MainPresenter implements MainContract.Presenter, AuctionContract.Pr
     }
 
     @Override
-    public void openChatContent(ChatRoom chatRoom) {
-        mMainView.openChatContentUi(chatRoom);
+    public void openChatContent(ChatRoom chatRoom, String from) {
+        mMainView.openChatContentUi(chatRoom, from);
     }
 }

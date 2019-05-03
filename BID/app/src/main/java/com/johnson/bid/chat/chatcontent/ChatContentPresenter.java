@@ -83,5 +83,10 @@ public class ChatContentPresenter implements ChatContentContract.Presenter {
 
     }
 
+    @Override
+    public void hideToolbar() {
+
+    }
+
 
 }

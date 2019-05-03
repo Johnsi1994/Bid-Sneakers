@@ -151,8 +151,8 @@ public class MainActivity extends AppCompatActivity implements MainContract.View
     }
 
     @Override
-    public void openChatContentUi(ChatRoom chatRoom) {
-        mMainMvpController.createChatContentView(chatRoom);
+    public void openChatContentUi(ChatRoom chatRoom, String from) {
+        mMainMvpController.createChatContentView(chatRoom, from);
     }
 
     @Override

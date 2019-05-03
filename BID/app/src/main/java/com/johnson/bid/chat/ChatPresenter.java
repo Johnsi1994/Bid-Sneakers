@@ -27,7 +27,7 @@ public class ChatPresenter implements ChatContract.Presenter {
     }
 
     @Override
-    public void openChatContent(ChatRoom chatRoom) {
+    public void openChatContent(ChatRoom chatRoom, String from) {
 
     }
 

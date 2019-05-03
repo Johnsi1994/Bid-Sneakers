@@ -90,13 +90,13 @@ public class MainMvpController {
     static final String LOGIN = "LOGIN";
     public static final String AUCTION = "AUCTION";
     static final String TRADE = "TRADE";
-    static final String CHAT = "CHAT";
+    public static final String CHAT = "CHAT";
     public static final String SETTINGS = "SETTINGS";
     public static final String POST = "POST";
     static final String BIDDING = "BIDDING";
     static final String SELLING = "SELLING";
-    static final String BOUGHTDETAIL = "BOUGHTDETAIL";
-    static final String SOLDDETAIL = "SOLDDETAIL";
+    public static final String BOUGHTDETAIL = "BOUGHTDETAIL";
+    public static final String SOLDDETAIL = "SOLDDETAIL";
     static final String NOBODYBIDDETAIL = "NOBODYBIDDETAIL";
     static final String EYESON = "EYESON";
     static final String SEARCH = "SEARCH";
@@ -213,7 +213,7 @@ public class MainMvpController {
 
     }
 
-    void createChatContentView(ChatRoom chatRoom) {
+    void createChatContentView(ChatRoom chatRoom, String from) {
 
         ChatContentFragment chatContentFragment = createChatContentFragment();
 
@@ -221,6 +221,7 @@ public class MainMvpController {
         mMainPresenter.setChatContentPresenter(mChatContentPresenter);
         chatContentFragment.setPresenter(mMainPresenter);
         mChatContentPresenter.setChatRoomData(chatRoom);
+        chatContentFragment.setFrom(from);
 
     }
 

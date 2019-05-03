@@ -29,6 +29,8 @@ public class ChatContentContract {
 
         void updateToolbar(String title);
 
+        void hideToolbar();
+
     }
 
 }

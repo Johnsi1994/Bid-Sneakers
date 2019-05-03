@@ -2,6 +2,7 @@ package com.johnson.bid.bought;
 
 import android.support.annotation.NonNull;
 
+import com.johnson.bid.data.ChatRoom;
 import com.johnson.bid.data.Product;
 
 import static com.google.common.base.Preconditions.checkNotNull;
@@ -35,5 +36,20 @@ public class BoughtDetailPresenter implements BoughtDetailContract.Presenter{
     @Override
     public void setBoughtDetailData(Product product) {
         mProduct = product;
+    }
+
+    @Override
+    public void openChatContent(ChatRoom chatRoom, String from) {
+
+    }
+
+    @Override
+    public void showToolbar() {
+
+    }
+
+    @Override
+    public void updateToolbar(String name) {
+
     }
 }

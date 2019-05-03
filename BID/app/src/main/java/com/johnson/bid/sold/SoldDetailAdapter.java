@@ -4,6 +4,7 @@ import android.support.annotation.NonNull;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.LinearSnapHelper;
 import android.support.v7.widget.RecyclerView;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -11,13 +12,19 @@ import android.widget.Button;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.google.firebase.firestore.QueryDocumentSnapshot;
 import com.johnson.bid.Bid;
 import com.johnson.bid.MainActivity;
 import com.johnson.bid.R;
+import com.johnson.bid.data.ChatRoom;
 import com.johnson.bid.data.Product;
+import com.johnson.bid.util.Firebase;
+import com.johnson.bid.util.UserManager;
 
 import java.text.SimpleDateFormat;
 import java.util.Date;
+
+import static com.johnson.bid.MainMvpController.SOLDDETAIL;
 
 public class SoldDetailAdapter extends RecyclerView.Adapter {
 
@@ -25,6 +32,7 @@ public class SoldDetailAdapter extends RecyclerView.Adapter {
     private LinearSnapHelper mLinearSnapHelper;
     private MainActivity mMainActivity;
     private Product mProduct;
+    private boolean isOpening = false;
 
     public SoldDetailAdapter(SoldDetailContract.Presenter presenter, MainActivity mainActivity) {
         mPresenter = presenter;
@@ -90,10 +98,42 @@ public class SoldDetailAdapter extends RecyclerView.Adapter {
                     mMainActivity.onBackPressed()
             );
 
-            mConnectBuyerBtn.setOnClickListener(v ->
-                    Toast.makeText(mMainActivity, "Connect to Buyer is Coming Soon", Toast.LENGTH_SHORT).show()
-            );
+            mConnectBuyerBtn.setOnClickListener(v -> {
+                        if (!isOpening) {
+                            isOpening = true;
+                            Firebase.getInstance().getFirestore().collection("chatrooms")
+                                    .whereEqualTo("sellerId", UserManager.getInstance().getUser().getId())
+                                    .whereEqualTo("buyerId", mProduct.getHighestUserId())
+                                    .get()
+                                    .addOnCompleteListener(task -> {
+                                        if (task.isSuccessful()) {
+                                            if (task.getResult().size() > 0) {
+                                                for (QueryDocumentSnapshot document : task.getResult()) {
+                                                    openChat(document);
+                                                    isOpening = false;
+                                                }
+                                            } else {
 
+                                                Firebase.getInstance().getFirestore().collection("chatrooms")
+                                                        .whereEqualTo("buyerId", UserManager.getInstance().getUser().getId())
+                                                        .whereEqualTo("sellerId", mProduct.getHighestUserId())
+                                                        .get()
+                                                        .addOnCompleteListener(task1 -> {
+                                                            if (task1.isSuccessful()) {
+                                                                for (QueryDocumentSnapshot document : task1.getResult()) {
+                                                                    openChat(document);
+                                                                    isOpening = false;
+                                                                }
+                                                            }
+                                                        });
+                                            }
+                                        } else {
+                                            Log.d("Johnsi", "Error getting documents: ", task.getException());
+                                        }
+                                    });
+                        }
+                    }
+            );
         }
 
         private RecyclerView getGalleryRecycler() {
@@ -151,5 +191,13 @@ public class SoldDetailAdapter extends RecyclerView.Adapter {
     public void updateData(Product product) {
         mProduct = product;
         notifyDataSetChanged();
+    }
+
+    private void openChat(QueryDocumentSnapshot document) {
+
+        mPresenter.openChatContent(document.toObject(ChatRoom.class), SOLDDETAIL);
+        mPresenter.showToolbar();
+        mPresenter.updateToolbar(document.toObject(ChatRoom.class).getBuyerName());
+
     }
 }

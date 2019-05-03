@@ -2,6 +2,7 @@ package com.johnson.bid.sold;
 
 import com.johnson.bid.BasePresenter;
 import com.johnson.bid.BaseView;
+import com.johnson.bid.data.ChatRoom;
 import com.johnson.bid.data.Product;
 
 public interface SoldDetailContract {
@@ -18,6 +19,14 @@ public interface SoldDetailContract {
         void loadSoldDetailData();
 
         void showToolbarAndBottomNavigation();
+
+        void openChatContent(ChatRoom chatRoom, String from);
+
+        void hideBottomNavigation();
+
+        void updateToolbar(String name);
+
+        void showToolbar();
 
     }
 

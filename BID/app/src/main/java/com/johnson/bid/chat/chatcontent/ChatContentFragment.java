@@ -21,6 +21,7 @@ import com.johnson.bid.util.UserManager;
 import java.util.ArrayList;
 
 import static com.google.common.base.Preconditions.checkNotNull;
+import static com.johnson.bid.MainMvpController.CHAT;
 
 public class ChatContentFragment extends Fragment implements ChatContentContract.View {
 
@@ -29,6 +30,7 @@ public class ChatContentFragment extends Fragment implements ChatContentContract
     private EditText mMessageEditText;
     private Button mSendBtn;
     private RecyclerView mRecyclerView;
+    private String mFrom;
 
     public ChatContentFragment() {}
 
@@ -87,8 +89,13 @@ public class ChatContentFragment extends Fragment implements ChatContentContract
     public void onDestroy() {
         super.onDestroy();
 
-        mPresenter.showBottomNavigation();
-        mPresenter.updateToolbar("聊聊");
+        if (mFrom.equals(CHAT)) {
+            mPresenter.showBottomNavigation();
+            mPresenter.updateToolbar("聊聊");
+        } else {
+            mPresenter.hideToolbar();
+        }
+
     }
 
     @Override
@@ -98,6 +105,14 @@ public class ChatContentFragment extends Fragment implements ChatContentContract
 
     @Override
     public void showChatContentUi(ArrayList<ChatContent> chatContentArrayList) {
-        mChatContentAdapter.updateData(chatContentArrayList);
+
+        if (mChatContentAdapter != null) {
+            mChatContentAdapter.updateData(chatContentArrayList);
+        }
+
+    }
+
+    public void setFrom(String from) {
+        mFrom = from;
     }
 }

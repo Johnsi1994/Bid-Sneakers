@@ -18,7 +18,7 @@ public interface SettingsContract {
 
         void openGalleryDialog(String from);
 
-        void setProfile(String imagePath);
+        void setProfile(Bitmap bitmap);
 
     }
 

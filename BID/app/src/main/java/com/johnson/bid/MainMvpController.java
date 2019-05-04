@@ -1,5 +1,6 @@
 package com.johnson.bid;
 
+import android.graphics.Bitmap;
 import android.support.annotation.NonNull;
 import android.support.annotation.StringDef;
 import android.support.v4.app.FragmentActivity;
@@ -225,14 +226,14 @@ public class MainMvpController {
 
     }
 
-    void createPostView(ArrayList<String> imagePath) {
+    void createPostView(ArrayList<Bitmap> imageBitmap) {
 
         PostFragment postFragment = createPostFragment();
 
         mPostPresenter = new PostPresenter(postFragment);
         mMainPresenter.setPostPresenter(mPostPresenter);
         postFragment.setPresenter(mMainPresenter);
-        mPostPresenter.setPostPics(imagePath);
+        mPostPresenter.setPostPics(imageBitmap);
     }
 
     void createSearchUi(String keyword) {
@@ -246,12 +247,12 @@ public class MainMvpController {
 
     }
 
-    void setPostPics(ArrayList<String> imagePath) {
-        mPostPresenter.setPostPics(imagePath);
+    void setPostPics(ArrayList<Bitmap> imageBitmap) {
+        mPostPresenter.setPostPics(imageBitmap);
     }
 
-    void setSettingsProfile(String imagePath) {
-        mSettingsPresenter.setProfile(imagePath);
+    void setSettingsProfile(Bitmap bitmap) {
+        mSettingsPresenter.setProfile(bitmap);
     }
 
     void setAfterBidData(Product product) {

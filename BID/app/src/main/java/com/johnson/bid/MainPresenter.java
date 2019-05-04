@@ -1,5 +1,6 @@
 package com.johnson.bid;
 
+import android.graphics.Bitmap;
 import android.util.Log;
 
 import com.johnson.bid.bidding.BiddingDetailContract;
@@ -236,8 +237,8 @@ public class MainPresenter implements MainContract.Presenter, AuctionContract.Pr
     }
 
     @Override
-    public void setPostPics(ArrayList<String> imagePath) {
-        mPostPresenter.setPostPics(imagePath);
+    public void setPostPics(ArrayList<Bitmap> imageBitmap) {
+        mPostPresenter.setPostPics(imageBitmap);
     }
 
     @Override
@@ -438,8 +439,8 @@ public class MainPresenter implements MainContract.Presenter, AuctionContract.Pr
     }
 
     @Override
-    public void openPost(String title, ArrayList<String> imagePath) {
-        mMainView.openPostUi(imagePath);
+    public void openPost(String title, ArrayList<Bitmap> imageBitmap) {
+        mMainView.openPostUi(imageBitmap);
         updateToolbar(title);
         hideBottomNavigation();
     }
@@ -450,8 +451,8 @@ public class MainPresenter implements MainContract.Presenter, AuctionContract.Pr
     }
 
     @Override
-    public void setProfile(String imagePath) {
-        mSettingsPresenter.setProfile(imagePath);
+    public void setProfile(Bitmap imageBitmap) {
+        mSettingsPresenter.setProfile(imageBitmap);
     }
 
     @Override

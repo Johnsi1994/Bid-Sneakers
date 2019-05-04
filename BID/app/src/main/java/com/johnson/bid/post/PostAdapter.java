@@ -1,7 +1,11 @@
 package com.johnson.bid.post;
 
 import android.annotation.SuppressLint;
+import android.graphics.Bitmap;
+import android.graphics.Matrix;
+import android.media.ExifInterface;
 import android.net.Uri;
+import android.provider.MediaStore;
 import android.support.annotation.NonNull;
 import android.support.constraint.ConstraintLayout;
 import android.support.v7.widget.LinearLayoutManager;
@@ -18,16 +22,24 @@ import android.widget.Spinner;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.google.android.gms.tasks.OnCompleteListener;
+import com.google.android.gms.tasks.OnFailureListener;
+import com.google.android.gms.tasks.OnSuccessListener;
+import com.google.android.gms.tasks.Task;
 import com.google.firebase.storage.StorageReference;
+import com.google.firebase.storage.UploadTask;
 import com.johnson.bid.Bid;
 import com.johnson.bid.MainActivity;
 import com.johnson.bid.R;
 import com.johnson.bid.util.Firebase;
+import com.johnson.bid.util.RotatePic;
 import com.johnson.bid.util.UserManager;
 import com.jzxiang.pickerview.TimePickerDialog;
 import com.jzxiang.pickerview.listener.OnDateSetListener;
 
+import java.io.ByteArrayOutputStream;
 import java.io.File;
+import java.io.IOException;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Date;
@@ -37,7 +49,7 @@ public class PostAdapter extends RecyclerView.Adapter {
     private PostContract.Presenter mPresenter;
     private MainActivity mMainActivity;
 
-    private ArrayList<String> mImagePath;
+    private ArrayList<Bitmap> mImageBitmap;
     private LinearSnapHelper mLinearSnapHelper;
 
     public PostAdapter(PostContract.Presenter presenter, MainActivity mainActivity) {
@@ -57,7 +69,7 @@ public class PostAdapter extends RecyclerView.Adapter {
 
         LinearLayoutManager layoutManager = new LinearLayoutManager(
                 Bid.getAppContext(), LinearLayoutManager.HORIZONTAL, false);
-        PostPicsGalleryAdapter postPicsGalleryAdapter = new PostPicsGalleryAdapter(mImagePath, mPresenter);
+        PostPicsGalleryAdapter postPicsGalleryAdapter = new PostPicsGalleryAdapter(RotatePic.getPostImageBitmapList(), mPresenter);
         if (mLinearSnapHelper == null) {
             mLinearSnapHelper = new LinearSnapHelper();
             mLinearSnapHelper.attachToRecyclerView(((ViewHolder) viewHolder).getPostPicGallery());
@@ -201,8 +213,8 @@ public class PostAdapter extends RecyclerView.Adapter {
             mPostBtn.setOnClickListener(v -> {
 
                 if ("".equals(mProductTitle.getText().toString()) ||
-                "".equals(mProductIntro.getText().toString()) ||
-                "".equals(mStartingPrice.getText().toString()) ||
+                        "".equals(mProductIntro.getText().toString()) ||
+                        "".equals(mStartingPrice.getText().toString()) ||
                         mTime == -1) {
                     Toast.makeText(mMainActivity, "請填完整資訊", Toast.LENGTH_SHORT).show();
                 } else {
@@ -232,25 +244,52 @@ public class PostAdapter extends RecyclerView.Adapter {
 
         private void uploadImages(int i) {
 
-            Uri file = Uri.fromFile(new File(mImagePath.get(i)));
-            StorageReference riversRef = Firebase.getInstance().getStorage().child(file.getLastPathSegment());
+//            Uri file = Uri.fromFile(new File(mImagePath.get(i)));
+//
+//            Log.d("imagetest", "Upload Uri : " + file);
+//
+//            StorageReference riversRef = Firebase.getInstance().getStorage().child(file.getLastPathSegment());
+//            int j = i + 1;
+//
+//            riversRef.putFile(file)
+//                    .addOnSuccessListener(taskSnapshot -> {
+//                        Log.d("Johnsi", "Photo Upload Success and ready to get URL");
+//
+//                        riversRef.getDownloadUrl().addOnSuccessListener(uri -> {
+//                            Log.d("Johnsi", "Success to get Uri: " + uri);
+//                            setUrl(uri.toString());
+//                            if (j < mImagePath.size()) {
+//                                uploadImages(j);
+//                            } else {
+//                                Log.d("Johnsi", "UploadImages success then upload product");
+//                                uploadProduct();
+//                            }
+//                        });
+//                    })
+//                    .addOnFailureListener(exception -> Log.d("Johnsi", exception.getMessage()));
+
+           StorageReference ref = Firebase.getInstance().getStorage().child(mImageBitmap.get(i).toString());
             int j = i + 1;
 
-            riversRef.putFile(file)
-                    .addOnSuccessListener(taskSnapshot -> {
-                        Log.d("Johnsi", "Photo Upload Success and ready to get URL");
+            ByteArrayOutputStream baos = new ByteArrayOutputStream();
+            mImageBitmap.get(i).compress(Bitmap.CompressFormat.JPEG, 80, baos);
+            byte[] data = baos.toByteArray();
 
-                        riversRef.getDownloadUrl().addOnSuccessListener(uri -> {
+            UploadTask uploadTask = ref.putBytes(data);
+            uploadTask
+                    .addOnSuccessListener(taskSnapshot ->
+                        ref.getDownloadUrl().addOnSuccessListener(uri -> {
+
                             Log.d("Johnsi", "Success to get Uri: " + uri);
                             setUrl(uri.toString());
-                            if (j < mImagePath.size()) {
+                            if (j < mImageBitmap.size()) {
                                 uploadImages(j);
                             } else {
                                 Log.d("Johnsi", "UploadImages success then upload product");
                                 uploadProduct();
                             }
-                        });
-                    })
+                        })
+                    )
                     .addOnFailureListener(exception -> Log.d("Johnsi", exception.getMessage()));
         }
 
@@ -302,8 +341,61 @@ public class PostAdapter extends RecyclerView.Adapter {
         }
     }
 
-    public void updateData(ArrayList<String> imagePath) {
-        this.mImagePath = imagePath;
+    public void updateData(ArrayList<Bitmap> imageBitmap) {
+        mImageBitmap = imageBitmap;
         notifyDataSetChanged();
+    }
+
+    private void retateImage(String path, Uri uri) throws IOException {
+
+        ExifInterface exif = new ExifInterface(path);
+        int orientation = exif.getAttributeInt(ExifInterface.TAG_ORIENTATION, ExifInterface.ORIENTATION_UNDEFINED);
+
+        Bitmap bitmap = MediaStore.Images.Media.getBitmap(Bid.getAppContext().getContentResolver(), uri);
+        Bitmap rotatedBitmap = rotateBitmap(bitmap, orientation);
+
+
+    }
+
+    private Bitmap rotateBitmap(Bitmap bitmap, int orientation) {
+        Matrix matrix = new Matrix();
+        switch (orientation) {
+            case ExifInterface.ORIENTATION_NORMAL:
+                return bitmap;
+            case ExifInterface.ORIENTATION_FLIP_HORIZONTAL:
+                matrix.setScale(-1, 1);
+                break;
+            case ExifInterface.ORIENTATION_ROTATE_180:
+                matrix.setRotate(180);
+                break;
+            case ExifInterface.ORIENTATION_FLIP_VERTICAL:
+                matrix.setRotate(180);
+                matrix.postScale(-1, 1);
+                break;
+            case ExifInterface.ORIENTATION_TRANSPOSE:
+                matrix.setRotate(90);
+                matrix.postScale(-1, 1);
+                break;
+            case ExifInterface.ORIENTATION_ROTATE_90:
+                matrix.setRotate(90);
+                break;
+            case ExifInterface.ORIENTATION_TRANSVERSE:
+                matrix.setRotate(-90);
+                matrix.postScale(-1, 1);
+                break;
+            case ExifInterface.ORIENTATION_ROTATE_270:
+                matrix.setRotate(-90);
+                break;
+            default:
+                return bitmap;
+        }
+        try {
+            Bitmap bmRotated = Bitmap.createBitmap(bitmap, 0, 0, bitmap.getWidth(), bitmap.getHeight(), matrix, true);
+            bitmap.recycle();
+            return bmRotated;
+        } catch (OutOfMemoryError e) {
+            e.printStackTrace();
+            return null;
+        }
     }
 }

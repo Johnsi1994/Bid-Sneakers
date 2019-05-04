@@ -202,6 +202,7 @@ public class UserManager {
 
     public void logout() {
         LoginManager.getInstance().logOut();
+        mUser = null;
     }
 
     public User getUser() {

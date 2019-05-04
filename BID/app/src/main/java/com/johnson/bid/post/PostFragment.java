@@ -1,5 +1,6 @@
 package com.johnson.bid.post;
 
+import android.graphics.Bitmap;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
@@ -70,9 +71,9 @@ public class PostFragment extends Fragment implements PostContract.View {
 
 
     @Override
-    public void showPostUi(ArrayList<String> imagePath) {
+    public void showPostUi(ArrayList<Bitmap> imageBitmap) {
         if (mPostAdapter != null) {
-            mPostAdapter.updateData(imagePath);
+            mPostAdapter.updateData(imageBitmap);
         }
 
     }

@@ -5,16 +5,23 @@ import android.graphics.BitmapFactory;
 import android.support.annotation.NonNull;
 import android.support.constraint.ConstraintLayout;
 import android.support.v7.widget.RecyclerView;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageView;
 
+import com.johnson.bid.Bid;
 import com.johnson.bid.R;
+import com.johnson.bid.util.RotatePic;
 
+import java.io.ByteArrayOutputStream;
 import java.io.FileInputStream;
 import java.io.FileNotFoundException;
+import java.io.IOException;
 import java.io.InputStream;
+import java.net.MalformedURLException;
+import java.net.URL;
 import java.util.ArrayList;
 
 import static com.johnson.bid.MainMvpController.POST;
@@ -25,11 +32,10 @@ public class PostPicsGalleryAdapter extends RecyclerView.Adapter {
     private static final int TYPE_ADD     = 0x02;
 
     private PostContract.Presenter mPresenter;
-    private ArrayList<String> mImagePath;
-    private Bitmap bitImage;
+    private ArrayList<Bitmap> mImageBitmap;
 
-    public PostPicsGalleryAdapter(ArrayList<String> imagePath, PostContract.Presenter presenter) {
-        mImagePath = imagePath;
+    public PostPicsGalleryAdapter(ArrayList<Bitmap> imageBitmap, PostContract.Presenter presenter) {
+        mImageBitmap = imageBitmap;
         mPresenter = presenter;
     }
 
@@ -51,33 +57,32 @@ public class PostPicsGalleryAdapter extends RecyclerView.Adapter {
     public void onBindViewHolder(@NonNull RecyclerView.ViewHolder viewHolder, int position) {
 
         if (viewHolder instanceof PhotoViewHolder) {
-            try {
 
-                InputStream is = new FileInputStream(mImagePath.get(position));
-                BitmapFactory.Options opts = new BitmapFactory.Options();
-                opts.inTempStorage = new byte[100 * 1024];
-                opts.inPreferredConfig = Bitmap.Config.RGB_565;
-                opts.inSampleSize = 4;
-                Bitmap btp = BitmapFactory.decodeStream(is,null, opts);
-                bindPhotoViewHolder((PhotoViewHolder) viewHolder, btp);
+//                Log.d("imagetest", "onBindViewHolder path : " + mImagePath.get(position));
+//
+//                InputStream is = new FileInputStream(mImagePath.get(position));
+//                BitmapFactory.Options opts = new BitmapFactory.Options();
+//                opts.inTempStorage = new byte[100 * 100];
+//                opts.inPreferredConfig = Bitmap.Config.RGB_565;
+//                opts.inSampleSize = 4;
+//                Bitmap btp = BitmapFactory.decodeStream(is, null, opts);
 
-            } catch (FileNotFoundException e) {
-                e.printStackTrace();
-            }
+            bindPhotoViewHolder((PhotoViewHolder) viewHolder, mImageBitmap.get(position));
+
         }
 
     }
 
     @Override
     public int getItemCount() {
-        return ( (mImagePath.size() == 4) ? mImagePath.size() : mImagePath.size() + 1);
+        return ( (mImageBitmap.size() == 4) ? mImageBitmap.size() : mImageBitmap.size() + 1);
     }
 
     @Override
     public int getItemViewType(int position) {
 
-        if (mImagePath.size() < 4) {
-            if (position == (mImagePath.size())) {
+        if (mImageBitmap.size() < 4) {
+            if (position == (mImageBitmap.size())) {
                 return TYPE_ADD;
             } else {
                 return TYPE_PHOTO;

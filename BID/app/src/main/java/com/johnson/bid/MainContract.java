@@ -1,5 +1,7 @@
 package com.johnson.bid;
 
+import android.graphics.Bitmap;
+
 import com.johnson.bid.auction.auctionitem.AuctionItemFragment;
 import com.johnson.bid.data.ChatRoom;
 import com.johnson.bid.data.Product;
@@ -24,7 +26,7 @@ public interface MainContract {
 
         void openSettingsUi();
 
-        void openPostUi(ArrayList<String> imagePath);
+        void openPostUi(ArrayList<Bitmap> imageBitmap);
 
         void openSearchUi(String keyword);
 
@@ -34,7 +36,7 @@ public interface MainContract {
 
         void openSearchDialog();
 
-        void setPostPics(ArrayList<String> imagePath);
+        void setPostPics(ArrayList<Bitmap> imageBitmap);
 
         void setAfterBidData(Product product);
 
@@ -44,7 +46,7 @@ public interface MainContract {
 
         void openGalleryDialog(String from);
 
-        void setSettingsProfile(String imagePath);
+        void setSettingsProfile(Bitmap imageBitmap);
 
         AuctionItemFragment findEnglishAuctionView();
 
@@ -93,7 +95,7 @@ public interface MainContract {
 
         void openLogin();
 
-        void openPost(String toolbarTitle, ArrayList<String> imagePath);
+        void openPost(String toolbarTitle, ArrayList<Bitmap> imageBitmap);
 
         void openCenter();
 

@@ -82,11 +82,7 @@ public class ChatContentFragment extends Fragment implements ChatContentContract
                 mPresenter.sendMessage(chatContent);
                 mMessageEditText.setText("");
             }
-
-
         });
-
-
     }
 
     @Override

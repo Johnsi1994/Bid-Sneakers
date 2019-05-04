@@ -58,9 +58,11 @@ import com.johnson.bid.data.User;
 import com.johnson.bid.dialog.MessageDialog;
 import com.johnson.bid.trade.TradeItem.TradeItemFragment;
 import com.johnson.bid.util.Firebase;
+import com.johnson.bid.util.RotatePic;
 import com.johnson.bid.util.UserManager;
 
 import java.io.File;
+import java.io.IOException;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Date;
@@ -84,6 +86,7 @@ public class MainActivity extends AppCompatActivity implements MainContract.View
     private View mBadge;
     private static GoogleAnalytics sAnalytics;
     private static Tracker sTracker;
+    private String mCurrentPhotoPath;
 
     private final static int CAMERA_AUCTION = 666;
     private final static int CAMERA_POST = 667;
@@ -94,7 +97,7 @@ public class MainActivity extends AppCompatActivity implements MainContract.View
     private MainContract.Presenter mPresenter;
     private MainMvpController mMainMvpController;
 
-    private ArrayList<String> mImagePathList;
+    private ArrayList<Bitmap> mImageBitmapList;
 
     private SearchView searchView;
     private String mFrom;
@@ -136,8 +139,8 @@ public class MainActivity extends AppCompatActivity implements MainContract.View
     }
 
     @Override
-    public void openPostUi(ArrayList<String> imagePath) {
-        mMainMvpController.createPostView(imagePath);
+    public void openPostUi(ArrayList<Bitmap> imageBitmap) {
+        mMainMvpController.createPostView(imageBitmap);
     }
 
     @Override
@@ -206,8 +209,8 @@ public class MainActivity extends AppCompatActivity implements MainContract.View
     }
 
     @Override
-    public void setPostPics(ArrayList<String> imagePath) {
-        mMainMvpController.setPostPics(imagePath);
+    public void setPostPics(ArrayList<Bitmap> imageBitmap) {
+        mMainMvpController.setPostPics(imageBitmap);
     }
 
     @Override
@@ -239,7 +242,7 @@ public class MainActivity extends AppCompatActivity implements MainContract.View
 
         mFrom = from;
         if (from.equals(AUCTION)) {
-            mImagePathList = new ArrayList<>();
+            mImageBitmapList = new ArrayList<>();
         }
 
         Button mCancelBtn;
@@ -271,8 +274,8 @@ public class MainActivity extends AppCompatActivity implements MainContract.View
     }
 
     @Override
-    public void setSettingsProfile(String imagePath) {
-        mMainMvpController.setSettingsProfile(imagePath);
+    public void setSettingsProfile(Bitmap bitmap) {
+        mMainMvpController.setSettingsProfile(bitmap);
     }
 
     @Override
@@ -305,35 +308,37 @@ public class MainActivity extends AppCompatActivity implements MainContract.View
 
         if (resultCode == RESULT_OK && requestCode == CHOOSE_PHOTO_AUCTION) {
 
-            mImagePathList.add(handleImage(data));
-            mPresenter.openPost(getString(R.string.toolbar_title_post), mImagePathList);
+            mImageBitmapList.add(RotatePic.handleImage(this, data));
+            RotatePic.handlePostImage(this, data, CHOOSE_PHOTO_AUCTION);
+            mPresenter.openPost(getString(R.string.toolbar_title_post), mImageBitmapList);
 
         } else if (resultCode == RESULT_OK && requestCode == CAMERA_AUCTION) {
 
-            mImagePathList.add(handleImage(data));
-            mPresenter.openPost(getString(R.string.toolbar_title_post), mImagePathList);
+            mImageBitmapList.add(RotatePic.handleImage(this, data));
+            RotatePic.handlePostImage(this, data, CAMERA_AUCTION);
+            mPresenter.openPost(getString(R.string.toolbar_title_post), mImageBitmapList);
 
         } else if (resultCode == RESULT_OK && requestCode == CHOOSE_PHOTO_POST) {
 
-            mImagePathList.add(handleImage(data));
-            setPostPics(mImagePathList);
+            mImageBitmapList.add(RotatePic.handleImage(this, data));
+            RotatePic.handlePostImage(this, data, CHOOSE_PHOTO_POST);
+            setPostPics(mImageBitmapList);
 
         } else if (resultCode == RESULT_OK && requestCode == CAMERA_POST) {
 
-            mImagePathList.add(handleImage(data));
-            setPostPics(mImagePathList);
+            mImageBitmapList.add(RotatePic.handleImage(this, data));
+            RotatePic.handlePostImage(this, data, CAMERA_POST);
+            setPostPics(mImageBitmapList);
 
         } else if (resultCode == RESULT_OK && requestCode == PHOTO_SETTINGS) {
 
-            setSettingsProfile(handleImage(data));
+            setSettingsProfile(RotatePic.handleImage(this, data));
 
         } else if (resultCode == RESULT_CANCELED) {
 
         } else {
             UserManager.getInstance().getFbCallbackManager().onActivityResult(requestCode, resultCode, data);
         }
-
-
     }
 
     @Override
@@ -711,7 +716,6 @@ public class MainActivity extends AppCompatActivity implements MainContract.View
         } else {
             mBadge.findViewById(R.id.text_badge_main).setVisibility(View.GONE);
         }
-
     }
 
     @Override
@@ -728,7 +732,6 @@ public class MainActivity extends AppCompatActivity implements MainContract.View
             UserManager.getInstance().updateUser2Firebase();
             UserManager.getInstance().setHasUserDataChange(false);
         }
-
     }
 
     private void init() {
@@ -852,6 +855,10 @@ public class MainActivity extends AppCompatActivity implements MainContract.View
         Intent intent = new Intent(MediaStore.ACTION_IMAGE_CAPTURE);
         intent.putExtra(MediaStore.EXTRA_OUTPUT, uri.getPath());
 
+//        Uri photoURI = FileProvider.getUriForFile(this,
+//                "com.johnson.bid.fileprovider",
+//                photoFile);
+
         if (from.equals(AUCTION)) {
             startActivityForResult(intent, CAMERA_AUCTION);
         } else if (from.equals(POST)) {
@@ -859,78 +866,28 @@ public class MainActivity extends AppCompatActivity implements MainContract.View
         } else {
             startActivityForResult(intent, PHOTO_SETTINGS);
         }
-
     }
 
-    private String handleImage(Intent data) {
-        String imagePath = null;
-        Uri uri = data.getData();
-
-        if (DocumentsContract.isDocumentUri(this, uri)) {
-            String docId = DocumentsContract.getDocumentId(uri);
-            if ("com.android.providers.media.documents".equals(uri.getAuthority())) {
-                String id = docId.split(":")[1];
-                String selection = MediaStore.Images.Media._ID + "=" + id;
-                imagePath = getImagePath(MediaStore.Images.Media.EXTERNAL_CONTENT_URI, selection);
-            } else if ("com.android,providers.downloads.documents".equals(uri.getAuthority())) {
-                Uri contentUri = ContentUris.withAppendedId(Uri.parse("content://downloads/public_downloads"), Long.valueOf(docId));
-                imagePath = getImagePath(contentUri, null);
-            }
-
-        } else if ("content".equalsIgnoreCase(uri.getScheme())) {
-            imagePath = getImagePath(uri, null);
-        }
-
-        return imagePath;
-    }
-
-    public String getImagePath(Uri uri, String selection) {
-        String path = null;
-        Cursor cursor = getContentResolver().query(uri, null, selection, null, null);
-        if (cursor != null) {
-            if (cursor.moveToFirst()) {
-                path = cursor.getString(cursor.getColumnIndex(MediaStore.Images.Media.DATA));
-            }
-        }
-        cursor.close();
-        return path;
-    }
-
-    private void displayImage(String imagePath) {
-        if (imagePath != null) {
-            Bitmap bitImage = BitmapFactory.decodeFile(imagePath);//格式化圖片
-
-//            mImage.setImageBitmap(bitImage);//為imageView設定圖片
-            Toast.makeText(MainActivity.this, imagePath, Toast.LENGTH_SHORT).show();
-
-        } else {
-            Toast.makeText(MainActivity.this, "獲取圖片失敗", Toast.LENGTH_SHORT).show();
-        }
-    }
-
-    private void ScalePic(Bitmap bitmap, int phone) {
-        //縮放比例預設為1
-        float mScale = 1;
-
-        //如果圖片寬度大於手機寬度則進行縮放，否則直接將圖片放入ImageView內
-        if (bitmap.getWidth() > phone) {
-            //判斷縮放比例
-            mScale = (float) phone / (float) bitmap.getWidth();
-
-            Matrix mMat = new Matrix();
-            mMat.setScale(mScale, mScale);
-
-            Bitmap mScaleBitmap = Bitmap.createBitmap(bitmap,
-                    0,
-                    0,
-                    bitmap.getWidth(),
-                    bitmap.getHeight(),
-                    mMat,
-                    false);
-        } else {
-
-        }
-    }
+//    private String handleImage(Intent data) {
+//
+//        String imagePath;
+//        Uri uri = data.getData();
+//
+//        Log.d("imagetest", "handleImage data.getData : " + uri);
+//
+//        Cursor cursor = getContentResolver().query(uri, null, null, null, null);
+//        cursor.moveToFirst();
+//        String document_id = cursor.getString(0);
+//        document_id = document_id.substring(document_id.lastIndexOf(":") + 1);
+//        cursor.close();
+//        cursor = getContentResolver().query(MediaStore.Images.Media.EXTERNAL_CONTENT_URI, null
+//                , MediaStore.Images.Media._ID + " = ? ", new String[]{document_id}, null);
+//        cursor.moveToFirst();
+//        imagePath = cursor.getString(cursor.getColumnIndex(MediaStore.Images.Media.DATA));
+//        cursor.close();
+//
+//        return imagePath;
+//    }
 
     synchronized public Tracker getDefaultTracker() {
         // To enable debug logging use: adb shell setprop log.tag.GAv4 DEBUG

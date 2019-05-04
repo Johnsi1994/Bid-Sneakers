@@ -11,7 +11,7 @@ import java.util.ArrayList;
 public interface PostContract {
 
     interface View extends BaseView<Presenter> {
-        void showPostUi(ArrayList<String> imagePath);
+        void showPostUi(ArrayList<Bitmap> imageBitmap);
     }
 
     interface Presenter extends BasePresenter {
@@ -54,7 +54,7 @@ public interface PostContract {
 
         void updateToolbar(String title);
 
-        void setPostPics(ArrayList<String> imagePath);
+        void setPostPics(ArrayList<Bitmap> imageBitmap);
 
         void loadPostPics();
 

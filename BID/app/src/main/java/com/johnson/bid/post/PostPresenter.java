@@ -1,5 +1,6 @@
 package com.johnson.bid.post;
 
+import android.graphics.Bitmap;
 import android.support.annotation.NonNull;
 
 import com.johnson.bid.data.Product;
@@ -14,7 +15,7 @@ public class PostPresenter implements PostContract.Presenter {
     private PostContract.View mPostView;
 
     private Product mProduct;
-    private ArrayList<String> mImagePath;
+    private ArrayList<Bitmap> mImageBitmap;
 
     public PostPresenter(@NonNull PostContract.View postView) {
         mPostView = checkNotNull(postView, "postView cannot be null!");
@@ -125,15 +126,15 @@ public class PostPresenter implements PostContract.Presenter {
     }
 
     @Override
-    public void setPostPics(ArrayList<String> imagePath) {
-        mImagePath = imagePath;
+    public void setPostPics(ArrayList<Bitmap> imageBitmap) {
+        mImageBitmap = imageBitmap;
         loadPostPics();
     }
 
     @Override
     public void loadPostPics() {
-        if (mImagePath != null) {
-            mPostView.showPostUi(mImagePath);
+        if (mImageBitmap != null) {
+            mPostView.showPostUi(mImageBitmap);
         }
     }
 

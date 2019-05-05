@@ -64,6 +64,11 @@ public class LoginFragment extends Fragment implements LoginContract.View {
         return root;
     }
 
+    @Override
+    public void onDestroy() {
+        super.onDestroy();
+        getActivity().finish();
+    }
 
     @Override
     public void setPresenter(LoginContract.Presenter presenter) {

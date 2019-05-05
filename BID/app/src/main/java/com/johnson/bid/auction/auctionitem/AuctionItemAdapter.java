@@ -217,19 +217,21 @@ public class AuctionItemAdapter extends RecyclerView.Adapter {
                                                     createChatRoom(latestProduct);
                                                 }
                                             }
-                                        } else if (UserManager.getInstance().getUser().getId() == latestProduct.getHighestUserId()
-                                        && latestProduct.getReservePrice() < latestProduct.getCurrentPrice()) {
+                                        } else if (UserManager.getInstance().getUser().getId() == latestProduct.getHighestUserId()) {
+                                            if (latestProduct.getReservePrice() < latestProduct.getCurrentPrice()) {
+                                                mPresenter.removeBiddingProductId(latestProduct.getProductId(), ENGLISH);
+                                                mPresenter.addBoughtProductId(latestProduct.getProductId(), ENGLISH);
+                                                mPresenter.increaseUnreadBought(ENGLISH);
 
-                                            mPresenter.removeBiddingProductId(latestProduct.getProductId(), ENGLISH);
-                                            mPresenter.addBoughtProductId(latestProduct.getProductId(), ENGLISH);
-                                            mPresenter.increaseUnreadBought(ENGLISH);
+                                                mPresenter.loadMyBiddingData();
+                                                mPresenter.loadMyBoughtData();
+                                                mPresenter.loadBoughtBadgeData();
 
-                                            mPresenter.loadMyBiddingData();
-                                            mPresenter.loadMyBoughtData();
-                                            mPresenter.loadBoughtBadgeData();
-
-                                            if (!UserManager.getInstance().hasChatRoom(latestProduct.getSellerId())) {
-                                                createChatRoom(latestProduct);
+                                                if (!UserManager.getInstance().hasChatRoom(latestProduct.getSellerId())) {
+                                                    createChatRoom(latestProduct);
+                                                }
+                                            } else {
+                                                mPresenter.loadMyBiddingData();
                                             }
                                         }
                                     }
@@ -377,19 +379,21 @@ public class AuctionItemAdapter extends RecyclerView.Adapter {
                                                     createChatRoom(latestProduct);
                                                 }
                                             }
-                                        } else if (UserManager.getInstance().getUser().getId() == latestProduct.getHighestUserId()
-                                                && latestProduct.getReservePrice() < latestProduct.getCurrentPrice()) {
+                                        } else if (UserManager.getInstance().getUser().getId() == latestProduct.getHighestUserId()) {
+                                            if (latestProduct.getReservePrice() < latestProduct.getCurrentPrice()) {
+                                                mPresenter.removeBiddingProductId(latestProduct.getProductId(), SEALED);
+                                                mPresenter.addBoughtProductId(latestProduct.getProductId(), SEALED);
+                                                mPresenter.increaseUnreadBought(SEALED);
 
-                                            mPresenter.removeBiddingProductId(latestProduct.getProductId(), SEALED);
-                                            mPresenter.addBoughtProductId(latestProduct.getProductId(), SEALED);
-                                            mPresenter.increaseUnreadBought(SEALED);
+                                                mPresenter.loadMyBiddingData();
+                                                mPresenter.loadMyBoughtData();
+                                                mPresenter.loadBoughtBadgeData();
 
-                                            mPresenter.loadMyBiddingData();
-                                            mPresenter.loadMyBoughtData();
-                                            mPresenter.loadBoughtBadgeData();
-
-                                            if (!UserManager.getInstance().hasChatRoom(latestProduct.getSellerId())) {
-                                                createChatRoom(latestProduct);
+                                                if (!UserManager.getInstance().hasChatRoom(latestProduct.getSellerId())) {
+                                                    createChatRoom(latestProduct);
+                                                }
+                                            } else {
+                                                mPresenter.loadMyBiddingData();
                                             }
                                         }
                                     }

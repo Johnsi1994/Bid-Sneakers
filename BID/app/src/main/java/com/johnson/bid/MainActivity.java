@@ -237,7 +237,7 @@ public class MainActivity extends AppCompatActivity implements MainContract.View
             if (Build.VERSION.SDK_INT <= 23) {
                 openCamera23(mFrom);
             } else {
-                Toast.makeText(this, "Camera Coming Soon", Toast.LENGTH_SHORT).show();
+                openCamera24(mFrom);
             }
         }
     }
@@ -300,7 +300,7 @@ public class MainActivity extends AppCompatActivity implements MainContract.View
                     if (Build.VERSION.SDK_INT <= 23) {
                         openCamera23(mFrom);
                     } else {
-                        Toast.makeText(this, "Camera Coming Soon", Toast.LENGTH_SHORT).show();
+                        openCamera24(mFrom);
                     }
 
                 } else {
@@ -865,9 +865,27 @@ public class MainActivity extends AppCompatActivity implements MainContract.View
         Intent intent = new Intent(MediaStore.ACTION_IMAGE_CAPTURE);
         intent.putExtra(MediaStore.EXTRA_OUTPUT, uri.getPath());
 
-//        Uri photoURI = FileProvider.getUriForFile(this,
-//                "com.johnson.bid.fileprovider",
-//                photoFile);
+        if (from.equals(AUCTION)) {
+            startActivityForResult(intent, CAMERA_AUCTION);
+        } else if (from.equals(POST)) {
+            startActivityForResult(intent, CAMERA_POST);
+        } else {
+            startActivityForResult(intent, PHOTO_SETTINGS);
+        }
+
+    }
+
+    public void openCamera24(String from) {
+
+        File file = new File(Environment.getExternalStorageDirectory(), "/temp/" + System.currentTimeMillis() + ".jpg");
+        if (!file.getParentFile().exists())
+            file.getParentFile().mkdirs();
+        Uri imageUri = FileProvider.getUriForFile(this, "com.johnson.bid.fileprovider", file);
+        Log.d("camera24test", "openCamera24 imageUri : " + imageUri);
+
+        Intent intent = new Intent(MediaStore.ACTION_IMAGE_CAPTURE);
+        intent.addFlags(Intent.FLAG_GRANT_READ_URI_PERMISSION);
+        intent.putExtra(MediaStore.EXTRA_OUTPUT, imageUri.getPath());
 
         if (from.equals(AUCTION)) {
             startActivityForResult(intent, CAMERA_AUCTION);
@@ -877,27 +895,6 @@ public class MainActivity extends AppCompatActivity implements MainContract.View
             startActivityForResult(intent, PHOTO_SETTINGS);
         }
     }
-
-//    private String handleImage(Intent data) {
-//
-//        String imagePath;
-//        Uri uri = data.getData();
-//
-//        Log.d("imagetest", "handleImage data.getData : " + uri);
-//
-//        Cursor cursor = getContentResolver().query(uri, null, null, null, null);
-//        cursor.moveToFirst();
-//        String document_id = cursor.getString(0);
-//        document_id = document_id.substring(document_id.lastIndexOf(":") + 1);
-//        cursor.close();
-//        cursor = getContentResolver().query(MediaStore.Images.Media.EXTERNAL_CONTENT_URI, null
-//                , MediaStore.Images.Media._ID + " = ? ", new String[]{document_id}, null);
-//        cursor.moveToFirst();
-//        imagePath = cursor.getString(cursor.getColumnIndex(MediaStore.Images.Media.DATA));
-//        cursor.close();
-//
-//        return imagePath;
-//    }
 
     synchronized public Tracker getDefaultTracker() {
         // To enable debug logging use: adb shell setprop log.tag.GAv4 DEBUG

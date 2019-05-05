@@ -214,7 +214,6 @@ public class AuctionItemAdapter extends RecyclerView.Adapter {
                                                 mPresenter.loadSoldBadgeData();
 
                                                 if (!UserManager.getInstance().hasChatRoom(latestProduct.getHighestUserId())) {
-                                                    Log.d("chatlisttest", "Not On The List");
                                                     createChatRoom(latestProduct);
                                                 }
                                             }
@@ -230,7 +229,6 @@ public class AuctionItemAdapter extends RecyclerView.Adapter {
                                             mPresenter.loadBoughtBadgeData();
 
                                             if (!UserManager.getInstance().hasChatRoom(latestProduct.getSellerId())) {
-                                                Log.d("chatlisttest", "Not On The List");
                                                 createChatRoom(latestProduct);
                                             }
                                         }
@@ -375,7 +373,7 @@ public class AuctionItemAdapter extends RecyclerView.Adapter {
                                                 mPresenter.loadSoldBadgeData();
 
                                                 if (!UserManager.getInstance().hasChatRoom(latestProduct.getHighestUserId())) {
-                                                    Log.d("chatlisttest", "Not On The List");
+
                                                     createChatRoom(latestProduct);
                                                 }
                                             }
@@ -391,7 +389,6 @@ public class AuctionItemAdapter extends RecyclerView.Adapter {
                                             mPresenter.loadBoughtBadgeData();
 
                                             if (!UserManager.getInstance().hasChatRoom(latestProduct.getSellerId())) {
-                                                Log.d("chatlisttest", "Not On The List");
                                                 createChatRoom(latestProduct);
                                             }
                                         }

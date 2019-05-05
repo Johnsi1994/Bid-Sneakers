@@ -12,6 +12,7 @@ import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.graphics.Matrix;
 import android.net.Uri;
+import android.os.Build;
 import android.os.Bundle;
 import android.os.Environment;
 import android.provider.DocumentsContract;
@@ -233,7 +234,11 @@ public class MainActivity extends AppCompatActivity implements MainContract.View
         if (ContextCompat.checkSelfPermission(this, Manifest.permission.CAMERA) != PackageManager.PERMISSION_GRANTED) {
             ActivityCompat.requestPermissions(this, new String[]{Manifest.permission.CAMERA, Manifest.permission.WRITE_EXTERNAL_STORAGE}, 2);
         } else {
-            opennCamera(from);
+            if (Build.VERSION.SDK_INT <= 23) {
+                openCamera23(mFrom);
+            } else {
+                Toast.makeText(this, "Camera Coming Soon", Toast.LENGTH_SHORT).show();
+            }
         }
     }
 
@@ -292,7 +297,12 @@ public class MainActivity extends AppCompatActivity implements MainContract.View
                 break;
             case 2:
                 if (grantResults.length > 0 && grantResults[0] == PackageManager.PERMISSION_GRANTED) {
-                    opennCamera(mFrom);
+                    if (Build.VERSION.SDK_INT <= 23) {
+                        openCamera23(mFrom);
+                    } else {
+                        Toast.makeText(this, "Camera Coming Soon", Toast.LENGTH_SHORT).show();
+                    }
+
                 } else {
                     Toast.makeText(this, "授權失敗，無法操作", Toast.LENGTH_SHORT).show();
                 }
@@ -843,7 +853,7 @@ public class MainActivity extends AppCompatActivity implements MainContract.View
         }
     }
 
-    public void opennCamera(String from) {
+    public void openCamera23(String from) {
 
         mPhone = new DisplayMetrics();
         getWindowManager().getDefaultDisplay().getMetrics(mPhone);

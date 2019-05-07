@@ -58,7 +58,7 @@ public class BiddingDetailAdapter extends RecyclerView.Adapter {
 
         LinearLayoutManager layoutManager = new LinearLayoutManager(
                 Bid.getAppContext(), LinearLayoutManager.HORIZONTAL, false);
-        BiddingDetailGalleryAdapter biddingDetailGalleryAdapter = new BiddingDetailGalleryAdapter(mPresenter, mProduct.getImages());
+        BiddingDetailGalleryAdapter biddingDetailGalleryAdapter = new BiddingDetailGalleryAdapter(mProduct.getImages());
         if (mLinearSnapHelper == null) {
             mLinearSnapHelper = new LinearSnapHelper();
         }
@@ -354,20 +354,20 @@ public class BiddingDetailAdapter extends RecyclerView.Adapter {
         }.start();
     }
 
-    private void eyeOnSwitch(Button mEyesOnBtn) {
+    private void eyeOnSwitch(Button mBtnEyesOn) {
         myEyesOn = UserManager.getInstance().getUser().getEyesOn();
 
         for (int i = 0; i < myEyesOn.size(); i++) {
             if (myEyesOn.get(i).equals(mProduct.getProductId())) {
                 isEyesOn = true;
-                mEyesOnBtn.setBackgroundResource(R.drawable.ic_eyes_on_selected);
+                mBtnEyesOn.setBackgroundResource(R.drawable.ic_eyes_on_selected);
             }
         }
 
-        mEyesOnBtn.setOnClickListener(v -> {
+        mBtnEyesOn.setOnClickListener(v -> {
             if (isEyesOn) {
                 isEyesOn = false;
-                mEyesOnBtn.setBackgroundResource(R.drawable.ic_eyes_on);
+                mBtnEyesOn.setBackgroundResource(R.drawable.ic_eyes_on);
 
                 ArrayList<Long> EyesOnList = UserManager.getInstance().getUser().getEyesOn();
                 Iterator<Long> iterator = EyesOnList.iterator();
@@ -383,7 +383,7 @@ public class BiddingDetailAdapter extends RecyclerView.Adapter {
 
             } else {
                 isEyesOn = true;
-                mEyesOnBtn.setBackgroundResource(R.drawable.ic_eyes_on_selected);
+                mBtnEyesOn.setBackgroundResource(R.drawable.ic_eyes_on_selected);
                 UserManager.getInstance().getUser().getEyesOn().add(mProduct.getProductId());
                 UserManager.getInstance().setHasUserDataChange(true);
             }

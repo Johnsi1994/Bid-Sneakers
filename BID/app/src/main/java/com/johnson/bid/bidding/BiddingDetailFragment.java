@@ -27,9 +27,6 @@ public class BiddingDetailFragment extends Fragment implements BiddingDetailCont
     private BiddingDetailAdapter mBiddingDetailAdapter;
     private String mAuctionType;
     private SwipeRefreshLayout swipeRefreshLayout;
-    private ArrayList<Long> myEyesOn;
-    private Boolean isEyesOn = false;
-    private Product mProduct;
 
     public BiddingDetailFragment() {
     }
@@ -43,8 +40,6 @@ public class BiddingDetailFragment extends Fragment implements BiddingDetailCont
         super.onCreate(savedInstanceState);
 
         mBiddingDetailAdapter = new BiddingDetailAdapter(mPresenter, (MainActivity) getActivity(), mAuctionType);
-
-
     }
 
     @Nullable
@@ -65,6 +60,7 @@ public class BiddingDetailFragment extends Fragment implements BiddingDetailCont
         super.onViewCreated(view, savedInstanceState);
 
         mPresenter.loadProductData();
+
         swipeRefreshLayout.setOnRefreshListener(() -> {
             swipeRefreshLayout.setRefreshing(false);
             mPresenter.loadBiddingFreshData();
@@ -86,8 +82,6 @@ public class BiddingDetailFragment extends Fragment implements BiddingDetailCont
         if (UserManager.getInstance().isHasUserDataChange()) {
             UserManager.getInstance().updateUser2Firebase();
         }
-
-
     }
 
     public void setAuctionType(String type) {
@@ -99,7 +93,6 @@ public class BiddingDetailFragment extends Fragment implements BiddingDetailCont
         if (mBiddingDetailAdapter == null) {
             mBiddingDetailAdapter = new BiddingDetailAdapter(mPresenter, (MainActivity) getActivity(), mAuctionType);
         }
-        mProduct = product;
         mBiddingDetailAdapter.updateData(product);
     }
 }

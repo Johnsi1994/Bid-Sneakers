@@ -12,8 +12,6 @@ public interface BiddingDetailContract {
 
     interface Presenter extends BasePresenter {
 
-        void openCenter();
-
         void showToolbarAndBottomNavigation();
 
         void setProductData(Product product);

@@ -4,6 +4,8 @@ import android.support.annotation.NonNull;
 import android.util.Log;
 
 import com.google.firebase.firestore.DocumentSnapshot;
+import com.johnson.bid.Bid;
+import com.johnson.bid.R;
 import com.johnson.bid.data.Product;
 import com.johnson.bid.util.Firebase;
 
@@ -11,6 +13,7 @@ import static com.google.common.base.Preconditions.checkNotNull;
 
 public class BiddingDetailPresenter implements BiddingDetailContract.Presenter {
 
+    private static final String TAG = "Johnsi";
     private final BiddingDetailContract.View mBiddingView;
     private Product mProduct;
 
@@ -19,19 +22,10 @@ public class BiddingDetailPresenter implements BiddingDetailContract.Presenter {
     }
 
     @Override
-    public void start() {
-
-    }
+    public void start() {}
 
     @Override
-    public void openCenter() {
-
-    }
-
-    @Override
-    public void showToolbarAndBottomNavigation() {
-
-    }
+    public void showToolbarAndBottomNavigation() {}
 
     @Override
     public void setProductData(Product product) {
@@ -45,19 +39,15 @@ public class BiddingDetailPresenter implements BiddingDetailContract.Presenter {
     }
 
     @Override
-    public void openBidDialog(String from, Product product) {
-
-    }
+    public void openBidDialog(String from, Product product) {}
 
     @Override
-    public void updateCenterData() {
-
-    }
+    public void updateCenterData() {}
 
     @Override
     public void loadBiddingFreshData() {
 
-        Firebase.getInstance().getFirestore().collection("products")
+        Firebase.getInstance().getFirestore().collection(Bid.getAppContext().getString(R.string.firebase_products))
                 .document(String.valueOf(mProduct.getProductId()))
                 .get()
                 .addOnCompleteListener(task -> {
@@ -66,9 +56,8 @@ public class BiddingDetailPresenter implements BiddingDetailContract.Presenter {
                         DocumentSnapshot document = task.getResult();
                         mProduct = document.toObject(Product.class);
                         loadProductData();
-
                     } else {
-                        Log.d("Johnsi", "Error getting documents: ", task.getException());
+                        Log.d(TAG, "Error getting documents ", task.getException());
                     }
                 });
 

@@ -104,10 +104,10 @@
     <string name="firebase_product_auction_condition">finish</string>
 
     <!--timer-->
-    <string name="timer_day"> 天 </string>
-    <string name="timer_hour"> 時 </string>
-    <string name="timer_minute"> 分 </string>
-    <string name="timer_second"> 秒 </string>
+    <string name="timer_day">天</string>
+    <string name="timer_hour">時</string>
+    <string name="timer_minute">分</string>
+    <string name="timer_second">秒</string>
     <string name="place_bid">我要出價</string>
     <string name="already_placed_bid">已經出過價嘍~~</string>
 

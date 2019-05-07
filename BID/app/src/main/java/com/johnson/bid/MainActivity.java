@@ -88,6 +88,8 @@ public class MainActivity extends AppCompatActivity implements MainContract.View
     private static GoogleAnalytics sAnalytics;
     private static Tracker sTracker;
     private String mCurrentPhotoPath;
+    private View mSearchPlate;
+    private View mSubmitArea;
 
     private final static int CAMERA_AUCTION = 666;
     private final static int CAMERA_POST = 667;
@@ -176,9 +178,14 @@ public class MainActivity extends AppCompatActivity implements MainContract.View
         ((View) view.getParent()).setBackgroundColor(this.getColor(android.R.color.transparent));
         dialog.show();
 
+        mSearchPlate = view.findViewById(R.id.search_plate);
+        mSubmitArea = view.findViewById(R.id.submit_area);
 
         searchView = view.findViewById(R.id.search_view);
         searchView.setIconified(false);
+
+        searchView.findViewById(android.support.v7.appcompat.R.id.search_plate).setBackground(null);
+        searchView.findViewById(android.support.v7.appcompat.R.id.submit_area).setBackground(null);
 
         searchView.setOnQueryTextListener(new SearchView.OnQueryTextListener() {
             @Override

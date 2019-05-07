@@ -15,6 +15,7 @@ import android.widget.TextView;
 import com.johnson.bid.MainActivity;
 import com.johnson.bid.R;
 import com.johnson.bid.data.Product;
+import com.johnson.bid.util.CardViewImageOutlineProvider;
 import com.johnson.bid.util.ImageManager;
 
 import java.util.ArrayList;
@@ -132,7 +133,8 @@ public class SearchAdapter extends RecyclerView.Adapter {
             mPresenter.hideToolbarAndBottomNavigation();
         });
 
-        ImageManager.getInstance().setImageByUrl(holder.getImageMain(), product.getImages().get(0));
+        holder.getImageMain().setOutlineProvider(new CardViewImageOutlineProvider());
+        ImageManager.getInstance().setBriefImageByUrl(holder.getImageMain(), product.getImages().get(0));
 
         holder.getTextTitle().setText(product.getTitle());
 

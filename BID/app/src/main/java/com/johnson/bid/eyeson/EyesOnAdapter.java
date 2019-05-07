@@ -22,6 +22,7 @@ import com.johnson.bid.Bid;
 import com.johnson.bid.MainActivity;
 import com.johnson.bid.R;
 import com.johnson.bid.data.Product;
+import com.johnson.bid.util.CardViewImageOutlineProvider;
 import com.johnson.bid.util.ImageManager;
 
 import java.util.ArrayList;
@@ -153,7 +154,8 @@ public class EyesOnAdapter extends RecyclerView.Adapter {
             mPresenter.hideToolbarAndBottomNavigation();
         });
 
-        ImageManager.getInstance().setImageByUrl(holder.getImageMain(), product.getImages().get(0));
+        holder.getImageMain().setOutlineProvider(new CardViewImageOutlineProvider());
+        ImageManager.getInstance().setBriefImageByUrl(holder.getImageMain(), product.getImages().get(0));
 
         holder.getTextTitle().setText(product.getTitle());
 
@@ -186,11 +188,11 @@ public class EyesOnAdapter extends RecyclerView.Adapter {
             public void onTick(long millisUntilFinished) {
                 holder.getTextTime().setText(getRemainingTimeToString(millisUntilFinished));
 
-                if (millisUntilFinished > 1799000 && millisUntilFinished < 1801000) {
+                if (millisUntilFinished > 299000 && millisUntilFinished < 301000) {
 
                     mBuilder = new NotificationCompat.Builder(mMainActivity, "com.johnson.bid");
-                    mBuilder.setContentTitle("快結標嘍!!!")
-                            .setContentText(product.getTitle() + " 即將在30分鐘後結標，千萬別錯過!!!")
+                    mBuilder.setContentTitle("快結標嘍 !!!")
+                            .setContentText(product.getTitle() + " 即將在30分鐘後結標，千萬別錯過 !!!")
                             .setTicker("Ticker")
                             .setSmallIcon(R.drawable.icons_24px_notification);
                     mNotificationManager.notify(i, mBuilder.build());

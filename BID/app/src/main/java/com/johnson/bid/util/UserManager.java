@@ -2,40 +2,24 @@ package com.johnson.bid.util;
 
 import android.app.Activity;
 import android.content.Context;
-import android.net.Uri;
-import android.support.annotation.NonNull;
 import android.util.Log;
 
 import com.facebook.AccessToken;
 import com.facebook.CallbackManager;
-import com.facebook.FacebookActivity;
 import com.facebook.FacebookCallback;
 import com.facebook.FacebookException;
 import com.facebook.GraphRequest;
-import com.facebook.GraphResponse;
-import com.facebook.Profile;
-import com.facebook.ProfileTracker;
 import com.facebook.login.LoginManager;
 import com.facebook.login.LoginResult;
-import com.google.android.gms.tasks.OnCompleteListener;
-import com.google.android.gms.tasks.OnFailureListener;
-import com.google.android.gms.tasks.OnSuccessListener;
-import com.google.android.gms.tasks.Task;
 import com.google.firebase.firestore.DocumentSnapshot;
 import com.google.firebase.firestore.QueryDocumentSnapshot;
-import com.google.firebase.firestore.QuerySnapshot;
-import com.johnson.bid.Bid;
 import com.johnson.bid.data.User;
 
 import org.json.JSONException;
-import org.json.JSONObject;
 
 import java.io.IOException;
 import java.util.Arrays;
-import java.util.HashMap;
 import java.util.Iterator;
-import java.util.Map;
-import java.util.Objects;
 
 public class UserManager {
 
@@ -297,8 +281,8 @@ public class UserManager {
 
         boolean hasRoom = false;
 
-        for (int i = 0; i < mUser.getChatRoomList().size(); i++) {
-            if (id == mUser.getChatRoomList().get(i)) {
+        for (int i = 0; i < mUser.getChatList().size(); i++) {
+            if (id == mUser.getChatList().get(i)) {
                 hasRoom =  true;
             }
         }
@@ -307,7 +291,7 @@ public class UserManager {
     }
 
     public void setChatRoomList(long id) {
-        mUser.getChatRoomList().add(id);
+        mUser.getChatList().add(id);
     }
 
     public void setHasUserDataChange(boolean hasUserDataChange) {

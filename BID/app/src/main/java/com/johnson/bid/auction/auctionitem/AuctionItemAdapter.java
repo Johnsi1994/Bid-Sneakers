@@ -13,6 +13,7 @@ import android.widget.ImageView;
 import android.widget.TextView;
 
 import com.google.firebase.firestore.DocumentSnapshot;
+import com.johnson.bid.Bid;
 import com.johnson.bid.MainMvpController;
 import com.johnson.bid.R;
 import com.johnson.bid.data.ChatRoom;
@@ -30,8 +31,11 @@ import static com.johnson.bid.MainMvpController.SEALED;
 
 public class AuctionItemAdapter extends RecyclerView.Adapter {
 
+    private static final String TAG = "Johnsi";
+
     private static final int TYPE_LOADING = 0;
-    private static final int TYPE_PRODUCT = 0x01;
+    private static final int TYPE_PRODUCT_ENGLISH = 0x01;
+    private static final int TYPE_PRODUCT_SEALED = 0x02;
 
     private AuctionItemContract.Presenter mPresenter;
     private String mAuctionType;
@@ -47,15 +51,17 @@ public class AuctionItemAdapter extends RecyclerView.Adapter {
     @NonNull
     @Override
     public RecyclerView.ViewHolder onCreateViewHolder(@NonNull ViewGroup viewGroup, int viewType) {
-        if (viewType == TYPE_PRODUCT) {
-            if (mAuctionType.equals(ENGLISH)) {
-                return new EnglishAuctionViewHolder(LayoutInflater.from(viewGroup.getContext())
-                        .inflate(R.layout.item_product_most, viewGroup, false));
-            } else {
-                return new SealedAuctionViewHolder(LayoutInflater.from(viewGroup.getContext())
-                        .inflate(R.layout.item_product_sealed, viewGroup, false));
-            }
+
+        if (viewType == TYPE_PRODUCT_ENGLISH) {
+
+            return new EnglishAuctionViewHolder(LayoutInflater.from(viewGroup.getContext())
+                    .inflate(R.layout.item_product_most, viewGroup, false));
+        } else if (viewType == TYPE_PRODUCT_SEALED) {
+
+            return new SealedAuctionViewHolder(LayoutInflater.from(viewGroup.getContext())
+                    .inflate(R.layout.item_product_sealed, viewGroup, false));
         } else {
+
             return new LoadingViewHolder(LayoutInflater.from(viewGroup.getContext())
                     .inflate(R.layout.item_all_loading, viewGroup, false));
         }
@@ -63,6 +69,7 @@ public class AuctionItemAdapter extends RecyclerView.Adapter {
 
     @Override
     public void onBindViewHolder(@NonNull RecyclerView.ViewHolder viewHolder, int i) {
+
         if (mProductList != null) {
             if (viewHolder instanceof EnglishAuctionViewHolder) {
                 bindEnglishAuctionViewHolder((EnglishAuctionViewHolder) viewHolder, mProductList.get(i));
@@ -83,7 +90,15 @@ public class AuctionItemAdapter extends RecyclerView.Adapter {
 
     @Override
     public int getItemViewType(int position) {
-        return (position < mProductList.size()) ? TYPE_PRODUCT : TYPE_LOADING;
+
+        switch (mAuctionType) {
+            case ENGLISH:
+                return TYPE_PRODUCT_ENGLISH;
+            case SEALED:
+                return TYPE_PRODUCT_SEALED;
+            default:
+                return TYPE_LOADING;
+        }
     }
 
     private class EnglishAuctionViewHolder extends RecyclerView.ViewHolder {
@@ -166,9 +181,9 @@ public class AuctionItemAdapter extends RecyclerView.Adapter {
             @Override
             public void onFinish() {
 
-                holder.getTextTime().setText("競標結束");
+                holder.getTextTime().setText(Bid.getAppContext().getString(R.string.bid_finish));
 
-                Firebase.getInstance().getFirestore().collection("products")
+                Firebase.getInstance().getFirestore().collection(Bid.getAppContext().getString(R.string.firebase_products))
                         .document(String.valueOf(product.getProductId()))
                         .get()
                         .addOnCompleteListener(task -> {
@@ -179,71 +194,38 @@ public class AuctionItemAdapter extends RecyclerView.Adapter {
 
                                 if (UserManager.getInstance().getUser().getId() == latestProduct.getHighestUserId() ||
                                         UserManager.getInstance().getUser().getId() == latestProduct.getSellerId()) {
-                                    updateProductAuctionCondition(latestProduct);
 
+                                    updateProductAuctionCondition(latestProduct);
                                     if (UserManager.getInstance().getUser().getId() == latestProduct.getSellerId()
                                             && latestProduct.getHighestUserId() == -1) {
 
-                                        mPresenter.removeSellingProductId(latestProduct.getProductId(), ENGLISH);
-                                        mPresenter.addNobodyBidProductId(latestProduct.getProductId(), ENGLISH);
-                                        mPresenter.increaseUnreadNobodyBid(ENGLISH);
-
-                                        mPresenter.loadMySellingData();
-                                        mPresenter.loadNobodyBidData();
-                                        mPresenter.loadNobodyBidBadgeData();
+                                        sellingFail(latestProduct, ENGLISH);
                                     } else {
-
                                         if (UserManager.getInstance().getUser().getId() == latestProduct.getSellerId()) {
                                             if (latestProduct.getReservePrice() > latestProduct.getCurrentPrice()) {
 
-                                                mPresenter.removeSellingProductId(latestProduct.getProductId(), ENGLISH);
-                                                mPresenter.addNobodyBidProductId(latestProduct.getProductId(), ENGLISH);
-                                                mPresenter.increaseUnreadNobodyBid(ENGLISH);
-
-                                                mPresenter.loadMySellingData();
-                                                mPresenter.loadNobodyBidData();
-                                                mPresenter.loadNobodyBidBadgeData();
+                                                sellingFail(latestProduct, ENGLISH);
                                             } else {
 
-                                                mPresenter.removeSellingProductId(latestProduct.getProductId(), ENGLISH);
-                                                mPresenter.addSoldProductId(latestProduct.getProductId(), ENGLISH);
-                                                mPresenter.increaseUnreadSold(ENGLISH);
-
-                                                mPresenter.loadMySellingData();
-                                                mPresenter.loadMySoldData();
-                                                mPresenter.loadSoldBadgeData();
-
-                                                if (!UserManager.getInstance().hasChatRoom(latestProduct.getHighestUserId())) {
-                                                    createChatRoom(latestProduct);
-                                                }
+                                                soldSuccess(latestProduct, ENGLISH);
                                             }
                                         } else if (UserManager.getInstance().getUser().getId() == latestProduct.getHighestUserId()) {
                                             if (latestProduct.getReservePrice() < latestProduct.getCurrentPrice()) {
-                                                mPresenter.removeBiddingProductId(latestProduct.getProductId(), ENGLISH);
-                                                mPresenter.addBoughtProductId(latestProduct.getProductId(), ENGLISH);
-                                                mPresenter.increaseUnreadBought(ENGLISH);
 
-                                                mPresenter.loadMyBiddingData();
-                                                mPresenter.loadMyBoughtData();
-                                                mPresenter.loadBoughtBadgeData();
-
-                                                if (!UserManager.getInstance().hasChatRoom(latestProduct.getSellerId())) {
-                                                    createChatRoom(latestProduct);
-                                                }
+                                                boughtSuccess(latestProduct, ENGLISH);
                                             } else {
+
                                                 mPresenter.loadMyBiddingData();
                                             }
                                         }
                                     }
 
-                                    UserManager.getInstance().updateUser2Firebase();
-                                    UserManager.getInstance().setHasUserDataChange(false);
-
+                                    uploadUser();
                                     mPresenter.updateTradeBadge();
                                 }
 
                             } else {
-                                Log.d("Johnsi", "Error getting documents: ", task.getException());
+                                Log.d(TAG, "Error getting documents ", task.getException());
                             }
                         });
             }
@@ -326,9 +308,9 @@ public class AuctionItemAdapter extends RecyclerView.Adapter {
             @Override
             public void onFinish() {
 
-                holder.getTextTime().setText("競標結束");
+                holder.getTextTime().setText(Bid.getAppContext().getString(R.string.bid_finish));
 
-                Firebase.getInstance().getFirestore().collection("products")
+                Firebase.getInstance().getFirestore().collection(Bid.getAppContext().getString(R.string.firebase_products))
                         .document(String.valueOf(product.getProductId()))
                         .get()
                         .addOnCompleteListener(task -> {
@@ -344,68 +326,33 @@ public class AuctionItemAdapter extends RecyclerView.Adapter {
                                     if (latestProduct.getHighestUserId() == -1
                                             && latestProduct.getSellerId() == UserManager.getInstance().getUser().getId()) {
 
-                                        mPresenter.removeSellingProductId(latestProduct.getProductId(), SEALED);
-                                        mPresenter.addNobodyBidProductId(latestProduct.getProductId(), SEALED);
-                                        mPresenter.increaseUnreadNobodyBid(SEALED);
-
-                                        mPresenter.loadMySellingData();
-                                        mPresenter.loadNobodyBidData();
-                                        mPresenter.loadNobodyBidBadgeData();
+                                        sellingFail(latestProduct, SEALED);
 
                                     } else {
                                         if (UserManager.getInstance().getUser().getId() == latestProduct.getSellerId()) {
                                             if (latestProduct.getReservePrice() > latestProduct.getCurrentPrice()) {
 
-                                                mPresenter.removeSellingProductId(latestProduct.getProductId(), SEALED);
-                                                mPresenter.addNobodyBidProductId(latestProduct.getProductId(), SEALED);
-                                                mPresenter.increaseUnreadNobodyBid(SEALED);
-
-                                                mPresenter.loadMySellingData();
-                                                mPresenter.loadNobodyBidData();
-                                                mPresenter.loadNobodyBidBadgeData();
-
+                                                sellingFail(latestProduct, SEALED);
                                             } else {
 
-                                                mPresenter.removeSellingProductId(latestProduct.getProductId(), SEALED);
-                                                mPresenter.addSoldProductId(latestProduct.getProductId(), SEALED);
-                                                mPresenter.increaseUnreadSold(SEALED);
-
-                                                mPresenter.loadMySellingData();
-                                                mPresenter.loadMySoldData();
-                                                mPresenter.loadSoldBadgeData();
-
-                                                if (!UserManager.getInstance().hasChatRoom(latestProduct.getHighestUserId())) {
-
-                                                    createChatRoom(latestProduct);
-                                                }
+                                                soldSuccess(latestProduct, SEALED);
                                             }
                                         } else if (UserManager.getInstance().getUser().getId() == latestProduct.getHighestUserId()) {
                                             if (latestProduct.getReservePrice() < latestProduct.getCurrentPrice()) {
-                                                mPresenter.removeBiddingProductId(latestProduct.getProductId(), SEALED);
-                                                mPresenter.addBoughtProductId(latestProduct.getProductId(), SEALED);
-                                                mPresenter.increaseUnreadBought(SEALED);
 
-                                                mPresenter.loadMyBiddingData();
-                                                mPresenter.loadMyBoughtData();
-                                                mPresenter.loadBoughtBadgeData();
-
-                                                if (!UserManager.getInstance().hasChatRoom(latestProduct.getSellerId())) {
-                                                    createChatRoom(latestProduct);
-                                                }
+                                                boughtSuccess(latestProduct, SEALED);
                                             } else {
                                                 mPresenter.loadMyBiddingData();
                                             }
                                         }
                                     }
 
-                                    UserManager.getInstance().updateUser2Firebase();
-                                    UserManager.getInstance().setHasUserDataChange(false);
-
+                                    uploadUser();
                                     mPresenter.updateTradeBadge();
                                 }
 
                             } else {
-                                Log.d("Johnsi", "Error getting documents: ", task.getException());
+                                Log.d(TAG, "Error getting documents ", task.getException());
                             }
                         });
 
@@ -434,7 +381,11 @@ public class AuctionItemAdapter extends RecyclerView.Adapter {
         long minutes = (millSeconds - days * (1000 * 60 * 60 * 24) - hours * (1000 * 60 * 60)) / (1000 * 60);
         long seconds = (millSeconds - days * (1000 * 60 * 60 * 24) - hours * (1000 * 60 * 60) - minutes * (1000 * 60)) / 1000;
 
-        String time = days + " 天 " + hours + " 時 " + minutes + " 分 " + seconds + " 秒";
+        String time = days + " " + Bid.getAppContext().getString(R.string.timer_day) + " "
+                + hours + " " + Bid.getAppContext().getString(R.string.timer_hour) + " "
+                + minutes + " " + Bid.getAppContext().getString(R.string.timer_minute) + " "
+                + seconds + " " + Bid.getAppContext().getString(R.string.timer_second);
+
         return time;
     }
 
@@ -453,11 +404,11 @@ public class AuctionItemAdapter extends RecyclerView.Adapter {
 
     private void updateProductAuctionCondition(Product latestProduct) {
 
-        Firebase.getInstance().getFirestore().collection("products")
+        Firebase.getInstance().getFirestore().collection(Bid.getAppContext().getString(R.string.firebase_products))
                 .document(String.valueOf(latestProduct.getProductId()))
-                .update("auctionCondition", "finish")
-                .addOnSuccessListener(aVoid -> Log.d("Johnsi", "Product condition (finish) successfully updated!"))
-                .addOnFailureListener(e -> Log.w("Johnsi", "Product condition (finish) Error updating document", e));
+                .update(Bid.getAppContext().getString(R.string.firebase_auction_condition), Bid.getAppContext().getString(R.string.firebase_product_auction_condition))
+                .addOnSuccessListener(aVoid -> Log.d(TAG, "Product condition (finish) successfully updated!"))
+                .addOnFailureListener(e -> Log.w(TAG, "Product condition (finish) Error updating document", e));
 
     }
 
@@ -466,7 +417,7 @@ public class AuctionItemAdapter extends RecyclerView.Adapter {
         ChatRoom chatRoom = new ChatRoom();
 
         if (UserManager.getInstance().getUser().getId() == product.getSellerId()) {
-            Firebase.getInstance().getFirestore().collection("users")
+            Firebase.getInstance().getFirestore().collection(Bid.getAppContext().getString(R.string.firebase_users))
                     .document(String.valueOf(product.getHighestUserId()))
                     .get()
                     .addOnCompleteListener(task -> {
@@ -489,12 +440,12 @@ public class AuctionItemAdapter extends RecyclerView.Adapter {
                             UserManager.getInstance().setHasUserDataChange(true);
 
                         } else {
-                            Log.d("Johnsi", "Error getting documents: ", task.getException());
+                            Log.d(TAG, "Error getting documents: ", task.getException());
                         }
                     });
 
         } else {
-            Firebase.getInstance().getFirestore().collection("users")
+            Firebase.getInstance().getFirestore().collection(Bid.getAppContext().getString(R.string.firebase_users))
                     .document(String.valueOf(product.getSellerId()))
                     .get()
                     .addOnCompleteListener(task -> {
@@ -516,21 +467,19 @@ public class AuctionItemAdapter extends RecyclerView.Adapter {
                             UserManager.getInstance().setHasUserDataChange(true);
 
                         } else {
-                            Log.d("Johnsi", "Error getting documents: ", task.getException());
+                            Log.d(TAG, "Error getting documents: ", task.getException());
                         }
                     });
-
         }
-
     }
 
     private void uploadChatRoom(ChatRoom chatRoom) {
 
-        Firebase.getInstance().getFirestore().collection("chatrooms")
+        Firebase.getInstance().getFirestore().collection(Bid.getAppContext().getString(R.string.firebase_chatrooms))
                 .document(String.valueOf(chatRoom.getChatRoomId()))
                 .set(chatRoom)
-                .addOnSuccessListener(documentReference -> Log.d("Johnsi", "DocumentSnapshot added"))
-                .addOnFailureListener(e -> Log.w("Johnsi", "Error adding document", e));
+                .addOnSuccessListener(documentReference -> Log.d(TAG, "DocumentSnapshot added"))
+                .addOnFailureListener(e -> Log.w(TAG, "Error adding document", e));
 
     }
 
@@ -540,5 +489,52 @@ public class AuctionItemAdapter extends RecyclerView.Adapter {
         ownerList.add(buyerId);
         ownerList.add(sellerId);
         return ownerList;
+    }
+
+    private void sellingFail(Product latestProduct, String from) {
+
+        mPresenter.removeSellingProductId(latestProduct.getProductId(), from);
+        mPresenter.addNobodyBidProductId(latestProduct.getProductId(), from);
+        mPresenter.increaseUnreadNobodyBid(from);
+
+        mPresenter.loadMySellingData();
+        mPresenter.loadNobodyBidData();
+        mPresenter.loadNobodyBidBadgeData();
+    }
+
+    private void soldSuccess(Product latestProduct, String from) {
+
+        mPresenter.removeSellingProductId(latestProduct.getProductId(), from);
+        mPresenter.addSoldProductId(latestProduct.getProductId(), from);
+        mPresenter.increaseUnreadSold(from);
+
+        mPresenter.loadMySellingData();
+        mPresenter.loadMySoldData();
+        mPresenter.loadSoldBadgeData();
+
+        if (!UserManager.getInstance().hasChatRoom(latestProduct.getHighestUserId())) {
+            createChatRoom(latestProduct);
+        }
+    }
+
+    private void boughtSuccess(Product latestProduct, String from) {
+
+        mPresenter.removeBiddingProductId(latestProduct.getProductId(), from);
+        mPresenter.addBoughtProductId(latestProduct.getProductId(), from);
+        mPresenter.increaseUnreadBought(from);
+
+        mPresenter.loadMyBiddingData();
+        mPresenter.loadMyBoughtData();
+        mPresenter.loadBoughtBadgeData();
+
+        if (!UserManager.getInstance().hasChatRoom(latestProduct.getSellerId())) {
+            createChatRoom(latestProduct);
+        }
+    }
+
+    private void uploadUser() {
+
+        UserManager.getInstance().updateUser2Firebase();
+        UserManager.getInstance().setHasUserDataChange(false);
     }
 }

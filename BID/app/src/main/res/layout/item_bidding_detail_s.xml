@@ -6,7 +6,7 @@
     android:layout_height="wrap_content">
 
     <android.support.v7.widget.RecyclerView
-        android:id="@+id/recycler_bid_gallery_s"
+        android:id="@+id/recycler_bid_s_gallery"
         android:layout_width="match_parent"
         android:layout_height="300dp"
         app:layout_constraintEnd_toEndOf="parent"
@@ -14,17 +14,17 @@
         app:layout_constraintTop_toTopOf="parent" />
 
     <Button
-        android:id="@+id/button_bid_back_s"
+        android:id="@+id/btn_bid_s_back"
         android:layout_width="30dp"
         android:layout_height="30dp"
         android:layout_marginStart="16dp"
         android:layout_marginTop="32dp"
         android:background="@drawable/ic_back"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="@+id/recycler_bid_gallery_s" />
+        app:layout_constraintTop_toTopOf="@+id/recycler_bid_s_gallery" />
 
     <TextView
-        android:id="@+id/text_bid_title_s"
+        android:id="@+id/text_bid_s_title"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
         android:layout_marginStart="16dp"
@@ -33,19 +33,19 @@
         android:text="@string/nike_air_mag"
         android:textColor="@color/black"
         android:textSize="20sp"
-        app:layout_constraintEnd_toStartOf="@+id/button_bid_eyes_on_s"
+        app:layout_constraintEnd_toStartOf="@+id/btn_bid_s_eyes_on"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/recycler_bid_gallery_s" />
+        app:layout_constraintTop_toBottomOf="@+id/recycler_bid_s_gallery" />
 
     <Button
-        android:id="@+id/button_bid_eyes_on_s"
+        android:id="@+id/btn_bid_s_eyes_on"
         android:layout_width="24dp"
         android:layout_height="24dp"
         android:layout_marginEnd="16dp"
         android:background="@drawable/ic_eyes_on"
-        app:layout_constraintBottom_toBottomOf="@+id/text_bid_title_s"
+        app:layout_constraintBottom_toBottomOf="@+id/text_bid_s_title"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintTop_toTopOf="@+id/text_bid_title_s" />
+        app:layout_constraintTop_toTopOf="@+id/text_bid_s_title" />
 
     <TextView
         android:id="@+id/textView7"
@@ -57,10 +57,10 @@
         android:textColor="@color/black_3f3a3a"
         android:textSize="16sp"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/text_bid_title_s" />
+        app:layout_constraintTop_toBottomOf="@+id/text_bid_s_title" />
 
     <TextView
-        android:id="@+id/text_bid_intro_s"
+        android:id="@+id/text_bid_s_intro"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
         android:layout_marginStart="16dp"
@@ -81,7 +81,7 @@
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="0.498"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/text_bid_intro_s" />
+        app:layout_constraintTop_toBottomOf="@+id/text_bid_s_intro" />
 
     <TextView
         android:id="@+id/textView13"
@@ -96,7 +96,7 @@
         app:layout_constraintTop_toBottomOf="@+id/view16" />
 
     <TextView
-        android:id="@+id/text_bid_condition_s"
+        android:id="@+id/text_bid_s_condition"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginStart="8dp"
@@ -130,7 +130,7 @@
         app:layout_constraintTop_toBottomOf="@+id/view17" />
 
     <TextView
-        android:id="@+id/text_bid_last_time_s"
+        android:id="@+id/text_bid_s_remaining_time"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
         android:layout_marginStart="8dp"
@@ -166,7 +166,7 @@
         app:layout_constraintTop_toBottomOf="@+id/view18" />
 
     <TextView
-        android:id="@+id/text_bid_seller_s"
+        android:id="@+id/text_bid_s_seller"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
         android:layout_marginStart="8dp"
@@ -190,7 +190,7 @@
         app:layout_constraintTop_toBottomOf="@+id/textView22" />
 
     <Button
-        android:id="@+id/button_bid_s"
+        android:id="@+id/btn_bid_s_place_bid"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
         android:layout_marginStart="16dp"

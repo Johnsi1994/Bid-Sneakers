@@ -17,7 +17,7 @@ public class User {
     private int mUnreadSold;
     private int mUnreadNobodyBid;
 
-    private ArrayList<Long> mChatRoomList;
+    private ArrayList<Long> mChatList;
 
     public User() {
 
@@ -33,10 +33,9 @@ public class User {
         mUnreadBought = 0;
         mUnreadSold = 0;
         mUnreadNobodyBid = 0;
-        mChatRoomList = new ArrayList<>();
+        mChatList = new ArrayList<>();
 
     }
-
 
     public String getName() {
         return mName;
@@ -134,12 +133,11 @@ public class User {
         this.mUnreadNobodyBid = unreadNobodyBid;
     }
 
-
-        public ArrayList<Long> getChatRoomList() {
-        return mChatRoomList;
+    public ArrayList<Long> getChatList() {
+        return mChatList;
     }
 
-    public void setChatRoomList(ArrayList<Long> chatRoomList) {
-        mChatRoomList = chatRoomList;
+    public void setChatList(ArrayList<Long> chatList) {
+        mChatList = chatList;
     }
 }

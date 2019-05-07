@@ -93,4 +93,22 @@
     <string name="edit_user_name_hint">請輸入使用者名稱</string>
     <string name="placeholder_text_content">到底甚麼時候要面交啦</string>
 
+
+    <string name="bid_finish">競標結束</string>
+
+    <!--Firebase-->
+    <string name="firebase_products">products</string>
+    <string name="firebase_chatrooms">chatrooms</string>
+    <string name="firebase_users">users</string>
+    <string name="firebase_auction_condition">auctionCondition</string>
+    <string name="firebase_product_auction_condition">finish</string>
+
+    <!--timer-->
+    <string name="timer_day"> 天 </string>
+    <string name="timer_hour"> 時 </string>
+    <string name="timer_minute"> 分 </string>
+    <string name="timer_second"> 秒 </string>
+    <string name="place_bid">我要出價</string>
+    <string name="already_placed_bid">已經出過價嘍~~</string>
+
 </resources>

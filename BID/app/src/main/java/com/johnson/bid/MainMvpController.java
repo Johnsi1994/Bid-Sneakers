@@ -352,6 +352,7 @@ public class MainMvpController {
         mMainPresenter.setBiddingDetailPresenter(mBiddingDetailPresenter);
         biddingDetailFragment.setPresenter(mMainPresenter);
         biddingDetailFragment.setAuctionType(auctionType);
+
     }
 
     void createSellingView(String auctionType, Product product) {

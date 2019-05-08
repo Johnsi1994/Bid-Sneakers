@@ -15,6 +15,7 @@ import android.view.ViewGroup;
 import com.johnson.bid.MainActivity;
 import com.johnson.bid.R;
 import com.johnson.bid.data.Product;
+import com.johnson.bid.util.Constants;
 import com.johnson.bid.util.UserManager;
 
 import java.util.ArrayList;
@@ -90,6 +91,7 @@ public class BiddingDetailFragment extends Fragment implements BiddingDetailCont
 
     @Override
     public void showBiddingUi(Product product) {
+
         if (mBiddingDetailAdapter == null) {
             mBiddingDetailAdapter = new BiddingDetailAdapter(mPresenter, (MainActivity) getActivity(), mAuctionType);
         }

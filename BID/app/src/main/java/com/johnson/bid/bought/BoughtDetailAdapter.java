@@ -10,7 +10,6 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.TextView;
-import android.widget.Toast;
 
 import com.google.firebase.firestore.QueryDocumentSnapshot;
 import com.johnson.bid.Bid;
@@ -18,6 +17,7 @@ import com.johnson.bid.MainActivity;
 import com.johnson.bid.R;
 import com.johnson.bid.data.ChatRoom;
 import com.johnson.bid.data.Product;
+import com.johnson.bid.util.Constants;
 import com.johnson.bid.util.Firebase;
 import com.johnson.bid.util.UserManager;
 
@@ -25,7 +25,6 @@ import java.text.SimpleDateFormat;
 import java.util.Date;
 
 import static com.johnson.bid.MainMvpController.BOUGHTDETAIL;
-import static com.johnson.bid.MainMvpController.SOLDDETAIL;
 
 
 public class BoughtDetailAdapter extends RecyclerView.Adapter {
@@ -34,7 +33,7 @@ public class BoughtDetailAdapter extends RecyclerView.Adapter {
     private LinearSnapHelper mLinearSnapHelper;
     private MainActivity mMainActivity;
     private Product mProduct;
-    private boolean isOpening = false;
+    private boolean isConnecting = false;
 
     public BoughtDetailAdapter(BoughtDetailContract.Presenter presenter, MainActivity mainActivity) {
         mPresenter = presenter;
@@ -53,14 +52,15 @@ public class BoughtDetailAdapter extends RecyclerView.Adapter {
 
         LinearLayoutManager layoutManager = new LinearLayoutManager(
                 Bid.getAppContext(), LinearLayoutManager.HORIZONTAL, false);
-        BoughtDetailGalleryAdapter boughtDetailGalleryAdapter = new BoughtDetailGalleryAdapter(mPresenter, mProduct.getImages());
+        BoughtDetailGalleryAdapter boughtDetailGalleryAdapter = new BoughtDetailGalleryAdapter(mProduct.getImages());
 
         if (mLinearSnapHelper == null) {
             mLinearSnapHelper = new LinearSnapHelper();
-            mLinearSnapHelper.attachToRecyclerView(((BoughtDetailViewHolder) holder).getGalleryRecycler());
+            mLinearSnapHelper.attachToRecyclerView(((BoughtDetailViewHolder) holder).getRecyclerGallery());
         }
-        ((BoughtDetailViewHolder) holder).getGalleryRecycler().setAdapter(boughtDetailGalleryAdapter);
-        ((BoughtDetailViewHolder) holder).getGalleryRecycler().setLayoutManager(layoutManager);
+
+        ((BoughtDetailViewHolder) holder).getRecyclerGallery().setAdapter(boughtDetailGalleryAdapter);
+        ((BoughtDetailViewHolder) holder).getRecyclerGallery().setLayoutManager(layoutManager);
 
         bindBoughtDetailViewHolder((BoughtDetailViewHolder) holder, mProduct);
 
@@ -73,124 +73,122 @@ public class BoughtDetailAdapter extends RecyclerView.Adapter {
 
     private class BoughtDetailViewHolder extends RecyclerView.ViewHolder {
 
-        private Button mBackBtn;
-        private RecyclerView mGalleryRecycler;
-        private TextView mTitleText;
-        private TextView mIntroText;
-        private TextView mConditionText;
-        private TextView mAuctionTypeText;
-        private TextView mExpiredText;
-        private TextView mPriceText;
-        private TextView mSellerText;
-        private Button mConnectSellerBtn;
+        private Button mBtnBack;
+        private RecyclerView mRecyclerGallery;
+        private TextView mTextTitle;
+        private TextView mTextIntro;
+        private TextView mTextCondition;
+        private TextView mTextAuctionType;
+        private TextView mTextExpired;
+        private TextView mTextPrice;
+        private TextView mTextSeller;
+        private Button mBtnConnectSeller;
 
         public BoughtDetailViewHolder(@NonNull View itemView) {
             super(itemView);
 
-            mBackBtn = itemView.findViewById(R.id.button_bought_back);
-            mGalleryRecycler = itemView.findViewById(R.id.recycler_bought_gallery);
-            mTitleText = itemView.findViewById(R.id.text_bought_title);
-            mIntroText = itemView.findViewById(R.id.text_bought_intro);
-            mConditionText = itemView.findViewById(R.id.text_bought_condition);
-            mAuctionTypeText = itemView.findViewById(R.id.text_bought_auction_type);
-            mExpiredText = itemView.findViewById(R.id.text_bought_expired);
-            mPriceText = itemView.findViewById(R.id.text_bought_price);
-            mSellerText = itemView.findViewById(R.id.text_bought_seller);
-            mConnectSellerBtn = itemView.findViewById(R.id.button_bought_connect_seller);
+            mBtnBack = itemView.findViewById(R.id.btn_bought_back);
+            mRecyclerGallery = itemView.findViewById(R.id.recycler_bought_gallery);
+            mTextTitle = itemView.findViewById(R.id.text_bought_title);
+            mTextIntro = itemView.findViewById(R.id.text_bought_intro);
+            mTextCondition = itemView.findViewById(R.id.text_bought_condition);
+            mTextAuctionType = itemView.findViewById(R.id.text_bought_auction_type);
+            mTextExpired = itemView.findViewById(R.id.text_bought_expired);
+            mTextPrice = itemView.findViewById(R.id.text_bought_price);
+            mTextSeller = itemView.findViewById(R.id.text_bought_seller);
+            mBtnConnectSeller = itemView.findViewById(R.id.btn_bought_connect_seller);
 
-            mBackBtn.setOnClickListener(v ->
+            mBtnBack.setOnClickListener(v ->
                     mMainActivity.onBackPressed()
             );
 
-            mConnectSellerBtn.setOnClickListener(v -> {
+            mBtnConnectSeller.setOnClickListener(v -> {
 
-                if (!isOpening) {
-                    isOpening = true;
-                    Firebase.getInstance().getFirestore().collection("chatrooms")
-                            .whereEqualTo("sellerId", UserManager.getInstance().getUser().getId())
-                            .whereEqualTo("buyerId", mProduct.getSellerId())
+                if (!isConnecting) {
+                    isConnecting = true;
+                    Firebase.getInstance().getFirestore().collection(mMainActivity.getString(R.string.firebase_chatrooms))
+                            .whereEqualTo(mMainActivity.getString(R.string.firebase_field_seller_id), UserManager.getInstance().getUser().getId())
+                            .whereEqualTo(mMainActivity.getString(R.string.firebase_field_buyer_id), mProduct.getSellerId())
                             .get()
                             .addOnCompleteListener(task -> {
                                 if (task.isSuccessful()) {
                                     if (task.getResult().size() > 0) {
-                                        Log.d("chattest", "Size 1 : " + task.getResult().size());
                                         for (QueryDocumentSnapshot document : task.getResult()) {
                                             openChat(document);
-                                            isOpening = false;
+                                            isConnecting = false;
                                         }
                                     } else {
 
-                                        Firebase.getInstance().getFirestore().collection("chatrooms")
-                                                .whereEqualTo("buyerId", UserManager.getInstance().getUser().getId())
-                                                .whereEqualTo("sellerId", mProduct.getSellerId())
+                                        Firebase.getInstance().getFirestore().collection(mMainActivity.getString(R.string.firebase_chatrooms))
+                                                .whereEqualTo(mMainActivity.getString(R.string.firebase_field_buyer_id), UserManager.getInstance().getUser().getId())
+                                                .whereEqualTo(mMainActivity.getString(R.string.firebase_field_seller_id), mProduct.getSellerId())
                                                 .get()
                                                 .addOnCompleteListener(task1 -> {
                                                     if (task1.isSuccessful()) {
-                                                        Log.d("chattest", "Size 2 : " + task1.getResult().size());
                                                         for (QueryDocumentSnapshot document : task1.getResult()) {
                                                             openChat(document);
-                                                            isOpening = false;
+                                                            isConnecting = false;
                                                         }
                                                     }
                                                 });
                                     }
                                 } else {
-                                    Log.d("Johnsi", "Error getting documents: ", task.getException());
+                                    Log.d(Constants.TAG, "Error getting documents: ", task.getException());
                                 }
                             });
                 }
             });
         }
 
-        private RecyclerView getGalleryRecycler() {
-            return mGalleryRecycler;
+        private RecyclerView getRecyclerGallery() {
+            return mRecyclerGallery;
         }
 
-        private TextView getTitleText() {
-            return mTitleText;
+        private TextView getTextTitle() {
+            return mTextTitle;
         }
 
-        private TextView getIntroText() {
-            return mIntroText;
+        private TextView getTextIntro() {
+            return mTextIntro;
         }
 
-        private TextView getConditionText() {
-            return mConditionText;
+        private TextView getTextCondition() {
+            return mTextCondition;
         }
 
-        private TextView getAuctionTypeText() {
-            return mAuctionTypeText;
+        private TextView getTextAuctionType() {
+            return mTextAuctionType;
         }
 
-        private TextView getExpiredText() {
-            return mExpiredText;
+        private TextView getTextExpired() {
+            return mTextExpired;
         }
 
-        private TextView getPriceText() {
-            return mPriceText;
+        private TextView getTextPrice() {
+            return mTextPrice;
         }
 
-        private TextView getSellerText() {
-            return mSellerText;
+        private TextView getTextSeller() {
+            return mTextSeller;
         }
 
     }
 
     private void bindBoughtDetailViewHolder(BoughtDetailViewHolder holder, Product product) {
 
-        holder.getTitleText().setText(product.getTitle());
-        holder.getIntroText().setText(product.getIntroduction());
-        holder.getConditionText().setText(product.getCondition());
-        holder.getPriceText().setText(String.valueOf(product.getCurrentPrice()));
-        holder.getAuctionTypeText().setText(product.getAuctionType());
-        holder.getExpiredText().setText(getDateToString(product.getExpired()));
-        holder.getSellerText().setText(product.getSellerName());
+        holder.getTextTitle().setText(product.getTitle());
+        holder.getTextIntro().setText(product.getIntroduction());
+        holder.getTextCondition().setText(product.getCondition());
+        holder.getTextPrice().setText(String.valueOf(product.getCurrentPrice()));
+        holder.getTextAuctionType().setText(product.getAuctionType());
+        holder.getTextExpired().setText(getDateToString(product.getExpired()));
+        holder.getTextSeller().setText(product.getSellerName());
 
     }
 
     private String getDateToString(long millSeconds) {
         Date d = new Date(millSeconds);
-        SimpleDateFormat sf = new SimpleDateFormat("MM 月 dd 日 HH 時 mm 分");
+        SimpleDateFormat sf = new SimpleDateFormat(mMainActivity.getString(R.string.simple_date_format));
         return sf.format(d);
     }
 
@@ -204,6 +202,5 @@ public class BoughtDetailAdapter extends RecyclerView.Adapter {
         mPresenter.openChatContent(document.toObject(ChatRoom.class), BOUGHTDETAIL);
         mPresenter.showToolbar();
         mPresenter.updateToolbar(document.toObject(ChatRoom.class).getSellerName());
-
     }
 }

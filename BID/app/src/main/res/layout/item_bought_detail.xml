@@ -14,7 +14,7 @@
         app:layout_constraintTop_toTopOf="parent" />
 
     <Button
-        android:id="@+id/button_bought_back"
+        android:id="@+id/btn_bought_back"
         android:layout_width="30dp"
         android:layout_height="30dp"
         android:layout_marginStart="16dp"
@@ -254,7 +254,7 @@
         app:layout_constraintTop_toBottomOf="@+id/textView66" />
 
     <Button
-        android:id="@+id/button_bought_connect_seller"
+        android:id="@+id/btn_bought_connect_seller"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
         android:layout_marginStart="16dp"

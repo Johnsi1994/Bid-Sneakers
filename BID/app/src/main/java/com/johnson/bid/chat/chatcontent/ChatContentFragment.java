@@ -94,6 +94,7 @@ public class ChatContentFragment extends Fragment implements ChatContentContract
             mPresenter.updateToolbar("聊聊");
         } else {
             mPresenter.hideToolbar();
+            mPresenter.updateToolbar("聊聊");
         }
 
     }

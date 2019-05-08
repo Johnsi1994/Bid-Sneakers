@@ -14,14 +14,11 @@ import java.util.ArrayList;
 
 public class BoughtDetailGalleryAdapter extends RecyclerView.Adapter {
 
-    private BoughtDetailContract.Presenter mPresenter;
     private ArrayList<String> mImages;
 
-    public BoughtDetailGalleryAdapter(BoughtDetailContract.Presenter presenter, ArrayList<String> images) {
-        mPresenter = presenter;
+    public BoughtDetailGalleryAdapter(ArrayList<String> images) {
         mImages = images;
     }
-
 
     @NonNull
     @Override

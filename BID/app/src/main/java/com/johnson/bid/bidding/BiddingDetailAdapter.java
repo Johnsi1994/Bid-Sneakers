@@ -5,6 +5,7 @@ import android.support.annotation.NonNull;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.LinearSnapHelper;
 import android.support.v7.widget.RecyclerView;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -15,6 +16,7 @@ import com.johnson.bid.Bid;
 import com.johnson.bid.MainActivity;
 import com.johnson.bid.R;
 import com.johnson.bid.data.Product;
+import com.johnson.bid.util.Constants;
 import com.johnson.bid.util.UserManager;
 
 import java.util.ArrayList;
@@ -37,6 +39,7 @@ public class BiddingDetailAdapter extends RecyclerView.Adapter {
         mPresenter = presenter;
         mMainActivity = mainActivity;
         mAuctionType = auctionType;
+        Log.d(Constants.TAG, "auctionType : " + auctionType);
     }
 
     @NonNull
@@ -50,7 +53,6 @@ public class BiddingDetailAdapter extends RecyclerView.Adapter {
             return new SealedViewHolder(LayoutInflater.from(viewGroup.getContext())
                     .inflate(R.layout.item_bidding_detail_s, viewGroup, false));
         }
-
     }
 
     @Override

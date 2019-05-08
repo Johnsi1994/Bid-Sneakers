@@ -17,20 +17,15 @@ public class BoughtDetailPresenter implements BoughtDetailContract.Presenter{
     }
 
     @Override
-    public void start() {
-
-    }
+    public void start() {}
 
     @Override
-    public void showToolbarAndBottomNavigation() {
-
-    }
+    public void showToolbarAndBottomNavigation() {}
 
     @Override
     public void loadBoughtDetailData() {
 
         mBoughtView.showBoughtDetailUi(mProduct);
-
     }
 
     @Override
@@ -39,17 +34,11 @@ public class BoughtDetailPresenter implements BoughtDetailContract.Presenter{
     }
 
     @Override
-    public void openChatContent(ChatRoom chatRoom, String from) {
-
-    }
+    public void openChatContent(ChatRoom chatRoom, String from) {}
 
     @Override
-    public void showToolbar() {
-
-    }
+    public void showToolbar() {}
 
     @Override
-    public void updateToolbar(String name) {
-
-    }
+    public void updateToolbar(String name) {}
 }

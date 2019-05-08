@@ -100,8 +100,8 @@
     <string name="firebase_products">products</string>
     <string name="firebase_chatrooms">chatrooms</string>
     <string name="firebase_users">users</string>
-    <string name="firebase_auction_condition">auctionCondition</string>
-    <string name="firebase_product_auction_condition">finish</string>
+    <string name="firebase_field_auction_condition">auctionCondition</string>
+    <string name="firebase_auction_condition_finish">finish</string>
 
     <!--timer-->
     <string name="timer_day">天</string>
@@ -110,5 +110,8 @@
     <string name="timer_second">秒</string>
     <string name="place_bid">我要出價</string>
     <string name="already_placed_bid">已經出過價嘍~~</string>
+    <string name="firebase_field_seller_id">sellerId</string>
+    <string name="firebase_field_buyer_id">buyerId</string>
+    <string name="simple_date_format">MM 月 dd 日 HH 時 mm 分</string>
 
 </resources>

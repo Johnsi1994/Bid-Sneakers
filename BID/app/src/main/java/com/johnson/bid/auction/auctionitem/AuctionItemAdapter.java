@@ -20,6 +20,7 @@ import com.johnson.bid.data.ChatRoom;
 import com.johnson.bid.data.Product;
 import com.johnson.bid.data.User;
 import com.johnson.bid.util.CardViewImageOutlineProvider;
+import com.johnson.bid.util.Constants;
 import com.johnson.bid.util.Firebase;
 import com.johnson.bid.util.ImageManager;
 import com.johnson.bid.util.UserManager;
@@ -30,8 +31,6 @@ import static com.johnson.bid.MainMvpController.ENGLISH;
 import static com.johnson.bid.MainMvpController.SEALED;
 
 public class AuctionItemAdapter extends RecyclerView.Adapter {
-
-    private static final String TAG = "Johnsi";
 
     private static final int TYPE_LOADING = 0;
     private static final int TYPE_PRODUCT_ENGLISH = 0x01;
@@ -225,7 +224,7 @@ public class AuctionItemAdapter extends RecyclerView.Adapter {
                                 }
 
                             } else {
-                                Log.d(TAG, "Error getting documents ", task.getException());
+                                Log.d(Constants.TAG, "Error getting documents ", task.getException());
                             }
                         });
             }
@@ -352,7 +351,7 @@ public class AuctionItemAdapter extends RecyclerView.Adapter {
                                 }
 
                             } else {
-                                Log.d(TAG, "Error getting documents ", task.getException());
+                                Log.d(Constants.TAG, "Error getting documents ", task.getException());
                             }
                         });
 
@@ -406,9 +405,9 @@ public class AuctionItemAdapter extends RecyclerView.Adapter {
 
         Firebase.getInstance().getFirestore().collection(Bid.getAppContext().getString(R.string.firebase_products))
                 .document(String.valueOf(latestProduct.getProductId()))
-                .update(Bid.getAppContext().getString(R.string.firebase_auction_condition), Bid.getAppContext().getString(R.string.firebase_product_auction_condition))
-                .addOnSuccessListener(aVoid -> Log.d(TAG, "Product condition (finish) successfully updated!"))
-                .addOnFailureListener(e -> Log.w(TAG, "Product condition (finish) Error updating document", e));
+                .update(Bid.getAppContext().getString(R.string.firebase_field_auction_condition), Bid.getAppContext().getString(R.string.firebase_auction_condition_finish))
+                .addOnSuccessListener(aVoid -> Log.d(Constants.TAG, "Product condition (finish) successfully updated!"))
+                .addOnFailureListener(e -> Log.w(Constants.TAG, "Product condition (finish) Error updating document", e));
 
     }
 
@@ -440,7 +439,7 @@ public class AuctionItemAdapter extends RecyclerView.Adapter {
                             UserManager.getInstance().setHasUserDataChange(true);
 
                         } else {
-                            Log.d(TAG, "Error getting documents: ", task.getException());
+                            Log.d(Constants.TAG, "Error getting documents: ", task.getException());
                         }
                     });
 
@@ -467,7 +466,7 @@ public class AuctionItemAdapter extends RecyclerView.Adapter {
                             UserManager.getInstance().setHasUserDataChange(true);
 
                         } else {
-                            Log.d(TAG, "Error getting documents: ", task.getException());
+                            Log.d(Constants.TAG, "Error getting documents: ", task.getException());
                         }
                     });
         }
@@ -478,8 +477,8 @@ public class AuctionItemAdapter extends RecyclerView.Adapter {
         Firebase.getInstance().getFirestore().collection(Bid.getAppContext().getString(R.string.firebase_chatrooms))
                 .document(String.valueOf(chatRoom.getChatRoomId()))
                 .set(chatRoom)
-                .addOnSuccessListener(documentReference -> Log.d(TAG, "DocumentSnapshot added"))
-                .addOnFailureListener(e -> Log.w(TAG, "Error adding document", e));
+                .addOnSuccessListener(documentReference -> Log.d(Constants.TAG, "DocumentSnapshot added"))
+                .addOnFailureListener(e -> Log.w(Constants.TAG, "Error adding document", e));
 
     }
 

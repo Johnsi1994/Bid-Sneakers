@@ -20,7 +20,6 @@ public class BoughtDetailFragment extends Fragment implements BoughtDetailContra
 
     private BoughtDetailContract.Presenter mPresenter;
     private BoughtDetailAdapter mBoughtDetailAdapter;
-    private Product mProduct;
 
     public BoughtDetailFragment() {}
 
@@ -52,7 +51,6 @@ public class BoughtDetailFragment extends Fragment implements BoughtDetailContra
         super.onViewCreated(view, savedInstanceState);
 
         mPresenter.loadBoughtDetailData();
-
     }
 
     @Override

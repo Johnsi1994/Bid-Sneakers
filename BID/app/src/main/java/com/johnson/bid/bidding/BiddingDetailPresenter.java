@@ -7,13 +7,13 @@ import com.google.firebase.firestore.DocumentSnapshot;
 import com.johnson.bid.Bid;
 import com.johnson.bid.R;
 import com.johnson.bid.data.Product;
+import com.johnson.bid.util.Constants;
 import com.johnson.bid.util.Firebase;
 
 import static com.google.common.base.Preconditions.checkNotNull;
 
 public class BiddingDetailPresenter implements BiddingDetailContract.Presenter {
 
-    private static final String TAG = "Johnsi";
     private final BiddingDetailContract.View mBiddingView;
     private Product mProduct;
 
@@ -57,10 +57,8 @@ public class BiddingDetailPresenter implements BiddingDetailContract.Presenter {
                         mProduct = document.toObject(Product.class);
                         loadProductData();
                     } else {
-                        Log.d(TAG, "Error getting documents ", task.getException());
+                        Log.d(Constants.TAG, "Error getting documents ", task.getException());
                     }
                 });
-
     }
-
 }

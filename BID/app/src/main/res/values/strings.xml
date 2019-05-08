@@ -100,8 +100,18 @@
     <string name="firebase_products">products</string>
     <string name="firebase_chatrooms">chatrooms</string>
     <string name="firebase_users">users</string>
+
+    <string name="firebase_field_auction_type">auctionType</string>
+    <string name="firebase_auction_type_sealed">封閉拍賣</string>
+    <string name="firebase_auction_type_English">一般拍賣</string>
+
     <string name="firebase_field_auction_condition">auctionCondition</string>
+    <string name="firebase_auction_condition_bidding">bidding</string>
     <string name="firebase_auction_condition_finish">finish</string>
+
+    <string name="firebase_field_start_time">startTime</string>
+
+
 
     <!--timer-->
     <string name="timer_day">天</string>
@@ -118,5 +128,7 @@
     <string name="toolbar_title_eyes_on">關注</string>
     <string name="tablayout_title_English_auction">一般拍賣</string>
     <string name="tablayout_title_sealed_auction">封閉拍賣</string>
+
+
 
 </resources>

@@ -42,10 +42,10 @@ public class AuctionItemPresenter implements AuctionItemContract.Presenter {
 
         mProductList = new ArrayList<>();
 
-        Firebase.getInstance().getFirestore().collection("products")
-                .whereEqualTo("auctionType", "一般拍賣")
-                .whereEqualTo("auctionCondition", "bidding")
-                .orderBy("startTime", Query.Direction.DESCENDING)
+        Firebase.getInstance().getFirestore().collection(Bid.getAppContext().getString(R.string.firebase_products))
+                .whereEqualTo(Bid.getAppContext().getString(R.string.firebase_field_auction_type), Bid.getAppContext().getString(R.string.firebase_auction_type_English))
+                .whereEqualTo(Bid.getAppContext().getString(R.string.firebase_field_auction_condition), Bid.getAppContext().getString(R.string.firebase_auction_condition_bidding))
+                .orderBy(Bid.getAppContext().getString(R.string.firebase_field_start_time), Query.Direction.DESCENDING)
                 .get()
                 .addOnCompleteListener(task -> {
                     if (task.isSuccessful()) {
@@ -55,10 +55,9 @@ public class AuctionItemPresenter implements AuctionItemContract.Presenter {
 
                         setEnglishData(mProductList);
                     } else {
-                        Log.d("Johnsi", "Error getting documents: ", task.getException());
+                        Log.d(Constants.TAG, "Error getting documents: ", task.getException());
                     }
                 });
-
     }
 
     @Override
@@ -66,16 +65,15 @@ public class AuctionItemPresenter implements AuctionItemContract.Presenter {
         mAuctionView.showAuctionUi(productList);
     }
 
-
     @Override
     public void loadSealedData() {
 
         mProductList = new ArrayList<>();
 
-        Firebase.getInstance().getFirestore().collection("products")
-                .whereEqualTo("auctionType", "封閉拍賣")
-                .whereEqualTo("auctionCondition", "bidding")
-                .orderBy("startTime", Query.Direction.DESCENDING)
+        Firebase.getInstance().getFirestore().collection(Bid.getAppContext().getString(R.string.firebase_products))
+                .whereEqualTo(Bid.getAppContext().getString(R.string.firebase_field_auction_type), Bid.getAppContext().getString(R.string.firebase_auction_type_sealed))
+                .whereEqualTo(Bid.getAppContext().getString(R.string.firebase_field_auction_condition), Bid.getAppContext().getString(R.string.firebase_auction_condition_bidding))
+                .orderBy(Bid.getAppContext().getString(R.string.firebase_field_start_time), Query.Direction.DESCENDING)
                 .get()
                 .addOnCompleteListener(task -> {
                     if (task.isSuccessful()) {
@@ -85,10 +83,9 @@ public class AuctionItemPresenter implements AuctionItemContract.Presenter {
 
                         setSealedData(mProductList);
                     } else {
-                        Log.d("Johnsi", "Error getting documents: ", task.getException());
+                        Log.d(Constants.TAG, "Error getting documents: ", task.getException());
                     }
                 });
-
     }
 
     @Override

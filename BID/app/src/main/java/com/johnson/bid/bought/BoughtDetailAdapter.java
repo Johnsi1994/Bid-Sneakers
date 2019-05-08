@@ -26,14 +26,12 @@ import java.util.Date;
 
 import static com.johnson.bid.MainMvpController.BOUGHTDETAIL;
 
-
 public class BoughtDetailAdapter extends RecyclerView.Adapter {
 
     private BoughtDetailContract.Presenter mPresenter;
     private LinearSnapHelper mLinearSnapHelper;
     private MainActivity mMainActivity;
     private Product mProduct;
-    private boolean isConnecting = false;
 
     public BoughtDetailAdapter(BoughtDetailContract.Presenter presenter, MainActivity mainActivity) {
         mPresenter = presenter;
@@ -63,7 +61,6 @@ public class BoughtDetailAdapter extends RecyclerView.Adapter {
         ((BoughtDetailViewHolder) holder).getRecyclerGallery().setLayoutManager(layoutManager);
 
         bindBoughtDetailViewHolder((BoughtDetailViewHolder) holder, mProduct);
-
     }
 
     @Override
@@ -102,42 +99,10 @@ public class BoughtDetailAdapter extends RecyclerView.Adapter {
                     mMainActivity.onBackPressed()
             );
 
-            mBtnConnectSeller.setOnClickListener(v -> {
+            mBtnConnectSeller.setOnClickListener(v ->
 
-                if (!isConnecting) {
-                    isConnecting = true;
-                    Firebase.getInstance().getFirestore().collection(mMainActivity.getString(R.string.firebase_chatrooms))
-                            .whereEqualTo(mMainActivity.getString(R.string.firebase_field_seller_id), UserManager.getInstance().getUser().getId())
-                            .whereEqualTo(mMainActivity.getString(R.string.firebase_field_buyer_id), mProduct.getSellerId())
-                            .get()
-                            .addOnCompleteListener(task -> {
-                                if (task.isSuccessful()) {
-                                    if (task.getResult().size() > 0) {
-                                        for (QueryDocumentSnapshot document : task.getResult()) {
-                                            openChat(document);
-                                            isConnecting = false;
-                                        }
-                                    } else {
-
-                                        Firebase.getInstance().getFirestore().collection(mMainActivity.getString(R.string.firebase_chatrooms))
-                                                .whereEqualTo(mMainActivity.getString(R.string.firebase_field_buyer_id), UserManager.getInstance().getUser().getId())
-                                                .whereEqualTo(mMainActivity.getString(R.string.firebase_field_seller_id), mProduct.getSellerId())
-                                                .get()
-                                                .addOnCompleteListener(task1 -> {
-                                                    if (task1.isSuccessful()) {
-                                                        for (QueryDocumentSnapshot document : task1.getResult()) {
-                                                            openChat(document);
-                                                            isConnecting = false;
-                                                        }
-                                                    }
-                                                });
-                                    }
-                                } else {
-                                    Log.d(Constants.TAG, "Error getting documents: ", task.getException());
-                                }
-                            });
-                }
-            });
+                mPresenter.chatWithSeller()
+            );
         }
 
         private RecyclerView getRecyclerGallery() {
@@ -171,7 +136,6 @@ public class BoughtDetailAdapter extends RecyclerView.Adapter {
         private TextView getTextSeller() {
             return mTextSeller;
         }
-
     }
 
     private void bindBoughtDetailViewHolder(BoughtDetailViewHolder holder, Product product) {
@@ -183,7 +147,6 @@ public class BoughtDetailAdapter extends RecyclerView.Adapter {
         holder.getTextAuctionType().setText(product.getAuctionType());
         holder.getTextExpired().setText(getDateToString(product.getExpired()));
         holder.getTextSeller().setText(product.getSellerName());
-
     }
 
     private String getDateToString(long millSeconds) {
@@ -195,12 +158,5 @@ public class BoughtDetailAdapter extends RecyclerView.Adapter {
     public void updateData(Product product) {
         mProduct = product;
         notifyDataSetChanged();
-    }
-
-    private void openChat(QueryDocumentSnapshot document) {
-
-        mPresenter.openChatContent(document.toObject(ChatRoom.class), BOUGHTDETAIL);
-        mPresenter.showToolbar();
-        mPresenter.updateToolbar(document.toObject(ChatRoom.class).getSellerName());
     }
 }

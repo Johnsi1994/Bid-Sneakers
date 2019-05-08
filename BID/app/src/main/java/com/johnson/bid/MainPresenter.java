@@ -227,6 +227,11 @@ public class MainPresenter implements MainContract.Presenter, AuctionContract.Pr
     }
 
     @Override
+    public void chatWithSeller() {
+        mBoughtDetailPresenter.chatWithSeller();
+    }
+
+    @Override
     public void hideToolbar() {
         mMainView.hideToolbarUi();
     }

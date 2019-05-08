@@ -18,9 +18,7 @@ public class AuctionPresenter implements AuctionContract.Presenter {
     }
 
     @Override
-    public void start() {
-
-    }
+    public void start() {}
 
     @Override
     public AuctionItemFragment findEnglishAuction() {
@@ -33,23 +31,15 @@ public class AuctionPresenter implements AuctionContract.Presenter {
     }
 
     @Override
-    public void openGalleryDialog(String from) {
-
-    }
+    public void openGalleryDialog(String from) {}
 
     @Override
-    public void openEyesOn(String toolbarTitle) {
-
-    }
+    public void openEyesOn(String toolbarTitle) {}
 
     @Override
-    public void openSearchDialog() {
-
-    }
+    public void openSearchDialog() {}
 
     @Override
-    public void hideBottomNavigation() {
-
-    }
+    public void hideBottomNavigation() {}
 
 }

@@ -14,6 +14,7 @@ import android.view.ViewGroup;
 import com.johnson.bid.MainMvpController;
 import com.johnson.bid.R;
 import com.johnson.bid.data.Product;
+import com.johnson.bid.util.UserManager;
 
 import java.util.ArrayList;
 
@@ -29,7 +30,8 @@ public class AuctionItemFragment extends Fragment implements AuctionItemContract
 
     private String mAuctionType;
 
-    public AuctionItemFragment() {}
+    public AuctionItemFragment() {
+    }
 
     public static AuctionItemFragment newInstance() {
         return new AuctionItemFragment();
@@ -91,6 +93,59 @@ public class AuctionItemFragment extends Fragment implements AuctionItemContract
     @Override
     public void showAuctionUi(ArrayList<Product> productList) {
         mAuctionItemAdapter.updateData(productList);
+    }
+
+    @Override
+    public void showSellingFailUi(Product product, String from) {
+
+        mPresenter.removeSellingProductId(product.getProductId(), from);
+        mPresenter.addNobodyBidProductId(product.getProductId(), from);
+        mPresenter.increaseUnreadNobodyBid(from);
+
+        mPresenter.loadMySellingData();
+        mPresenter.loadNobodyBidData();
+        mPresenter.loadNobodyBidBadgeData();
+    }
+
+    @Override
+    public void showSoldSuccessUi(Product product, String from) {
+
+        mPresenter.removeSellingProductId(product.getProductId(), from);
+        mPresenter.addSoldProductId(product.getProductId(), from);
+        mPresenter.increaseUnreadSold(from);
+
+        mPresenter.loadMySellingData();
+        mPresenter.loadMySoldData();
+        mPresenter.loadSoldBadgeData();
+
+        if (!UserManager.getInstance().hasChatRoom(product.getHighestUserId())) {
+            mPresenter.createChatRoom(product, from);
+        }
+    }
+
+    @Override
+    public void showBoughtSuccessUi(Product product, String from) {
+        mPresenter.removeBiddingProductId(product.getProductId(), from);
+        mPresenter.addBoughtProductId(product.getProductId(), from);
+        mPresenter.increaseUnreadBought(from);
+
+        mPresenter.loadMyBiddingData();
+        mPresenter.loadMyBoughtData();
+        mPresenter.loadBoughtBadgeData();
+
+        if (!UserManager.getInstance().hasChatRoom(product.getSellerId())) {
+            mPresenter.createChatRoom(product, from);
+        }
+    }
+
+    @Override
+    public void showMyBiddingData() {
+        mPresenter.loadMyBiddingData();
+    }
+
+    @Override
+    public void showTradeBadge() {
+        mPresenter.updateTradeBadge();
     }
 
     @Override

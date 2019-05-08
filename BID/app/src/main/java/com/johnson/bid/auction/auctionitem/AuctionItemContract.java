@@ -10,6 +10,16 @@ public interface AuctionItemContract {
 
     interface View extends BaseView<Presenter> {
         void showAuctionUi(ArrayList<Product> productList);
+
+        void showSellingFailUi(Product product, String from);
+
+        void showSoldSuccessUi(Product product, String from);
+
+        void showBoughtSuccessUi(Product product, String from);
+
+        void showMyBiddingData();
+
+        void showTradeBadge();
     }
 
     interface Presenter extends BasePresenter {
@@ -61,6 +71,10 @@ public interface AuctionItemContract {
         void increaseUnreadSold(String from);
 
         void increaseUnreadBought(String from);
+
+        void productResult(Product product, String from);
+
+        void createChatRoom(Product product, String from);
 
 
     }

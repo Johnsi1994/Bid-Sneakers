@@ -23,15 +23,14 @@ public class AuctionFragment extends Fragment implements AuctionContract.View {
 
     private TabLayout mTabLayout;
     private ViewPager mViewPager;
-    private FloatingActionButton mPostFloatingActionButton;
-    private FloatingActionButton mSearchFloatingActionButton;
-    private FloatingActionButton mEyesOnFloatingActionButton;
-    private FloatingActionButton mMenuFloatingActionButton;
+    private FloatingActionButton mFabPost;
+    private FloatingActionButton mFabSearch;
+    private FloatingActionButton mFabEyesOn;
+    private FloatingActionButton mFabMenu;
 
-    private boolean isFABOpen = false;
+    private boolean isFabOpen = false;
 
-    public AuctionFragment() {
-    }
+    public AuctionFragment() {}
 
     public static AuctionFragment newInstance() {
         return new AuctionFragment();
@@ -52,31 +51,31 @@ public class AuctionFragment extends Fragment implements AuctionContract.View {
         mTabLayout = root.findViewById(R.id.tab_center);
         mViewPager = root.findViewById(R.id.viewpager_center);
 
-        mMenuFloatingActionButton = root.findViewById(R.id.fab_menu);
-        mPostFloatingActionButton = root.findViewById(R.id.fab_post);
-        mSearchFloatingActionButton = root.findViewById(R.id.fab_search);
-        mEyesOnFloatingActionButton = root.findViewById(R.id.fab_eyes_on);
+        mFabMenu = root.findViewById(R.id.fab_menu);
+        mFabPost = root.findViewById(R.id.fab_post);
+        mFabSearch = root.findViewById(R.id.fab_search);
+        mFabEyesOn = root.findViewById(R.id.fab_eyes_on);
 
-        mMenuFloatingActionButton.setOnClickListener(v -> {
-            if (isFABOpen) {
+        mFabMenu.setOnClickListener(v -> {
+            if (isFabOpen) {
                 closeFABMenu();
             } else {
                 showFABMenu();
             }
         });
 
-        mPostFloatingActionButton.setOnClickListener(v -> {
+        mFabPost.setOnClickListener(v -> {
             closeFABMenu();
             mPresenter.openGalleryDialog(AUCTION);
         });
 
 
-        mEyesOnFloatingActionButton.setOnClickListener(v -> {
+        mFabEyesOn.setOnClickListener(v -> {
             closeFABMenu();
-            mPresenter.openEyesOn("關注");
+            mPresenter.openEyesOn(getString(R.string.toolbar_title_eyes_on));
         });
 
-        mSearchFloatingActionButton.setOnClickListener(v -> {
+        mFabSearch.setOnClickListener(v -> {
             closeFABMenu();
             mPresenter.openSearchDialog();
         });
@@ -100,19 +99,18 @@ public class AuctionFragment extends Fragment implements AuctionContract.View {
     }
 
     private void showFABMenu() {
-        isFABOpen = true;
-        mPostFloatingActionButton.animate().translationY(-getResources().getDimension(R.dimen.standard_70));
-        mSearchFloatingActionButton.animate().translationY(-getResources().getDimension(R.dimen.standard_140));
-        mEyesOnFloatingActionButton.animate().translationY(-getResources().getDimension(R.dimen.standard_210));
-        mMenuFloatingActionButton.animate().rotationBy(180);
+        isFabOpen = true;
+        mFabPost.animate().translationY(-getResources().getDimension(R.dimen.standard_70));
+        mFabSearch.animate().translationY(-getResources().getDimension(R.dimen.standard_140));
+        mFabEyesOn.animate().translationY(-getResources().getDimension(R.dimen.standard_210));
+        mFabMenu.animate().rotationBy(180);
     }
 
     private void closeFABMenu() {
-        isFABOpen = false;
-        mPostFloatingActionButton.animate().translationY(0);
-        mSearchFloatingActionButton.animate().translationY(0);
-        mEyesOnFloatingActionButton.animate().translationY(0);
-        mMenuFloatingActionButton.animate().rotationBy(180);
+        isFabOpen = false;
+        mFabPost.animate().translationY(0);
+        mFabSearch.animate().translationY(0);
+        mFabEyesOn.animate().translationY(0);
+        mFabMenu.animate().rotationBy(180);
     }
-
 }

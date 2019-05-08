@@ -5,6 +5,9 @@ import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentPagerAdapter;
 
+import com.johnson.bid.Bid;
+import com.johnson.bid.R;
+
 import static com.johnson.bid.MainMvpController.ENGLISH;
 import static com.johnson.bid.MainMvpController.SEALED;
 
@@ -12,7 +15,8 @@ public class AuctionAdapter extends FragmentPagerAdapter {
 
     private AuctionContract.Presenter mPresenter;
     private String[] mAuctionTypes = new String[]{ENGLISH, SEALED};
-    private String[] mTitle = new String[]{"一般拍賣", "封閉拍賣"};
+    private String[] mTitle = new String[]{Bid.getAppContext().getString(R.string.tablayout_title_English_auction),
+            Bid.getAppContext().getString(R.string.tablayout_title_sealed_auction)};
 
     public AuctionAdapter(FragmentManager fm, AuctionContract.Presenter presenter) {
         super(fm);

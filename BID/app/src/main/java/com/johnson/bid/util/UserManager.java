@@ -290,7 +290,7 @@ public class UserManager {
         return hasRoom;
     }
 
-    public void setChatRoomList(long id) {
+    public void setChatList(long id) {
         mUser.getChatList().add(id);
     }
 

@@ -731,6 +731,26 @@ public class MainPresenter implements MainContract.Presenter, AuctionContract.Pr
     }
 
     @Override
+    public void productResult(Product product, String from) {
+
+        if (from.equals(ENGLISH)) {
+            mEnglishAuctionItemPresenter.productResult(product, from);
+        } else {
+            mSealedAuctionItemPresenter.productResult(product, from);
+        }
+    }
+
+    @Override
+    public void createChatRoom(Product product, String from) {
+
+        if (from.equals(ENGLISH)) {
+            mEnglishAuctionItemPresenter.createChatRoom(product, from);
+        } else {
+            mSealedAuctionItemPresenter.createChatRoom(product, from);
+        }
+    }
+
+    @Override
     public void openBoughtDetail(Product product) {
         mMainView.findBoughtDetailView(product);
     }

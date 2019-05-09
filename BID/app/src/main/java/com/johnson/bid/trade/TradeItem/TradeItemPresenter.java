@@ -60,10 +60,10 @@ public class TradeItemPresenter implements TradeItemContract.Presenter {
     @Override
     public void loadMySellingData() {
         mProductIdList = UserManager.getInstance().getUser().getMySellingProductsId();
-
         mProductsList = new ArrayList<>();
 
         if (mProductIdList.size() > 0) {
+
             loadDataFromFireBase(mProductIdList.size(), "SELLING");
         } else {
             setMySellingData(mProductsList);

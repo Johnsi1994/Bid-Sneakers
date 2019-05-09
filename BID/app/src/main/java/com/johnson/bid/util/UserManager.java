@@ -225,6 +225,7 @@ public class UserManager {
                 iterator.remove();
             }
         }
+
     }
 
     public  void addBoughtProductId(long productId) {

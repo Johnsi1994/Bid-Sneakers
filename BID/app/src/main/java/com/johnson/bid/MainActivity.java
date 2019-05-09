@@ -58,6 +58,7 @@ import com.johnson.bid.data.Product;
 import com.johnson.bid.data.User;
 import com.johnson.bid.dialog.MessageDialog;
 import com.johnson.bid.trade.TradeItem.TradeItemFragment;
+import com.johnson.bid.util.Constants;
 import com.johnson.bid.util.Firebase;
 import com.johnson.bid.util.RotatePic;
 import com.johnson.bid.util.UserManager;
@@ -656,11 +657,17 @@ public class MainActivity extends AppCompatActivity implements MainContract.View
             UserManager.getInstance().removeSellingProductId(product.getProductId());
             UserManager.getInstance().setHasUserDataChange(true);
 
-            Firebase.getInstance().getFirestore().collection("products")
+            Firebase.getInstance().getFirestore().collection("users")
+                    .document(String.valueOf(UserManager.getInstance().getUser().getId()))
+                    .update("mySellingProductsId", FieldValue.arrayRemove(product.getProductId()))
+                    .addOnSuccessListener(aVoid -> Log.d(Constants.TAG, "Bidding Products Id successfully removed!"))
+                    .addOnFailureListener(e -> Log.w(Constants.TAG, "Bidding Products Id Error updating document", e));
+
+            Firebase.getInstance().getFirestore().collection(getString(R.string.firebase_products))
                     .document(String.valueOf(product.getProductId()))
                     .delete()
-                    .addOnSuccessListener(aVoid -> Log.d("Johnsi", product.getProductId() + " successfully deleted!"))
-                    .addOnFailureListener(e -> Log.w("Johnsi", "Error deleting document", e));
+                    .addOnSuccessListener(aVoid -> Log.d(Constants.TAG, product.getProductId() + " successfully deleted!"))
+                    .addOnFailureListener(e -> Log.w(Constants.TAG, "Error deleting document", e));
 
             Firebase.getInstance().getFirestore().collection("users")
                     .whereArrayContains("myBiddingProductsId", product.getProductId())
@@ -668,17 +675,16 @@ public class MainActivity extends AppCompatActivity implements MainContract.View
                     .addOnCompleteListener(task -> {
                         if (task.isSuccessful()) {
                             for (QueryDocumentSnapshot document : task.getResult()) {
-                                Log.d("Johnsi", document.getId() + " => " + document.getData());
 
                                 Firebase.getInstance().getFirestore().collection("users")
                                         .document(document.getId())
                                         .update("myBiddingProductsId", FieldValue.arrayRemove(product.getProductId()))
-                                        .addOnSuccessListener(aVoid -> Log.d("Johnsi", "Bidding Products Id successfully removed!"))
-                                        .addOnFailureListener(e -> Log.w("Johnsi", "Bidding Products Id Error updating document", e));
+                                        .addOnSuccessListener(aVoid -> Log.d(Constants.TAG, "Bidding Products Id successfully removed!"))
+                                        .addOnFailureListener(e -> Log.w(Constants.TAG, "Bidding Products Id Error updating document", e));
 
                             }
                         } else {
-                            Log.d("Johnsi", "Error getting documents: ", task.getException());
+                            Log.d(Constants.TAG, "Error getting documents: ", task.getException());
                         }
                     });
 
@@ -688,17 +694,16 @@ public class MainActivity extends AppCompatActivity implements MainContract.View
                     .addOnCompleteListener(task -> {
                         if (task.isSuccessful()) {
                             for (QueryDocumentSnapshot document : task.getResult()) {
-                                Log.d("Johnsi", document.getId() + " => " + document.getData());
 
                                 Firebase.getInstance().getFirestore().collection("users")
                                         .document(document.getId())
                                         .update("eyesOn", FieldValue.arrayRemove(product.getProductId()))
-                                        .addOnSuccessListener(aVoid -> Log.d("Johnsi", "Bidding Products Id successfully removed!"))
-                                        .addOnFailureListener(e -> Log.w("Johnsi", "Bidding Products Id Error updating document", e));
+                                        .addOnSuccessListener(aVoid -> Log.d(Constants.TAG, "Bidding Products Id successfully removed!"))
+                                        .addOnFailureListener(e -> Log.w(Constants.TAG, "Bidding Products Id Error updating document", e));
 
                             }
                         } else {
-                            Log.d("Johnsi", "Error getting documents: ", task.getException());
+                            Log.d(Constants.TAG, "Error getting documents: ", task.getException());
                         }
                     });
 

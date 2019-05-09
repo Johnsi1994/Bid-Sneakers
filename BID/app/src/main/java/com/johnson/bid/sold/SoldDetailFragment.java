@@ -10,17 +10,19 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 
+import com.google.firebase.firestore.QueryDocumentSnapshot;
 import com.johnson.bid.MainActivity;
 import com.johnson.bid.R;
+import com.johnson.bid.data.ChatRoom;
 import com.johnson.bid.data.Product;
 
 import static com.google.common.base.Preconditions.checkNotNull;
+import static com.johnson.bid.MainMvpController.SOLDDETAIL;
 
 public class SoldDetailFragment extends Fragment implements SoldDetailContract.View {
 
     private SoldDetailContract.Presenter mPresenter;
     private SoldDetailAdapter mSoldDetailAdapter;
-    private Product mProduct;
 
     public SoldDetailFragment() {}
 
@@ -70,5 +72,13 @@ public class SoldDetailFragment extends Fragment implements SoldDetailContract.V
     @Override
     public void showSoldDetailUi(Product product) {
         mSoldDetailAdapter.updateData(product);
+    }
+
+    @Override
+    public void openChat(QueryDocumentSnapshot document) {
+
+        mPresenter.openChatContent(document.toObject(ChatRoom.class), SOLDDETAIL);
+        mPresenter.showToolbar();
+        mPresenter.updateToolbar(document.toObject(ChatRoom.class).getBuyerName());
     }
 }

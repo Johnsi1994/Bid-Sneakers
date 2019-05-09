@@ -10,7 +10,6 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.TextView;
-import android.widget.Toast;
 
 import com.google.firebase.firestore.QueryDocumentSnapshot;
 import com.johnson.bid.Bid;
@@ -32,7 +31,6 @@ public class SoldDetailAdapter extends RecyclerView.Adapter {
     private LinearSnapHelper mLinearSnapHelper;
     private MainActivity mMainActivity;
     private Product mProduct;
-    private boolean isOpening = false;
 
     public SoldDetailAdapter(SoldDetailContract.Presenter presenter, MainActivity mainActivity) {
         mPresenter = presenter;
@@ -54,10 +52,11 @@ public class SoldDetailAdapter extends RecyclerView.Adapter {
 
         if (mLinearSnapHelper == null) {
             mLinearSnapHelper = new LinearSnapHelper();
-            mLinearSnapHelper.attachToRecyclerView(((SoldDetailViewHolder) holder).getGalleryRecycler());
+            mLinearSnapHelper.attachToRecyclerView(((SoldDetailViewHolder) holder).getRecyclerGallery());
         }
-        ((SoldDetailViewHolder) holder).getGalleryRecycler().setAdapter(soldDetailGalleryAdapter);
-        ((SoldDetailViewHolder) holder).getGalleryRecycler().setLayoutManager(layoutManager);
+
+        ((SoldDetailViewHolder) holder).getRecyclerGallery().setAdapter(soldDetailGalleryAdapter);
+        ((SoldDetailViewHolder) holder).getRecyclerGallery().setLayoutManager(layoutManager);
 
         bindSoldDetailViewHolder((SoldDetailViewHolder) holder, mProduct);
     }
@@ -69,135 +68,95 @@ public class SoldDetailAdapter extends RecyclerView.Adapter {
 
     private class SoldDetailViewHolder extends RecyclerView.ViewHolder {
 
-        private Button mBackBtn;
-        private RecyclerView mGalleryRecycler;
-        private TextView mTitleText;
-        private TextView mIntroText;
-        private TextView mConditionText;
-        private TextView mAuctionTypeText;
-        private TextView mExpiredText;
-        private TextView mPriceText;
-        private TextView mBuyerText;
-        private Button mConnectBuyerBtn;
+        private Button mBtnBack;
+        private RecyclerView mRecyclerGallery;
+        private TextView mTextTitle;
+        private TextView mTextIntro;
+        private TextView mTextCondition;
+        private TextView mTextAuctionType;
+        private TextView mTextExpired;
+        private TextView mTextPrice;
+        private TextView mTextBuyer;
+        private Button mBtnConnectBuyer;
 
         public SoldDetailViewHolder(@NonNull View itemView) {
             super(itemView);
 
-            mBackBtn = itemView.findViewById(R.id.button_sold_back);
-            mGalleryRecycler = itemView.findViewById(R.id.recycler_sold_gallery);
-            mTitleText = itemView.findViewById(R.id.text_sold_title);
-            mIntroText = itemView.findViewById(R.id.text_sold_intro);
-            mConditionText = itemView.findViewById(R.id.text_sold_condition);
-            mAuctionTypeText = itemView.findViewById(R.id.text_sold_auction_type);
-            mExpiredText = itemView.findViewById(R.id.text_sold_expired);
-            mPriceText = itemView.findViewById(R.id.text_sold_price);
-            mBuyerText = itemView.findViewById(R.id.text_sold_buyer);
-            mConnectBuyerBtn = itemView.findViewById(R.id.button_sold_connect_buyer);
+            mBtnBack = itemView.findViewById(R.id.button_sold_back);
+            mRecyclerGallery = itemView.findViewById(R.id.recycler_sold_gallery);
+            mTextTitle = itemView.findViewById(R.id.text_sold_title);
+            mTextIntro = itemView.findViewById(R.id.text_sold_intro);
+            mTextCondition = itemView.findViewById(R.id.text_sold_condition);
+            mTextAuctionType = itemView.findViewById(R.id.text_sold_auction_type);
+            mTextExpired = itemView.findViewById(R.id.text_sold_expired);
+            mTextPrice = itemView.findViewById(R.id.text_sold_price);
+            mTextBuyer = itemView.findViewById(R.id.text_sold_buyer);
+            mBtnConnectBuyer = itemView.findViewById(R.id.button_sold_connect_buyer);
 
-            mBackBtn.setOnClickListener(v ->
+            mBtnBack.setOnClickListener(v ->
                     mMainActivity.onBackPressed()
             );
 
-            mConnectBuyerBtn.setOnClickListener(v -> {
-                        if (!isOpening) {
-                            isOpening = true;
-                            Firebase.getInstance().getFirestore().collection("chatrooms")
-                                    .whereEqualTo("sellerId", UserManager.getInstance().getUser().getId())
-                                    .whereEqualTo("buyerId", mProduct.getHighestUserId())
-                                    .get()
-                                    .addOnCompleteListener(task -> {
-                                        if (task.isSuccessful()) {
-                                            if (task.getResult().size() > 0) {
-                                                for (QueryDocumentSnapshot document : task.getResult()) {
-                                                    openChat(document);
-                                                    isOpening = false;
-                                                }
-                                            } else {
+            mBtnConnectBuyer.setOnClickListener(v ->
 
-                                                Firebase.getInstance().getFirestore().collection("chatrooms")
-                                                        .whereEqualTo("buyerId", UserManager.getInstance().getUser().getId())
-                                                        .whereEqualTo("sellerId", mProduct.getHighestUserId())
-                                                        .get()
-                                                        .addOnCompleteListener(task1 -> {
-                                                            if (task1.isSuccessful()) {
-                                                                for (QueryDocumentSnapshot document : task1.getResult()) {
-                                                                    openChat(document);
-                                                                    isOpening = false;
-                                                                }
-                                                            }
-                                                        });
-                                            }
-                                        } else {
-                                            Log.d("Johnsi", "Error getting documents: ", task.getException());
-                                        }
-                                    });
-                        }
-                    }
+                mPresenter.chatWithBuyer()
             );
         }
 
-        private RecyclerView getGalleryRecycler() {
-            return mGalleryRecycler;
+        private RecyclerView getRecyclerGallery() {
+            return mRecyclerGallery;
         }
 
-        private TextView getTitleText() {
-            return mTitleText;
+        private TextView getTextTitle() {
+            return mTextTitle;
         }
 
-        private TextView getIntroText() {
-            return mIntroText;
+        private TextView getTextIntro() {
+            return mTextIntro;
         }
 
-        private TextView getConditionText() {
-            return mConditionText;
+        private TextView getTextCondition() {
+            return mTextCondition;
         }
 
-        private TextView getAuctionTypeText() {
-            return mAuctionTypeText;
+        private TextView getTextAuctionType() {
+            return mTextAuctionType;
         }
 
-        private TextView getExpiredText() {
-            return mExpiredText;
+        private TextView getTextExpired() {
+            return mTextExpired;
         }
 
-        private TextView getPriceText() {
-            return mPriceText;
+        private TextView getTextPrice() {
+            return mTextPrice;
         }
 
-        private TextView getBuyerText() {
-            return mBuyerText;
+        private TextView getTextBuyer() {
+            return mTextBuyer;
         }
 
     }
 
     private void bindSoldDetailViewHolder(SoldDetailViewHolder holder, Product product) {
 
-        holder.getTitleText().setText(product.getTitle());
-        holder.getIntroText().setText(product.getIntroduction());
-        holder.getConditionText().setText(product.getCondition());
-        holder.getPriceText().setText(String.valueOf(product.getCurrentPrice()));
-        holder.getAuctionTypeText().setText(product.getAuctionType());
-        holder.getExpiredText().setText(getDateToString(product.getExpired()));
-        holder.getBuyerText().setText(product.getBuyerName());
+        holder.getTextTitle().setText(product.getTitle());
+        holder.getTextIntro().setText(product.getIntroduction());
+        holder.getTextCondition().setText(product.getCondition());
+        holder.getTextPrice().setText(String.valueOf(product.getCurrentPrice()));
+        holder.getTextAuctionType().setText(product.getAuctionType());
+        holder.getTextExpired().setText(getDateToString(product.getExpired()));
+        holder.getTextBuyer().setText(product.getBuyerName());
 
     }
 
     private String getDateToString(long millSeconds) {
         Date d = new Date(millSeconds);
-        SimpleDateFormat sf = new SimpleDateFormat("MM 月 dd 日 HH 時 mm 分");
+        SimpleDateFormat sf = new SimpleDateFormat(Bid.getAppContext().getString(R.string.simple_date_format_MdHm));
         return sf.format(d);
     }
 
     public void updateData(Product product) {
         mProduct = product;
         notifyDataSetChanged();
-    }
-
-    private void openChat(QueryDocumentSnapshot document) {
-
-        mPresenter.openChatContent(document.toObject(ChatRoom.class), SOLDDETAIL);
-        mPresenter.showToolbar();
-        mPresenter.updateToolbar(document.toObject(ChatRoom.class).getBuyerName());
-
     }
 }

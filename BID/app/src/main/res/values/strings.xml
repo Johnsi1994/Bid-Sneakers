@@ -4,9 +4,7 @@
 
     <string name="bit_times">出價次數 :</string>
 
-    <!--Facebook-->
-    <string name="facebook_app_id">395083894645098</string>
-    <string name="fb_login_protocol_scheme">fb395083894645098</string>
+
 
     <string name="product_title">商品名稱</string>
     <string name="product_intro">商品介紹</string>
@@ -116,7 +114,6 @@
     <string name="firebase_field_chat_content_array_list">chatContentArrayList</string>
 
 
-
     <!--timer-->
     <string name="timer_day">天</string>
     <string name="timer_hour">時</string>
@@ -141,12 +138,16 @@
     <string name="notification_text_eyes_on">即將在30分鐘後結標，千萬別錯過 !!!</string>
     <string name="notification_ticker">Ticker</string>
 
+    <!--settings-->
+    <string name="settings_btn_title_edit">修改</string>
+    <string name="settings_btn_title_done">完成</string>
 
+    <!--Facebook-->
+    <string name="facebook_app_id">395083894645098</string>
+    <string name="fb_login_protocol_scheme">fb395083894645098</string>
 
 
     <string name="placeholder_start_chatting">開始聊天吧</string>
-    <string name="settings_btn_title_edit">修改</string>
-    <string name="settings_btn_title_done">完成</string>
 
 
 </resources>

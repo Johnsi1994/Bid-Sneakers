@@ -242,6 +242,11 @@ public class MainPresenter implements MainContract.Presenter, AuctionContract.Pr
     }
 
     @Override
+    public void chatWithBuyer() {
+        mSoldDetailPresenter.chatWithBuyer();
+    }
+
+    @Override
     public void setPostPics(ArrayList<Bitmap> imageBitmap) {
         mPostPresenter.setPostPics(imageBitmap);
     }

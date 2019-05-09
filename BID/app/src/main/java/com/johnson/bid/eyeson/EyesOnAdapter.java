@@ -3,14 +3,12 @@ package com.johnson.bid.eyeson;
 import android.app.NotificationChannel;
 import android.app.NotificationManager;
 import android.content.Context;
-import android.content.Intent;
 import android.os.Build;
 import android.os.CountDownTimer;
 import android.support.annotation.NonNull;
 import android.support.v4.app.NotificationCompat;
 import android.support.v7.widget.CardView;
 import android.support.v7.widget.RecyclerView;
-import android.util.Log;
 import android.util.SparseArray;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -48,7 +46,7 @@ public class EyesOnAdapter extends RecyclerView.Adapter {
 
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
             NotificationChannel notificationChannel =
-                    new NotificationChannel("com.johnson.bid", "J",
+                    new NotificationChannel(mMainActivity.getString(R.string.package_name), "J",
                             NotificationManager.IMPORTANCE_HIGH);
             mNotificationManager.createNotificationChannel(notificationChannel);
         }
@@ -69,16 +67,12 @@ public class EyesOnAdapter extends RecyclerView.Adapter {
     @Override
     public int getItemCount() {
 
-        if (mProductsList == null) {
-            return 0;
-        } else {
-            return mProductsList.size();
-        }
+        return (mProductsList == null) ? 0 : mProductsList.size();
     }
 
     private class ViewHolder extends RecyclerView.ViewHolder {
 
-        private CardView mBiddingLayout;
+        private CardView mLayoutBidding;
         private ImageView mImageMain;
         private TextView mTextTitle;
         private TextView mTextTime;
@@ -92,7 +86,7 @@ public class EyesOnAdapter extends RecyclerView.Adapter {
         private ViewHolder(View itemView) {
             super(itemView);
 
-            mBiddingLayout = itemView.findViewById(R.id.layout_product_most_brief);
+            mLayoutBidding = itemView.findViewById(R.id.layout_product_most_brief);
             mImageMain = itemView.findViewById(R.id.image_product_most);
             mTextTitle = itemView.findViewById(R.id.text_product_most_title);
             mTextTime = itemView.findViewById(R.id.text_product_most_remaining_time);
@@ -103,8 +97,8 @@ public class EyesOnAdapter extends RecyclerView.Adapter {
             mTextSlash = itemView.findViewById(R.id.text_product_most_slash);
         }
 
-        private CardView getBiddingLayout() {
-            return mBiddingLayout;
+        private CardView getLayoutBidding() {
+            return mLayoutBidding;
         }
 
         private ImageView getImageMain() {
@@ -143,9 +137,9 @@ public class EyesOnAdapter extends RecyclerView.Adapter {
     private void bindViewHolder(ViewHolder holder, Product product, int i) {
 
 
-        holder.getBiddingLayout().setOnClickListener(v -> {
+        holder.getLayoutBidding().setOnClickListener(v -> {
 
-            if (product.getAuctionType().equals("一般拍賣")) {
+            if (product.getAuctionType().equals(mMainActivity.getString(R.string.auction_type_english))) {
                 mPresenter.openBidding(ENGLISH, product);
             } else {
                 mPresenter.openBidding(SEALED, product);
@@ -159,7 +153,7 @@ public class EyesOnAdapter extends RecyclerView.Adapter {
 
         holder.getTextTitle().setText(product.getTitle());
 
-        if (product.getAuctionType().equals("一般拍賣")) {
+        if (product.getAuctionType().equals(mMainActivity.getString(R.string.auction_type_english))) {
 
             holder.getTextPrice().setText(String.valueOf(product.getCurrentPrice()));
 
@@ -190,10 +184,10 @@ public class EyesOnAdapter extends RecyclerView.Adapter {
 
                 if (millisUntilFinished > 299000 && millisUntilFinished < 301000) {
 
-                    mBuilder = new NotificationCompat.Builder(mMainActivity, "com.johnson.bid");
-                    mBuilder.setContentTitle("快結標嘍 !!!")
-                            .setContentText(product.getTitle() + " 即將在30分鐘後結標，千萬別錯過 !!!")
-                            .setTicker("Ticker")
+                    mBuilder = new NotificationCompat.Builder(mMainActivity, mMainActivity.getString(R.string.package_name));
+                    mBuilder.setContentTitle(mMainActivity.getString(R.string.notification_title_eyes_on))
+                            .setContentText(product.getTitle() + mMainActivity.getString(R.string.notification_text_eyes_on))
+                            .setTicker(mMainActivity.getString(R.string.notification_ticker))
                             .setSmallIcon(R.drawable.icons_24px_notification);
                     mNotificationManager.notify(i, mBuilder.build());
                 }
@@ -201,12 +195,11 @@ public class EyesOnAdapter extends RecyclerView.Adapter {
 
             @Override
             public void onFinish() {
-                holder.getTextTime().setText("競標結束");
+                holder.getTextTime().setText(mMainActivity.getString(R.string.bid_finish));
             }
         }.start();
 
         mCountDownMap.put(holder.getTextTime().hashCode(), holder.countDownTimer);
-
     }
 
     private String getRemainingTimeToString(long millSeconds) {
@@ -216,7 +209,11 @@ public class EyesOnAdapter extends RecyclerView.Adapter {
         long minutes = (millSeconds - days * (1000 * 60 * 60 * 24) - hours * (1000 * 60 * 60)) / (1000 * 60);
         long seconds = (millSeconds - days * (1000 * 60 * 60 * 24) - hours * (1000 * 60 * 60) - minutes * (1000 * 60)) / 1000;
 
-        String time = days + " 天 " + hours + " 時 " + minutes + " 分 " + seconds + " 秒";
+        String time = days + " " + mMainActivity.getString(R.string.timer_day) + " "
+                + hours + " " + mMainActivity.getString(R.string.timer_hour) + " "
+                + minutes + " " + mMainActivity.getString(R.string.timer_minute) + " "
+                + seconds + " " + mMainActivity.getString(R.string.timer_second);
+
         return time;
     }
 

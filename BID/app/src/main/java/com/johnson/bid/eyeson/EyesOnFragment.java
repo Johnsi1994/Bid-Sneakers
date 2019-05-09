@@ -23,7 +23,7 @@ public class EyesOnFragment extends Fragment implements EyesOnContract.View {
 
     private EyesOnContract.Presenter mPresenter;
     private EyesOnAdapter mEyesOnAdapter;
-    private SwipeRefreshLayout swipeRefreshLayout;
+    private SwipeRefreshLayout mSwipeRefreshLayout;
 
     public EyesOnFragment() {}
 
@@ -42,7 +42,7 @@ public class EyesOnFragment extends Fragment implements EyesOnContract.View {
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
         View root = inflater.inflate(R.layout.fragment_recycler_swipe_container, container, false);
 
-        swipeRefreshLayout = root.findViewById(R.id.swipe_layout);
+        mSwipeRefreshLayout = root.findViewById(R.id.swipe_layout);
         RecyclerView recyclerView = root.findViewById(R.id.recycler_container);
         recyclerView.setLayoutManager(new LinearLayoutManager(getActivity()));
         recyclerView.setAdapter(mEyesOnAdapter);
@@ -56,8 +56,8 @@ public class EyesOnFragment extends Fragment implements EyesOnContract.View {
 
         mPresenter.loadEyesOnData();
 
-        swipeRefreshLayout.setOnRefreshListener(() -> {
-            swipeRefreshLayout.setRefreshing(false);
+        mSwipeRefreshLayout.setOnRefreshListener(() -> {
+            mSwipeRefreshLayout.setRefreshing(false);
             mPresenter.loadEyesOnData();
         });
     }

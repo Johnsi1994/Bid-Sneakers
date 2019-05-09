@@ -4,7 +4,10 @@ import android.support.annotation.NonNull;
 import android.util.Log;
 
 import com.google.firebase.firestore.DocumentSnapshot;
+import com.johnson.bid.Bid;
+import com.johnson.bid.R;
 import com.johnson.bid.data.Product;
+import com.johnson.bid.util.Constants;
 import com.johnson.bid.util.Firebase;
 import com.johnson.bid.util.UserManager;
 
@@ -23,29 +26,19 @@ public class EyesOnPresenter implements EyesOnContract.Presenter {
     }
 
     @Override
-    public void start() {
-
-    }
+    public void start() {}
 
     @Override
-    public void showBottomNavigation() {
-
-    }
+    public void showBottomNavigation() {}
 
     @Override
-    public void updateToolbar(String title) {
-
-    }
+    public void updateToolbar(String title) {}
 
     @Override
-    public void openBidding(String from, Product product) {
-
-    }
+    public void openBidding(String from, Product product) {}
 
     @Override
-    public void hideToolbarAndBottomNavigation() {
-
-    }
+    public void hideToolbarAndBottomNavigation() {}
 
     @Override
     public void loadEyesOnData() {
@@ -81,7 +74,7 @@ public class EyesOnPresenter implements EyesOnContract.Presenter {
     private void loadDataFromFireBase(int i) {
 
         int j = i + 1;
-        Firebase.getInstance().getFirestore().collection("products")
+        Firebase.getInstance().getFirestore().collection(Bid.getAppContext().getString(R.string.firebase_products))
                 .document(String.valueOf(mEyesOnList.get(i)))
                 .get()
                 .addOnCompleteListener(task -> {
@@ -97,7 +90,7 @@ public class EyesOnPresenter implements EyesOnContract.Presenter {
                             setMyEyesOnData(mProductsList);
                         }
                     } else {
-                        Log.d("Johnsi", "Error getting documents: ", task.getException());
+                        Log.d(Constants.TAG, "Error getting documents: ", task.getException());
                     }
                 });
     }

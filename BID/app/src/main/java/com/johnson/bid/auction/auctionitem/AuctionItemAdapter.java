@@ -289,8 +289,8 @@ public class AuctionItemAdapter extends RecyclerView.Adapter {
         long minutes = (millSeconds - days * (1000 * 60 * 60 * 24) - hours * (1000 * 60 * 60)) / (1000 * 60);
         long seconds = (millSeconds - days * (1000 * 60 * 60 * 24) - hours * (1000 * 60 * 60) - minutes * (1000 * 60)) / 1000;
 
-        String time = days + " " + Bid.getAppContext().getString(R.string.timer_day) + " "
-                + hours + " " + Bid.getAppContext().getString(R.string.timer_hour) + " "
+       String time = days + " " + Bid.getAppContext().getString(R.string.timer_day) + " "
+                + hours +  " " + Bid.getAppContext().getString(R.string.timer_hour) + " "
                 + minutes + " " + Bid.getAppContext().getString(R.string.timer_minute) + " "
                 + seconds + " " + Bid.getAppContext().getString(R.string.timer_second);
 

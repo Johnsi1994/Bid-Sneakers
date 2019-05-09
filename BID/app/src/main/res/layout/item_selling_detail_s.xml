@@ -185,7 +185,7 @@
         app:layout_constraintTop_toBottomOf="@+id/view10" />
 
     <TextView
-        android:id="@+id/text_selling_s_last_time"
+        android:id="@+id/text_selling_s_remaining_time"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
         android:layout_marginStart="8dp"

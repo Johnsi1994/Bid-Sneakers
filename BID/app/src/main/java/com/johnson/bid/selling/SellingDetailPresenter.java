@@ -4,7 +4,10 @@ import android.support.annotation.NonNull;
 import android.util.Log;
 
 import com.google.firebase.firestore.DocumentSnapshot;
+import com.johnson.bid.Bid;
+import com.johnson.bid.R;
 import com.johnson.bid.data.Product;
+import com.johnson.bid.util.Constants;
 import com.johnson.bid.util.Firebase;
 
 import static com.google.common.base.Preconditions.checkNotNull;
@@ -19,14 +22,10 @@ public class SellingDetailPresenter implements SellingDetailContract.Presenter {
     }
 
     @Override
-    public void start() {
-
-    }
+    public void start() {}
 
     @Override
-    public void showToolbarAndBottomNavigation() {
-
-    }
+    public void showToolbarAndBottomNavigation() {}
 
     @Override
     public void setSellingDetailData(Product product) {
@@ -39,14 +38,12 @@ public class SellingDetailPresenter implements SellingDetailContract.Presenter {
     }
 
     @Override
-    public void openDeleteProductDialog(Product product) {
-
-    }
+    public void openDeleteProductDialog(Product product) {}
 
     @Override
     public void loadSellingFreshData() {
 
-        Firebase.getInstance().getFirestore().collection("products")
+        Firebase.getInstance().getFirestore().collection(Bid.getAppContext().getString(R.string.firebase_products))
                 .document(String.valueOf(mProduct.getProductId()))
                 .get()
                 .addOnCompleteListener(task -> {
@@ -57,9 +54,8 @@ public class SellingDetailPresenter implements SellingDetailContract.Presenter {
                         loadSellingDetailData();
 
                     } else {
-                        Log.d("Johnsi", "Error getting documents: ", task.getException());
+                        Log.d(Constants.TAG, "Error getting documents: ", task.getException());
                     }
                 });
-
     }
 }

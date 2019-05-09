@@ -55,23 +55,22 @@ public class SellingDetailAdapter extends RecyclerView.Adapter {
                 Bid.getAppContext(), LinearLayoutManager.HORIZONTAL, false);
         SellingDetailGalleryAdapter sellingDetailGalleryAdapter = new SellingDetailGalleryAdapter(mPresenter, mProduct.getImages());
 
+        if (mLinearSnapHelper == null) {
+            mLinearSnapHelper = new LinearSnapHelper();
+        }
 
         if (mAuctionType.equals(ENGLISH)) {
-            if (mLinearSnapHelper == null) {
-                mLinearSnapHelper = new LinearSnapHelper();
-                mLinearSnapHelper.attachToRecyclerView(((SellingEnglishViewHolder) holder).getGalleryRecycler());
-            }
-            ((SellingEnglishViewHolder) holder).getGalleryRecycler().setAdapter(sellingDetailGalleryAdapter);
-            ((SellingEnglishViewHolder) holder).getGalleryRecycler().setLayoutManager(layoutManager);
+            mLinearSnapHelper.attachToRecyclerView(((SellingEnglishViewHolder) holder).getRecyclerGallery());
+
+            ((SellingEnglishViewHolder) holder).getRecyclerGallery().setAdapter(sellingDetailGalleryAdapter);
+            ((SellingEnglishViewHolder) holder).getRecyclerGallery().setLayoutManager(layoutManager);
 
             bindSellingEnglishViewHolder((SellingEnglishViewHolder) holder, mProduct);
         } else {
-            if (mLinearSnapHelper == null) {
-                mLinearSnapHelper = new LinearSnapHelper();
-                mLinearSnapHelper.attachToRecyclerView(((SellingSealedViewHolder) holder).getGalleryRecycler());
-            }
-            ((SellingSealedViewHolder) holder).getGalleryRecycler().setAdapter(sellingDetailGalleryAdapter);
-            ((SellingSealedViewHolder) holder).getGalleryRecycler().setLayoutManager(layoutManager);
+            mLinearSnapHelper.attachToRecyclerView(((SellingSealedViewHolder) holder).getRecyclerGallery());
+
+            ((SellingSealedViewHolder) holder).getRecyclerGallery().setAdapter(sellingDetailGalleryAdapter);
+            ((SellingSealedViewHolder) holder).getRecyclerGallery().setLayoutManager(layoutManager);
 
             bindSellingSealedViewHolder((SellingSealedViewHolder) holder, mProduct);
         }
@@ -85,218 +84,215 @@ public class SellingDetailAdapter extends RecyclerView.Adapter {
 
     private class SellingEnglishViewHolder extends RecyclerView.ViewHolder {
 
-        private Button mBackBtn;
-        private RecyclerView mGalleryRecycler;
-        private TextView mTitleText;
-        private TextView mIntroText;
-        private TextView mConditionText;
-        private TextView mAuctionTypeText;
-        private TextView mExpireText;
-        private TextView mLastTimeText;
-        private TextView mBuyerText;
-        private TextView mPriceText;
-        private TextView mPeopleText;
-        private TextView mIncreaseText;
-        private TextView mReservePriceText;
-        private Button mDeleteBtn;
+        private Button mBtnBack;
+        private RecyclerView mRecyclerGallery;
+        private TextView mTextTitle;
+        private TextView mTextIntro;
+        private TextView mTextCondition;
+        private TextView mTextAuctionType;
+        private TextView mTextExpire;
+        private TextView mTextRemainingTime;
+        private TextView mTextBuyer;
+        private TextView mTextPrice;
+        private TextView mTextPlaceBidTimes;
+        private TextView mTextIncrease;
+        private TextView mTextReservePrice;
+        private Button mBtnDelete;
 
         public SellingEnglishViewHolder(@NonNull View itemView) {
             super(itemView);
 
-            mBackBtn = itemView.findViewById(R.id.button_selling_e_back);
-            mGalleryRecycler = itemView.findViewById(R.id.recycler_selling_e_gallery);
-            mTitleText = itemView.findViewById(R.id.text_selling_e_title);
-            mIntroText = itemView.findViewById(R.id.text_selling_e_intro);
-            mConditionText = itemView.findViewById(R.id.text_selling_e_condition);
-            mAuctionTypeText = itemView.findViewById(R.id.text_selling_e_auction_type);
-            mExpireText = itemView.findViewById(R.id.text_selling_e_expire);
-            mLastTimeText = itemView.findViewById(R.id.text_selling_e_last_time);
-            mBuyerText = itemView.findViewById(R.id.text_selling_e_buyer);
-            mPriceText = itemView.findViewById(R.id.text_selling_e_current_price);
-            mPeopleText = itemView.findViewById(R.id.text_selling_e_bit_times);
-            mIncreaseText = itemView.findViewById(R.id.text_selling_e_increase);
-            mReservePriceText = itemView.findViewById(R.id.text_selling_e_reserve_price);
-            mDeleteBtn = itemView.findViewById(R.id.button_selling_e_delete);
+            mBtnBack = itemView.findViewById(R.id.button_selling_e_back);
+            mRecyclerGallery = itemView.findViewById(R.id.recycler_selling_e_gallery);
+            mTextTitle = itemView.findViewById(R.id.text_selling_e_title);
+            mTextIntro = itemView.findViewById(R.id.text_selling_e_intro);
+            mTextCondition = itemView.findViewById(R.id.text_selling_e_condition);
+            mTextAuctionType = itemView.findViewById(R.id.text_selling_e_auction_type);
+            mTextExpire = itemView.findViewById(R.id.text_selling_e_expire);
+            mTextRemainingTime = itemView.findViewById(R.id.text_selling_e_remaining_time);
+            mTextBuyer = itemView.findViewById(R.id.text_selling_e_buyer);
+            mTextPrice = itemView.findViewById(R.id.text_selling_e_current_price);
+            mTextPlaceBidTimes = itemView.findViewById(R.id.text_selling_e_bit_times);
+            mTextIncrease = itemView.findViewById(R.id.text_selling_e_increase);
+            mTextReservePrice = itemView.findViewById(R.id.text_selling_e_reserve_price);
+            mBtnDelete = itemView.findViewById(R.id.button_selling_e_delete);
 
-            mBackBtn.setOnClickListener(v ->
+            mBtnBack.setOnClickListener(v ->
                     mMainActivity.onBackPressed()
             );
 
-            mDeleteBtn.setOnClickListener(v ->
+            mBtnDelete.setOnClickListener(v ->
                     mPresenter.openDeleteProductDialog(mProduct)
             );
 
         }
 
-        private RecyclerView getGalleryRecycler() {
-            return mGalleryRecycler;
+        private RecyclerView getRecyclerGallery() {
+            return mRecyclerGallery;
         }
 
-        private TextView getTitleText() {
-            return mTitleText;
+        private TextView getTextTitle() {
+            return mTextTitle;
         }
 
-        private TextView getIntroText() {
-            return mIntroText;
+        private TextView getTextIntro() {
+            return mTextIntro;
         }
 
-        private TextView getConditionText() {
-            return mConditionText;
+        private TextView getTextCondition() {
+            return mTextCondition;
         }
 
-        private TextView getAuctionTypeText() {
-            return mAuctionTypeText;
+        private TextView getTextAuctionType() {
+            return mTextAuctionType;
         }
 
-        private TextView getExpireText() {
-            return mExpireText;
+        private TextView getTextExpire() {
+            return mTextExpire;
         }
 
-        private TextView getLastTimeText() {
-            return mLastTimeText;
+        private TextView getTextRemainingTime() {
+            return mTextRemainingTime;
         }
 
-        private TextView getBuyerText() {
-            return mBuyerText;
+        private TextView getTextBuyer() {
+            return mTextBuyer;
         }
 
-        private TextView getPriceText() {
-            return mPriceText;
+        private TextView getTextPrice() {
+            return mTextPrice;
         }
 
-        private TextView getPeopleText() {
-            return mPeopleText;
+        private TextView getTextPlaceBidTimes() {
+            return mTextPlaceBidTimes;
         }
 
-        private TextView getIncreaseText() {
-            return mIncreaseText;
+        private TextView getTextIncrease() {
+            return mTextIncrease;
         }
 
-        private TextView getReservePriceText() {
-            return mReservePriceText;
+        private TextView getTextReservePrice() {
+            return mTextReservePrice;
         }
 
     }
 
     private void bindSellingEnglishViewHolder(SellingEnglishViewHolder holder, Product product) {
 
-        holder.getTitleText().setText(product.getTitle());
-        holder.getIntroText().setText(product.getIntroduction());
-        holder.getConditionText().setText(product.getCondition());
-        holder.getAuctionTypeText().setText(product.getAuctionType());
-        holder.getExpireText().setText(getDateToString(product.getExpired()));
-        holder.getPriceText().setText(String.valueOf(product.getCurrentPrice()));
-        holder.getPeopleText().setText(String.valueOf(product.getPlaceBidTimes()));
-        holder.getIncreaseText().setText(String.valueOf(product.getIncrease()));
-        holder.getReservePriceText().setText(String.valueOf(product.getReservePrice()));
+        holder.getTextTitle().setText(product.getTitle());
+        holder.getTextIntro().setText(product.getIntroduction());
+        holder.getTextCondition().setText(product.getCondition());
+        holder.getTextAuctionType().setText(product.getAuctionType());
+        holder.getTextExpire().setText(getDateToString(product.getExpired()));
+        holder.getTextPrice().setText(String.valueOf(product.getCurrentPrice()));
+        holder.getTextPlaceBidTimes().setText(String.valueOf(product.getPlaceBidTimes()));
+        holder.getTextIncrease().setText(String.valueOf(product.getIncrease()));
+        holder.getTextReservePrice().setText(String.valueOf(product.getReservePrice()));
 
         if (product.getHighestUserId() == -1) {
-            holder.getBuyerText().setText(mMainActivity.getString(R.string.nobody));
+            holder.getTextBuyer().setText(mMainActivity.getString(R.string.nobody));
         } else {
-            holder.getBuyerText().setText(product.getBuyerName());
+            holder.getTextBuyer().setText(product.getBuyerName());
         }
 
         long remainingTime = product.getExpired() - System.currentTimeMillis();
         if (remainingTime > 0) {
             timer(holder, product, remainingTime);
         } else {
-            holder.getLastTimeText().setText("競標結束");
+            holder.getTextRemainingTime().setText(mMainActivity.getString(R.string.bid_finish));
         }
-
     }
 
     private class SellingSealedViewHolder extends RecyclerView.ViewHolder {
 
-        private Button mBackBtn;
-        private RecyclerView mGalleryRecycler;
-        private TextView mTitleText;
-        private TextView mIntroText;
-        private TextView mConditionText;
-        private TextView mAuctionTypeText;
-        private TextView mExpireText;
-        private TextView mLastTimeText;
-        private TextView mReservePriceText;
-        private Button mDeleteBtn;
+        private Button mBtnBack;
+        private RecyclerView mRecyclerGallery;
+        private TextView mTextTitle;
+        private TextView mTextIntro;
+        private TextView mTextCondition;
+        private TextView mTextAuctionType;
+        private TextView mTextExpire;
+        private TextView mTextRemainingTime;
+        private TextView mTextReservePrice;
+        private Button mBtnDelete;
 
         public SellingSealedViewHolder(@NonNull View itemView) {
             super(itemView);
 
-            mBackBtn = itemView.findViewById(R.id.button_selling_s_back);
-            mGalleryRecycler = itemView.findViewById(R.id.recycler_selling_s_gallery);
-            mTitleText = itemView.findViewById(R.id.text_selling_s_title);
-            mIntroText = itemView.findViewById(R.id.text_selling_s_intro);
-            mConditionText = itemView.findViewById(R.id.text_selling_s_condition);
-            mAuctionTypeText = itemView.findViewById(R.id.text_selling_s_auction_type);
-            mExpireText = itemView.findViewById(R.id.text_selling_s_expire);
-            mLastTimeText = itemView.findViewById(R.id.text_selling_s_last_time);
-            mReservePriceText = itemView.findViewById(R.id.text_selling_s_reserve_price);
-            mDeleteBtn = itemView.findViewById(R.id.button_selling_s_delete);
+            mBtnBack = itemView.findViewById(R.id.button_selling_s_back);
+            mRecyclerGallery = itemView.findViewById(R.id.recycler_selling_s_gallery);
+            mTextTitle = itemView.findViewById(R.id.text_selling_s_title);
+            mTextIntro = itemView.findViewById(R.id.text_selling_s_intro);
+            mTextCondition = itemView.findViewById(R.id.text_selling_s_condition);
+            mTextAuctionType = itemView.findViewById(R.id.text_selling_s_auction_type);
+            mTextExpire = itemView.findViewById(R.id.text_selling_s_expire);
+            mTextRemainingTime = itemView.findViewById(R.id.text_selling_s_remaining_time);
+            mTextReservePrice = itemView.findViewById(R.id.text_selling_s_reserve_price);
+            mBtnDelete = itemView.findViewById(R.id.button_selling_s_delete);
 
-            mBackBtn.setOnClickListener(v ->
+            mBtnBack.setOnClickListener(v ->
                     mMainActivity.onBackPressed()
             );
 
-            mDeleteBtn.setOnClickListener(v ->
+            mBtnDelete.setOnClickListener(v ->
                     mPresenter.openDeleteProductDialog(mProduct)
             );
 
         }
 
-        private RecyclerView getGalleryRecycler() {
-            return mGalleryRecycler;
+        private RecyclerView getRecyclerGallery() {
+            return mRecyclerGallery;
         }
 
-        private TextView getTitleText() {
-            return mTitleText;
+        private TextView getTextTitle() {
+            return mTextTitle;
         }
 
-        private TextView getIntroText() {
-            return mIntroText;
+        private TextView getTextIntro() {
+            return mTextIntro;
         }
 
-        private TextView getConditionText() {
-            return mConditionText;
+        private TextView getTextCondition() {
+            return mTextCondition;
         }
 
-        private TextView getAuctionTypeText() {
-            return mAuctionTypeText;
+        private TextView getTextAuctionType() {
+            return mTextAuctionType;
         }
 
-        private TextView getExpireText() {
-            return mExpireText;
+        private TextView getTextExpire() {
+            return mTextExpire;
         }
 
-        private TextView getLastTimeText() {
-            return mLastTimeText;
+        private TextView getTextRemainingTime() {
+            return mTextRemainingTime;
         }
 
-        private TextView getReservePriceText() {
-            return mReservePriceText;
+        private TextView getTextReservePrice() {
+            return mTextReservePrice;
         }
     }
 
     private void bindSellingSealedViewHolder(SellingSealedViewHolder holder, Product product) {
 
-        holder.getTitleText().setText(product.getTitle());
-        holder.getIntroText().setText(product.getIntroduction());
-        holder.getConditionText().setText(product.getCondition());
-        holder.getAuctionTypeText().setText(product.getAuctionType());
-        holder.getExpireText().setText(getDateToString(product.getExpired()));
-        holder.getReservePriceText().setText(String.valueOf(product.getReservePrice()));
+        holder.getTextTitle().setText(product.getTitle());
+        holder.getTextIntro().setText(product.getIntroduction());
+        holder.getTextCondition().setText(product.getCondition());
+        holder.getTextAuctionType().setText(product.getAuctionType());
+        holder.getTextExpire().setText(getDateToString(product.getExpired()));
+        holder.getTextReservePrice().setText(String.valueOf(product.getReservePrice()));
 
         long remainingTime = product.getExpired() - System.currentTimeMillis();
         if (remainingTime > 0) {
             timer(holder, product, remainingTime);
         } else {
-            holder.getLastTimeText().setText("競標結束");
+            holder.getTextRemainingTime().setText(mMainActivity.getString(R.string.bid_finish));
         }
-
-
     }
 
     private String getDateToString(long millSeconds) {
         Date d = new Date(millSeconds);
-        SimpleDateFormat sf = new SimpleDateFormat("MM 月 dd 日 HH 時 mm 分");
+        SimpleDateFormat sf = new SimpleDateFormat(mMainActivity.getString(R.string.simple_date_format_MdHm));
         return sf.format(d);
     }
 
@@ -307,7 +303,11 @@ public class SellingDetailAdapter extends RecyclerView.Adapter {
         long minutes = (millSeconds - days * (1000 * 60 * 60 * 24) - hours * (1000 * 60 * 60)) / (1000 * 60);
         long seconds = (millSeconds - days * (1000 * 60 * 60 * 24) - hours * (1000 * 60 * 60) - minutes * (1000 * 60)) / 1000;
 
-        String time = days + " 天 " + hours + " 時 " + minutes + " 分 " + seconds + " 秒";
+        String time = days + " " + Bid.getAppContext().getString(R.string.timer_day) + " "
+                + hours +  " " + Bid.getAppContext().getString(R.string.timer_hour) + " "
+                + minutes + " " + Bid.getAppContext().getString(R.string.timer_minute) + " "
+                + seconds + " " + Bid.getAppContext().getString(R.string.timer_second);
+
         return time;
     }
 
@@ -315,9 +315,9 @@ public class SellingDetailAdapter extends RecyclerView.Adapter {
         TextView textView;
 
         if (holder instanceof SellingEnglishViewHolder) {
-            textView = ((SellingEnglishViewHolder) holder).getLastTimeText();
+            textView = ((SellingEnglishViewHolder) holder).getTextRemainingTime();
         } else {
-            textView = ((SellingSealedViewHolder) holder).getLastTimeText();
+            textView = ((SellingSealedViewHolder) holder).getTextRemainingTime();
         }
 
         new CountDownTimer(remainingTime, 1000) {
@@ -329,7 +329,7 @@ public class SellingDetailAdapter extends RecyclerView.Adapter {
 
             @Override
             public void onFinish() {
-                textView.setText("競標結束");
+                textView.setText(mMainActivity.getString(R.string.bid_finish));
             }
         }.start();
     }

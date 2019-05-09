@@ -151,7 +151,7 @@ public class BoughtDetailAdapter extends RecyclerView.Adapter {
 
     private String getDateToString(long millSeconds) {
         Date d = new Date(millSeconds);
-        SimpleDateFormat sf = new SimpleDateFormat(mMainActivity.getString(R.string.simple_date_format));
+        SimpleDateFormat sf = new SimpleDateFormat(mMainActivity.getString(R.string.simple_date_format_MdHm));
         return sf.format(d);
     }
 

@@ -2,13 +2,13 @@ package com.johnson.bid.chat.chatcontent;
 
 import android.support.annotation.NonNull;
 import android.support.v7.widget.RecyclerView;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageView;
 import android.widget.TextView;
 
+import com.johnson.bid.Bid;
 import com.johnson.bid.R;
 import com.johnson.bid.data.ChatContent;
 import com.johnson.bid.util.ImageManager;
@@ -56,50 +56,42 @@ public class ChatContentAdapter extends RecyclerView.Adapter {
     @Override
     public int getItemCount() {
 
-        if (mChatContentArrayList == null) {
-            return 0;
-        } else {
-            return mChatContentArrayList.size();
-        }
+        return (mChatContentArrayList == null) ? 0 : mChatContentArrayList.size();
     }
 
     @Override
     public int getItemViewType(int position) {
 
-        if (mChatContentArrayList.get(position).getAuthorId() == UserManager.getInstance().getUser().getId()) {
-            return TYPE_ME;
-        }  else {
-            return TYPE_HE;
-        }
+        return (mChatContentArrayList.get(position).getAuthorId() == UserManager.getInstance().getUser().getId()) ? TYPE_ME : TYPE_HE;
     }
 
     private class MyContentViewHolder extends RecyclerView.ViewHolder {
 
-        private ImageView mMyProfile;
-        private TextView mContent;
-        private TextView mTime;
+        private ImageView mImageMyProfile;
+        private TextView mTextContent;
+        private TextView mTextTime;
 
 
         public MyContentViewHolder(@NonNull View itemView) {
             super(itemView);
 
-            mMyProfile = itemView.findViewById(R.id.image_profile_me);
-            mMyProfile.setOutlineProvider(new ProfileAvatarOutlineProvider());
-            mContent = itemView.findViewById(R.id.text_content_me);
-            mTime = itemView.findViewById(R.id.text_time_me);
+            mImageMyProfile = itemView.findViewById(R.id.image_profile_me);
+            mImageMyProfile.setOutlineProvider(new ProfileAvatarOutlineProvider());
+            mTextContent = itemView.findViewById(R.id.text_content_me);
+            mTextTime = itemView.findViewById(R.id.text_time_me);
 
         }
 
         private ImageView getChatProfile() {
-            return mMyProfile;
+            return mImageMyProfile;
         }
 
-        private TextView getTime() {
-            return mTime;
+        private TextView getTextTime() {
+            return mTextTime;
         }
 
-        private TextView getContent() {
-            return mContent;
+        private TextView getTextContent() {
+            return mTextContent;
         }
 
     }
@@ -107,38 +99,38 @@ public class ChatContentAdapter extends RecyclerView.Adapter {
     private void bindMyContentViewHolder(MyContentViewHolder holder, ChatContent chatContent) {
 
         ImageManager.getInstance().setImageByUrl(holder.getChatProfile(), chatContent.getAuthorImage());
-        holder.getTime().setText(getDateToString(chatContent.getTime()));
-        holder.getContent().setText(chatContent.getMessage());
+        holder.getTextTime().setText(getDateToString(chatContent.getTime()));
+        holder.getTextContent().setText(chatContent.getMessage());
 
     }
 
     private class HisContentViewHolder extends RecyclerView.ViewHolder {
 
-        private ImageView mProfile;
-        private TextView mContent;
-        private TextView mTime;
+        private ImageView mImageProfile;
+        private TextView mTextContent;
+        private TextView mTextTime;
 
 
         public HisContentViewHolder(@NonNull View itemView) {
             super(itemView);
 
-            mProfile = itemView.findViewById(R.id.image_profile_not_me);
-            mProfile.setOutlineProvider(new ProfileAvatarOutlineProvider());
-            mContent = itemView.findViewById(R.id.text_content_not_me);
-            mTime = itemView.findViewById(R.id.text_time_not_me);
+            mImageProfile = itemView.findViewById(R.id.image_profile_not_me);
+            mImageProfile.setOutlineProvider(new ProfileAvatarOutlineProvider());
+            mTextContent = itemView.findViewById(R.id.text_content_not_me);
+            mTextTime = itemView.findViewById(R.id.text_time_not_me);
 
         }
 
         private ImageView getChatProfile() {
-            return mProfile;
+            return mImageProfile;
         }
 
-        private TextView getTime() {
-            return mTime;
+        private TextView getTextTime() {
+            return mTextTime;
         }
 
-        private TextView getContent() {
-            return mContent;
+        private TextView getTextContent() {
+            return mTextContent;
         }
 
     }
@@ -146,14 +138,14 @@ public class ChatContentAdapter extends RecyclerView.Adapter {
     private void bindHisContentViewHolder(HisContentViewHolder holder, ChatContent chatContent) {
 
         ImageManager.getInstance().setImageByUrl(holder.getChatProfile(), chatContent.getAuthorImage());
-        holder.getTime().setText(getDateToString(chatContent.getTime()));
-        holder.getContent().setText(chatContent.getMessage());
+        holder.getTextTime().setText(getDateToString(chatContent.getTime()));
+        holder.getTextContent().setText(chatContent.getMessage());
 
     }
 
     private String getDateToString(long millSeconds) {
         Date d = new Date(millSeconds);
-        SimpleDateFormat sf = new SimpleDateFormat("E  HH : mm");
+        SimpleDateFormat sf = new SimpleDateFormat(Bid.getAppContext().getString(R.string.simple_date_format_EHm));
         return sf.format(d);
     }
 

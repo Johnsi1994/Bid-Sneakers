@@ -22,7 +22,7 @@ public class ChatFragment extends Fragment implements ChatContract.View {
 
     private ChatContract.Presenter mPresenter;
     private ChatAdapter mChatAdapter;
-    private SwipeRefreshLayout swipeRefreshLayout;
+    private SwipeRefreshLayout mSwipeRefreshLayout;
 
     public ChatFragment() {}
 
@@ -42,7 +42,7 @@ public class ChatFragment extends Fragment implements ChatContract.View {
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
         View root = inflater.inflate(R.layout.fragment_recycler_swipe_container, container, false);
 
-        swipeRefreshLayout = root.findViewById(R.id.swipe_layout);
+        mSwipeRefreshLayout = root.findViewById(R.id.swipe_layout);
         RecyclerView recyclerView = root.findViewById(R.id.recycler_container);
         recyclerView.setLayoutManager(new LinearLayoutManager(getActivity()));
         recyclerView.setAdapter(mChatAdapter);
@@ -56,8 +56,8 @@ public class ChatFragment extends Fragment implements ChatContract.View {
 
         mPresenter.loadChatData();
 
-        swipeRefreshLayout.setOnRefreshListener(() -> {
-            swipeRefreshLayout.setRefreshing(false);
+        mSwipeRefreshLayout.setOnRefreshListener(() -> {
+            mSwipeRefreshLayout.setRefreshing(false);
             mPresenter.loadChatData();
         });
     }

@@ -4,8 +4,11 @@ import android.support.annotation.NonNull;
 import android.util.Log;
 
 import com.google.firebase.firestore.FieldValue;
+import com.johnson.bid.Bid;
+import com.johnson.bid.R;
 import com.johnson.bid.data.ChatContent;
 import com.johnson.bid.data.ChatRoom;
+import com.johnson.bid.util.Constants;
 import com.johnson.bid.util.Firebase;
 
 import java.util.ArrayList;
@@ -23,23 +26,19 @@ public class ChatContentPresenter implements ChatContentContract.Presenter {
     }
 
     @Override
-    public void start() {
-
-    }
+    public void start() {}
 
     @Override
-    public void showBottomNavigation() {
-
-    }
+    public void showBottomNavigation() {}
 
     @Override
     public void sendMessage(ChatContent chatContent) {
 
-        Firebase.getInstance().getFirestore().collection("chatrooms")
+        Firebase.getInstance().getFirestore().collection(Bid.getAppContext().getString(R.string.firebase_chatrooms))
                 .document(String.valueOf(mChatRoom.getChatRoomId()))
-                .update("chatContentArrayList", FieldValue.arrayUnion(chatContent))
-                .addOnSuccessListener(aVoid -> Log.d("Johnsi", "chatContent successfully added!"))
-                .addOnFailureListener(e -> Log.w("Johnsi", "chatContent Error updating document", e));
+                .update(Bid.getAppContext().getString(R.string.firebase_field_chat_content_array_list), FieldValue.arrayUnion(chatContent))
+                .addOnSuccessListener(aVoid -> Log.d(Constants.TAG, "chatContent successfully added!"))
+                .addOnFailureListener(e -> Log.w(Constants.TAG, "chatContent Error updating document", e));
     }
 
     @Override
@@ -59,7 +58,7 @@ public class ChatContentPresenter implements ChatContentContract.Presenter {
     @Override
     public void setChatListener() {
 
-        Firebase.getInstance().getFirestore().collection("chatrooms")
+        Firebase.getInstance().getFirestore().collection(Bid.getAppContext().getString(R.string.firebase_chatrooms))
                 .document(String.valueOf(mChatRoom.getChatRoomId()))
                 .addSnapshotListener((queryDocumentSnapshots, e) -> {
 
@@ -73,20 +72,13 @@ public class ChatContentPresenter implements ChatContentContract.Presenter {
                         mChatContentArrayList = queryDocumentSnapshots.toObject(ChatRoom.class).getChatContentArrayList();
                         loadChatContentData();
                     }
-
                 });
-
     }
 
     @Override
-    public void updateToolbar(String title) {
-
-    }
+    public void updateToolbar(String title) {}
 
     @Override
-    public void hideToolbar() {
-
-    }
-
+    public void hideToolbar() {}
 
 }

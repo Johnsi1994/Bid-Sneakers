@@ -6,7 +6,6 @@ import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -15,7 +14,6 @@ import android.widget.EditText;
 
 import com.johnson.bid.R;
 import com.johnson.bid.data.ChatContent;
-import com.johnson.bid.data.ChatRoom;
 import com.johnson.bid.util.UserManager;
 
 import java.util.ArrayList;
@@ -27,8 +25,8 @@ public class ChatContentFragment extends Fragment implements ChatContentContract
 
     private ChatContentContract.Presenter mPresenter;
     private ChatContentAdapter mChatContentAdapter;
-    private EditText mMessageEditText;
-    private Button mSendBtn;
+    private EditText mEdtTxtMessage;
+    private Button mBtnSend;
     private RecyclerView mRecyclerView;
     private String mFrom;
 
@@ -54,8 +52,8 @@ public class ChatContentFragment extends Fragment implements ChatContentContract
         mRecyclerView.setLayoutManager(new LinearLayoutManager(getActivity()));
         mRecyclerView.setAdapter(mChatContentAdapter);
 
-        mMessageEditText = root.findViewById(R.id.edit_send_message);
-        mSendBtn = root.findViewById(R.id.button_send_message);
+        mEdtTxtMessage = root.findViewById(R.id.edit_send_message);
+        mBtnSend = root.findViewById(R.id.button_send_message);
 
         return root;
     }
@@ -67,22 +65,26 @@ public class ChatContentFragment extends Fragment implements ChatContentContract
         mPresenter.setChatListener();
         mPresenter.loadChatContentData();
 
-        mSendBtn.setOnClickListener(v -> {
+        mBtnSend.setOnClickListener(v -> {
 
-            if (!"".equals(mMessageEditText.getText().toString())) {
+            if (!"".equals(mEdtTxtMessage.getText().toString())) {
 
-                ChatContent chatContent = new ChatContent();
-
-                long time = System.currentTimeMillis();
-                chatContent.setTime(time);
-                chatContent.setAuthorId(UserManager.getInstance().getUser().getId());
-                chatContent.setAuthorImage(UserManager.getInstance().getUser().getImage());
-                chatContent.setMessage(mMessageEditText.getText().toString());
-
-                mPresenter.sendMessage(chatContent);
-                mMessageEditText.setText("");
+                mPresenter.sendMessage(setChatContent());
+                mEdtTxtMessage.setText("");
             }
         });
+    }
+
+    private ChatContent setChatContent() {
+        ChatContent chatContent = new ChatContent();
+
+        long time = System.currentTimeMillis();
+        chatContent.setTime(time);
+        chatContent.setAuthorId(UserManager.getInstance().getUser().getId());
+        chatContent.setAuthorImage(UserManager.getInstance().getUser().getImage());
+        chatContent.setMessage(mEdtTxtMessage.getText().toString());
+
+        return chatContent;
     }
 
     @Override
@@ -91,10 +93,10 @@ public class ChatContentFragment extends Fragment implements ChatContentContract
 
         if (mFrom.equals(CHAT)) {
             mPresenter.showBottomNavigation();
-            mPresenter.updateToolbar("聊聊");
+            mPresenter.updateToolbar(getString(R.string.toolbar_title_chat));
         } else {
             mPresenter.hideToolbar();
-            mPresenter.updateToolbar("聊聊");
+            mPresenter.updateToolbar(getString(R.string.toolbar_title_chat));
         }
 
     }

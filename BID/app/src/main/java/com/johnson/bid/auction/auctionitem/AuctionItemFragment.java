@@ -26,7 +26,7 @@ public class AuctionItemFragment extends Fragment implements AuctionItemContract
 
     private AuctionItemContract.Presenter mPresenter;
     private AuctionItemAdapter mAuctionItemAdapter;
-    private SwipeRefreshLayout swipeRefreshLayout;
+    private SwipeRefreshLayout mSwipeRefreshLayout;
 
     private String mAuctionType;
 
@@ -48,7 +48,7 @@ public class AuctionItemFragment extends Fragment implements AuctionItemContract
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
         View root = inflater.inflate(R.layout.fragment_recycler_swipe_container, container, false);
 
-        swipeRefreshLayout = root.findViewById(R.id.swipe_layout);
+        mSwipeRefreshLayout = root.findViewById(R.id.swipe_layout);
         RecyclerView recyclerView = root.findViewById(R.id.recycler_container);
         recyclerView.setLayoutManager(new LinearLayoutManager(getActivity()));
         recyclerView.setAdapter(mAuctionItemAdapter);
@@ -62,8 +62,8 @@ public class AuctionItemFragment extends Fragment implements AuctionItemContract
 
         loadData();
 
-        swipeRefreshLayout.setOnRefreshListener(() -> {
-            swipeRefreshLayout.setRefreshing(false);
+        mSwipeRefreshLayout.setOnRefreshListener(() -> {
+            mSwipeRefreshLayout.setRefreshing(false);
             loadData();
         });
 

@@ -9,6 +9,7 @@ import android.view.ViewGroup;
 import android.widget.ImageView;
 import android.widget.TextView;
 
+import com.johnson.bid.Bid;
 import com.johnson.bid.R;
 import com.johnson.bid.data.ChatRoom;
 import com.johnson.bid.util.ImageManager;
@@ -55,31 +56,31 @@ public class ChatAdapter extends RecyclerView.Adapter {
     private class ViewHolder extends RecyclerView.ViewHolder {
 
         private CardView mCardView;
-        private ImageView mChatProfile;
-        private TextView mName;
-        private TextView mContent;
+        private ImageView mImageChatProfile;
+        private TextView mTextName;
+        private TextView mTextContent;
 
         public ViewHolder(@NonNull View itemView) {
             super(itemView);
 
             mCardView = itemView.findViewById(R.id.layout_chat_brief);
-            mChatProfile = itemView.findViewById(R.id.image_chat_profile);
-            mChatProfile.setOutlineProvider(new ProfileAvatarOutlineProvider());
-            mName = itemView.findViewById(R.id.text_chat_name);
-            mContent = itemView.findViewById(R.id.text_chat_content);
+            mImageChatProfile = itemView.findViewById(R.id.image_chat_profile);
+            mImageChatProfile.setOutlineProvider(new ProfileAvatarOutlineProvider());
+            mTextName = itemView.findViewById(R.id.text_chat_name);
+            mTextContent = itemView.findViewById(R.id.text_chat_content);
 
         }
 
-        private ImageView getChatProfile() {
-            return mChatProfile;
+        private ImageView getImageChatProfile() {
+            return mImageChatProfile;
         }
 
-        private TextView getName() {
-            return mName;
+        private TextView getTextName() {
+            return mTextName;
         }
 
-        private TextView getContent() {
-            return mContent;
+        private TextView getTextContent() {
+            return mTextContent;
         }
 
         private CardView getCardView() {
@@ -90,14 +91,14 @@ public class ChatAdapter extends RecyclerView.Adapter {
 
     private void bindViewHolder(ViewHolder holder, ChatRoom chatRoom) {
 
-        ImageManager.getInstance().setImageByUrl(holder.getChatProfile(),
+        ImageManager.getInstance().setImageByUrl(holder.getImageChatProfile(),
                 (UserManager.getInstance().getUser().getId() == chatRoom.getSellerId()) ? chatRoom.getBuyerImage() : chatRoom.getSellerImage());
 
-        holder.getName().setText(
+        holder.getTextName().setText(
                 (UserManager.getInstance().getUser().getId() == chatRoom.getSellerId()) ? chatRoom.getBuyerName() : chatRoom.getSellerName());
 
-        holder.getContent().setText((chatRoom.getChatContentArrayList().size() > 0) ?
-                chatRoom.getChatContentArrayList().get((chatRoom.getChatContentArrayList().size() - 1)).getMessage() : "開始聊天吧");
+        holder.getTextContent().setText((chatRoom.getChatContentArrayList().size() > 0) ?
+                chatRoom.getChatContentArrayList().get((chatRoom.getChatContentArrayList().size() - 1)).getMessage() : Bid.getAppContext().getString(R.string.placeholder_start_chatting));
 
         holder.getCardView().setOnClickListener(v -> {
 
@@ -109,7 +110,6 @@ public class ChatAdapter extends RecyclerView.Adapter {
             } else {
                 mPresenter.updateToolbar(chatRoom.getSellerName());
             }
-
         });
     }
 

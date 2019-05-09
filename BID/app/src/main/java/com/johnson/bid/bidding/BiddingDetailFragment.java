@@ -7,7 +7,6 @@ import android.support.v4.app.Fragment;
 import android.support.v4.widget.SwipeRefreshLayout;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -15,10 +14,7 @@ import android.view.ViewGroup;
 import com.johnson.bid.MainActivity;
 import com.johnson.bid.R;
 import com.johnson.bid.data.Product;
-import com.johnson.bid.util.Constants;
 import com.johnson.bid.util.UserManager;
-
-import java.util.ArrayList;
 
 import static com.google.common.base.Preconditions.checkNotNull;
 
@@ -27,7 +23,7 @@ public class BiddingDetailFragment extends Fragment implements BiddingDetailCont
     private BiddingDetailContract.Presenter mPresenter;
     private BiddingDetailAdapter mBiddingDetailAdapter;
     private String mAuctionType;
-    private SwipeRefreshLayout swipeRefreshLayout;
+    private SwipeRefreshLayout mSwipeRefreshLayout;
 
     public BiddingDetailFragment() {
     }
@@ -48,7 +44,7 @@ public class BiddingDetailFragment extends Fragment implements BiddingDetailCont
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
         View root = inflater.inflate(R.layout.fragment_recycler_swipe_container, container, false);
 
-        swipeRefreshLayout = root.findViewById(R.id.swipe_layout);
+        mSwipeRefreshLayout = root.findViewById(R.id.swipe_layout);
         RecyclerView recyclerView = root.findViewById(R.id.recycler_container);
         recyclerView.setLayoutManager(new LinearLayoutManager(getActivity()));
         recyclerView.setAdapter(mBiddingDetailAdapter);
@@ -62,8 +58,8 @@ public class BiddingDetailFragment extends Fragment implements BiddingDetailCont
 
         mPresenter.loadProductData();
 
-        swipeRefreshLayout.setOnRefreshListener(() -> {
-            swipeRefreshLayout.setRefreshing(false);
+        mSwipeRefreshLayout.setOnRefreshListener(() -> {
+            mSwipeRefreshLayout.setRefreshing(false);
             mPresenter.loadBiddingFreshData();
         });
     }

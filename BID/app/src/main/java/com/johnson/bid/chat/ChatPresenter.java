@@ -4,7 +4,10 @@ import android.support.annotation.NonNull;
 import android.util.Log;
 
 import com.google.firebase.firestore.QueryDocumentSnapshot;
+import com.johnson.bid.Bid;
+import com.johnson.bid.R;
 import com.johnson.bid.data.ChatRoom;
+import com.johnson.bid.util.Constants;
 import com.johnson.bid.util.Firebase;
 import com.johnson.bid.util.UserManager;
 
@@ -22,26 +25,19 @@ public class ChatPresenter implements ChatContract.Presenter {
     }
 
     @Override
-    public void start() {
-
-    }
+    public void start() {}
 
     @Override
-    public void openChatContent(ChatRoom chatRoom, String from) {
-
-    }
+    public void openChatContent(ChatRoom chatRoom, String from) {}
 
     @Override
-    public void hideBottomNavigation() {
-
-    }
+    public void hideBottomNavigation() {}
 
     @Override
     public void loadChatData() {
 
         mChatRoomArrayList = new ArrayList<>();
         findAllChatRoom();
-
     }
 
     @Override
@@ -50,14 +46,12 @@ public class ChatPresenter implements ChatContract.Presenter {
     }
 
     @Override
-    public void updateToolbar(String name) {
-
-    }
+    public void updateToolbar(String name) {}
 
     private void findAllChatRoom() {
 
-        Firebase.getInstance().getFirestore().collection("chatrooms")
-                .whereArrayContains("ownerList", UserManager.getInstance().getUser().getId())
+        Firebase.getInstance().getFirestore().collection(Bid.getAppContext().getString(R.string.firebase_chatrooms))
+                .whereArrayContains(Bid.getAppContext().getString(R.string.firebase_field_owner_list), UserManager.getInstance().getUser().getId())
                 .get()
                 .addOnCompleteListener(task -> {
                     if (task.isSuccessful()) {
@@ -68,9 +62,8 @@ public class ChatPresenter implements ChatContract.Presenter {
 
                         setChatData(mChatRoomArrayList);
                     } else {
-                        Log.d("Johnsi", "Error getting documents: ", task.getException());
+                        Log.d(Constants.TAG, "Error getting documents: ", task.getException());
                     }
                 });
-
     }
 }

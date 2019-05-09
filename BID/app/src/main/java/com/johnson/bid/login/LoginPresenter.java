@@ -13,12 +13,8 @@ public class LoginPresenter implements LoginContract.Presenter {
     }
 
     @Override
-    public void start() {
-
-    }
+    public void start() {}
 
     @Override
-    public void onLoginSuccess() {
-
-    }
+    public void onLoginSuccess() {}
 }

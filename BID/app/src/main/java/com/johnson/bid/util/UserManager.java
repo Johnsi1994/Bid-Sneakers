@@ -13,6 +13,8 @@ import com.facebook.login.LoginManager;
 import com.facebook.login.LoginResult;
 import com.google.firebase.firestore.DocumentSnapshot;
 import com.google.firebase.firestore.QueryDocumentSnapshot;
+import com.johnson.bid.Bid;
+import com.johnson.bid.R;
 import com.johnson.bid.data.User;
 
 import org.json.JSONException;
@@ -44,36 +46,32 @@ public class UserManager {
         LoginManager.getInstance().registerCallback(mFbCallbackManager, new FacebookCallback<LoginResult>() {
             @Override
             public void onSuccess(LoginResult loginResult) {
+
                 getUserInfoFromFacebook(loginResult, new LoadCallback() {
                     @Override
                     public void onSuccess() {
-                        Log.d("Johnsi", "TOKEN : " + loginResult.getAccessToken().getToken());
+                        Log.d(Constants.TAG, "TOKEN : " + loginResult.getAccessToken().getToken());
                         loadCallback.onSuccess();
                     }
 
                     @Override
                     public void onFail(String errorMessage) {
 
-                        Log.d("logintest", "onFail : In User Manager");
                         loadCallback.onFail("Get User Info Failed");
                     }
                 });
-                Log.d("Johnsi", "FB Login Success");
+                Log.d(Constants.TAG, "FB Login Success");
             }
 
             @Override
             public void onCancel() {
 
-                Log.d("logintest", "Cancel : In User Manager");
-                Log.d("Johnsi", "FB Login Cancel");
                 loadCallback.onFail("FB Login Cancel");
             }
 
             @Override
             public void onError(FacebookException exception) {
 
-                Log.d("logintest", "Error : In User Manager");
-                Log.d("Johnsi", "FB Login Error");
                 loadCallback.onFail("FB Login Error: " + exception.getMessage());
             }
         });
@@ -85,53 +83,11 @@ public class UserManager {
         GraphRequest graphRequest = GraphRequest.newMeRequest(loginResult.getAccessToken(), (object, response) -> {
             try {
                 if (response.getConnection().getResponseCode() == 200) {
-                    long id = object.getLong("id");
-//                    Log.d("Johnsi", "ID : " + id);
-                    String name = object.getString("name");
-                    String userPhoto = "https://graph.facebook.com/" + id + "/picture?type=large";
+                    long id = object.getLong(Bid.getAppContext().getString(R.string.fb_id));
+                    String name = object.getString(Bid.getAppContext().getString(R.string.fb_name));
+                    String userPhoto = Bid.getAppContext().getString(R.string.fb_profile_url_part1) + id + Bid.getAppContext().getString(R.string.fb_profile_url_part2);
 
-//                    大頭照處理
-//                    public static Bitmap getFacebookProfilePicture(String userID){
-//                        URL imageURL = new URL("https://graph.facebook.com/" + userID + "/picture?type=large");
-//                        Bitmap bitmap = BitmapFactory.decodeStream(imageURL.openConnection().getInputStream());
-//
-//                        return bitmap;
-//                    }
-//
-//                    Bitmap bitmap = getFacebookProfilePicture(userId);
-
-                    Firebase.getInstance().getFirestore().collection("users")
-                            .whereEqualTo("id", id)
-                            .get()
-                            .addOnCompleteListener(task -> {
-                                if (task.isSuccessful()) {
-
-                                    if (task.getResult().size() == 0) {
-
-                                        User user = new User();
-                                        user.setId(id);
-                                        user.setName(name);
-                                        user.setImage(userPhoto);
-                                        setUser(user);
-
-                                        Firebase.getInstance().getFirestore().collection("users")
-                                                .document(String.valueOf(id))
-                                                .set(user)
-                                                .addOnSuccessListener(documentReference -> Log.d("Johnsi", "DocumentSnapshot added"))
-                                                .addOnFailureListener(e -> Log.w("Johnsi", "Error adding document", e));
-
-                                    } else {
-                                        for (QueryDocumentSnapshot document : task.getResult()) {
-                                            setUser(document.toObject(User.class));
-                                        }
-                                    }
-
-                                } else {
-                                    Log.d("Johnsi", "Error getting documents: ", task.getException());
-                                }
-                            });
-
-                    loadCallback.onSuccess();
+                    checkHasUser(id, name, userPhoto, loadCallback);
                 }
             } catch (IOException e) {
                 e.printStackTrace();
@@ -143,9 +99,47 @@ public class UserManager {
         graphRequest.executeAsync();
     }
 
+    private void checkHasUser(long id, String name, String userPhoto, LoadCallback loadCallback) {
+
+        Firebase.getInstance().getFirestore().collection(Bid.getAppContext().getString(R.string.firebase_users))
+                .whereEqualTo(Bid.getAppContext().getString(R.string.fb_id), id)
+                .get()
+                .addOnCompleteListener(task -> {
+                    if (task.isSuccessful()) {
+
+                        if (task.getResult().size() == 0) {
+                            uploadNewUser(id, name, userPhoto);
+                            loadCallback.onSuccess();
+                        } else {
+                            for (QueryDocumentSnapshot document : task.getResult()) {
+                                setUser(document.toObject(User.class));
+                            }
+                            loadCallback.onSuccess();
+                        }
+                    } else {
+                        Log.d(Constants.TAG, "Error getting documents: ", task.getException());
+                    }
+                });
+    }
+
+    private void uploadNewUser(long id, String name, String userPhoto) {
+
+        User user = new User();
+        user.setId(id);
+        user.setName(name);
+        user.setImage(userPhoto);
+        setUser(user);
+
+        Firebase.getInstance().getFirestore().collection(Bid.getAppContext().getString(R.string.firebase_users))
+                .document(String.valueOf(id))
+                .set(user)
+                .addOnSuccessListener(documentReference -> Log.d(Constants.TAG, "DocumentSnapshot added"))
+                .addOnFailureListener(e -> Log.w(Constants.TAG, "Error adding document", e));
+    }
+
     public void getUserProfile(LoadCallback loadCallback) {
 
-        Firebase.getInstance().getFirestore().collection("users")
+        Firebase.getInstance().getFirestore().collection(Bid.getAppContext().getString(R.string.firebase_users))
                 .document(AccessToken.getCurrentAccessToken().getUserId().trim())
                 .get()
                 .addOnCompleteListener(task -> {
@@ -157,26 +151,25 @@ public class UserManager {
                         loadCallback.onSuccess();
 
                     } else {
-                        Log.d("Johnsi", "Error getting documents: ", task.getException());
+                        Log.d(Constants.TAG, "Error getting documents: ", task.getException());
                     }
                 });
-
     }
 
     public void updateUser2Firebase() {
 
-        Firebase.getInstance().getFirestore().collection("users")
+        Firebase.getInstance().getFirestore().collection(Bid.getAppContext().getString(R.string.firebase_users))
                 .document(String.valueOf(mUser.getId()))
                 .set(mUser)
-                .addOnSuccessListener(documentReference -> Log.d("Johnsi", "DocumentSnapshot added"))
-                .addOnFailureListener(e -> Log.w("Johnsi", "Error adding document", e));
+                .addOnSuccessListener(documentReference -> Log.d(Constants.TAG, "DocumentSnapshot added"))
+                .addOnFailureListener(e -> Log.w(Constants.TAG, "Error adding document", e));
 
     }
 
     private void loginFacebook(Context context) {
 
         LoginManager.getInstance().logInWithReadPermissions(
-                (Activity) context, Arrays.asList("email"));
+                (Activity) context, Arrays.asList(context.getString(R.string.fb_email)));
     }
 
     public boolean isLoggedIn() {
@@ -225,7 +218,6 @@ public class UserManager {
                 iterator.remove();
             }
         }
-
     }
 
     public  void addBoughtProductId(long productId) {

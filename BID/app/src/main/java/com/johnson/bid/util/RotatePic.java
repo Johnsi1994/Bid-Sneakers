@@ -33,7 +33,6 @@ public class RotatePic {
 
         try {
             Uri uri = data.getData();
-            Log.d("uritest", "handleImage Uri : " + uri);
 
             ExifInterface exif = new ExifInterface(getRealPathFromURI(context, uri));
             int orientation = exif.getAttributeInt(ExifInterface.TAG_ORIENTATION, ExifInterface.ORIENTATION_UNDEFINED);
@@ -83,6 +82,7 @@ public class RotatePic {
         String document_id = cursor.getString(0);
         document_id = document_id.substring(document_id.lastIndexOf(":") + 1);
         cursor.close();
+
         cursor = context.getContentResolver().query(MediaStore.Images.Media.EXTERNAL_CONTENT_URI, null
                 , MediaStore.Images.Media._ID + " = ? ", new String[]{document_id}, null);
         cursor.moveToFirst();
@@ -132,13 +132,5 @@ public class RotatePic {
             e.printStackTrace();
             return null;
         }
-    }
-
-
-    public static Uri getImageUri(Context context, Bitmap inImage) {
-        ByteArrayOutputStream bytes = new ByteArrayOutputStream();
-        inImage.compress(Bitmap.CompressFormat.JPEG, 100, bytes);
-        String path = MediaStore.Images.Media.insertImage(context.getContentResolver(), inImage, "Title", null);
-        return Uri.parse(path);
     }
 }

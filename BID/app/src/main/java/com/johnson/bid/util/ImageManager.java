@@ -74,7 +74,7 @@ public class ImageManager {
 
             if (bitmap == null) {
 
-                Log.d("Johnsi", "LruCache doesn't exist, start download.: " + imageUrl);
+                Log.d(Constants.TAG, "LruCache doesn't exist, start download.: " + imageUrl);
 
                 lockImagePairing(imageView, imageUrl);
                 imageView.setImageResource(R.drawable.ic_128);
@@ -83,7 +83,7 @@ public class ImageManager {
                         .executeOnExecutor(Executors.newCachedThreadPool());
             } else {
 
-                Log.d("Johnsi", "LruCache exist, setImageByUrl bitmap directly.: " + imageUrl);
+                Log.d(Constants.TAG, "LruCache exist, setImageByUrl bitmap directly.: " + imageUrl);
                 imageView.setImageBitmap(bitmap);
             }
         }
@@ -96,7 +96,7 @@ public class ImageManager {
 
             if (bitmap == null) {
 
-                Log.d("Johnsi", "LruCacheBrief doesn't exist, start download.: " + imageUrl);
+                Log.d(Constants.TAG, "LruCacheBrief doesn't exist, start download.: " + imageUrl);
 
                 lockImagePairing(imageView, imageUrl);
                 imageView.setImageResource(R.drawable.ic_128);
@@ -105,7 +105,7 @@ public class ImageManager {
                         .executeOnExecutor(Executors.newCachedThreadPool());
             } else {
 
-                Log.d("Johnsi", "LruCacheBrief exist, setImageByUrl bitmap directly.: " + imageUrl);
+                Log.d(Constants.TAG, "LruCacheBrief exist, setImageByUrl bitmap directly.: " + imageUrl);
                 imageView.setImageBitmap(bitmap);
             }
         }

@@ -7,6 +7,8 @@ import com.google.firebase.firestore.FirebaseFirestore;
 import com.google.firebase.firestore.QueryDocumentSnapshot;
 import com.google.firebase.storage.FirebaseStorage;
 import com.google.firebase.storage.StorageReference;
+import com.johnson.bid.Bid;
+import com.johnson.bid.R;
 import com.johnson.bid.data.Product;
 import com.johnson.bid.data.User;
 
@@ -44,8 +46,8 @@ public class Firebase {
 
         mProductList = new ArrayList<>();
 
-        db.collection("products")
-                .whereEqualTo("auctionCondition", "bidding")
+        db.collection(Bid.getAppContext().getString(R.string.firebase_products))
+                .whereEqualTo(Bid.getAppContext().getString(R.string.firebase_field_auction_condition), Bid.getAppContext().getString(R.string.firebase_auction_condition_bidding))
                 .get()
                 .addOnCompleteListener(task -> {
                     if (task.isSuccessful()) {
@@ -56,7 +58,7 @@ public class Firebase {
                         setAllBiddingProducts(mProductList);
                         loadCallback.onSuccess();
                     } else {
-                        Log.d("Johnsi", "Error getting documents: ", task.getException());
+                        Log.d(Constants.TAG, "Error getting documents: ", task.getException());
                     }
                 });
 

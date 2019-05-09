@@ -3,9 +3,6 @@
     <string name="package_name">com.johnson.bid</string>
 
     <string name="bit_times">出價次數 :</string>
-
-
-
     <string name="product_title">商品名稱</string>
     <string name="product_intro">商品介紹</string>
     <string name="product_condition">商品狀況</string>
@@ -145,9 +142,15 @@
     <!--Facebook-->
     <string name="facebook_app_id">395083894645098</string>
     <string name="fb_login_protocol_scheme">fb395083894645098</string>
+    <string name="fb_id">id</string>
+    <string name="fb_name">name</string>
+    <string name="fb_email">email</string>
+    <string name="fb_profile_url_part1">https://graph.facebook.com/</string>
+    <string name="fb_profile_url_part2">/picture?type=large</string>
 
 
     <string name="placeholder_start_chatting">開始聊天吧</string>
+
 
 
 </resources>

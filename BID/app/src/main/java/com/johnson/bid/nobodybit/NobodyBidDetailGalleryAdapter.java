@@ -31,7 +31,7 @@ public class NobodyBidDetailGalleryAdapter extends RecyclerView.Adapter {
 
     @Override
     public void onBindViewHolder(@NonNull RecyclerView.ViewHolder holder, int i) {
-        ImageManager.getInstance().setImageByUrl(((PhotoViewHolder) holder).getPhoto(), mImages.get(i));
+        ImageManager.getInstance().setImageByUrl(((PhotoViewHolder) holder).getImagePhoto(), mImages.get(i));
     }
 
     @Override
@@ -41,16 +41,16 @@ public class NobodyBidDetailGalleryAdapter extends RecyclerView.Adapter {
 
     private class PhotoViewHolder extends RecyclerView.ViewHolder {
 
-        private ImageView mPhoto;
+        private ImageView mImagePhoto;
 
         public PhotoViewHolder(View itemView) {
             super(itemView);
 
-            mPhoto = itemView.findViewById(R.id.image_gallery_pic);
+            mImagePhoto = itemView.findViewById(R.id.image_gallery_pic);
         }
 
-        public ImageView getPhoto() {
-            return mPhoto;
+        public ImageView getImagePhoto() {
+            return mImagePhoto;
         }
     }
 }

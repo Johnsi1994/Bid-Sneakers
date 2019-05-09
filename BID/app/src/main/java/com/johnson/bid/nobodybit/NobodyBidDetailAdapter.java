@@ -46,10 +46,10 @@ public class NobodyBidDetailAdapter extends RecyclerView.Adapter {
 
         if (mLinearSnapHelper == null) {
             mLinearSnapHelper = new LinearSnapHelper();
-            mLinearSnapHelper.attachToRecyclerView(((NobodyBitDetailViewHolder) holder).getGalleryRecycler());
+            mLinearSnapHelper.attachToRecyclerView(((NobodyBitDetailViewHolder) holder).getRecyclerGallery());
         }
-        ((NobodyBitDetailViewHolder) holder).getGalleryRecycler().setAdapter(nobodyBidDetailGalleryAdapter);
-        ((NobodyBitDetailViewHolder) holder).getGalleryRecycler().setLayoutManager(layoutManager);
+        ((NobodyBitDetailViewHolder) holder).getRecyclerGallery().setAdapter(nobodyBidDetailGalleryAdapter);
+        ((NobodyBitDetailViewHolder) holder).getRecyclerGallery().setLayoutManager(layoutManager);
 
         bindNobodyBitDetailViewHolder((NobodyBitDetailViewHolder) holder, mProduct);
     }
@@ -61,97 +61,97 @@ public class NobodyBidDetailAdapter extends RecyclerView.Adapter {
 
     private class NobodyBitDetailViewHolder extends RecyclerView.ViewHolder {
 
-        private Button mBackBtn;
-        private RecyclerView mGalleryRecycler;
-        private TextView mTitleText;
-        private TextView mIntroText;
-        private TextView mConditionText;
-        private TextView mAuctionTypeText;
-        private TextView mExpiredText;
-        private TextView mStartingPriceText;
-        private TextView mIncreaseText;
-        private TextView mReservePriceText;
-        private Button mRepostBtn;
+        private Button mBtnBack;
+        private RecyclerView mRecyclerGallery;
+        private TextView mTextTitle;
+        private TextView mTextIntro;
+        private TextView mTextCondition;
+        private TextView mTextAuctionType;
+        private TextView mTextExpired;
+        private TextView mTextStartingPrice;
+        private TextView mTextIncrease;
+        private TextView mTextReservePrice;
+        private Button mBtnRepost;
 
         public NobodyBitDetailViewHolder(@NonNull View itemView) {
             super(itemView);
 
-            mBackBtn = itemView.findViewById(R.id.button_nobody_bit_back);
-            mGalleryRecycler = itemView.findViewById(R.id.recycler_nobody_bit_gallery);
-            mTitleText = itemView.findViewById(R.id.text_nobody_bit_title);
-            mIntroText = itemView.findViewById(R.id.text_nobody_bit_intro);
-            mConditionText = itemView.findViewById(R.id.text_nobody_bit_condition);
-            mAuctionTypeText = itemView.findViewById(R.id.text_nobody_bit_auction_type);
-            mExpiredText = itemView.findViewById(R.id.text_nobody_bit_expired);
-            mStartingPriceText = itemView.findViewById(R.id.text_nobody_bit_starting_time);
-            mIncreaseText = itemView.findViewById(R.id.text_nobody_bit_increase);
-            mReservePriceText = itemView.findViewById(R.id.text_nobody_bit_reserve_price);
-            mRepostBtn = itemView.findViewById(R.id.button_nobody_bit_repost);
+            mBtnBack = itemView.findViewById(R.id.button_nobody_bit_back);
+            mRecyclerGallery = itemView.findViewById(R.id.recycler_nobody_bit_gallery);
+            mTextTitle = itemView.findViewById(R.id.text_nobody_bit_title);
+            mTextIntro = itemView.findViewById(R.id.text_nobody_bit_intro);
+            mTextCondition = itemView.findViewById(R.id.text_nobody_bit_condition);
+            mTextAuctionType = itemView.findViewById(R.id.text_nobody_bit_auction_type);
+            mTextExpired = itemView.findViewById(R.id.text_nobody_bit_expired);
+            mTextStartingPrice = itemView.findViewById(R.id.text_nobody_bit_starting_time);
+            mTextIncrease = itemView.findViewById(R.id.text_nobody_bit_increase);
+            mTextReservePrice = itemView.findViewById(R.id.text_nobody_bit_reserve_price);
+            mBtnRepost = itemView.findViewById(R.id.button_nobody_bit_repost);
 
-            mBackBtn.setOnClickListener(v ->
+            mBtnBack.setOnClickListener(v ->
                     mMainActivity.onBackPressed()
             );
 
-            mRepostBtn.setOnClickListener(v ->
+            mBtnRepost.setOnClickListener(v ->
                     Toast.makeText(mMainActivity, "Repost is Coming Soon", Toast.LENGTH_SHORT).show()
             );
 
         }
 
-        private RecyclerView getGalleryRecycler() {
-            return mGalleryRecycler;
+        private RecyclerView getRecyclerGallery() {
+            return mRecyclerGallery;
         }
 
-        private TextView getTitleText() {
-            return mTitleText;
+        private TextView getTextTitle() {
+            return mTextTitle;
         }
 
-        private TextView getIntroText() {
-            return mIntroText;
+        private TextView getTextIntro() {
+            return mTextIntro;
         }
 
-        private TextView getConditionText() {
-            return mConditionText;
+        private TextView getTextCondition() {
+            return mTextCondition;
         }
 
-        private TextView getAuctionTypeText() {
-            return mAuctionTypeText;
+        private TextView getTextAuctionType() {
+            return mTextAuctionType;
         }
 
-        private TextView getExpiredText() {
-            return mExpiredText;
+        private TextView getTextExpired() {
+            return mTextExpired;
         }
 
-        private TextView getStartingPriceText() {
-            return mStartingPriceText;
+        private TextView getTextStartingPrice() {
+            return mTextStartingPrice;
         }
 
-        private TextView getIncreaseText() {
-            return mIncreaseText;
+        private TextView getTextIncrease() {
+            return mTextIncrease;
         }
 
-        private TextView getReservePriceText() {
-            return mReservePriceText;
+        private TextView getTextReservePrice() {
+            return mTextReservePrice;
         }
 
     }
 
     private void bindNobodyBitDetailViewHolder(NobodyBitDetailViewHolder holder, Product product) {
 
-        holder.getTitleText().setText(product.getTitle());
-        holder.getIntroText().setText(product.getIntroduction());
-        holder.getConditionText().setText(product.getCondition());
-        holder.getAuctionTypeText().setText(product.getAuctionType());
-        holder.getExpiredText().setText(getDateToString(product.getExpired()));
-        holder.getStartingPriceText().setText(String.valueOf(product.getCurrentPrice()));
-        holder.getIncreaseText().setText(String.valueOf(product.getIncrease()));
-        holder.getReservePriceText().setText(String.valueOf(product.getReservePrice()));
+        holder.getTextTitle().setText(product.getTitle());
+        holder.getTextIntro().setText(product.getIntroduction());
+        holder.getTextCondition().setText(product.getCondition());
+        holder.getTextAuctionType().setText(product.getAuctionType());
+        holder.getTextExpired().setText(getDateToString(product.getExpired()));
+        holder.getTextStartingPrice().setText(String.valueOf(product.getCurrentPrice()));
+        holder.getTextIncrease().setText(String.valueOf(product.getIncrease()));
+        holder.getTextReservePrice().setText(String.valueOf(product.getReservePrice()));
 
     }
 
     private String getDateToString(long millSeconds) {
         Date d = new Date(millSeconds);
-        SimpleDateFormat sf = new SimpleDateFormat("MM 月 dd 日 HH 時 mm 分");
+        SimpleDateFormat sf = new SimpleDateFormat(mMainActivity.getString(R.string.simple_date_format_MdHm));
         return sf.format(d);
     }
 

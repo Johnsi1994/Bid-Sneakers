@@ -20,7 +20,6 @@ public class NobodyBidDetailFragment extends Fragment implements NobodyBidDetail
 
     private NobodyBidDetailContract.Presenter mPresenter;
     private NobodyBidDetailAdapter mNobodyBidDetailAdapter;
-    private Product mProduct;
 
     public NobodyBidDetailFragment() {}
 

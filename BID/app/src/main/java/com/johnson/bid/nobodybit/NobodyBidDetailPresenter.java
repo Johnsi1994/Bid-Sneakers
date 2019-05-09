@@ -16,14 +16,10 @@ public class NobodyBidDetailPresenter implements NobodyBidDetailContract.Present
     }
 
     @Override
-    public void start() {
-
-    }
+    public void start() {}
 
     @Override
-    public void showToolbarAndBottomNavigation() {
-
-    }
+    public void showToolbarAndBottomNavigation() {}
 
     @Override
     public void setNobodyBitDetailData(Product product) {

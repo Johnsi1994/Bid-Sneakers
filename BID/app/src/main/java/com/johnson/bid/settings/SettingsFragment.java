@@ -24,10 +24,10 @@ import static com.johnson.bid.MainMvpController.SETTINGS;
 public class SettingsFragment extends Fragment implements SettingsContract.View {
 
     private SettingsContract.Presenter mPresenter;
-    private ImageView mUserProfile;
+    private ImageView mImageUserProfile;
     private Button mBtnEditProfile;
     private TextView mTextUserName;
-    private Button mEditBtn;
+    private Button mBtnEdit;
     private EditText mEditUserName;
     private boolean isEditing = false;
 
@@ -47,15 +47,15 @@ public class SettingsFragment extends Fragment implements SettingsContract.View 
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
         View root = inflater.inflate(R.layout.fragment_settings, container, false);
 
-        mUserProfile = root.findViewById(R.id.image_user_profile);
-        mUserProfile.setOutlineProvider(new ProfileAvatarOutlineProvider());
+        mImageUserProfile = root.findViewById(R.id.image_user_profile);
+        mImageUserProfile.setOutlineProvider(new ProfileAvatarOutlineProvider());
         mBtnEditProfile = root.findViewById(R.id.button_edit_profile);
         mTextUserName = root.findViewById(R.id.text_user_name);
-        mEditBtn = root.findViewById(R.id.button_edit_user_name);
+        mBtnEdit = root.findViewById(R.id.button_edit_user_name);
         mEditUserName = root.findViewById(R.id.edit_user_name);
 
         mTextUserName.setText(UserManager.getInstance().getUser().getName());
-        ImageManager.getInstance().setImageByUrl(mUserProfile, UserManager.getInstance().getUser().getImage());
+        ImageManager.getInstance().setImageByUrl(mImageUserProfile, UserManager.getInstance().getUser().getImage());
 
         return root;
     }
@@ -70,7 +70,7 @@ public class SettingsFragment extends Fragment implements SettingsContract.View 
         );
 
 
-        mEditBtn.setOnClickListener(v -> {
+        mBtnEdit.setOnClickListener(v -> {
             if (isEditing) {
 
                 if (!"".equals(mEditUserName.getText().toString())) {
@@ -81,14 +81,13 @@ public class SettingsFragment extends Fragment implements SettingsContract.View 
                 isEditing = false;
                 mTextUserName.setVisibility(View.VISIBLE);
                 mEditUserName.setVisibility(View.INVISIBLE);
-                mEditBtn.setText("修改");
-
-
+                mBtnEdit.setText(getString(R.string.settings_btn_title_edit));
             } else {
+
                 isEditing = true;
                 mTextUserName.setVisibility(View.INVISIBLE);
                 mEditUserName.setVisibility(View.VISIBLE);
-                mEditBtn.setText("完成");
+                mBtnEdit.setText(getString(R.string.settings_btn_title_done));
             }
         });
 
@@ -101,6 +100,6 @@ public class SettingsFragment extends Fragment implements SettingsContract.View 
 
     @Override
     public void showProfile(Bitmap bitmap) {
-        mUserProfile.setImageBitmap(bitmap);
+        mImageUserProfile.setImageBitmap(bitmap);
     }
 }

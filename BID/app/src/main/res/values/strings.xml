@@ -145,7 +145,8 @@
 
 
     <string name="placeholder_start_chatting">開始聊天吧</string>
-
+    <string name="settings_btn_title_edit">修改</string>
+    <string name="settings_btn_title_done">完成</string>
 
 
 </resources>

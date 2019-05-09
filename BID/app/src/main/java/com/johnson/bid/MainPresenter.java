@@ -48,7 +48,6 @@ import java.util.ArrayList;
 import static com.google.common.base.Preconditions.checkNotNull;
 import static com.johnson.bid.MainMvpController.ENGLISH;
 
-
 public class MainPresenter implements MainContract.Presenter, AuctionContract.Presenter, TradeContract.Presenter,
         ChatContract.Presenter, SettingsContract.Presenter, AuctionItemContract.Presenter, LoginContract.Presenter,
         PostContract.Presenter, TradeItemContract.Presenter, BiddingDetailContract.Presenter, SellingDetailContract.Presenter,
@@ -479,7 +478,6 @@ public class MainPresenter implements MainContract.Presenter, AuctionContract.Pr
     @Override
     public void showPostSuccessDialog() {
         mMainView.showMessageDialogUi(MessageDialog.POST_SUCCESS);
-
     }
 
     @Override
@@ -582,19 +580,16 @@ public class MainPresenter implements MainContract.Presenter, AuctionContract.Pr
     @Override
     public TradeItemFragment findMySelling() {
         return mMainView.findMySellingView();
-
     }
 
     @Override
     public TradeItemFragment findMyBought() {
         return mMainView.findMyBoughtView();
-
     }
 
     @Override
     public TradeItemFragment findMySold() {
         return mMainView.findMySoldView();
-
     }
 
     @Override
@@ -608,7 +603,6 @@ public class MainPresenter implements MainContract.Presenter, AuctionContract.Pr
         if (mTradePresenter != null) {
             mTradePresenter.loadBoughtBadgeData();
         }
-
     }
 
     @Override
@@ -622,7 +616,6 @@ public class MainPresenter implements MainContract.Presenter, AuctionContract.Pr
         if (mTradePresenter != null) {
             mTradePresenter.loadSoldBadgeData();
         }
-
     }
 
     @Override
@@ -636,7 +629,6 @@ public class MainPresenter implements MainContract.Presenter, AuctionContract.Pr
         if (mTradePresenter != null) {
             mTradePresenter.loadNobodyBidBadgeData();
         }
-
     }
 
     @Override
@@ -773,8 +765,7 @@ public class MainPresenter implements MainContract.Presenter, AuctionContract.Pr
     @Override
     public void setBuyerHasRead(boolean hasRead, Product product) {
 
-            mMyBoughtPresenter.setBuyerHasRead(hasRead, product);
-
+        mMyBoughtPresenter.setBuyerHasRead(hasRead, product);
     }
 
     @Override
@@ -785,7 +776,6 @@ public class MainPresenter implements MainContract.Presenter, AuctionContract.Pr
         } else {
             mNobodyBidPresenter.setSellerHasRead(hasRead, product, from);
         }
-
     }
 
     @Override
@@ -807,10 +797,8 @@ public class MainPresenter implements MainContract.Presenter, AuctionContract.Pr
     public void loadMyBiddingData() {
 
         if (mMyBiddingPresenter != null) {
-            Log.d("Johnsi", "Start load my bidding data");
             mMyBiddingPresenter.loadMyBiddingData();
         }
-
     }
 
     @Override
@@ -837,7 +825,6 @@ public class MainPresenter implements MainContract.Presenter, AuctionContract.Pr
         if (mMyBoughtPresenter != null) {
             mMyBoughtPresenter.loadMyBoughtData();
         }
-
     }
 
     @Override
@@ -851,7 +838,6 @@ public class MainPresenter implements MainContract.Presenter, AuctionContract.Pr
         if (mMySoldPresenter != null) {
             mMySoldPresenter.loadMySoldData();
         }
-
     }
 
     @Override
@@ -865,14 +851,12 @@ public class MainPresenter implements MainContract.Presenter, AuctionContract.Pr
         if (mNobodyBidPresenter != null) {
             mNobodyBidPresenter.loadNobodyBidData();
         }
-
     }
 
     @Override
     public void setNobodyBidData(ArrayList<Product> productsList) {
         mNobodyBidPresenter.setNobodyBidData(productsList);
     }
-
 
     @Override
     public void setSoldDetailData(Product product) {

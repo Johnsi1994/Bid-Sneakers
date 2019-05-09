@@ -77,16 +77,12 @@ public class MainMvpController {
     private TradeItemPresenter mMySoldPresenter;
     private TradeItemPresenter mNobodyBidPresenter;
 
-    private FragmentTransaction mTransaction;
-
     @Retention(RetentionPolicy.SOURCE)
     @StringDef({
             LOGIN, AUCTION, TRADE, CHAT, SETTINGS, POST, BIDDING, SELLING, BOUGHTDETAIL, SOLDDETAIL, NOBODYBIDDETAIL,
             EYESON, SEARCH, CHATCONTENT
     })
-
-    public @interface FragmentType {
-    }
+    public @interface FragmentType {}
 
     static final String LOGIN = "LOGIN";
     public static final String AUCTION = "AUCTION";
@@ -107,8 +103,7 @@ public class MainMvpController {
     @StringDef({
             ENGLISH, SEALED
     })
-    public @interface AuctionType {
-    }
+    public @interface AuctionType {}
 
     public static final String ENGLISH = "ENGLISH";
     public static final String SEALED = "SEALED";
@@ -117,8 +112,7 @@ public class MainMvpController {
     @StringDef({
             MYBIDDING, MYSELLING, MYBOUGHT, MYSOLD, NOBODYBID
     })
-    public @interface TradeType {
-    }
+    public @interface TradeType {}
 
     public static final String MYBIDDING = "MYBIDDING";
     public static final String MYSELLING = "MYSELLING";
@@ -162,8 +156,6 @@ public class MainMvpController {
             mMainPresenter.setAuctionPresenter(mAuctionPresenter);
             auctionFragment.setPresenter(mMainPresenter);
         }
-
-
     }
 
     void findOrCreateTradeView() {
@@ -175,7 +167,6 @@ public class MainMvpController {
             mMainPresenter.setTradePresenter(mTradePresenter);
             tradeFragment.setPresenter(mMainPresenter);
         }
-
     }
 
     void findOrCreateChatView() {
@@ -187,7 +178,6 @@ public class MainMvpController {
             mMainPresenter.setChatPresenter(mChatPresenter);
             chatFragment.setPresenter(mMainPresenter);
         }
-
     }
 
     void findOrCreateSettingsView() {
@@ -199,7 +189,6 @@ public class MainMvpController {
             mMainPresenter.setSettingsPresenter(mSettingsPresenter);
             settingsFragment.setPresenter(mMainPresenter);
         }
-
     }
 
     void createEyesOnView() {
@@ -211,7 +200,6 @@ public class MainMvpController {
             mMainPresenter.setEyesOnPresenter(mEyesOnPresenter);
             eyesOnFragment.setPresenter(mMainPresenter);
         }
-
     }
 
     void createChatContentView(ChatRoom chatRoom, String from) {
@@ -223,7 +211,6 @@ public class MainMvpController {
         chatContentFragment.setPresenter(mMainPresenter);
         mChatContentPresenter.setChatRoomData(chatRoom);
         chatContentFragment.setFrom(from);
-
     }
 
     void createPostView(ArrayList<Bitmap> imageBitmap) {
@@ -244,7 +231,6 @@ public class MainMvpController {
         mMainPresenter.setSearchPresenter(mSearchPresenter);
         searchFragment.setPresenter(mMainPresenter);
         mSearchPresenter.setKeyword(keyword);
-
     }
 
     void setPostPics(ArrayList<Bitmap> imageBitmap) {
@@ -352,7 +338,6 @@ public class MainMvpController {
         mMainPresenter.setBiddingDetailPresenter(mBiddingDetailPresenter);
         biddingDetailFragment.setPresenter(mMainPresenter);
         biddingDetailFragment.setAuctionType(auctionType);
-
     }
 
     void createSellingView(String auctionType, Product product) {

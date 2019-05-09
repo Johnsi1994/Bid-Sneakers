@@ -16,8 +16,6 @@ public class Bid extends Application {
         mContext = this;
     }
 
-
-
     public static Context getAppContext() {
         return mContext;
     }

@@ -4,7 +4,6 @@ import android.os.CountDownTimer;
 import android.support.annotation.NonNull;
 import android.support.v7.widget.CardView;
 import android.support.v7.widget.RecyclerView;
-import android.util.Log;
 import android.util.SparseArray;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -12,7 +11,7 @@ import android.view.ViewGroup;
 import android.widget.ImageView;
 import android.widget.TextView;
 
-import com.johnson.bid.MainActivity;
+import com.johnson.bid.Bid;
 import com.johnson.bid.R;
 import com.johnson.bid.data.Product;
 import com.johnson.bid.util.CardViewImageOutlineProvider;
@@ -48,16 +47,13 @@ public class SearchAdapter extends RecyclerView.Adapter {
 
     @Override
     public int getItemCount() {
-        if (mProductsList == null) {
-            return 0;
-        } else {
-            return mProductsList.size();
-        }
+
+        return (mProductsList == null) ? 0 : mProductsList.size();
     }
 
     private class ViewHolder extends RecyclerView.ViewHolder {
 
-        private CardView mBiddingLayout;
+        private CardView mLayoutSearch;
         private ImageView mImageMain;
         private TextView mTextTitle;
         private TextView mTextTime;
@@ -71,7 +67,7 @@ public class SearchAdapter extends RecyclerView.Adapter {
         private ViewHolder(View itemView) {
             super(itemView);
 
-            mBiddingLayout = itemView.findViewById(R.id.layout_product_most_brief);
+            mLayoutSearch = itemView.findViewById(R.id.layout_product_most_brief);
             mImageMain = itemView.findViewById(R.id.image_product_most);
             mTextTitle = itemView.findViewById(R.id.text_product_most_title);
             mTextTime = itemView.findViewById(R.id.text_product_most_remaining_time);
@@ -82,8 +78,8 @@ public class SearchAdapter extends RecyclerView.Adapter {
             mTextSlash = itemView.findViewById(R.id.text_product_most_slash);
         }
 
-        private CardView getBiddingLayout() {
-            return mBiddingLayout;
+        private CardView getLayoutSearch() {
+            return mLayoutSearch;
         }
 
         private ImageView getImageMain() {
@@ -122,9 +118,9 @@ public class SearchAdapter extends RecyclerView.Adapter {
     private void bindViewHolder(ViewHolder holder, Product product, int i) {
 
 
-        holder.getBiddingLayout().setOnClickListener(v -> {
+        holder.getLayoutSearch().setOnClickListener(v -> {
 
-            if (product.getAuctionType().equals("一般拍賣")) {
+            if (product.getAuctionType().equals(Bid.getAppContext().getString(R.string.firebase_auction_type_English))) {
                 mPresenter.openBidding(ENGLISH, product);
             } else {
                 mPresenter.openBidding(SEALED, product);
@@ -138,7 +134,7 @@ public class SearchAdapter extends RecyclerView.Adapter {
 
         holder.getTextTitle().setText(product.getTitle());
 
-        if (product.getAuctionType().equals("一般拍賣")) {
+        if (product.getAuctionType().equals(Bid.getAppContext().getString(R.string.firebase_auction_type_English))) {
 
             holder.getTextPrice().setText(String.valueOf(product.getCurrentPrice()));
 
@@ -170,7 +166,7 @@ public class SearchAdapter extends RecyclerView.Adapter {
 
             @Override
             public void onFinish() {
-                holder.getTextTime().setText("競標結束");
+                holder.getTextTime().setText(Bid.getAppContext().getString(R.string.bid_finish));
             }
         }.start();
 
@@ -185,7 +181,11 @@ public class SearchAdapter extends RecyclerView.Adapter {
         long minutes = (millSeconds - days * (1000 * 60 * 60 * 24) - hours * (1000 * 60 * 60)) / (1000 * 60);
         long seconds = (millSeconds - days * (1000 * 60 * 60 * 24) - hours * (1000 * 60 * 60) - minutes * (1000 * 60)) / 1000;
 
-        String time = days + " 天 " + hours + " 時 " + minutes + " 分 " + seconds + " 秒";
+        String time = days + " " + Bid.getAppContext().getString(R.string.timer_day) + " "
+                + hours + " " + Bid.getAppContext().getString(R.string.timer_hour) + " "
+                + minutes + " " + Bid.getAppContext().getString(R.string.timer_minute) + " "
+                + seconds + " " + Bid.getAppContext().getString(R.string.timer_second);
+
         return time;
     }
 

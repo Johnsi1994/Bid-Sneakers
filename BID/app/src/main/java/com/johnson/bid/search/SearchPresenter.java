@@ -19,24 +19,16 @@ public class SearchPresenter implements SearchContract.Presenter {
     }
 
     @Override
-    public void start() {
-
-    }
+    public void start() {}
 
     @Override
-    public void updateToolbar(String toolbarTitle) {
-
-    }
+    public void updateToolbar(String toolbarTitle) {}
 
     @Override
-    public void openBidding(String from, Product product) {
-
-    }
+    public void openBidding(String from, Product product) {}
 
     @Override
-    public void hideToolbarAndBottomNavigation() {
-
-    }
+    public void hideToolbarAndBottomNavigation() {}
 
     @Override
     public void loadSearchData() {
@@ -65,7 +57,5 @@ public class SearchPresenter implements SearchContract.Presenter {
     }
 
     @Override
-    public void showBottomNavigation() {
-
-    }
+    public void showBottomNavigation() {}
 }

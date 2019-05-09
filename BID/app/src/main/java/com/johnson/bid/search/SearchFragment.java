@@ -22,7 +22,7 @@ public class SearchFragment extends Fragment implements SearchContract.View {
 
     private SearchContract.Presenter mPresenter;
     private SearchAdapter mSearchAdapter;
-    private SwipeRefreshLayout swipeRefreshLayout;
+    private SwipeRefreshLayout mSwipeRefreshLayout;
 
     public SearchFragment() {}
 
@@ -41,7 +41,7 @@ public class SearchFragment extends Fragment implements SearchContract.View {
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
         View root = inflater.inflate(R.layout.fragment_recycler_swipe_container, container, false);
 
-        swipeRefreshLayout = root.findViewById(R.id.swipe_layout);
+        mSwipeRefreshLayout = root.findViewById(R.id.swipe_layout);
         RecyclerView recyclerView = root.findViewById(R.id.recycler_container);
         recyclerView.setLayoutManager(new LinearLayoutManager(getActivity()));
         recyclerView.setAdapter(mSearchAdapter);
@@ -55,8 +55,8 @@ public class SearchFragment extends Fragment implements SearchContract.View {
 
         mPresenter.loadSearchData();
 
-        swipeRefreshLayout.setOnRefreshListener(() -> {
-            swipeRefreshLayout.setRefreshing(false);
+        mSwipeRefreshLayout.setOnRefreshListener(() -> {
+            mSwipeRefreshLayout.setRefreshing(false);
             mPresenter.loadSearchData();
         });
     }
@@ -66,7 +66,7 @@ public class SearchFragment extends Fragment implements SearchContract.View {
     public void onDestroy() {
         super.onDestroy();
 
-        mPresenter.updateToolbar("拍賣中心");
+        mPresenter.updateToolbar(getString(R.string.toolbar_title_auction));
         mPresenter.showBottomNavigation();
         mSearchAdapter.cancelAllTimers();
     }

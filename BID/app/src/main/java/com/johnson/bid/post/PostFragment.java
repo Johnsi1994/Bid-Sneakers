@@ -21,7 +21,6 @@ import static com.google.common.base.Preconditions.checkNotNull;
 public class PostFragment extends Fragment implements PostContract.View {
 
     private PostContract.Presenter mPresenter;
-
     private PostAdapter mPostAdapter;
 
     public PostFragment() {}
@@ -58,17 +57,15 @@ public class PostFragment extends Fragment implements PostContract.View {
     @Override
     public void onDestroy() {
         super.onDestroy();
-        mPresenter.showBottomNavigation();
-        mPresenter.updateToolbar("拍賣中心");
 
+        mPresenter.showBottomNavigation();
+        mPresenter.updateToolbar(getString(R.string.toolbar_title_auction));
     }
 
     @Override
     public void setPresenter(PostContract.Presenter presenter) {
         mPresenter = checkNotNull(presenter);
     }
-
-
 
     @Override
     public void showPostUi(ArrayList<Bitmap> imageBitmap) {

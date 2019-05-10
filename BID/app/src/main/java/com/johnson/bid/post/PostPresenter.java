@@ -23,9 +23,7 @@ public class PostPresenter implements PostContract.Presenter {
     }
 
     @Override
-    public void start() {
-
-    }
+    public void start() {}
 
     @Override
     public Product getProduct() {
@@ -87,7 +85,6 @@ public class PostPresenter implements PostContract.Presenter {
     public void setPostProductId2User(long productId) {
         UserManager.getInstance().addSellingProductId(productId);
         UserManager.getInstance().updateUser2Firebase();
-//        UserManager.getInstance().setHasUserDataChange(true);
     }
 
     @Override
@@ -116,14 +113,10 @@ public class PostPresenter implements PostContract.Presenter {
     }
 
     @Override
-    public void showBottomNavigation() {
-
-    }
+    public void showBottomNavigation() {}
 
     @Override
-    public void updateToolbar(String title) {
-
-    }
+    public void updateToolbar(String title) {}
 
     @Override
     public void setPostPics(ArrayList<Bitmap> imageBitmap) {
@@ -139,19 +132,13 @@ public class PostPresenter implements PostContract.Presenter {
     }
 
     @Override
-    public void openGalleryDialog(String from) {
-
-    }
+    public void openGalleryDialog(String from) {}
 
     @Override
-    public void showPostSuccessDialog() {
-
-    }
+    public void showPostSuccessDialog() {}
 
     @Override
-    public void updateCenterData() {
-
-    }
+    public void updateCenterData() {}
 
     @Override
     public void setSellerHasRead(boolean isRead) {

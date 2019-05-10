@@ -22,15 +22,12 @@ import android.widget.Spinner;
 import android.widget.TextView;
 import android.widget.Toast;
 
-import com.google.android.gms.tasks.OnCompleteListener;
-import com.google.android.gms.tasks.OnFailureListener;
-import com.google.android.gms.tasks.OnSuccessListener;
-import com.google.android.gms.tasks.Task;
 import com.google.firebase.storage.StorageReference;
 import com.google.firebase.storage.UploadTask;
 import com.johnson.bid.Bid;
 import com.johnson.bid.MainActivity;
 import com.johnson.bid.R;
+import com.johnson.bid.util.Constants;
 import com.johnson.bid.util.Firebase;
 import com.johnson.bid.util.RotatePic;
 import com.johnson.bid.util.UserManager;
@@ -38,7 +35,6 @@ import com.jzxiang.pickerview.TimePickerDialog;
 import com.jzxiang.pickerview.listener.OnDateSetListener;
 
 import java.io.ByteArrayOutputStream;
-import java.io.File;
 import java.io.IOException;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
@@ -77,7 +73,6 @@ public class PostAdapter extends RecyclerView.Adapter {
         ((ViewHolder) viewHolder).getPostPicGallery().setAdapter(postPicsGalleryAdapter);
         ((ViewHolder) viewHolder).getPostPicGallery().setLayoutManager(layoutManager);
 
-
     }
 
     @Override
@@ -88,25 +83,25 @@ public class PostAdapter extends RecyclerView.Adapter {
     private class ViewHolder extends RecyclerView.ViewHolder implements OnDateSetListener {
 
         private RecyclerView mPostPicGallery;
-        private EditText mProductTitle;
-        private EditText mProductIntro;
-        private Spinner mProductCondition;
-        private EditText mStartingPrice;
-        private EditText mReservePrice;
-        private Spinner mAuctionType;
-        private Spinner mIncrease;
-        private ConstraintLayout mTimePickerLayout;
-        private TextView mExpireTimeText;
+        private EditText mEditProductTitle;
+        private EditText mEditProductIntro;
+        private Spinner mSpinnerProductCondition;
+        private EditText mEditStartingPrice;
+        private EditText mEditReservePrice;
+        private Spinner mSpinnerAuctionType;
+        private Spinner mSpinnerIncrease;
+        private ConstraintLayout mLayoutTimePicker;
+        private TextView mTextExpireTime;
         private TimePickerDialog mDialogMonthDayHourMinute;
-        private Button mPostBtn;
-        private TextView mIncreaseTitle;
+        private Button mBtnPost;
+        private TextView mTextIncreaseTitle;
         private View mView;
 
-        private ArrayList<String> mUrls = new ArrayList<>();
+        private ArrayList<String> mUrlList = new ArrayList<>();
         private long mTime = -1;
 
         @SuppressLint("SimpleDateFormat")
-        private SimpleDateFormat sf = new SimpleDateFormat("MM 月 dd 日 HH 時 mm 分");
+        private SimpleDateFormat sf = new SimpleDateFormat(mMainActivity.getString(R.string.simple_date_format_MdHm));
         long oneMinute = 1000 * 60L;
         long oneHour = 1000 * 60 * 60 * 1L;
         long oneWeek = 7 * 1000 * 60 * 60 * 24L;
@@ -115,58 +110,58 @@ public class PostAdapter extends RecyclerView.Adapter {
             super(itemView);
 
             mPostPicGallery = itemView.findViewById(R.id.recycler_post_pics);
-            mProductTitle = itemView.findViewById(R.id.edit_product_title);
-            mProductIntro = itemView.findViewById(R.id.edit_product_intro);
-            mProductCondition = itemView.findViewById(R.id.spinner_product_condition);
-            mStartingPrice = itemView.findViewById(R.id.edit_starting_price);
-            mReservePrice = itemView.findViewById(R.id.edit_reserve_price);
-            mAuctionType = itemView.findViewById(R.id.spinner_auction_type);
-            mIncreaseTitle = itemView.findViewById(R.id.text_increase);
-            mIncrease = itemView.findViewById(R.id.spinner_increase);
-            mTimePickerLayout = itemView.findViewById(R.id.layout_time_picker);
-            mExpireTimeText = itemView.findViewById(R.id.text_expire_time);
+            mEditProductTitle = itemView.findViewById(R.id.edit_product_title);
+            mEditProductIntro = itemView.findViewById(R.id.edit_product_intro);
+            mSpinnerProductCondition = itemView.findViewById(R.id.spinner_product_condition);
+            mEditStartingPrice = itemView.findViewById(R.id.edit_starting_price);
+            mEditReservePrice = itemView.findViewById(R.id.edit_reserve_price);
+            mSpinnerAuctionType = itemView.findViewById(R.id.spinner_auction_type);
+            mTextIncreaseTitle = itemView.findViewById(R.id.text_increase);
+            mSpinnerIncrease = itemView.findViewById(R.id.spinner_increase);
+            mLayoutTimePicker = itemView.findViewById(R.id.layout_time_picker);
+            mTextExpireTime = itemView.findViewById(R.id.text_expire_time);
             mView = itemView.findViewById(R.id.view_increase);
-            mPostBtn = itemView.findViewById(R.id.button_post);
+            mBtnPost = itemView.findViewById(R.id.button_post);
 
-            mProductCondition.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
+            mSpinnerProductCondition.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
                 @Override
                 public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
                     if (position == 0) {
-                        mPresenter.setProductCondition("全新");
+                        mPresenter.setProductCondition(mMainActivity.getString(R.string.product_condition_new));
                     } else {
-                        mPresenter.setProductCondition("二手");
+                        mPresenter.setProductCondition(mMainActivity.getString(R.string.product_condition_used));
                     }
                 }
 
                 @Override
                 public void onNothingSelected(AdapterView<?> parent) {
-                    mPresenter.setProductCondition("全新");
+                    mPresenter.setProductCondition(mMainActivity.getString(R.string.product_condition_new));
                 }
             });
 
-            mAuctionType.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
+            mSpinnerAuctionType.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
                 @Override
                 public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
                     if (position == 0) {
-                        mPresenter.setAuctionType("一般拍賣");
-                        mIncreaseTitle.setVisibility(View.VISIBLE);
-                        mIncrease.setVisibility(View.VISIBLE);
+                        mPresenter.setAuctionType(mMainActivity.getString(R.string.firebase_auction_type_English));
+                        mTextIncreaseTitle.setVisibility(View.VISIBLE);
+                        mSpinnerIncrease.setVisibility(View.VISIBLE);
                         mView.setVisibility(View.VISIBLE);
                     } else {
-                        mPresenter.setAuctionType("封閉拍賣");
-                        mIncreaseTitle.setVisibility(View.GONE);
-                        mIncrease.setVisibility(View.GONE);
+                        mPresenter.setAuctionType(mMainActivity.getString(R.string.firebase_auction_type_sealed));
+                        mTextIncreaseTitle.setVisibility(View.GONE);
+                        mSpinnerIncrease.setVisibility(View.GONE);
                         mView.setVisibility(View.GONE);
                     }
                 }
 
                 @Override
                 public void onNothingSelected(AdapterView<?> parent) {
-                    mPresenter.setAuctionType("一般拍賣");
+                    mPresenter.setAuctionType(mMainActivity.getString(R.string.firebase_auction_type_English));
                 }
             });
 
-            mIncrease.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
+            mSpinnerIncrease.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
                 @Override
                 public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
                     switch (position) {
@@ -193,13 +188,13 @@ public class PostAdapter extends RecyclerView.Adapter {
 
             mDialogMonthDayHourMinute = new TimePickerDialog.Builder()
                     .setCallBack(this)
-                    .setCancelStringId("取消")
-                    .setSureStringId("確定")
-                    .setTitleStringId("結標時間")
-                    .setMonthText("月")
-                    .setDayText("日")
-                    .setHourText("時")
-                    .setMinuteText("分")
+                    .setCancelStringId(mMainActivity.getString(R.string.cancel))
+                    .setSureStringId(mMainActivity.getString(R.string.yes))
+                    .setTitleStringId(mMainActivity.getString(R.string.finish_time_post))
+                    .setMonthText(mMainActivity.getString(R.string.timer_month))
+                    .setDayText(mMainActivity.getString(R.string.timer_date))
+                    .setHourText(mMainActivity.getString(R.string.timer_hour))
+                    .setMinuteText(mMainActivity.getString(R.string.timer_minute))
                     .setCyclic(false)
                     .setMinMillseconds(System.currentTimeMillis() + oneMinute)
                     .setMaxMillseconds(System.currentTimeMillis() + oneWeek)
@@ -208,19 +203,19 @@ public class PostAdapter extends RecyclerView.Adapter {
                     .setWheelItemTextSize(12)
                     .build();
 
-            mTimePickerLayout.setOnClickListener(v -> mDialogMonthDayHourMinute.show(mMainActivity.getSupportFragmentManager(), "month_day_hour_minute"));
+            mLayoutTimePicker.setOnClickListener(v -> mDialogMonthDayHourMinute.show(mMainActivity.getSupportFragmentManager(), "month_day_hour_minute"));
 
-            mPostBtn.setOnClickListener(v -> {
+            mBtnPost.setOnClickListener(v -> {
 
-                if ("".equals(mProductTitle.getText().toString()) ||
-                        "".equals(mProductIntro.getText().toString()) ||
-                        "".equals(mStartingPrice.getText().toString()) ||
+                if ("".equals(mEditProductTitle.getText().toString()) ||
+                        "".equals(mEditProductIntro.getText().toString()) ||
+                        "".equals(mEditStartingPrice.getText().toString()) ||
                         mTime == -1) {
-                    Toast.makeText(mMainActivity, "請填完整資訊", Toast.LENGTH_SHORT).show();
+                    Toast.makeText(mMainActivity, mMainActivity.getString(R.string.warning_complete_post_info), Toast.LENGTH_SHORT).show();
                 } else {
                     uploadImages(0);
                     mPresenter.showPostSuccessDialog();
-                    mPresenter.updateToolbar("拍賣中心");
+                    mPresenter.updateToolbar(mMainActivity.getString(R.string.toolbar_title_auction));
                     mPresenter.showBottomNavigation();
                     mMainActivity.onBackPressed();
                 }
@@ -232,8 +227,8 @@ public class PostAdapter extends RecyclerView.Adapter {
         public void onDateSet(TimePickerDialog timePickerView, long millSeconds) {
             mTime = millSeconds;
             String text = getDateToString(millSeconds);
-            mExpireTimeText.setText(text);
-            mExpireTimeText.setVisibility(View.VISIBLE);
+            mTextExpireTime.setText(text);
+            mTextExpireTime.setVisibility(View.VISIBLE);
             mPresenter.setExpireTime(millSeconds);
         }
 
@@ -243,30 +238,6 @@ public class PostAdapter extends RecyclerView.Adapter {
         }
 
         private void uploadImages(int i) {
-
-//            Uri file = Uri.fromFile(new File(mImagePath.get(i)));
-//
-//            Log.d("imagetest", "Upload Uri : " + file);
-//
-//            StorageReference riversRef = Firebase.getInstance().getStorage().child(file.getLastPathSegment());
-//            int j = i + 1;
-//
-//            riversRef.putFile(file)
-//                    .addOnSuccessListener(taskSnapshot -> {
-//                        Log.d("Johnsi", "Photo Upload Success and ready to get URL");
-//
-//                        riversRef.getDownloadUrl().addOnSuccessListener(uri -> {
-//                            Log.d("Johnsi", "Success to get Uri: " + uri);
-//                            setUrl(uri.toString());
-//                            if (j < mImagePath.size()) {
-//                                uploadImages(j);
-//                            } else {
-//                                Log.d("Johnsi", "UploadImages success then upload product");
-//                                uploadProduct();
-//                            }
-//                        });
-//                    })
-//                    .addOnFailureListener(exception -> Log.d("Johnsi", exception.getMessage()));
 
            StorageReference ref = Firebase.getInstance().getStorage().child(mImageBitmap.get(i).toString());
             int j = i + 1;
@@ -280,33 +251,33 @@ public class PostAdapter extends RecyclerView.Adapter {
                     .addOnSuccessListener(taskSnapshot ->
                         ref.getDownloadUrl().addOnSuccessListener(uri -> {
 
-                            Log.d("Johnsi", "Success to get Uri: " + uri);
+                            Log.d(Constants.TAG, "Success to get Uri: " + uri);
                             setUrl(uri.toString());
                             if (j < mImageBitmap.size()) {
                                 uploadImages(j);
                             } else {
-                                Log.d("Johnsi", "UploadImages success then upload product");
+                                Log.d(Constants.TAG, "UploadImages success then upload product");
                                 uploadProduct();
                             }
                         })
                     )
-                    .addOnFailureListener(exception -> Log.d("Johnsi", exception.getMessage()));
+                    .addOnFailureListener(exception -> Log.d(Constants.TAG, exception.getMessage()));
         }
 
         private void uploadProduct() {
 
-            mPresenter.setAuctionCondition("bidding");
-            mPresenter.setImages(getUrls());
+            mPresenter.setAuctionCondition(mMainActivity.getString(R.string.firebase_auction_condition_bidding));
+            mPresenter.setImages(getUrlList());
             mPresenter.setSellerId(UserManager.getInstance().getUser().getId());
-            mPresenter.setProductTitle(mProductTitle.getText().toString());
-            mPresenter.setProductIntro(mProductIntro.getText().toString());
-            mPresenter.setStartingPrice(Integer.parseInt(mStartingPrice.getText().toString()));
-            mPresenter.setCurrentPrice(Integer.parseInt(mStartingPrice.getText().toString()));
+            mPresenter.setProductTitle(mEditProductTitle.getText().toString());
+            mPresenter.setProductIntro(mEditProductIntro.getText().toString());
+            mPresenter.setStartingPrice(Integer.parseInt(mEditStartingPrice.getText().toString()));
+            mPresenter.setCurrentPrice(Integer.parseInt(mEditStartingPrice.getText().toString()));
             mPresenter.setPlaceBidTimes(0);
-            if ("".equals(mReservePrice.getText().toString())) {
+            if ("".equals(mEditReservePrice.getText().toString())) {
                 mPresenter.setReservePrice(0);
             } else {
-                mPresenter.setReservePrice(Integer.parseInt(mReservePrice.getText().toString()));
+                mPresenter.setReservePrice(Integer.parseInt(mEditReservePrice.getText().toString()));
             }
             long id = System.currentTimeMillis();
             mPresenter.setProductId(id);
@@ -315,25 +286,24 @@ public class PostAdapter extends RecyclerView.Adapter {
             mPresenter.setBuyerHasRead(false);
             mPresenter.setSellerName(UserManager.getInstance().getUser().getName());
 
-            Firebase.getInstance().getFirestore().collection("products")
+            Firebase.getInstance().getFirestore().collection(mMainActivity.getString(R.string.firebase_products))
                     .document(String.valueOf(id))
                     .set(mPresenter.getProduct())
                     .addOnSuccessListener(documentReference -> {
-                        Log.d("Johnsi", "DocumentSnapshot added");
+                        Log.d(Constants.TAG, "DocumentSnapshot added");
                         mPresenter.updateCenterData();
                     })
-                    .addOnFailureListener(e -> Log.w("Johnsi", "Error adding document", e));
+                    .addOnFailureListener(e -> Log.w(Constants.TAG, "Error adding document", e));
 
             mPresenter.setPostProductId2User(id);
-
         }
 
         private void setUrl(String url) {
-            mUrls.add(url);
+            mUrlList.add(url);
         }
 
-        private ArrayList<String> getUrls() {
-            return mUrls;
+        private ArrayList<String> getUrlList() {
+            return mUrlList;
         }
 
         private RecyclerView getPostPicGallery() {
@@ -344,58 +314,5 @@ public class PostAdapter extends RecyclerView.Adapter {
     public void updateData(ArrayList<Bitmap> imageBitmap) {
         mImageBitmap = imageBitmap;
         notifyDataSetChanged();
-    }
-
-    private void retateImage(String path, Uri uri) throws IOException {
-
-        ExifInterface exif = new ExifInterface(path);
-        int orientation = exif.getAttributeInt(ExifInterface.TAG_ORIENTATION, ExifInterface.ORIENTATION_UNDEFINED);
-
-        Bitmap bitmap = MediaStore.Images.Media.getBitmap(Bid.getAppContext().getContentResolver(), uri);
-        Bitmap rotatedBitmap = rotateBitmap(bitmap, orientation);
-
-
-    }
-
-    private Bitmap rotateBitmap(Bitmap bitmap, int orientation) {
-        Matrix matrix = new Matrix();
-        switch (orientation) {
-            case ExifInterface.ORIENTATION_NORMAL:
-                return bitmap;
-            case ExifInterface.ORIENTATION_FLIP_HORIZONTAL:
-                matrix.setScale(-1, 1);
-                break;
-            case ExifInterface.ORIENTATION_ROTATE_180:
-                matrix.setRotate(180);
-                break;
-            case ExifInterface.ORIENTATION_FLIP_VERTICAL:
-                matrix.setRotate(180);
-                matrix.postScale(-1, 1);
-                break;
-            case ExifInterface.ORIENTATION_TRANSPOSE:
-                matrix.setRotate(90);
-                matrix.postScale(-1, 1);
-                break;
-            case ExifInterface.ORIENTATION_ROTATE_90:
-                matrix.setRotate(90);
-                break;
-            case ExifInterface.ORIENTATION_TRANSVERSE:
-                matrix.setRotate(-90);
-                matrix.postScale(-1, 1);
-                break;
-            case ExifInterface.ORIENTATION_ROTATE_270:
-                matrix.setRotate(-90);
-                break;
-            default:
-                return bitmap;
-        }
-        try {
-            Bitmap bmRotated = Bitmap.createBitmap(bitmap, 0, 0, bitmap.getWidth(), bitmap.getHeight(), matrix, true);
-            bitmap.recycle();
-            return bmRotated;
-        } catch (OutOfMemoryError e) {
-            e.printStackTrace();
-            return null;
-        }
     }
 }

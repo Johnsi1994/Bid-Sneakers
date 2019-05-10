@@ -31,7 +31,7 @@
     <!--placeholder-->
     <string name="nike_air_mag">Nike Air Mag</string>
     <string name="placeholder_time">1 天 12 時 12 分 12 秒</string>
-    <string name="nt_dollars">NT$</string>
+
     <string name="placeholder_price">300000</string>
     <string name="slash">/</string>
     <string name="bit_times_on_brief">次出價</string>
@@ -41,18 +41,15 @@
     <string name="add_pics">新增照片</string>
     <string name="finish_time_post">結標時間</string>
     <string name="add_pics_from">新增商品照片從</string>
-    <string name="album">相簿</string>
-    <string name="camera">相機</string>
+
     <string name="delete_product_or_not">確定要刪除此商品?</string>
-    <string name="not_today">先不要</string>
-    <string name="yes">確定</string>
+
     <string name="place_bid_title">標標標標起來</string>
     <string name="dialog_current_price">目前最高出價 :</string>
     <string name="dialog_increase_title">出價增額 :</string>
     <string name="dialog_increase">1000</string>
     <string name="please_place_bid">請輸入出價</string>
-    <string name="cancel">取消</string>
-    <string name="place_the_bid">出價</string>
+
     <string name="product_introduction">商品介紹</string>
     <string name="product_intro_content">無鞋盒，無配件，鞋墊很臭</string>
     <string name="product_condition_title">商品狀況 :</string>
@@ -93,14 +90,28 @@
 
     <string name="bid_finish">競標結束</string>
 
+
+    <string name="not_today">先不要</string>
+    <string name="yes">確定</string>
+
+    <string name="cancel">取消</string>
+    <string name="place_the_bid">出價</string>
+
+    <string name="album">相簿</string>
+    <string name="camera">相機</string>
+
+
+    <string name="nt_dollars">NT$</string>
+
+
     <!--Firebase-->
     <string name="firebase_products">products</string>
     <string name="firebase_chatrooms">chatrooms</string>
     <string name="firebase_users">users</string>
 
     <string name="firebase_field_auction_type">auctionType</string>
-    <string name="firebase_auction_type_sealed">封閉拍賣</string>
     <string name="firebase_auction_type_English">一般拍賣</string>
+    <string name="firebase_auction_type_sealed">封閉拍賣</string>
 
     <string name="firebase_field_auction_condition">auctionCondition</string>
     <string name="firebase_auction_condition_bidding">bidding</string>
@@ -112,6 +123,8 @@
 
 
     <!--timer-->
+    <string name="timer_month">月</string>
+    <string name="timer_date">日</string>
     <string name="timer_day">天</string>
     <string name="timer_hour">時</string>
     <string name="timer_minute">分</string>
@@ -150,7 +163,7 @@
 
 
     <string name="placeholder_start_chatting">開始聊天吧</string>
-
+    <string name="warning_complete_post_info">請填完整資訊</string>
 
 
 </resources>

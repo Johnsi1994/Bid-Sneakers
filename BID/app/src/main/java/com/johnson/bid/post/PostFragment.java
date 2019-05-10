@@ -72,6 +72,10 @@ public class PostFragment extends Fragment implements PostContract.View {
         if (mPostAdapter != null) {
             mPostAdapter.updateData(imageBitmap);
         }
+    }
 
+    @Override
+    public void showAuctionDataUI() {
+        mPresenter.updateAuctionData();
     }
 }

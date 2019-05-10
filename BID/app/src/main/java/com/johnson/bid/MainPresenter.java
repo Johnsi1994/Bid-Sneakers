@@ -180,7 +180,7 @@ public class MainPresenter implements MainContract.Presenter, AuctionContract.Pr
     }
 
     @Override
-    public void updateCenterData() {
+    public void updateAuctionData() {
         mEnglishAuctionItemPresenter.loadEnglishData();
         mSealedAuctionItemPresenter.loadSealedData();
     }
@@ -203,6 +203,16 @@ public class MainPresenter implements MainContract.Presenter, AuctionContract.Pr
     @Override
     public void setSellerName(String name) {
         mPostPresenter.setSellerName(name);
+    }
+
+    @Override
+    public void uploadImages(int i, UserManager.LoadCallback loadCallback) {
+        mPostPresenter.uploadImages(i, loadCallback);
+    }
+
+    @Override
+    public void uploadProduct(long id) {
+        mPostPresenter.uploadProduct(id);
     }
 
     @Override
@@ -488,11 +498,6 @@ public class MainPresenter implements MainContract.Presenter, AuctionContract.Pr
     }
 
     @Override
-    public Product getProduct() {
-        return mPostPresenter.getProduct();
-    }
-
-    @Override
     public void setProductTitle(String productTitle) {
         mPostPresenter.setProductTitle(productTitle);
     }
@@ -553,8 +558,8 @@ public class MainPresenter implements MainContract.Presenter, AuctionContract.Pr
     }
 
     @Override
-    public void setImages(ArrayList<String> Url) {
-        mPostPresenter.setImages(Url);
+    public void setImages() {
+        mPostPresenter.setImages();
     }
 
     @Override

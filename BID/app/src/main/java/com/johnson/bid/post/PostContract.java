@@ -5,6 +5,7 @@ import android.graphics.Bitmap;
 import com.johnson.bid.BasePresenter;
 import com.johnson.bid.BaseView;
 import com.johnson.bid.data.Product;
+import com.johnson.bid.util.UserManager;
 
 import java.util.ArrayList;
 
@@ -12,11 +13,11 @@ public interface PostContract {
 
     interface View extends BaseView<Presenter> {
         void showPostUi(ArrayList<Bitmap> imageBitmap);
+
+        void showAuctionDataUI();
     }
 
     interface Presenter extends BasePresenter {
-
-        Product getProduct();
 
         void setProductTitle(String productTitle);
 
@@ -42,7 +43,7 @@ public interface PostContract {
 
         void setStartingTime(long startingTime);
 
-        void setImages(ArrayList<String> Url);
+        void setImages();
 
         void setSellerId(long sellerId);
 
@@ -62,13 +63,17 @@ public interface PostContract {
 
         void showPostSuccessDialog();
 
-        void updateCenterData();
+        void updateAuctionData();
 
         void setSellerHasRead(boolean isRead);
 
         void setBuyerHasRead(boolean isRead);
 
         void setSellerName(String name);
+
+        void uploadImages(int i, UserManager.LoadCallback loadCallback);
+
+        void uploadProduct(long id);
     }
 
 }

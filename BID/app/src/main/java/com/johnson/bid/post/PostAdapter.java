@@ -2,10 +2,6 @@ package com.johnson.bid.post;
 
 import android.annotation.SuppressLint;
 import android.graphics.Bitmap;
-import android.graphics.Matrix;
-import android.media.ExifInterface;
-import android.net.Uri;
-import android.provider.MediaStore;
 import android.support.annotation.NonNull;
 import android.support.constraint.ConstraintLayout;
 import android.support.v7.widget.LinearLayoutManager;
@@ -22,8 +18,6 @@ import android.widget.Spinner;
 import android.widget.TextView;
 import android.widget.Toast;
 
-import com.google.firebase.storage.StorageReference;
-import com.google.firebase.storage.UploadTask;
 import com.johnson.bid.Bid;
 import com.johnson.bid.MainActivity;
 import com.johnson.bid.R;
@@ -34,8 +28,6 @@ import com.johnson.bid.util.UserManager;
 import com.jzxiang.pickerview.TimePickerDialog;
 import com.jzxiang.pickerview.listener.OnDateSetListener;
 
-import java.io.ByteArrayOutputStream;
-import java.io.IOException;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Date;
@@ -97,7 +89,7 @@ public class PostAdapter extends RecyclerView.Adapter {
         private TextView mTextIncreaseTitle;
         private View mView;
 
-        private ArrayList<String> mUrlList = new ArrayList<>();
+
         private long mTime = -1;
 
         @SuppressLint("SimpleDateFormat")
@@ -213,7 +205,17 @@ public class PostAdapter extends RecyclerView.Adapter {
                         mTime == -1) {
                     Toast.makeText(mMainActivity, mMainActivity.getString(R.string.warning_complete_post_info), Toast.LENGTH_SHORT).show();
                 } else {
-                    uploadImages(0);
+                    mPresenter.uploadImages(0, new UserManager.LoadCallback() {
+                        @Override
+                        public void onSuccess() {
+                            setAndUploadProduct();
+                        }
+
+                        @Override
+                        public void onFail(String errorMessage) {
+                            Log.d(Constants.TAG, "Upload Image Fail ");
+                        }
+                    });
                     mPresenter.showPostSuccessDialog();
                     mPresenter.updateToolbar(mMainActivity.getString(R.string.toolbar_title_auction));
                     mPresenter.showBottomNavigation();
@@ -237,37 +239,10 @@ public class PostAdapter extends RecyclerView.Adapter {
             return sf.format(d);
         }
 
-        private void uploadImages(int i) {
-
-           StorageReference ref = Firebase.getInstance().getStorage().child(mImageBitmap.get(i).toString());
-            int j = i + 1;
-
-            ByteArrayOutputStream baos = new ByteArrayOutputStream();
-            mImageBitmap.get(i).compress(Bitmap.CompressFormat.JPEG, 80, baos);
-            byte[] data = baos.toByteArray();
-
-            UploadTask uploadTask = ref.putBytes(data);
-            uploadTask
-                    .addOnSuccessListener(taskSnapshot ->
-                        ref.getDownloadUrl().addOnSuccessListener(uri -> {
-
-                            Log.d(Constants.TAG, "Success to get Uri: " + uri);
-                            setUrl(uri.toString());
-                            if (j < mImageBitmap.size()) {
-                                uploadImages(j);
-                            } else {
-                                Log.d(Constants.TAG, "UploadImages success then upload product");
-                                uploadProduct();
-                            }
-                        })
-                    )
-                    .addOnFailureListener(exception -> Log.d(Constants.TAG, exception.getMessage()));
-        }
-
-        private void uploadProduct() {
+        private void setAndUploadProduct() {
 
             mPresenter.setAuctionCondition(mMainActivity.getString(R.string.firebase_auction_condition_bidding));
-            mPresenter.setImages(getUrlList());
+            mPresenter.setImages();
             mPresenter.setSellerId(UserManager.getInstance().getUser().getId());
             mPresenter.setProductTitle(mEditProductTitle.getText().toString());
             mPresenter.setProductIntro(mEditProductIntro.getText().toString());
@@ -285,25 +260,9 @@ public class PostAdapter extends RecyclerView.Adapter {
             mPresenter.setSellerHasRead(false);
             mPresenter.setBuyerHasRead(false);
             mPresenter.setSellerName(UserManager.getInstance().getUser().getName());
-
-            Firebase.getInstance().getFirestore().collection(mMainActivity.getString(R.string.firebase_products))
-                    .document(String.valueOf(id))
-                    .set(mPresenter.getProduct())
-                    .addOnSuccessListener(documentReference -> {
-                        Log.d(Constants.TAG, "DocumentSnapshot added");
-                        mPresenter.updateCenterData();
-                    })
-                    .addOnFailureListener(e -> Log.w(Constants.TAG, "Error adding document", e));
+            mPresenter.uploadProduct(id);
 
             mPresenter.setPostProductId2User(id);
-        }
-
-        private void setUrl(String url) {
-            mUrlList.add(url);
-        }
-
-        private ArrayList<String> getUrlList() {
-            return mUrlList;
         }
 
         private RecyclerView getPostPicGallery() {

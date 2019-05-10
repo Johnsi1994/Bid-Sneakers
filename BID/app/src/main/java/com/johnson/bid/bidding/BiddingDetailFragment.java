@@ -74,7 +74,7 @@ public class BiddingDetailFragment extends Fragment implements BiddingDetailCont
         super.onDestroy();
 
         mPresenter.showToolbarAndBottomNavigation();
-        mPresenter.updateCenterData();
+        mPresenter.updateAuctionData();
 
         if (UserManager.getInstance().isHasUserDataChange()) {
             UserManager.getInstance().updateUser2Firebase();

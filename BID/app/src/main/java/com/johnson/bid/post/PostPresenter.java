@@ -2,10 +2,18 @@ package com.johnson.bid.post;
 
 import android.graphics.Bitmap;
 import android.support.annotation.NonNull;
+import android.util.Log;
 
+import com.google.firebase.storage.StorageReference;
+import com.google.firebase.storage.UploadTask;
+import com.johnson.bid.Bid;
+import com.johnson.bid.R;
 import com.johnson.bid.data.Product;
+import com.johnson.bid.util.Constants;
+import com.johnson.bid.util.Firebase;
 import com.johnson.bid.util.UserManager;
 
+import java.io.ByteArrayOutputStream;
 import java.util.ArrayList;
 
 import static com.google.common.base.Preconditions.checkNotNull;
@@ -16,6 +24,7 @@ public class PostPresenter implements PostContract.Presenter {
 
     private Product mProduct;
     private ArrayList<Bitmap> mImageBitmap;
+    private ArrayList<String> mUrlList = new ArrayList<>();
 
     public PostPresenter(@NonNull PostContract.View postView) {
         mPostView = checkNotNull(postView, "postView cannot be null!");
@@ -24,12 +33,6 @@ public class PostPresenter implements PostContract.Presenter {
 
     @Override
     public void start() {}
-
-    @Override
-    public Product getProduct() {
-
-        return mProduct;
-    }
 
     @Override
     public void setProductTitle(String productTitle) {
@@ -93,8 +96,8 @@ public class PostPresenter implements PostContract.Presenter {
     }
 
     @Override
-    public void setImages(ArrayList<String> Url) {
-        mProduct.setImages(Url);
+    public void setImages() {
+        mProduct.setImages(mUrlList);
     }
 
     @Override
@@ -138,7 +141,7 @@ public class PostPresenter implements PostContract.Presenter {
     public void showPostSuccessDialog() {}
 
     @Override
-    public void updateCenterData() {}
+    public void updateAuctionData() {}
 
     @Override
     public void setSellerHasRead(boolean isRead) {
@@ -155,5 +158,48 @@ public class PostPresenter implements PostContract.Presenter {
         mProduct.setSellerName(name);
     }
 
+    @Override
+    public void uploadImages(int i, UserManager.LoadCallback loadCallback) {
 
+        StorageReference ref = Firebase.getInstance().getStorage().child(mImageBitmap.get(i).toString());
+        int j = i + 1;
+
+        ByteArrayOutputStream baos = new ByteArrayOutputStream();
+        mImageBitmap.get(i).compress(Bitmap.CompressFormat.JPEG, 80, baos);
+        byte[] data = baos.toByteArray();
+
+        UploadTask uploadTask = ref.putBytes(data);
+        uploadTask
+                .addOnSuccessListener(taskSnapshot ->
+                        ref.getDownloadUrl().addOnSuccessListener(uri -> {
+
+                            Log.d(Constants.TAG, "Success to get Uri: " + uri);
+                            setUrl(uri.toString());
+                            if (j < mImageBitmap.size()) {
+                                uploadImages(j, loadCallback);
+                            } else {
+                                Log.d(Constants.TAG, "UploadImages success then upload product");
+                                loadCallback.onSuccess();
+                            }
+                        })
+                )
+                .addOnFailureListener(exception -> Log.d(Constants.TAG, exception.getMessage()));
+    }
+
+    @Override
+    public void uploadProduct(long id) {
+
+        Firebase.getInstance().getFirestore().collection(Bid.getAppContext().getString(R.string.firebase_products))
+                .document(String.valueOf(id))
+                .set(mProduct)
+                .addOnSuccessListener(documentReference -> {
+                    Log.d(Constants.TAG, "DocumentSnapshot added");
+                    mPostView.showAuctionDataUI();
+                })
+                .addOnFailureListener(e -> Log.w(Constants.TAG, "Error adding document", e));
+    }
+
+    private void setUrl(String url) {
+        mUrlList.add(url);
+    }
 }

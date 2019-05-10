@@ -42,7 +42,7 @@ public class BiddingDetailPresenter implements BiddingDetailContract.Presenter {
     public void openBidDialog(String from, Product product) {}
 
     @Override
-    public void updateCenterData() {}
+    public void updateAuctionData() {}
 
     @Override
     public void loadBiddingFreshData() {

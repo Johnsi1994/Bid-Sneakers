@@ -245,7 +245,8 @@ public class MainActivity extends AppCompatActivity implements MainContract.View
             if (Build.VERSION.SDK_INT <= 23) {
                 openCamera23(mFrom);
             } else {
-                openCamera24(mFrom);
+//                openCamera24(mFrom);
+                Toast.makeText(this, "Camera is coming soon", Toast.LENGTH_SHORT).show();
             }
         }
     }
@@ -308,7 +309,8 @@ public class MainActivity extends AppCompatActivity implements MainContract.View
                     if (Build.VERSION.SDK_INT <= 23) {
                         openCamera23(mFrom);
                     } else {
-                        openCamera24(mFrom);
+//                        openCamera24(mFrom);
+                        Toast.makeText(this, "Camera is coming soon", Toast.LENGTH_SHORT).show();
                     }
 
                 } else {
@@ -916,5 +918,4 @@ public class MainActivity extends AppCompatActivity implements MainContract.View
 
         return sTracker;
     }
-
 }

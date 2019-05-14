@@ -54,10 +54,14 @@ dependencies {
     }
     implementation 'com.google.android.gms:play-services-analytics:16.0.8'
     implementation 'com.etiya.etiyabadgetablib:etiyabadgetablib:0.0.3'
+
+    testImplementation "org.mockito:mockito-core:2.27.0"
+    androidTestImplementation "org.mockito:mockito-android:2.27.0"
 }
 
 repositories {
     maven { url 'https://maven.fabric.io/public' }
+    jcenter()
 }
 
 

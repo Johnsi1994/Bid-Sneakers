@@ -190,7 +190,7 @@ public class UserManager {
         mUser = user;
     }
 
-    public  void addBiddingProductId(long productId) {
+    public void addBiddingProductId(long productId) {
         mUser.getMyBiddingProductsId().add(productId);
     }
 
@@ -220,11 +220,11 @@ public class UserManager {
         }
     }
 
-    public  void addBoughtProductId(long productId) {
+    public void addBoughtProductId(long productId) {
         mUser.getMyBoughtProductsId().add(productId);
     }
 
-    public  void addSoldProductId(long productId) {
+    public void addSoldProductId(long productId) {
         mUser.getMySoldProductsId().add(productId);
     }
 
@@ -274,10 +274,8 @@ public class UserManager {
 
         boolean hasRoom = false;
 
-        for (int i = 0; i < mUser.getChatList().size(); i++) {
-            if (id == mUser.getChatList().get(i)) {
-                hasRoom =  true;
-            }
+        if (mUser.getChatList().contains(id)) {
+            hasRoom = true;
         }
 
         return hasRoom;
@@ -294,7 +292,6 @@ public class UserManager {
     public boolean isHasUserDataChange() {
         return mHasUserDataChange;
     }
-
 
 
     public CallbackManager getFbCallbackManager() {

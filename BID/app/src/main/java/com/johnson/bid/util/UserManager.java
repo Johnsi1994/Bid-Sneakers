@@ -239,7 +239,9 @@ public class UserManager {
 
     public void decreaseUnreadBought() {
         int unread = mUser.getUnreadBought();
-        mUser.setUnreadBought(unread - 1);
+        if (unread > 0) {
+            mUser.setUnreadBought(unread - 1);
+        }
     }
 
     public void increaseUnreadSold() {
@@ -249,7 +251,9 @@ public class UserManager {
 
     public void decreaseUnreadSold() {
         int unread = mUser.getUnreadSold();
-        mUser.setUnreadSold(unread - 1);
+        if (unread > 0) {
+            mUser.setUnreadSold(unread - 1);
+        }
     }
 
     public void increaseUnreadNobodyBid() {
@@ -259,7 +263,9 @@ public class UserManager {
 
     public void decreaseUnreadNobodyBid() {
         int unread = mUser.getUnreadNobodyBid();
-        mUser.setUnreadNobodyBid(unread - 1);
+        if (unread > 0) {
+            mUser.setUnreadNobodyBid(unread - 1);
+        }
     }
 
     public void setUserName(String userName) {

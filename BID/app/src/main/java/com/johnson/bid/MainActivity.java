@@ -117,10 +117,110 @@ public class MainActivity extends AppCompatActivity implements MainContract.View
         init();
     }
 
-    @Override
-    public void openLoginUi() {
-        mMainMvpController.createLoginView();
+    private void init() {
+        mMainMvpController = MainMvpController.create(this);
+
+        setToolbar();
+
+        if (UserManager.getInstance().isLoggedIn()) {
+            UserManager.getInstance().getUserProfile(new UserManager.LoadCallback() {
+                @Override
+                public void onSuccess() {
+                    Log.d(Constants.TAG, "Load User Profile Success !");
+                    UserManager.getInstance().setHasUserDataChange(false);
+
+                    setBottomNavigation();
+                    mPresenter.openCenter();
+                    showToolbarUi();
+                    showBottomNavigationUi();
+                }
+
+                @Override
+                public void onFail(String errorMessage) {
+                    Log.d(Constants.TAG, "Load User Profile Fail !");
+                }
+            });
+        } else {
+            mPresenter.openLogin();
+        }
     }
+
+    private void setToolbar() {
+        // Retrieve the AppCompact Toolbar
+        mToolbar = findViewById(R.id.toolbar);
+        setSupportActionBar(mToolbar);
+        getSupportActionBar().setTitle("");
+
+        // Set the padding to match the Status Bar height
+        mToolbar.setPadding(0, getStatusBarHeight(), 0, 0);
+
+        mToolbarTitle = mToolbar.findViewById(R.id.text_toolbar_title);
+        mToolbarLogout = mToolbar.findViewById(R.id.text_logout);
+    }
+
+    public int getStatusBarHeight() {
+        int result = 0;
+        int resourceId = getResources().getIdentifier("status_bar_height", "dimen", "android");
+        if (resourceId > 0) {
+            result = getResources().getDimensionPixelSize(resourceId);
+        }
+        return result;
+    }
+
+    @Override
+    public void setBottomNavigation() {
+
+        mBottomNavigation = findViewById(R.id.bottom_navigation_main);
+        mBottomNavigation.setOnNavigationItemSelectedListener(mOnNavigationItemSelectedListener);
+        mBottomNavigation.setItemIconTintList(null); //去除BottomNavigation上面icon的顏色
+
+        BottomNavigationMenuView menuView =
+                (BottomNavigationMenuView) mBottomNavigation.getChildAt(0);
+        BottomNavigationItemView itemView = (BottomNavigationItemView) menuView.getChildAt(1);
+        mBadge = LayoutInflater.from(this)
+                .inflate(R.layout.badge_main_bottom, itemView, true);
+        mBadge.findViewById(R.id.text_badge_main).setVisibility(View.GONE);
+
+        mPresenter.updateTradeBadge();
+    }
+
+    @Override
+    public void updateTradeBadgeUi(int unreadCount) {
+
+        if (unreadCount > 0) {
+            mBadge.findViewById(R.id.text_badge_main).setVisibility(View.VISIBLE);
+            ((TextView) mBadge.findViewById(R.id.text_badge_main)).setText(getString(R.string.badge_exclamation_mark));
+        } else {
+            mBadge.findViewById(R.id.text_badge_main).setVisibility(View.GONE);
+        }
+    }
+
+    private BottomNavigationView.OnNavigationItemSelectedListener mOnNavigationItemSelectedListener = menuItem -> {
+
+        switch (menuItem.getItemId()) {
+            case R.id.navigation_center:
+                mPresenter.updateToolbar(getString(R.string.toolbar_title_auction));
+                mPresenter.openCenter();
+                return true;
+            case R.id.navigation_trade:
+                mPresenter.updateToolbar(getString(R.string.toolbar_title_my_trade));
+                mPresenter.openTrade();
+                return true;
+            case R.id.navigation_message:
+                mPresenter.updateToolbar(getString(R.string.toolbar_title_chat));
+                mPresenter.openChat();
+                return true;
+            case R.id.navigation_settings:
+                mPresenter.updateToolbar(getString(R.string.toolbar_title_settings));
+                mPresenter.openSettings();
+                return true;
+            default:
+        }
+        return false;
+    };
+
+    @Override
+    public void openLoginUi() { mMainMvpController.createLoginView();}
 
     @Override
     public void openCenterUi() {
@@ -218,9 +318,7 @@ public class MainActivity extends AppCompatActivity implements MainContract.View
     }
 
     @Override
-    public void setPostPics(ArrayList<Bitmap> imageBitmap) {
-        mMainMvpController.setPostPics(imageBitmap);
-    }
+    public void setPostPics(ArrayList<Bitmap> imageBitmap) { mMainMvpController.setPostPics(imageBitmap); }
 
     @Override
     public void setAfterBidData(Product product) {
@@ -424,16 +522,16 @@ public class MainActivity extends AppCompatActivity implements MainContract.View
     @Override
     public void setToolbarTitleUi(String title) {
 
-        if (title.equals("刊登") || title.equals("搜尋結果")) {
+        if (title.equals(getString(R.string.toolbar_title_post)) || title.equals(getString(R.string.toolbar_title_search_result))) {
             mToolbar.setNavigationIcon(R.drawable.ic_left_arrow);
             mToolbar.setNavigationOnClickListener(v -> onBackPressed());
             mToolbarLogout.setVisibility(View.GONE);
-        } else if (title.equals("設定")) {
+        } else if (title.equals(getString(R.string.toolbar_title_settings))) {
 
             mToolbarLogout.setVisibility(View.VISIBLE);
             mToolbarLogout.setOnClickListener(v -> {
                 UserManager.getInstance().logout();
-                Toast.makeText(this, "登出成功", Toast.LENGTH_SHORT).show();
+                Toast.makeText(this, getString(R.string.message_logout_success), Toast.LENGTH_SHORT).show();
                 hideToolbarUi();
                 hideBottomNavigationUi();
                 mPresenter.openLogin();
@@ -731,16 +829,7 @@ public class MainActivity extends AppCompatActivity implements MainContract.View
         }
     }
 
-    @Override
-    public void updateTradeBadgeUi(int unreadCount) {
 
-        if (unreadCount > 0) {
-            mBadge.findViewById(R.id.text_badge_main).setVisibility(View.VISIBLE);
-            ((TextView) mBadge.findViewById(R.id.text_badge_main)).setText("!");
-        } else {
-            mBadge.findViewById(R.id.text_badge_main).setVisibility(View.GONE);
-        }
-    }
 
     @Override
     public void setPresenter(MainContract.Presenter presenter) {
@@ -758,100 +847,7 @@ public class MainActivity extends AppCompatActivity implements MainContract.View
         }
     }
 
-    private void init() {
-        mMainMvpController = MainMvpController.create(this);
 
-        setToolbar();
-
-        if (UserManager.getInstance().isLoggedIn()) {
-            UserManager.getInstance().getUserProfile(new UserManager.LoadCallback() {
-                @Override
-                public void onSuccess() {
-                    Log.d("Johnsi", "Load User Profile Success !");
-                    UserManager.getInstance().setHasUserDataChange(false);
-
-                    setBottomNavigation();
-                    mPresenter.openCenter();
-                    showToolbarUi();
-                    showBottomNavigationUi();
-                }
-
-                @Override
-                public void onFail(String errorMessage) {
-                    Log.d("Johnsi", "Load User Profile Fail !");
-                }
-
-            });
-
-        } else {
-
-            mPresenter.openLogin();
-        }
-    }
-
-    private void setToolbar() {
-        // Retrieve the AppCompact Toolbar
-        mToolbar = findViewById(R.id.toolbar);
-        setSupportActionBar(mToolbar);
-        getSupportActionBar().setTitle("");
-
-        // Set the padding to match the Status Bar height
-        mToolbar.setPadding(0, getStatusBarHeight(), 0, 0);
-
-        mToolbarTitle = mToolbar.findViewById(R.id.text_toolbar_title);
-        mToolbarLogout = mToolbar.findViewById(R.id.text_logout);
-    }
-
-    public int getStatusBarHeight() {
-        int result = 0;
-        int resourceId = getResources().getIdentifier("status_bar_height", "dimen", "android");
-        if (resourceId > 0) {
-            result = getResources().getDimensionPixelSize(resourceId);
-        }
-        return result;
-    }
-
-    @Override
-    public void setBottomNavigation() {
-
-        mBottomNavigation = findViewById(R.id.bottom_navigation_main);
-        mBottomNavigation.setOnNavigationItemSelectedListener(mOnNavigationItemSelectedListener);
-        mBottomNavigation.setItemIconTintList(null); //去除BottomNavigation上面icon的顏色
-
-        BottomNavigationMenuView menuView =
-                (BottomNavigationMenuView) mBottomNavigation.getChildAt(0);
-        BottomNavigationItemView itemView = (BottomNavigationItemView) menuView.getChildAt(1);
-        mBadge = LayoutInflater.from(this)
-                .inflate(R.layout.badge_main_bottom, itemView, true);
-        mBadge.findViewById(R.id.text_badge_main).setVisibility(View.GONE);
-
-        mPresenter.updateTradeBadge();
-
-    }
-
-    private BottomNavigationView.OnNavigationItemSelectedListener mOnNavigationItemSelectedListener = menuItem -> {
-
-        switch (menuItem.getItemId()) {
-            case R.id.navigation_center:
-                mPresenter.updateToolbar("拍賣中心");
-                mPresenter.openCenter();
-                return true;
-            case R.id.navigation_trade:
-                mPresenter.updateToolbar("我的交易");
-                mPresenter.openTrade();
-                return true;
-            case R.id.navigation_message:
-                mPresenter.updateToolbar("聊聊");
-                mPresenter.openChat();
-                return true;
-            case R.id.navigation_settings:
-                mPresenter.updateToolbar("設定");
-                mPresenter.openSettings();
-                return true;
-            default:
-        }
-        return false;
-    };
 
     public void openAlbum(String from) {
 

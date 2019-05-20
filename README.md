@@ -39,3 +39,10 @@ Bid Sneakers 是一款球鞋專用的拍賣系統，讓用戶可以將自己的�
 
 # Screenshot
 <img src="https://github.com/Johnsi1994/Bid-Sneakers/blob/master/screenshot/test.png" width="210">
+<img src="https://github.com/Johnsi1994/Bid-Sneakers/blob/master/screenshot/test.png" width="210">
+<img src="https://github.com/Johnsi1994/Bid-Sneakers/blob/master/screenshot/test.png" width="210">
+<img src="https://github.com/Johnsi1994/Bid-Sneakers/blob/master/screenshot/test.png" width="210">
+<img src="https://github.com/Johnsi1994/Bid-Sneakers/blob/master/screenshot/test.png" width="210">
+<img src="https://github.com/Johnsi1994/Bid-Sneakers/blob/master/screenshot/test.png" width="210">
+<img src="https://github.com/Johnsi1994/Bid-Sneakers/blob/master/screenshot/test.png" width="210">
+<img src="https://github.com/Johnsi1994/Bid-Sneakers/blob/master/screenshot/test.png" width="210">

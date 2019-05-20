@@ -48,7 +48,7 @@ public class ChatContentFragment extends Fragment implements ChatContentContract
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
         View root = inflater.inflate(R.layout.fragment_chat_content, container, false);
 
-        mRecyclerView = root.findViewById(R.id.recycler_container);
+        mRecyclerView = root.findViewById(R.id.recycler_container_chat);
         mRecyclerView.setLayoutManager(new LinearLayoutManager(getActivity()));
         mRecyclerView.setAdapter(mChatContentAdapter);
 

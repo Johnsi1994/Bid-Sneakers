@@ -8,7 +8,7 @@
     android:id="@+id/swipe_layout">
 
     <android.support.v7.widget.RecyclerView
-        android:id="@+id/recycler_container"
+        android:id="@+id/recycler_container_swipe"
         android:layout_width="match_parent"
         android:layout_height="0dp"
         android:clipToPadding="false"

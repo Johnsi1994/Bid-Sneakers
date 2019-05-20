@@ -39,7 +39,7 @@ public class NobodyBidDetailFragment extends Fragment implements NobodyBidDetail
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
         View root = inflater.inflate(R.layout.fragment_recycler_normal_container, container, false);
 
-        RecyclerView recyclerView = root.findViewById(R.id.recycler_container);
+        RecyclerView recyclerView = root.findViewById(R.id.recycler_container_normal);
         recyclerView.setLayoutManager(new LinearLayoutManager(getActivity()));
         recyclerView.setAdapter(mNobodyBidDetailAdapter);
 

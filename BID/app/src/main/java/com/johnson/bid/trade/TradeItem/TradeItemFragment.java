@@ -52,7 +52,7 @@ public class TradeItemFragment extends Fragment implements TradeItemContract.Vie
         View root = inflater.inflate(R.layout.fragment_recycler_swipe_container, container, false);
 
         swipeRefreshLayout = root.findViewById(R.id.swipe_layout);
-        RecyclerView recyclerView = root.findViewById(R.id.recycler_container);
+        RecyclerView recyclerView = root.findViewById(R.id.recycler_container_swipe);
         recyclerView.setLayoutManager(new LinearLayoutManager(getActivity()));
         recyclerView.setAdapter(mTradeItemAdapter);
 

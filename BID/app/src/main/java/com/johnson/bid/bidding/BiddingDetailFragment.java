@@ -45,7 +45,7 @@ public class BiddingDetailFragment extends Fragment implements BiddingDetailCont
         View root = inflater.inflate(R.layout.fragment_recycler_swipe_container, container, false);
 
         mSwipeRefreshLayout = root.findViewById(R.id.swipe_layout);
-        RecyclerView recyclerView = root.findViewById(R.id.recycler_container);
+        RecyclerView recyclerView = root.findViewById(R.id.recycler_container_swipe);
         recyclerView.setLayoutManager(new LinearLayoutManager(getActivity()));
         recyclerView.setAdapter(mBiddingDetailAdapter);
 

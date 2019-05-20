@@ -40,3 +40,55 @@ Bid Sneakers 是一款球鞋專用的拍賣系統，讓用戶可以將自己的�
 # Screenshot
 <img src="https://github.com/Johnsi1994/Bid-Sneakers/blob/master/screenshot/test.png" width="210"> <img src="https://github.com/Johnsi1994/Bid-Sneakers/blob/master/screenshot/test.png" width="210"> <img src="https://github.com/Johnsi1994/Bid-Sneakers/blob/master/screenshot/test.png" width="210"> <img src="https://github.com/Johnsi1994/Bid-Sneakers/blob/master/screenshot/test.png" width="210">
 <img src="https://github.com/Johnsi1994/Bid-Sneakers/blob/master/screenshot/test.png" width="210"> <img src="https://github.com/Johnsi1994/Bid-Sneakers/blob/master/screenshot/test.png" width="210"> <img src="https://github.com/Johnsi1994/Bid-Sneakers/blob/master/screenshot/test.png" width="210"> <img src="https://github.com/Johnsi1994/Bid-Sneakers/blob/master/screenshot/test.png" width="210">
+
+# Implemented
+
+  * Design Patterns
+    * Objecr Oreinted Programming
+    * Model-View-Presenter (MVP)
+    * Singleton
+
+
+  * Core Functions
+    * Firebase realtime update
+    * TimePicker
+    * CountDownTimer
+    * Notification
+    * Facebook Login
+
+
+  * User Interface
+    * Fragment
+    * RecyclerView
+    * Floating Action Button
+    * TabLayout + ViewPager
+    * SearchView
+
+
+  * Storage
+    * Firebase Cloud Firestore
+    * Firebase Storage
+
+
+  * Analysis
+    * Google Analytics 	
+    * Frabic Crahlytics
+
+
+  * Unit Test
+    * JUnit
+    * Mockito
+    * Espresso
+
+# Requirement
+* Android Studio 3.0+
+* Android SDK 23+
+
+# Version
+* 1.0.2 - 2019/05/12
+
+  * 修正刪除商品產生的 bug
+
+# Contact
+Johnson <br />
+jwork1994212@gmail.com

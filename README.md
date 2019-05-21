@@ -38,7 +38,7 @@ Bid Sneakers 是一款球鞋專用的拍賣系統，讓用戶可以將自己的�
 顯示使用者的基本資訊與拍賣規則介紹。使用者能夠編輯大頭貼與使用者名稱。
 
 # Screenshot
-<img src="https://github.com/Johnsi1994/Bid-Sneakers/blob/master/screenshot/test.png" width="210"> <img src="https://github.com/Johnsi1994/Bid-Sneakers/blob/master/screenshot/test.png" width="210"> <img src="https://github.com/Johnsi1994/Bid-Sneakers/blob/master/screenshot/test.png" width="210"> <img src="https://github.com/Johnsi1994/Bid-Sneakers/blob/master/screenshot/test.png" width="210">
+<img src="https://github.com/Johnsi1994/Bid-Sneakers/blob/master/screenshot/screenshot_auction_crntre.png" width="210"> <img src="https://github.com/Johnsi1994/Bid-Sneakers/blob/master/screenshot/screenshot_product_detail.png" width="210"> <img src="https://github.com/Johnsi1994/Bid-Sneakers/blob/master/screenshot/screenshot_trading.png" width="210"> <img src="https://github.com/Johnsi1994/Bid-Sneakers/blob/master/screenshot/screenshot_chating.png" width="210">
 <img src="https://github.com/Johnsi1994/Bid-Sneakers/blob/master/screenshot/test.png" width="210"> <img src="https://github.com/Johnsi1994/Bid-Sneakers/blob/master/screenshot/test.png" width="210"> <img src="https://github.com/Johnsi1994/Bid-Sneakers/blob/master/screenshot/test.png" width="210"> <img src="https://github.com/Johnsi1994/Bid-Sneakers/blob/master/screenshot/test.png" width="210">
 
 # Implemented

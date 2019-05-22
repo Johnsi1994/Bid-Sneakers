@@ -2,7 +2,10 @@ package com.johnson.bid;
 
 import android.graphics.Bitmap;
 import android.util.Log;
+import android.view.View;
+import android.widget.Toast;
 
+import com.google.firebase.firestore.DocumentSnapshot;
 import com.johnson.bid.bidding.BiddingDetailContract;
 import com.johnson.bid.bidding.BiddingDetailPresenter;
 import com.johnson.bid.bought.BoughtDetailContract;
@@ -41,12 +44,15 @@ import com.johnson.bid.trade.TradeItem.TradeItemContract;
 import com.johnson.bid.trade.TradeItem.TradeItemFragment;
 import com.johnson.bid.trade.TradeItem.TradeItemPresenter;
 import com.johnson.bid.trade.TradePresenter;
+import com.johnson.bid.util.Constants;
+import com.johnson.bid.util.Firebase;
 import com.johnson.bid.util.UserManager;
 
 import java.util.ArrayList;
 
 import static com.google.common.base.Preconditions.checkNotNull;
 import static com.johnson.bid.MainMvpController.ENGLISH;
+import static com.johnson.bid.dialog.MessageDialog.BID_SUCCESS;
 
 public class MainPresenter implements MainContract.Presenter, AuctionContract.Presenter, TradeContract.Presenter,
         ChatContract.Presenter, SettingsContract.Presenter, AuctionItemContract.Presenter, LoginContract.Presenter,
@@ -426,6 +432,114 @@ public class MainPresenter implements MainContract.Presenter, AuctionContract.Pr
     public void openSearch(String toolbarTitle, String keyWord) {
         mMainView.openSearchUi(keyWord);
         updateToolbar(toolbarTitle);
+    }
+
+    @Override
+    public void placeBid(Product product, String from, String price) {
+        Firebase.getInstance().getFirestore().collection(Bid.getAppContext().getString(R.string.firebase_products))
+                .document(String.valueOf(product.getProductId()))
+                .get()
+                .addOnCompleteListener(task -> {
+                    if (task.isSuccessful()) {
+                        DocumentSnapshot document = task.getResult();
+                        Product latestProduct;
+                        latestProduct = document.toObject(Product.class);
+                        int placeBidTimes = latestProduct.getPlaceBidTimes();
+
+                        if (from.equals(ENGLISH)) {
+                            if ("".equals(price)) {
+
+                                mMainView.showWarningMsgNull();
+                            } else if (Integer.parseInt(price) < latestProduct.getCurrentPrice()) {
+
+                                mMainView.showWarningMsgPriceToLow();
+                            } else if ((Integer.parseInt(price) - latestProduct.getCurrentPrice()) < latestProduct.getIncrease()) {
+
+                                mMainView.showWarningMsgPriceUnderIncrease();
+                            } else {
+
+                                if (Integer.parseInt(price) < latestProduct.getReservePrice()) {
+                                    Toast.makeText(Bid.getAppContext(),
+                                            Bid.getAppContext().getString(R.string.warning_msg_under_reserve_price),
+                                            Toast.LENGTH_LONG).show();
+                                }
+
+                                mMainView.hideWarningMsg();
+
+                                latestProduct.setCurrentPrice(Integer.parseInt(price));
+                                latestProduct.setHighestUserId(UserManager.getInstance().getUser().getId());
+                                latestProduct.setBuyerName(UserManager.getInstance().getUser().getName());
+                                latestProduct.setPlaceBidTimes(placeBidTimes + 1);
+
+                                mMainView.setAfterBidData(latestProduct);
+
+                                Firebase.getInstance().getFirestore().collection(Bid.getAppContext().getString(R.string.firebase_products))
+                                        .document(String.valueOf(latestProduct.getProductId()))
+                                        .update(Bid.getAppContext().getString(R.string.firebase_filed_current_price), Integer.parseInt(price),
+                                                Bid.getAppContext().getString(R.string.firebase_field_highest_user_id), UserManager.getInstance().getUser().getId(),
+                                                Bid.getAppContext().getString(R.string.firebase_field_buyer_name), UserManager.getInstance().getUser().getName(),
+                                                Bid.getAppContext().getString(R.string.firebase_field_place_bid_times), placeBidTimes + 1)
+                                        .addOnSuccessListener(aVoid -> Log.d(Constants.TAG, "BID DocumentSnapshot successfully updated!"))
+                                        .addOnFailureListener(e -> Log.w(Constants.TAG, "BID Error updating document", e));
+
+                                ArrayList<Long> myProductsId = UserManager.getInstance().getUser().getMyBiddingProductsId();
+                                boolean hasProduct = false;
+
+                                for (int i = 0; i < myProductsId.size(); i++) {
+                                    if (myProductsId.get(i).equals(latestProduct.getProductId())) {
+                                        hasProduct = true;
+                                    }
+                                }
+
+                                if (!hasProduct) {
+                                    UserManager.getInstance().addBiddingProductId(latestProduct.getProductId());
+                                    UserManager.getInstance().updateUser2Firebase();
+                                }
+
+                                mMainView.dismissDialog();
+                                mMainView.showMessageDialogUi(BID_SUCCESS);
+                            }
+
+                        } else {
+                            if ("".equals(price)) {
+
+                                mMainView.showWarningMsgNull();
+                            } else {
+                                mMainView.hideWarningMsg();
+
+                                latestProduct.setPlaceBidTimes(placeBidTimes + 1);
+
+                                if (Integer.parseInt(price) > latestProduct.getCurrentPrice()) {
+
+                                    Firebase.getInstance().getFirestore().collection(Bid.getAppContext().getString(R.string.firebase_products))
+                                            .document(String.valueOf(latestProduct.getProductId()))
+                                            .update(Bid.getAppContext().getString(R.string.firebase_filed_current_price), Integer.parseInt(price),
+                                                    Bid.getAppContext().getString(R.string.firebase_field_highest_user_id), UserManager.getInstance().getUser().getId(),
+                                                    Bid.getAppContext().getString(R.string.firebase_field_buyer_name), UserManager.getInstance().getUser().getName(),
+                                                    Bid.getAppContext().getString(R.string.firebase_field_place_bid_times), placeBidTimes + 1)
+                                            .addOnSuccessListener(aVoid -> Log.d(Constants.TAG, "BID DocumentSnapshot successfully updated!"))
+                                            .addOnFailureListener(e -> Log.w(Constants.TAG, "BID Error updating document", e));
+                                } else {
+                                    Firebase.getInstance().getFirestore().collection(Bid.getAppContext().getString(R.string.firebase_products))
+                                            .document(String.valueOf(latestProduct.getProductId()))
+                                            .update(Bid.getAppContext().getString(R.string.firebase_field_place_bid_times), placeBidTimes + 1)
+                                            .addOnSuccessListener(aVoid -> Log.d(Constants.TAG, "BID DocumentSnapshot successfully updated!"))
+                                            .addOnFailureListener(e -> Log.w(Constants.TAG, "BID Error updating document", e));
+                                }
+
+                                mMainView.setAfterBidData(latestProduct);
+
+                                UserManager.getInstance().addBiddingProductId(latestProduct.getProductId());
+                                UserManager.getInstance().updateUser2Firebase();
+
+                                mMainView.dismissDialog();
+                                mMainView.showMessageDialogUi(BID_SUCCESS);
+                            }
+                        }
+                    } else {
+                        Log.d(Constants.TAG, "Error getting documents: ", task.getException());
+                    }
+                });
     }
 
     @Override

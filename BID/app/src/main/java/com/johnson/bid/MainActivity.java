@@ -748,7 +748,7 @@ public class MainActivity extends AppCompatActivity implements MainContract.View
             UserManager.getInstance().setHasUserDataChange(false);
         }
     }
-    
+
     public void openAlbum(String from) {
 
         Intent intent = new Intent(Intent.ACTION_PICK, MediaStore.Images.Media.INTERNAL_CONTENT_URI);

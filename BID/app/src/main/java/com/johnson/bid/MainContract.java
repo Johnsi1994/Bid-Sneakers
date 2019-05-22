@@ -89,6 +89,16 @@ public interface MainContract {
         void showMessageDialogUi(@MessageDialog.MessageType int type);
 
         void updateTradeBadgeUi(int unreadCount);
+
+        void showWarningMsgNull();
+
+        void showWarningMsgPriceToLow();
+
+        void showWarningMsgPriceUnderIncrease();
+
+        void hideWarningMsg();
+
+        void dismissDialog();
     }
 
     interface Presenter extends BasePresenter {
@@ -118,5 +128,7 @@ public interface MainContract {
         void updateTradeBadge();
 
         void openSearch(String toolbarTitle, String keyWord);
+
+        void placeBid(Product product, String from, String price);
     }
 }

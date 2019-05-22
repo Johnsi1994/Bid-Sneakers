@@ -120,6 +120,7 @@
     <string name="firebase_field_start_time">startTime</string>
     <string name="firebase_field_owner_list">ownerList</string>
     <string name="firebase_field_chat_content_array_list">chatContentArrayList</string>
+    <string name="firebase_filed_current_price">currentPrice</string>
 
 
     <!--timer-->
@@ -173,6 +174,9 @@
     <string name="badge_exclamation_mark">!</string>
 
     <string name="message_logout_success">登出成功</string>
+    <string name="firebase_field_highest_user_id">highestUserId</string>
+    <string name="firebase_field_buyer_name">buyerName</string>
+    <string name="firebase_field_place_bid_times">placeBidTimes</string>
 
 
 </resources>
